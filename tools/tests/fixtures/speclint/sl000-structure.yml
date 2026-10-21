@@ -1,0 +1,3 @@
+# A section that is not a list.
+# expect: SL000
+journeys: J1

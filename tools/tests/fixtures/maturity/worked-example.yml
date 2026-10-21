@@ -1,0 +1,66 @@
+# Larkfield Grocer (fictional) — maturity extract from example/worked-example.md.
+scope:
+  journeys: [checkout]
+  services: [web front end, checkout, payments]
+
+dimensions:
+  - number: 1
+    status: scored
+    level: 2
+    coverage: journeys listed, no functions
+    evidence:
+      - {type: document, ref: product wiki}
+      - {type: interview, ref: interviews}
+    confidence: medium
+  - number: 2
+    status: not_scored
+    reason: extract only
+  - number: 3
+    status: partial
+    level: 2
+    partial_level: 3
+    coverage: classified on C1 only
+    evidence:
+      - {type: code, ref: "`slots` and `payments` error handlers"}
+    confidence: high
+  - number: 4
+    status: not_scored
+    reason: extract only
+  - number: 5
+    status: scored
+    level: 2
+    coverage: outcomes reconstructable from the orders database by hand
+    evidence:
+      - {type: query, ref: ad-hoc query}
+    confidence: high
+  - number: 6
+    status: scored
+    level: 1
+    coverage: none
+    confidence: high
+  - number: 7
+    status: scored
+    level: 2
+    coverage: per-service 5xx alerts, no owners
+    evidence:
+      - {type: export, ref: alert export}
+    confidence: high
+  - number: 8
+    status: not_scored
+    reason: extract only
+  - number: 9
+    status: not_scored
+    reason: extract only
+  - number: 10
+    status: not_scored
+    reason: extract only
+  - number: 11
+    status: not_scored
+    reason: extract only
+  - number: 12
+    status: na
+    reason: client does not intend to use it this year
+    agreed_by: sponsor, kick-off
+
+moves_fastest:
+  - "Ask the provider for the status after a timeout, classify by the answer, emit the outcome per attempt (F-03: moves 3 from 2 to 3)"

@@ -26,6 +26,9 @@ jobs:
           GUARDRAIL_REQUIRE_DENYLIST: ${{ github.event_name == 'push' && '1' || '' }}
         run: scripts/guardrails.sh
 
+      - name: Tool tests
+        run: scripts/test-tools.sh
+
       - name: Build PDF
         run: scripts/build.sh
 

@@ -100,6 +100,7 @@ the provider's status answer.
 
 | Function | Event | Attributes | State after week 6 |
 |---|---|---|---|
+| C1 | `checkout.slot.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M2) |
 | C2 | `checkout.payment.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M2) |
 | C3 | `checkout.order.result` | attempt_id, outcome, error_class, order_id | to build (M2) |
 | attempt | `checkout.attempt.result` | attempt_id, outcome (placed / refused / failed / ambiguous / unclassified) | to build (M2) |
@@ -138,7 +139,7 @@ least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts 
 | Milestone | Done when (demonstrated) | Accountable | Weeks |
 |---|---|---|---|
 | M0 — Decisions | SLO target signed; provider status call confirmed available in sandbox | Lead | 1 |
-| M2 — Business outcomes observable | `PROVIDER_TIMEOUT` split by status; three events emitted on stage; reconciliation job on stage | Checkout tech lead | 2 |
+| M2 — Business outcomes observable | `PROVIDER_TIMEOUT` split by status; four events emitted on stage; reconciliation job on stage | Checkout tech lead | 2 |
 | M3 — Measurements validated | Harness cases below reproduce exactly in the SLI query | Observability engineer | 1 |
 | M4 — Operational acceptance | Test P1 delivered, acknowledged, escalated; runbook exercised; go decision | Lead | 1 |
 
@@ -146,7 +147,7 @@ least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts 
 into the decision request):
 
 - two checkout developers at half time for M2 (about 10 developer-days: status call and split
-  1–2, three events 3, reconciliation job 4, tests 2);
+  1–2, four events 3, reconciliation job 4, tests 2);
 - the provider's sandbox can inject timeouts and answer status calls;
 - the product owner signs the target in week 1;
 - one observability engineer full time from M2 to M4, the lead half time.

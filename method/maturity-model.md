@@ -32,6 +32,9 @@ Report it as a profile, never as one number.
 Report per dimension: level, coverage, evidence, confidence, and Highlights / Keep an eye on /
 Lowlights.
 
+Record the scores in `templates/maturity.yml`; the [maturity calculator](../tools/maturity.md)
+checks them against these rules and prints the profile.
+
 ## Dimensions
 
 | # | Dimension | 1 | 2 | 3 | 4 | 5 |

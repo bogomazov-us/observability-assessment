@@ -3,9 +3,11 @@
 1. **Generic only.** No client, employer, product or system names; no people; no figures, error
    codes, hostnames or tenants from a real engagement. Write "an e-commerce booking flow", not
    the name of the system.
-2. **Text sources only.** Markdown, shell, CSS, workflow YAML. No PDFs, slides, spreadsheets,
-   HAR captures or exports — the guardrails reject them.
-3. **Run the guardrails before every commit:** `scripts/guardrails.sh`. Keep your own
+2. **Text sources only.** Markdown, shell, Python, CSS, YAML. No PDFs, slides, spreadsheets,
+   HAR captures or exports — the guardrails reject them. Test fixtures are YAML or are generated
+   by the test at run time; tool output never goes into this repository.
+3. **Run the guardrails and the tool tests before every commit:** `scripts/guardrails.sh`,
+   `scripts/test-tools.sh`. Keep your own
    denylist in `.guardrails-denylist` (git-ignored, one term per line); the CI uses the
    `GUARDRAIL_DENYLIST` secret. A pull request from a fork gets no secrets, so its CI runs the
    public checks and skips the denylist; the maintainer runs the denylist locally before

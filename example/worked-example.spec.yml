@@ -1,0 +1,179 @@
+# The worked example (worked-example.md) as an observability-spec.yml. Fictional.
+# Lint: python3 tools/speclint.py example/worked-example.spec.yml
+# Schema and rules: tools/speclint.md. The state is "after week 6": every signal still to build,
+# so the P1 alert can only be in shadow (rule SL011).
+
+spec:
+  name: Larkfield Grocer — checkout
+  version: "after week 6 of the assessment"
+
+journeys:
+  - id: J1
+    name: Checkout
+    success: An order created and confirmed to the customer
+    functions:
+      - id: C1
+        name: Reserve delivery slot
+        route: POST /api/slots/hold
+        success: Slot held for 20 minutes
+      - id: C2
+        name: Authorise payment
+        route: POST /api/payments/authorise (to the payment provider)
+        success: Authorisation approved
+      - id: C3
+        name: Place order
+        route: POST /api/orders
+        success: Order created and confirmed to the customer
+
+taxonomy:
+  - function: C1
+    code: SLOT_TAKEN
+    http: "409"
+    class: expected
+    customer_sees: Choose another slot
+  - function: C1
+    code: slots rejects with a definite error
+    context: no hold created
+    http: 5xx with hold_created=false
+    class: failure
+    customer_sees: Error, retry offered
+  - function: C1
+    code: timeout from slots
+    context: read-back by attempt_id finds no hold
+    http: "504"
+    class: failure
+    customer_sees: Error, retry offered
+  - function: C1
+    code: timeout from slots
+    context: read-back finds the hold
+    http: "504"
+    class: none            # the hold exists and checkout continues: not an error
+    customer_sees: Nothing
+  - function: C1
+    code: timeout from slots
+    context: read-back not possible
+    http: "504"
+    class: ambiguous       # reconciled by the attempt model below
+    customer_sees: Error; slot may be held for 20 minutes
+  - function: C2
+    code: DECLINED
+    context: reason CARD
+    http: "200"
+    class: expected
+    customer_sees: Your card was declined
+  - function: C2
+    code: PROVIDER_TIMEOUT
+    context: provider status says not authorised
+    http: 200 today
+    class: failure
+    customer_sees: "today: card declined — wrongly"
+    confirmed_by: checkout payment client, code path; span query (O-09)
+  - function: C2
+    code: PROVIDER_TIMEOUT
+    context: provider status not available
+    http: 200 today
+    class: ambiguous
+    customer_sees: "today: card declined — wrongly"
+    confirmed_by: checkout payment client, code path; span query (O-09)
+  - function: C3
+    code: BASKET_CHANGED
+    context: authorisation voided
+    http: "409"
+    class: expected
+    customer_sees: Your basket changed
+  - function: C3
+    code: rejected with a definite error
+    context: authorisation voided, order_created=false
+    http: 4xx / 5xx
+    class: failure
+    customer_sees: Error; no money held
+  - function: C3
+    code: timeout or no answer
+    context: after C2 approved
+    http: 5xx / none
+    class: ambiguous
+    customer_sees: Error; money may be held
+  - function: C3
+    code: duplicate submit
+    context: same attempt_id
+    http: "409"
+    class: caller_defect
+    customer_sees: Nothing (double click)
+
+signals:
+  - function: C1
+    name: checkout.slot.result
+    emitted_by: checkout
+    attributes: [attempt_id, operation_id, outcome, error_class, reason]
+    state: to_build
+  - function: C2
+    name: checkout.payment.result
+    emitted_by: checkout
+    attributes: [attempt_id, operation_id, outcome, error_class, reason]
+    state: to_build
+  - function: C3
+    name: checkout.order.result
+    emitted_by: checkout
+    attributes: [attempt_id, outcome, error_class, order_id]
+    state: to_build
+  - function: A1
+    name: checkout.attempt.result
+    emitted_by: checkout
+    attributes: [attempt_id, outcome]
+    state: to_build
+
+attempts:
+  - id: A1
+    name: Checkout attempt
+    journey: J1
+    functions: [C1, C2, C3]
+    decided_by: the last operation that ran
+    outcomes: [placed, refused, failed, ambiguous, unclassified]
+    rules:
+      - C3 created the order → placed
+      - an expected refusal and the customer left → refused
+      - a failure (no hold, no money taken, or authorisation voided) → failed
+      - ambiguous, or C2 approved and no C3 result within 10 minutes → ambiguous
+      - an unknown (not yet classified) code → unclassified, kept apart for diagnosis
+      - caller_defect on a duplicate submit → ignored; the original submit decides
+    ambiguous_after: 10m
+    reconciliation:
+      every: 10m
+      reads:
+        - the hold by attempt_id from slots
+        - the payment status from the provider
+        - the order from the orders database
+      sets: [placed, failed]
+      cleans_up: when the attempt did not reach an order, a hold found is released and an authorisation voided
+      until_then: counts as bad
+    unclassified: not reconciled; its code is classified and the attempt recounted under its class
+
+slos:
+  - id: SLO-checkout
+    subject: A1
+    good: placed
+    valid: placed + failed + ambiguous + unclassified
+    bad: [failed, ambiguous, unclassified]
+    expected_refusals:
+      treatment: excluded
+      reason: the customer's card or basket, not our service
+    traffic: real users
+    target: 99.0
+    window: 28d
+    owner: Head of e-commerce
+
+alerts:
+  - id: P1-checkout-failures
+    slo: SLO-checkout
+    severity: P1
+    condition: bad attempts above 3 % of attempts
+    for: 10m
+    min_volume: 50
+    grouping: per function
+    notifies: on-call rota
+    runbook: runbooks/checkout.md
+    delivery_test: test P1 delivered, acknowledged and escalated (milestone M4)
+    state: shadow
+    # The worked example names no alert owner; the accountable person for the events (M2) is
+    # used here.
+    owner: Checkout tech lead

@@ -1,0 +1,91 @@
+# observability-spec.yml — the checkable core of the specification set.
+#
+# Lives next to the nine Markdown documents in docs/observability/. The documents explain;
+# this file holds the chain journey → function → signal → SLO → alert → owner → runbook so
+# that tools/speclint.py can check it. Filled in: example/worked-example.spec.yml.
+#
+# Replace every "[...]" value; the linter reports a placeholder left as SL016 (a warning,
+# an error with --strict). Quote placeholders: unquoted [x] is a YAML list.
+
+spec:
+  name: "[client — scope]"
+  version: "[version or date]"
+
+journeys:
+  - id: J1
+    name: "[journey name]"
+    success: "[what counts as success, for the customer]"
+    functions:
+      - id: J1.1
+        name: "[e.g. sign-in authenticate]"
+        route: "[POST /api/session]"
+        success: "[what success means for this function]"
+
+# One row per code or condition, and context where the same code means different things.
+# class: expected / failure / caller_defect / ambiguous / unknown (none: looked like an error,
+# the operation took effect). Ambiguous needs a reconciliation path: an attempt model below,
+# or `reconciliation:` on the row.
+taxonomy:
+  - function: J1.1
+    code: "[INVALID_CREDENTIALS]"
+    http: "[200 or 401]"
+    class: expected
+    customer_sees: "[wrong password]"
+    confirmed_by: "[code path, date]"
+  - function: J1.1
+    code: "[timeout from the downstream]"
+    context: "[after the request was sent]"
+    http: "[504]"
+    class: ambiguous
+    customer_sees: "[error page]"
+    reconciliation: "[runbook section: customers left in an unknown state]"
+
+# state: live (needs evidence: browser, agent or tenant) / to_build.
+signals:
+  - function: J1.1
+    name: "[domain.function.result]"
+    emitted_by: "[service]"
+    attributes: [outcome, error_class, error_code, attempt_id, operation_id]
+    state: to_build
+
+# Only when one business attempt spans several functions (two-level model).
+# attempts:
+#   - id: A1
+#     journey: J1
+#     functions: [J1.1, J1.2]
+#     outcomes: [succeeded, refused, failed, ambiguous, unclassified]
+#     ambiguous_after: "[10m]"
+#     reconciliation:
+#       every: "[10m]"
+#       reads: ["[source of truth per function]"]
+#       sets: [succeeded, failed]
+
+slos:
+  - id: SLO-J1.1
+    subject: J1.1
+    good: "[successful attempts]"
+    valid: "[all attempts except excluded refusals]"
+    bad: [failure, caller_defect, ambiguous, unknown]
+    expected_refusals:
+      treatment: excluded          # or: good
+      reason: "[the customer's own input, not our service]"
+    traffic: real users
+    target: "[99.5]"
+    window: 28d
+    owner: "[product owner who signs the target]"
+
+# A P1 needs owner, runbook, delivery_test, min_volume and grouping. Start in shadow; paging
+# only when every signal behind the SLO is live.
+alerts:
+  - id: P1-J1.1-failure-burst
+    slo: SLO-J1.1
+    severity: P1
+    condition: "[bad ÷ valid above 5 %]"
+    for: "[10m]"
+    min_volume: "[30]"
+    grouping: per function
+    notifies: "[on-call rota]"
+    runbook: "[runbooks/function.md]"
+    delivery_test: "[test P1 delivered, acknowledged, escalated]"
+    state: shadow
+    owner: "[team]"

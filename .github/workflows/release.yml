@@ -35,6 +35,9 @@ jobs:
           GUARDRAIL_REQUIRE_DENYLIST: '1'
         run: scripts/guardrails.sh --tag "$GITHUB_REF_NAME"
 
+      - name: Tool tests
+        run: scripts/test-tools.sh
+
       - name: Build PDF
         id: build
         run: echo "pdf=$(scripts/build.sh)" >> "$GITHUB_OUTPUT"

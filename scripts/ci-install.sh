@@ -6,7 +6,7 @@ GITLEAKS=8.21.2
 WEASYPRINT=63.1
 
 sudo apt-get update -qq
-sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 poppler-utils fonts-ibm-plex >/dev/null
+sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 poppler-utils fonts-ibm-plex python3-yaml jq >/dev/null
 
 curl -fsSL -o /tmp/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC}/pandoc-${PANDOC}-1-amd64.deb"
 sudo dpkg -i /tmp/pandoc.deb >/dev/null

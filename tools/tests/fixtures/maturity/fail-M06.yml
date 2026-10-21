@@ -1,0 +1,2 @@
+scope: {journeys: [checkout], services: [checkout]}
+dimensions: [{number: 3, status: partial, level: 2, evidence: [{type: code, ref: handler}], confidence: high}]

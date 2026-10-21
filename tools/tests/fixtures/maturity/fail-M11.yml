@@ -1,0 +1,2 @@
+scope: {journeys: [checkout], services: [checkout]}
+dimensions: [{number: 4, status: not_scored, level: 1}]

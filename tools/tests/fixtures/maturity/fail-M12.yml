@@ -1,0 +1,3 @@
+scope: {journeys: [checkout], services: [checkout]}
+average: 2.4
+dimensions: [{number: 7, status: scored, level: 2, evidence: [{type: export, ref: alert export}], confidence: high}]

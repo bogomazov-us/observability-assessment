@@ -1,0 +1,2 @@
+scope: {journeys: [checkout], services: [checkout]}
+dimensions: [{number: 7, status: scored, level: 2, evidence: [{type: slide, ref: deck}], confidence: high}]

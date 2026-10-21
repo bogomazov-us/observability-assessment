@@ -9,6 +9,11 @@ KIT_FILES=(
   method/playbook.md
   method/maturity-model.md
   method/lessons.md
+  method/agent-harness.md
+  tools/README.md
+  tools/collect.md
+  tools/speclint.md
+  tools/maturity.md
   templates/intake-questionnaire.md
   templates/data-request.md
   templates/finding.md

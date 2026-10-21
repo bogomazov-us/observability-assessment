@@ -11,6 +11,7 @@
 | caller_defect | A bug in our own caller (front end, partner integration) | yes | to the owning team |
 | ambiguous | The outcome of the business operation is not known: it may or may not have taken effect (timeout after the request was sent, lost response, no confirmation) | yes, until reconciled | reconciliation; the runbook's "unknown state" section |
 | unknown | The code or condition is not classified yet | yes | classify |
+| none | Not an error: the condition looked like one (a timeout), but a check showed the operation took effect | no | the flow continues; record the check that decided it |
 
 **Ambiguous is about the outcome, not about the code.** A code that means different things in
 different contexts (an *overloaded* code) is not a class: classify it by context — by an

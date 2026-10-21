@@ -1,0 +1,83 @@
+# Maturity scoring file. Check and print the profile with: tools/maturity.py maturity.yml
+# Rules: method/maturity-model.md, "Scoring rules". Rule IDs: tools/maturity.md.
+#
+# status:     scored | partial | not_scored | na
+# level:      1-5; for partial, the level fully held, with partial_level the one held on some functions
+# evidence:   type is export | query | trace | code | config | interview | document; above level 2
+#             at least one must be tool evidence (export, query, trace, code, config)
+# confidence: high | medium | low (low caps the score at 2)
+# not_scored / na: a reason, no level. N/A outside dimension 12 also records agreed_by.
+
+scope:                                # rule 1: written before any score
+  journeys: [[journey]]
+  services: [[service], [service]]
+
+dimensions:
+  - number: 1                         # Business-function model
+    status: scored
+    level: [1-5]
+    coverage: "[functions the level holds for]"
+    evidence:
+      - {type: export, ref: "[what, where, date]"}
+    confidence: [high]
+    highlights: "[optional]"
+    keep_an_eye_on: "[optional]"
+    lowlights: "[optional]"
+    blocks_next_step: false           # true on the up-to-three dimensions that block the next step
+  - number: 2                         # Telemetry coverage
+    status: partial
+    level: [2]
+    partial_level: [3]
+    coverage: "[level 3 on 2 of 5 functions]"
+    evidence:
+      - {type: trace, ref: "[controlled run, date]"}
+    confidence: [medium]
+  - number: 3                         # Error semantics
+    status: not_scored
+    reason: "[why the evidence could not be obtained]"
+  - number: 4                         # Correlation
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 5                         # Business outcome data
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 6                         # SLOs
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 7                         # Alert quality
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 8                         # Incident response
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 9                         # Outside-in checks
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 10                        # Release observability
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 11                        # Data governance and cost
+    status: scored
+    level: [1-5]
+    evidence: []
+    confidence: [high]
+  - number: 12                        # Operational analytics (optional)
+    status: na
+    reason: "[the client does not intend to use it]"
+
+moves_fastest:                        # optional: the three or four actions that lift the most dimensions
+  - "[action (dimensions it moves)]"

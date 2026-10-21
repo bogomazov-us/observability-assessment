@@ -17,5 +17,9 @@ function). The [worked example](../../example/worked-example.md) shows them fill
 | `dashboards.md` | What people look at | everyone | Journeys, function detail (with telemetry health), daily health |
 | `runbooks/<function>.md` | What to do when it fires | responder | Six sections: what the customer sees; first five minutes; mitigate; risky switches; customers left in an unknown state (reconciliation); close |
 
+The chain itself — functions, taxonomy, signals, SLOs, alerts, runbooks — is also kept as
+`observability-spec.yml` ([skeleton](observability-spec.yml)) and checked by the
+[spec linter](../../tools/speclint.md) before each review round.
+
 Review practice: several written rounds; the reviewer closes the architecture review with an
 explicit verdict, and acceptance moves to evidence on stage.

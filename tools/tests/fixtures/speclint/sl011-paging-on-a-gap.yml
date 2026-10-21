@@ -1,0 +1,39 @@
+# Paging while the signal is still to build.
+# expect: SL011
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+taxonomy:
+  - function: F1
+    code: INVALID_INPUT
+    class: expected
+signals:
+  - function: F1
+    name: domain.f1.result
+    state: to_build
+slos:
+  - id: S1
+    subject: F1
+    good: successful attempts
+    valid: all attempts except refusals
+    bad: [failure, caller_defect, ambiguous, unknown]
+    expected_refusals:
+      treatment: excluded
+      reason: the customer's own input
+    target: 99.5
+    window: 28d
+    owner: product owner
+alerts:
+  - id: P1-f1
+    slo: S1
+    severity: P1
+    condition: bad above 5 %
+    for: 10m
+    min_volume: 30
+    grouping: per function
+    notifies: on-call rota
+    runbook: runbooks/f1.md
+    delivery_test: test page acknowledged
+    state: paging
+    owner: team
