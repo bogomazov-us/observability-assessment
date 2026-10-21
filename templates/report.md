@@ -26,6 +26,10 @@ executive part to five pages; everything else is appendix.
 | REC-NNN | Linked findings | Effort S/M/L | Impact H/M/L |
 |---|---|---|---|
 
-**Description.** What and why.
-**Implementation steps.** 3–6 steps with owners.
-**Metric.** | Metric | Current | Target | e.g. traced share of tier-1 calls: none → ≥95%.
+- **Description.** What and why.
+- **Implementation steps.** 3–6 steps with owners.
+- **Metric.**
+
+| Metric | Current | Target |
+|---|---|---|
+| e.g. share of tier-1 calls linked end to end in a controlled run | none | 95 % |

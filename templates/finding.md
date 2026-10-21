@@ -1,4 +1,4 @@
-# F-NNN · <one-line finding>
+# F-NNN · [one-line finding]
 
 | Status | Date | Source | Evidence level |
 |---|---|---|---|
@@ -15,11 +15,14 @@ mis-measured, who is not told.
 
 ---
 
-# ADR-NNN · <decision>
+# ADR-NNN · [decision]
 
 **Status:** proposed / accepted / superseded by ADR-MMM · **Date:** YYYY-MM-DD
 
 **Context.** What forced the decision.
+
 **Decision.** One paragraph.
+
 **Alternatives.** What else was considered and why not.
+
 **Consequences.** What becomes easier, what becomes harder, what we must now do.

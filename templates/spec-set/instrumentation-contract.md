@@ -1,10 +1,6 @@
-# Skeleton — `instrumentation-contract.md`
-
-What every story must emit, so the model survives the end of the engagement.
-
----
-
 # Instrumentation contract
+
+*Spec-set skeleton for `instrumentation-contract.md`. What every story must emit, so the model survives the end of the engagement.*
 
 ## Story template section
 

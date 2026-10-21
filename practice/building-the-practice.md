@@ -14,6 +14,7 @@ assessment. Six moves.
    the engagement knowledge base; AI agents with read-only tool access to speed up inventory and
    checks. This is also what differentiates us in sales.
 5. **Measure the practice.**
+
    | Metric | Why |
    |---|---|
    | Assessments run; share converted into Blueprint / Implementation | Commercial value |

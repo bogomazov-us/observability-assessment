@@ -89,7 +89,17 @@ for f in "${TRACKED[@]}"; do
 done
 [ $broken -eq 0 ] && ok "relative links resolve" || fail "broken links"
 
-# 6. Version and tag
+# 6. No angle-bracket placeholders outside code: Markdown renders <placeholder> as an HTML tag
+#    and the text disappears from the PDF and from GitHub. Use [placeholder] or `code`.
+ph=0
+for f in "${TRACKED[@]}"; do
+  [[ "$f" == *.md ]] || continue
+  perl -ne 'if (/^\s*```/) { $c = !$c; next } next if $c; s/`[^`]*`//g;
+    print "  raw placeholder at $ARGV:$.\n" if /<(?!\/?(?:br|b|i|sup|sub)\b)[^\s<>=][^<>]*(>|$)/;' "$f" | grep . && ph=1
+done
+[ $ph -eq 0 ] && ok "no raw angle-bracket placeholders" || fail "raw placeholders (use [text] or \`code\`)"
+
+# 7. Version and tag
 VERSION="$(scripts/version.sh)"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && ok "README version $VERSION" || fail "README version not semver"
 if [ "${1:-}" = "--tag" ]; then

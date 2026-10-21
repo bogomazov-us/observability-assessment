@@ -17,8 +17,13 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
 : > "$TMP/kit.md"
 for f in "${KIT_FILES[@]}"; do
-  # relative links do not work inside one PDF: keep the link text only
-  perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g' "$f" >> "$TMP/kit.md"
+  # relative links do not work inside one PDF: keep the link text only.
+  # Spec-set skeletons are demoted one level so they run on under the spec-set page
+  # instead of each starting a new, mostly empty page.
+  demote=0
+  case "$f" in templates/spec-set/README.md) ;; templates/spec-set/*) demote=1 ;; esac
+  perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g;
+    if (/^\s*```/) { $c = !$c } elsif (!$c && '"$demote"' && /^#{1,5} /) { s/^/#/ }' "$f" >> "$TMP/kit.md"
   printf '\n\n' >> "$TMP/kit.md"
 done
 
