@@ -29,7 +29,7 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
 | Input | Where |
 |---|---|
 | Spec with gap results (stages 2–3, confirmed) | [docs/observability/observability-spec.yml] |
-| Gap notes: which signals are live, by what evidence | [stage-3 notes] |
+| Gap notes: which signals are live, by what evidence; the detection matrix | [stage-3-gap.md] |
 | Code scan report and estate export by class | [scan.md], [export folder] |
 | Facts ledger | [facts ledger] |
 | Finding template | `templates/finding.md` from the kit |

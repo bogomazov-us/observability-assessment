@@ -3,6 +3,15 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Stage 3 packaged as a prompt** (`tools/agent/stage-3-gap.md`): signal states with evidence
+  from the estate, SLIs computable today as readings, alerts and their inputs, the detection
+  matrix for each P1 (proven, scenario written, residual risk), paging readiness shown or not
+  shown, telemetry health, questions carried from stage 2, blind spots. Read-only: no fault is
+  injected and no test traffic sent to production by the assessment. 0.6.0 named the matrix
+  and the gate but had no prompt that asked for them.
+
 ## 0.6.0 — 2026-10-21
 
 - `scripts/sync-denylist.sh`: the denylist lives in a private file outside the repository; the

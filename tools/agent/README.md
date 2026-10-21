@@ -1,6 +1,6 @@
 # Agent stages
 
-Stages 1, 2, 4 and 6 of the [agent harness](../../method/agent-harness.md) packaged as prompts. Each
+Stages 1, 2, 3, 4 and 6 of the [agent harness](../../method/agent-harness.md) packaged as prompts. Each
 file is a task prompt that any agent able to read files and run the kit's tools can take as is.
 The prompts name files and tools, never a product or a model.
 
@@ -8,11 +8,13 @@ The prompts name files and tools, never a product or a model.
 |---|---|---|---|
 | 1 Inventory | [stage-1-inventory.md](stage-1-inventory.md) | `inventory.md`: objects with one status each, reconciliation, confirmed blind spots | Scope agreed; read-only access granted |
 | 2 Target model | [stage-2-target-model.md](stage-2-target-model.md) | `observability-spec.yml`: journeys, functions, error taxonomy | Stage 1 inventory reconciled and confirmed |
+| 3 Gap | [stage-3-gap.md](stage-3-gap.md) | `stage-3-gap.md`: signal states with evidence, SLIs computable today, the detection matrix, paging readiness | Stage 2 spec confirmed; owner answers recorded |
 | 4 Findings | [stage-4-findings.md](stage-4-findings.md) | Findings in the `finding.md` format, status *assumption* | Stage 3 gap confirmed: each "live" signal checked by a person |
 | 6 Recommendations | [stage-6-recommendations.md](stage-6-recommendations.md) | Recommendation cards per `report.md` | Findings confirmed; `maturity.yml` confirmed and clean under `tools/maturity.py` |
 
-Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
-[maturity.md](../maturity.md)); stage 1 uses [collect.md](../collect.md) under its prompt.
+Stage 5 is run with [maturity.md](../maturity.md) directly; stage 1 uses
+[collect.md](../collect.md) under its prompt, and stage 3 checks the spec with
+[speclint.md](../speclint.md).
 
 ## How to run a stage
 
