@@ -42,6 +42,7 @@ taxonomy:
     http: "[200 or 401]"
     class: expected
     customer_sees: "[wrong password]"
+    user_impact: unaffected   # blocked / degraded / unaffected / unknown: what the person can still do
     confirmed_by: "[code path, date]"
   - function: J1.1
     code: "[timeout from the downstream]"
@@ -49,6 +50,7 @@ taxonomy:
     http: "[504]"
     class: ambiguous
     customer_sees: "[error page]"
+    user_impact: unknown
     reconciliation: "[runbook section: customers left in an unknown state]"
 
 # state: live (needs evidence: browser, agent or tenant) / to_build.

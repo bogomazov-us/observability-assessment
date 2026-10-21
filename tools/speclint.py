@@ -54,6 +54,7 @@ def load(fh):
 
 
 CLASSES = {"expected", "failure", "caller_defect", "ambiguous", "unknown", "none"}
+USER_IMPACTS = {"blocked", "degraded", "unaffected", "unknown"}
 SIGNAL_STATES = {"live", "to_build"}
 ALERT_STATES = {"shadow", "paging"}
 SEVERITIES = {"P1", "P2", "P3"}
@@ -71,7 +72,7 @@ KNOWN = {
     "journeys": {"id", "name", "success", "functions", "requirement"},
     "functions": {"id", "name", "route", "success", "requirement", "current", "severity",
                   "service", "status"},
-    "taxonomy": {"function", "code", "context", "http", "class", "customer_sees", "confirmed_by",
+    "taxonomy": {"function", "code", "context", "http", "class", "customer_sees", "user_impact", "confirmed_by",
                  "reconciliation", "status"},
     "signals": {"function", "name", "emitted_by", "attributes", "state", "evidence",
                 "status"},
@@ -218,6 +219,10 @@ class Linter:
             if cls not in CLASSES:
                 self.err(tw + ".class", "SL003", "class must be one of %s, not %r"
                          % ("/".join(sorted(CLASSES)), cls))
+            impact = t.get("user_impact")
+            if impact is not None and impact not in USER_IMPACTS:
+                self.err(tw + ".user_impact", "SL015", "user_impact must be one of %s, not %r"
+                         % ("/".join(sorted(USER_IMPACTS)), impact))
             key = (fid, str(t.get("code", "")).strip(), str(t.get("context", "")).strip())
             if self.blank(t.get("code")):
                 self.err(tw + ".code", "SL003", "row without a code or condition")

@@ -90,6 +90,25 @@ into business functions, and the error taxonomy of each function. You draft; a p
     from another source, mark the value as your reading, cite the source, and list it for
     the owner. A decision fixes what was decided; it does not make weak evidence sufficient,
     and the reviewer still checks the evidence.
+12. **Impact on the person.** Give each taxonomy row a `user_impact`: blocked, degraded,
+    unaffected or unknown — what the person can still do, which the class alone does not say.
+    A response that succeeds technically but leaves the journey wrong (an empty list that
+    should not be empty) is not unaffected. Not every function needs its own SLO: propose
+    which do and which are covered by another, as a question for the owner.
+13. **The budget in the SLI's own units.** For each SLO compute the error budget in what the
+    SLI counts — bad requests, or bad windows of a window-share SLI — and say what it is not
+    (a window-share budget is not minutes of downtime nor a share of failed requests). Draft
+    burn-rate alerts, a fast and a slow pair, in shadow. Draft the error-budget policy as a
+    skeleton: what happens at which share spent is the owner's decision.
+14. **Telemetry fails too.** Draft a table of how the telemetry itself fails: the emitter (no
+    series), the exporter or collector (dropped exports), ingestion (lag, rejects), labels
+    (drift, cardinality), recording rules, alert evaluation, notification delivery. For each:
+    how it would show, which signal detects it (live, with the inventory row, or to build),
+    and whether today it would read as "no traffic" or "OK".
+15. **Volume decides the window.** For each SLO and alert, estimate the volume per evaluation
+    window from the inventory (requests, beacons, synthetic cadence). Where a percentile or a
+    short window has too few events to mean anything, mark it insufficient and give the owner
+    candidates: a longer window, a count instead of a percentile, a denser synthetic.
 
 ## Output
 
@@ -121,6 +140,13 @@ into business functions, and the error taxonomy of each function. You draft; a p
       mutation.
 - [ ] Count SLIs separate no traffic from telemetry unknown; no valid window is "no estimate".
 - [ ] Every value filled in where a decision left it open is marked as a reading.
+- [ ] Every taxonomy row has a `user_impact`; which functions get their own SLO is a question
+      for the owner.
+- [ ] Every SLO states its budget in the SLI's units and what it is not; burn-rate alerts are
+      drafted in shadow; the policy actions are open for the owner.
+- [ ] The telemetry failure table covers emitter, exporter, ingestion, labels, recording rules,
+      evaluation and delivery.
+- [ ] Every SLO and alert has its volume per window; insufficient ones are marked.
 - [ ] When an owner's decision changed a definition, every source that stated the old one was
       searched and updated; none still states it.
 - [ ] Every function and taxonomy row has a source comment.

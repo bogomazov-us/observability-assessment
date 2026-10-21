@@ -25,7 +25,7 @@ someone has looked at the evidence it cites.
 |---|---|---|---|---|---|
 | 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server; gives each object one status | [collect.md](../tools/collect.md), [stage 1 prompt](../tools/agent/stage-1-inventory.md) | Exports reconcile with each other (counts, names); statuses sum to the rows; a sample of checks re-run | 3, 4 |
 | 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers; links each function to its requirement and to its current state in the inventory | `observability-spec.yml` skeleton | Each function and class against code and a captured request; which proposals become confirmed | 6, 7 |
-| 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts | [speclint.md](../tools/speclint.md) | Each "live" by browser, agent or tenant evidence | 7, 8 |
+| 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts; for each P1 alert, how its detection is shown | [speclint.md](../tools/speclint.md) | Each "live" by browser, agent or tenant evidence; the detection matrix | 7, 8 |
 | 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence; sets the status | 8 |
 | 5 | Maturity | Drafts `maturity.yml` from confirmed findings only | [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
 | 6 | Recommendations | Proposes recommendation cards ordered by impact over effort | `templates/report.md` | Owner, effort and order | 11 |
@@ -50,6 +50,16 @@ A reviewer checks a chain: the target cites an inventory row, the row cites its 
 documents handed for review are generated from the committed versions they cite, each states
 its commit, and the bundle includes the confirmed baseline the document relies on. A bundle
 with an older baseline cannot be checked and is returned.
+
+## Detection is shown, or its absence is a risk
+
+An alert that evaluates is not an alert that detects. For each P1 alert the gap stage records
+how the chain fault → signal → evaluation → firing → notification → acknowledgement is shown:
+**proven** (a recorded reproduction, with date), **scenario written** (steps, expected firing,
+who runs it), or **residual risk** with an owner. The assessment is read-only, so faults are
+reproduced on a stage with the client's developer or during implementation, never injected in
+production by the assessment. Recovery and no-data are part of the scenario. Paging needs the
+readiness gate in [slo-alerts](../templates/spec-set/slo-alerts.md): shown, not stated.
 
 ## Blind spots are registered when they are confirmed
 

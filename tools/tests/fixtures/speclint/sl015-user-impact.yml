@@ -1,0 +1,12 @@
+# user_impact takes one of blocked / degraded / unaffected / unknown.
+# expect: SL015
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+        requirement: journey model, step 1
+taxonomy:
+  - function: F1
+    code: TIMEOUT
+    class: failure
+    user_impact: annoyed

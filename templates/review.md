@@ -88,6 +88,13 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       estimate".
 - [ ] The review bundle is built from the committed versions the document cites, each with
       its commit, and includes the confirmed baseline it cites.
+- [ ] Each taxonomy row has a user impact; the functions with their own SLO were chosen by the
+      owner.
+- [ ] Each SLO has its budget in its own units, burn-rate alerts and a volume per window; an
+      insufficient volume is marked; the budget policy is the owner's.
+- [ ] The telemetry failure table says what each failure reads as today.
+- [ ] Each P1 alert's detection is proven, has a written scenario, or is a residual risk with
+      an owner; paging readiness is shown, not stated.
 - [ ] Unagreed targets, owners and thresholds are `proposed`; a clean lint is not taken as
       acceptance.
 

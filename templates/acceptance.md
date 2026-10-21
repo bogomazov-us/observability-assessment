@@ -25,6 +25,11 @@ limitation. A criterion is met by evidence someone can re-run, not by a document
 Evidence kinds: a demonstration (recorded, with date), a query and its output, a harness run on
 stage, an export, a signed document (only for decisions: an SLO target, a scope).
 
+A criterion about a signal, an SLO or an alert says which it is: **spec validated** (the model
+is agreed and lints clean) or **runtime validated** (it was seen working in the estate, or a
+reproduced fault fired it and the notification was acknowledged). The first is never reported
+as the second.
+
 ## Known limitations accepted
 
 Each one is visible to the buyer and has an owner and a date; none hides an unmet criterion

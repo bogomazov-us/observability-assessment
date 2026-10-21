@@ -48,6 +48,19 @@ GitHub are taken from the section of the tagged version.
     and the confirmed baseline. Agent permissions enforce network calls as well as paths.
   - Spec linter: a key repeated in one mapping is an error (SL020); YAML would keep the last
     value without a word.
+- **From an SRE review of the first run:**
+  - Stage 2 adds four steps: each taxonomy row gets a `user_impact` (blocked, degraded,
+    unaffected, unknown; checked by SL015); each SLO states its error budget in the SLI's own
+    units, with burn-rate alerts in shadow and a budget policy left to the owner; a table of
+    how the telemetry itself fails and what that reads as today; the volume per evaluation
+    window, with insufficient windows marked.
+  - The SLO and alerts skeleton gains the volume and budget columns, burn-rate alerts,
+    telemetry health, a paging readiness gate (owner, rota, acknowledgement, escalation,
+    runbook, delivery test, fallback — shown, not stated) and a budget policy table.
+  - The gap stage records how each P1 alert's detection is shown: proven, scenario written, or
+    residual risk with an owner; faults are reproduced on a stage or during implementation,
+    never injected in production by the assessment.
+  - Acceptance tells spec validated from runtime validated.
 
 ## 0.5.0 — 2026-10-21
 

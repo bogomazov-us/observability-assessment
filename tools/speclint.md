@@ -72,7 +72,7 @@ Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect
 | SL012 | The runbook file exists (with `--check-files`) | Every P1 has a runbook (slo-alerts, rules) | error |
 | SL013 | Every reference (function, attempt, journey, SLO) resolves | — | error |
 | SL014 | Ids are unique across the file | — | error |
-| SL015 | Signal state, alert state, severity and status take their allowed values | — | error |
+| SL015 | Signal state, alert state, severity, status and user impact take their allowed values | — | error |
 | SL016 | No `[placeholder]` left from the skeleton | — | warning |
 | SL017 | Every function names the source of its requirement | A function traces to the journey agreed with the client (playbook, step 6) | warning |
 | SL018 | An alert in `paging` and its SLO are `confirmed` | Owner, target and threshold are decided with the client (slo-alerts, rules) | error |
