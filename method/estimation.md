@@ -5,8 +5,9 @@ are in [offerings.md](../offerings.md); this model turns a scope inside those li
 and checks that the effort fits the calendar. Prices are not part of the kit: a day rate belongs
 to the contract, not the method.
 
-> **Starting values.** The numbers below are a first calibration, not measured actuals; the lead
-> allocations and the per-journey increment were set by the owner on 2026-10-21. Record actual
+> **Starting values.** The numbers below are a first calibration, not measured actuals; the
+> staffing rule (the lead full time, other roles by scope) and the per-journey increment were
+> set by the owner on 2026-10-21. Record actual
 > days per phase on every engagement (see "Calibrating") and replace them after the pilot.
 
 ## How to estimate
@@ -15,8 +16,10 @@ to the contract, not the method.
    review rounds. Anything above the format's limit is a change request, not a bigger estimate.
 2. **Take the base** for the format: effort for the smallest scope it is sold for.
 3. **Add the increments** for each unit above the base.
-4. **Check capacity:** each role's days must fit the calendar at that role's allocation. If they
-   do not, add a person or lengthen the calendar — never compress the evidence work.
+4. **Check capacity and staff by scope.** The lead is full time and does the work of any role
+   that is not staffed. Add the observability engineer, then the architect, only when the lead's
+   days exceed the calendar or the work needs their skill; otherwise lengthen the calendar —
+   never compress the evidence work.
 5. **Add contingency** for our own risks only (an unfamiliar tool, a new lead). A client
    obligation that is missed moves the date, not the price (offerings, client obligations).
 6. **Write the assumptions down** in the proposal: the scope units, the allocations, the
@@ -82,21 +85,29 @@ obligation, not in our days.
 
 ## Capacity check
 
-| Role | Days available = working days × allocation |
-|---|---|
-| Lead | at most half time: full assessment 30 × ½; focused 10–15 × ½ |
-| Observability engineer | calendar × 1 |
-| Architect | as named in the proposal, usually part time |
+The lead is full time: the calendar's working days. Roles are added in this order, each only
+when the days before it do not fit:
 
-If a role's days exceed what is available, add a person or lengthen the calendar. With these
-starting values:
+1. **Lead alone** — the lead does all the work.
+2. **Lead and observability engineer** — the engineer takes the engineer's days; the lead keeps
+   the lead's and the architect's.
+3. **Lead, engineer and architect** — the architect takes the architect's days, part time.
+4. A second engineer for a few days, when the engineer's days alone exceed the calendar.
 
-| Scope | Lead | Obs. engineer | Fits |
+With these starting values:
+
+| Scope | Total days | Calendar | Staffing that fits |
 |---|--:|--:|---|
-| Full assessment, base | 17 of 15 | 22 of 30 | no: lead 2 days over |
-| Full assessment at the limit (5 journeys, 10 services, 2 tools) | 21.5 of 15 | 32.5 of 30 | no: lead 6.5 days over, engineer 2.5. The limit is kept (owner, 2026-10-21); the engineer's excess is a second engineer for 3 days. How the lead's excess is covered is open |
-| Focused, base, 2 weeks | 6 of 5 | 7 of 10 | lead over by 1 day: quote 3 weeks, or the lead at ⅗ |
-| Focused at the limit (3 journeys, 5 services), 3 weeks | 8 of 7.5 | 10 of 15 | lead over by half a day: within contingency |
+| Focused, base, 3 weeks | 14 | 15 | lead alone |
+| Focused, base, 2 weeks | 14 | 10 | lead and engineer (lead 7, engineer 7) |
+| Focused at the limit (3 journeys, 5 services), 3 weeks | 20 | 15 | lead and engineer (lead 10, engineer 10) |
+| Full assessment, base | 45 | 30 | lead and engineer (lead 23, engineer 22) |
+| Full assessment at the limit (5 journeys, 10 services, 2 tools) | 62 | 30 | lead, engineer and architect (lead 21.5, engineer 32.5, architect 8): the engineer is 2.5 days over, covered by a second engineer for 3 days; the limit is kept (owner, 2026-10-21) |
+| Blueprint, base, 4 weeks | 17 | 20 | lead alone |
+| Blueprint at the limit (5 journeys, 10 services, 2 tools), 4 weeks | 39.5 | 20 | lead, engineer and architect (lead 7, engineer 17.5, architect 15) |
+
+The golden-journey proof and a Blueprint's instrumentation contract need someone who reads the
+client's code; when the lead does not, the architect joins whatever the days say.
 
 ## Contingency
 
@@ -110,8 +121,8 @@ starting values:
 
 Larkfield (full assessment): 1 journey, 3 services, 1 tool, stage and production, 2 rounds,
 golden-journey proof with a client developer. That is the base: lead 17, engineer 22,
-architect 6 — 45 person-days. The engineer and the architect fit six weeks; the lead, at half
-time, is 2 days over (capacity check).
+architect 6 — 45 person-days: the lead full time and an engineer, the lead taking the architect's
+days (lead 23 and engineer 22 of 30).
 
 ## Calibrating
 

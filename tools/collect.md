@@ -33,17 +33,23 @@ classes:
 | Source maps | bundler source-map settings and upload steps |
 | Errors inside HTTP 200 | success responses that carry an error, a refusal status or a GraphQL error |
 | Logging libraries and structure | logging libraries, structured and JSON layouts, mapped diagnostic context |
-| Retries and timeouts | retry, backoff, timeout and circuit-breaker configuration |
+| Retries and timeouts | retry and backoff calls and settings, timeouts, circuit breakers (not the word "retry" in labels or prose) |
 
 The built-in patterns are vendor-neutral. When the client's tool is known, put its signatures —
 package names, init calls, agent names — in a signatures file in the engagement repository and
 pass it with `--signatures`. One line per pattern, `Class name|regex`: a known class is
 extended, a new name adds a class.
 
-Dependencies, build output, minified files, lock files and source maps are skipped. A class with
-no hits is listed with "nothing found": that is a question for the owner, not a conclusion. Read
-the report next to the code: a hit on `traceparent` may be a test; a missing RUM hit may mean
-the snippet is injected by an agent at the edge.
+Dependencies, build output, minified and generated files, lock files and source maps are
+skipped; so are files above 512 KB (`SCAN_MAX_KB` changes it), which in a code repository are
+data — dumps, backups, fixtures — and only slow the scan down. The report counts each class
+separately in code, tests and docs, and lists code first: a lead in a test or a design note says
+what someone intended, not what runs. A class with no hits is listed with "nothing found": that
+is a question for the owner, not a conclusion — an application may log through the platform's
+console rather than a logging library. Read
+the report next to the code: a missing RUM hit may mean the snippet is injected by an agent at
+the edge, and a hand-rolled one (web vitals posted with a beacon to the application's own
+endpoint) is still real-user monitoring.
 
 ## Estate export by object class
 
@@ -59,7 +65,7 @@ classes with each other and with the intake answers.
 | Notification routing | Profiles, integrations to paging and ticketing, escalation, maintenance windows | Whether a firing reaches a person | On-call rota from the intake |
 | SLOs | Each SLO: SLI definition, target, window, owner | Whether targets exist and what they count | SLO candidates per function |
 | Dashboards | List with owner and last view or change | What people look at; dead dashboards | Interviews |
-| Telemetry pipelines | Ingest and processing rules, sampling, retention, drop and mask rules | What an SLI can rely on; personal data | Data governance (maturity dimension 11) |
+| Telemetry pipelines | Ingest and processing rules, sampling, retention, drop and mask rules | What an SLI can rely on; personal data (privacy checklist) | Data governance (maturity dimension 11) |
 | Integrations | Cloud accounts, CI/CD and deploy markers, ticketing | Release observability; context in incidents | Release process from the intake |
 | Consumption and licence | Units consumed against entitlement, by data type | Headroom for business events and synthetics | Intake, licence question |
 
@@ -85,5 +91,5 @@ back into the kit as a change to this table, not as a product-specific script.
 ## Tests
 
 `tools/tests/test_collect.sh` builds a fake repository at run time and checks the classes, the
-exclusions, a signatures file that extends a class and adds one, and that the scanned
-repository is left untouched.
+split into code, tests and docs, the exclusions (generated files, large files), a signatures
+file that extends a class and adds one, and that the scanned repository is left untouched.

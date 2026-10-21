@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.4.0 | [CC BY 4.0](./LICENSE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.5.0 | [CC BY 4.0](./LICENSE) |
 
 A reusable kit for running observability / SRE assessments without the original authors in the
 room: the method, the templates, the offerings and the people model behind them.
@@ -40,8 +40,9 @@ an assessment with it, under review once, and then alone.
 | [method/maturity-model.md](./method/maturity-model.md) | 12 dimensions × 5 levels with definitions | scoring |
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |
 | [method/agent-harness.md](./method/agent-harness.md) | Where AI agents draft and people confirm; the release check | using agents on an engagement |
-| [tools/](./tools/) | Code scan and tool exporters, spec linter, maturity calculator | week one; before each review round |
-| [templates/](./templates/) | Intake questionnaire, data request, finding, ADR, report, roadmap, commitment baseline, review rounds and checklists, spec set with nine skeletons | producing artifacts |
+| [tools/](./tools/) | Code scan and estate export by class, spec linter, maturity calculator | week one; before each review round |
+| [tools/agent/](./tools/agent/) | Prompts for harness stages 2, 4 and 6: target model, findings, recommendations | running the agent harness |
+| [templates/](./templates/) | Intake questionnaire (with questions by tool class), data request, finding, ADR, report, executive deck, roadmap, commitment baseline, statement of work and acceptance record, review rounds and checklists, privacy and AI-ops boundary checklists, spec set with nine skeletons | producing artifacts |
 | [practice/](./practice/) | How to build an observability practice around the kit; the pilot protocol for a new lead | staffing, succession |
 | [backlog.md](./backlog.md) | What the kit still lacks | planning kit work |
 

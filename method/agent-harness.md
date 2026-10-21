@@ -57,4 +57,5 @@ findings are written by people.
 ## Status
 
 Specification. The tools behind stages 1, 3 and 5 exist in this kit; stages 2, 4 and 6 are
-prompts run by the lead with an agent, not yet a packaged agent.
+packaged as task prompts in [tools/agent/](../tools/agent/README.md), not yet measured on an
+engagement.

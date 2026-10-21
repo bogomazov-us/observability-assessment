@@ -14,7 +14,7 @@ Each lesson cost us time once on a real engagement.
 | 8 | Build on the client's own investigation | The assessment is seen as a repeat of a tiger team or an internal tool |
 | 9 | Deliver the format the buyer asked for | A comprehensive strategy where a scrappy MVP was requested → an unhappy executive |
 | 10 | Treat leaked or informal material as intelligence, not proof | Conclusions rest on a document nobody will stand behind |
-| 11 | Sanitize HAR captures before committing | A raw HAR contains session tokens and personal data |
+| 11 | Sanitize HAR captures before committing | A raw HAR contains session tokens and personal data; steps in `templates/privacy-checklist.md` |
 | 12 | Ask for exports, not opinions | Interviews give confident, wrong answers ("we have tracing") |
 | 13 | Ask how "non-actionable" is measured | Clients state alert-noise targets they do not measure |
 | 14 | Monitoring config ships with the component | Monitoring drifts from topology after blue/green or DR changes |

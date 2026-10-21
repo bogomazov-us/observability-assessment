@@ -36,6 +36,7 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] *Why it matters* names a customer or business consequence, not a tool property.
 - [ ] *What follows* has an action, an owner and the maturity dimension it moves.
 - [ ] Nothing in it identifies another client.
+- [ ] No personal data in the evidence quoted (`templates/privacy-checklist.md`).
 
 ## Checklist — maturity profile (`method/maturity-model.md`)
 

@@ -46,9 +46,11 @@ For the focused format: kick-off, three or four interviews, read-out.
 
 | Role | Focused | Full |
 |---|---|---|
-| Lead (accountable, writes the report) | half time | half time |
-| Observability engineer (tool and code evidence) | full time | full time |
-| Architect | review of findings | part time, from week 2 |
+| Lead (accountable, writes the report; does the work of any role not staffed) | full time | full time |
+| Observability engineer (tool and code evidence) | when the scope needs one | from week 1 |
+| Architect | rarely | part time, at the limit or when the lead does not read the code |
+
+Which roles a scope needs is decided by the capacity check in the estimation model.
 
 Effort by role and phase, and how it grows with journeys, services and tools, is in
 [estimation.md](estimation.md). Its values are a starting calibration: record your actual days

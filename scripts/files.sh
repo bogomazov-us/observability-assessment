@@ -14,13 +14,22 @@ KIT_FILES=(
   tools/collect.md
   tools/speclint.md
   tools/maturity.md
+  tools/agent/README.md
+  tools/agent/stage-2-target-model.md
+  tools/agent/stage-4-findings.md
+  tools/agent/stage-6-recommendations.md
   templates/intake-questionnaire.md
   templates/data-request.md
   templates/finding.md
   templates/report.md
+  templates/executive-deck.md
   templates/roadmap.md
   templates/commitment-baseline.md
+  templates/sow.md
+  templates/acceptance.md
   templates/review.md
+  templates/privacy-checklist.md
+  templates/ai-ops-boundary.md
   templates/spec-set/README.md
   templates/spec-set/spec-readme.md
   templates/spec-set/userjourneys.md

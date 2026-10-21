@@ -17,7 +17,7 @@ How an assessment is actually run. Each step names its output and the template b
    go into ADRs; changes of understanding go into a changelog ("what we thought, what turned out,
    what we had to redo").
 6. **Build on the client's work.** Most clients already ran an investigation or have an internal
-   tool. Position the assessment as building on it, or it is seen as a repeat.
+   tool. Position the assessment as building on it, or it is seen as a repeat. Boundary checklist: `templates/ai-ops-boundary.md`.
 
 ## Week by week (six-week full format; compress for the focused one)
 
