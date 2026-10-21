@@ -13,12 +13,16 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
   queries in the tool; you never change its configuration, the code or tickets.
 - You write only inside the engagement repository, in the files named under "Output".
 - One claim per finding. Every statement under *What we see* cites its evidence: the query text
-  and its time range, file:line, or the export file and row.
+  and its time range, file:line, the export file and row, or the inventory row id.
 - Every finding is drafted with status **assumption**. You never write *confirmed*.
 - When the evidence for a claim cannot be obtained, do not write the claim: list it under
   "Could not evidence" with what is missing.
 - Expected refusals are not failures; a metric that is not collected is a gap, not a green.
 - No client data leaves the engagement repository.
+- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
+  it as an open question, do not open it.
+- A question addressed to the owner or the client stays open: you never decide it, even when
+  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 

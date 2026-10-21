@@ -14,6 +14,9 @@ someone has looked at the evidence it cites.
 | Every drafted claim cites its evidence: the query text and its time range, file:line, or the export file | A reviewer can re-run it without asking the agent |
 | No agent writes to the client's monitoring configuration, code or tickets | Write access is a separate, client-owned decision, outside the assessment |
 | The client's own AI-ops tools are inputs, not competitors | Build on the client's work (playbook, principle 6) |
+| The agent reads only the paths and systems its prompt lists, and its permissions enforce it | Scope is a boundary, not a suggestion |
+| A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
+| Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
 
 ## Pipeline: inputs → model → gap → recommendations
 
@@ -82,7 +85,13 @@ separately, per stage. Agent elapsed time is not compared with the person-days o
 estimation model: those include preparation, human review and acceptance, and the scope
 differs. The comparison is made on time recorded for the same work. A reviewer's re-run of a
 sample of checks says that those claims hold; it is not an estimate of the accuracy of the
-whole output — report it as "n of n selected checks reproduced".
+whole output — report it as "n of n selected checks reproduced". Record the person's hours per
+stage next to the agent's time. When a row is split or merged during review (the inventory
+changes granularity), count it apart from drafts corrected in substance: it is a change of
+granularity, not an error of the draft.
+
+Later stages cite inventory rows by a stable id, never by line number: an edit after review
+moves every line below it.
 
 ## Status
 

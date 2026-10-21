@@ -28,6 +28,25 @@ SLO_FIELDS = ("subject", "good", "valid", "bad", "target", "window", "owner")
 P1_FIELDS = ("owner", "runbook", "delivery_test", "min_volume", "grouping")
 POOLED = {"all", "pooled", "none", "global", "service", "total"}
 PLACEHOLDER = re.compile(r"^\[[^\]]*\]$")
+# Known keys per section; anything else is a typo or an engagement's own field (prefix x_).
+COMMON = {"note", "source"}
+KNOWN = {
+    "(root)": {"spec", "journeys", "taxonomy", "signals", "attempts", "slos", "alerts"},
+    "spec": {"name", "version"},
+    "journeys": {"id", "name", "success", "functions", "requirement"},
+    "functions": {"id", "name", "route", "success", "requirement", "current", "severity",
+                  "service", "status"},
+    "taxonomy": {"function", "code", "context", "http", "class", "customer_sees", "confirmed_by",
+                 "reconciliation", "status"},
+    "signals": {"function", "name", "emitted_by", "attributes", "state", "evidence",
+                "status"},
+    "attempts": {"id", "name", "journey", "functions", "outcomes", "decided_by", "rules",
+                 "unclassified", "ambiguous_after", "reconciliation", "status"},
+    "slos": {"id", "subject", "good", "valid", "bad", "bad_reason", "expected_refusals",
+             "traffic", "target", "window", "owner", "status"},
+    "alerts": {"id", "slo", "severity", "condition", "for", "min_volume", "grouping", "notifies",
+               "runbook", "delivery_test", "state", "owner", "status"},
+}
 
 
 class Linter:
@@ -85,6 +104,7 @@ class Linter:
                      "signals, slos, alerts")
             return
         self.placeholders(doc, "")
+        self.keys(doc)
 
         # Functions (inside journeys) and attempts: the ids everything else refers to.
         functions = {}
@@ -252,6 +272,24 @@ class Linter:
                 full = os.path.join(os.path.dirname(os.path.abspath(self.path)), rb)
                 if not os.path.exists(full):
                     self.err(lw + ".runbook", "SL012", "runbook %s does not exist" % rb)
+
+    def keys(self, doc):
+        """Unknown keys: a misspelt field would otherwise pass silently."""
+        def check(where, item, section):
+            if not isinstance(item, dict):
+                return
+            for k in item:
+                if k not in KNOWN[section] and k not in COMMON and not str(k).startswith("x_"):
+                    self.warn("%s.%s" % (where, k) if where else k, "SL019", "unknown key %r "
+                              "(a typo, or an engagement's own field: prefix it x_)" % k)
+        check("", doc, "(root)")
+        check("spec", doc.get("spec"), "spec")
+        for section in ("journeys", "taxonomy", "signals", "attempts", "slos", "alerts"):
+            for i, item in enumerate(doc.get(section) or []):
+                check("%s[%d]" % (section, i), item, section)
+                if section == "journeys" and isinstance(item, dict):
+                    for k, f in enumerate(item.get("functions") or []):
+                        check("journeys[%d].functions[%d]" % (i, k), f, "functions")
 
     def status(self, where, item):
         """SLOs and alerts carry status proposed (the default) or confirmed."""

@@ -27,7 +27,7 @@ journeys:
         # above. Unknown stays "unknown", not a guess. Not linted.
         current:
           state: "[what is measured or alerted on today, or unknown]"
-          evidence: ["[inventory.md, row or section]"]
+          evidence: ["[inventory row id, e.g. L-07]"]
 
 # One row per code or condition, and context where the same code means different things.
 # class: expected / failure / caller_defect / ambiguous / unknown (none: looked like an error,

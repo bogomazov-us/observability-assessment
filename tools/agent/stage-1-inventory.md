@@ -19,6 +19,10 @@ draft; a person confirms.
 - Every claim cites what it rests on: file:line, or the query or call with its time range.
 - Nothing you write is a fact. It enters the facts ledger as an assumption.
 - No client data leaves the engagement repository.
+- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
+  it as an open question, do not open it.
+- A question addressed to the owner or the client stays open: you never decide it, even when
+  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -36,7 +40,9 @@ draft; a person confirms.
    [collect.md](../collect.md), "Estate export by object class": what should exist.
 2. Query the estate for each object: does it exist, and does it match? Record the query and its
    time range.
-3. One row per object. Give every row exactly one status, comparing the live object with the
+3. One row per object, each with a stable id (`L-01`, `L-02` …) that later stages cite. Ids are
+   never renumbered: a row split later keeps its id on one part and gives the other a new one;
+   a row withdrawn keeps its id with the reason. Give every row exactly one status, comparing the live object with the
    code or configuration (never with your own draft):
 
    | Status | Means |
@@ -75,7 +81,7 @@ Each claim says what was looked at, and no more:
 1. `inventory.md`: scope, sources read, the live verification table (class, object, status,
    evidence), the status summary with its sum, the reconciliation, the code scan leads, and
    what could not be inventoried with the reason.
-   In the reconciliation, a claim may cite the table row that holds its evidence instead of
+   In the reconciliation, a claim may cite the row id that holds its evidence instead of
    repeating the query; a claim with neither is not written.
 2. A list of **confirmed blind spots** — a check that cannot fire, a notification that reaches
    nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each with a proposed owner. They do
@@ -83,7 +89,7 @@ Each claim says what was looked at, and no more:
 
 ## Self-check before handing over
 
-- [ ] Every row has one status; the counts sum to the number of rows.
+- [ ] Every row has a stable id and one status; the counts sum to the number of rows.
 - [ ] Every claim names its window and place, and its source.
 - [ ] No claim says more than its check: evaluation, absence, missing-data states, totals and
       causes are worded as above.

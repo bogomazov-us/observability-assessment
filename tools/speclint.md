@@ -76,6 +76,7 @@ Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect
 | SL016 | No `[placeholder]` left from the skeleton | — | warning |
 | SL017 | Every function names the source of its requirement | A function traces to the journey agreed with the client (playbook, step 6) | warning |
 | SL018 | An alert in `paging` and its SLO are `confirmed` | Owner, target and threshold are decided with the client (slo-alerts, rules) | error |
+| SL019 | No unknown key; an engagement's own field is prefixed `x_` | A misspelt field must not pass silently | warning |
 
 ## What it does not check
 

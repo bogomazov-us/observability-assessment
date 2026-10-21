@@ -18,6 +18,10 @@ into business functions, and the error taxonomy of each function. You draft; a p
 - When a source is missing or contradicts another, stop on that item: write it under "Open
   questions" and go on with the rest. Never fill a gap with a plausible guess.
 - No client data leaves the engagement repository.
+- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
+  it as an open question, do not open it.
+- A question addressed to the owner or the client stays open: you never decide it, even when
+  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -33,6 +37,12 @@ into business functions, and the error taxonomy of each function. You draft; a p
 
 ## Method
 
+0. Find every source of requirements: the journey model agreed at kick-off, journey or
+   function definitions in the code or the product documents, the code itself. If they
+   disagree (ids, the cut into functions, what success means, what is built), stop and hand the
+   disagreements to the person as a table — source, what it says, file:line. Draft only after
+   the owner has said how they are reconciled: one source governs, or all are brought to one
+   current state.
 1. For each journey, list the calls a customer's attempt makes, in order, from the captures.
    Group them into business functions: one function per business step that can fail on its
    own (reserve, authorise, place), not one per endpoint.
@@ -54,10 +64,11 @@ into business functions, and the error taxonomy of each function. You draft; a p
    YAML comment on each row cites its source. For every function in scope:
    - a stable id (keep the ids of the client's journey model when it has them) and
      `requirement`, the source of the requirement;
-   - `current`: what exists today, with links to the confirmed inventory rows, kept apart from
-     the target; unknown stays `unknown`;
+   - `current`: what exists today, citing the confirmed inventory by row id (`L-07`), never by
+     line number, kept apart from the target; unknown stays `unknown`;
    - a signal is `live` only with production evidence from the inventory.
-   No target, owner or threshold is `confirmed` by the agent.
+   No target, owner or threshold is `confirmed` by the agent. A field of the engagement's own
+   is prefixed `x_` (SL019).
 2. `stage-2-notes.md`: a table per journey (function, route, service, source), then "Open
    questions" (item, what is missing, who can answer).
 

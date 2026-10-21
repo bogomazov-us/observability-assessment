@@ -16,8 +16,12 @@ Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
 
 ## How to run a stage
 
-1. Work in the engagement repository, never in this kit. The agent gets read-only access to the
-   code checkout and to the monitoring tool, and write access to the engagement repository only.
+1. Work in the engagement repository, never in this kit, on a branch or worktree of the
+   assessment's own from the first stage: other work in the same repository must not sweep up
+   the drafts, nor the drafts sweep up other work. The agent gets read-only access to the code
+   checkout and to the monitoring tool, and write access to the engagement repository only.
+   The prompt lists the paths it may read; access outside them is refused by the agent's
+   permissions as well, not by the prompt alone.
 2. Give the agent the prompt file and the inputs it lists. Missing inputs are not substituted:
    the agent stops and names them.
 3. The agent drafts, runs its self-check, and hands over a list of what it could not cite.
@@ -26,7 +30,9 @@ Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
 
 ## Gates
 
-A stage starts only on confirmed output of the stage before it. A finding drafted from an
+A stage starts only on confirmed output of the stage before it, and only when the open
+questions that block it have answers from the owner. A question addressed to the owner is
+never decided by an agent; an agent launched before the answer leaves it open. A finding drafted from an
 unconfirmed inventory, or a recommendation drafted from an unconfirmed finding, is not
 reviewed: it is discarded and the stage re-run.
 
@@ -34,7 +40,8 @@ reviewed: it is discarded and the stage re-run.
 
 Record, per stage and engagement: drafts handed over, drafts accepted without a change of
 substance, cited evidence that did not reproduce, agent elapsed time, and hours the person spent
-confirming. These are pilot measurements: agent time is not compared with the estimate's
+confirming. Record the person's hours per stage next to the agent's time, in the engagement's
+stage table; without them there is nothing to compare. These are pilot measurements: agent time is not compared with the estimate's
 person-days, and a re-run sample is not an accuracy estimate. The
 targets and the rule for relying on the harness are in
 [agent-harness.md](../../method/agent-harness.md), "Measuring the harness". Until they hold on two

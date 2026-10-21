@@ -1,0 +1,17 @@
+# A misspelt field passes every other rule; SL019 names it.
+# expect: SL019
+# args: --strict
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+        requirment: journey model, step 1
+        requirement: journey model, step 1
+taxonomy:
+  - function: F1
+    code: INVALID_INPUT
+    class: expected
+signals:
+  - function: F1
+    name: domain.f1.result
+    state: to_build

@@ -20,6 +20,13 @@ GitHub are taken from the section of the tagged version.
     with inventory evidence apart from the target; SLOs and alerts carry `status` proposed or
     confirmed, and paging needs both confirmed (SL018). The linter says a clean run is
     structural only. Stage 2 prompt and review checklists follow.
+- **From the first run of stages 1 and 2:** inventory rows carry stable ids (`L-01`) that later
+  stages cite instead of line numbers; an agent never decides a question addressed to the owner
+  and reads only the paths its prompt lists; stage 2 starts by reconciling the sources of
+  requirements with the owner; assessment work runs on its own branch from the first stage;
+  person hours are recorded per stage, and a change of granularity is counted apart from
+  errors. Spec linter: unknown keys are reported (SL019), an engagement's own field is
+  prefixed `x_`.
 
 ## 0.5.0 — 2026-10-21
 

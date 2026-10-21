@@ -18,6 +18,10 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
 - You do not promise what the kit says not to promise: MTTR reduction without a baseline,
   auto-remediation, a tool migration.
 - No client data leaves the engagement repository.
+- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
+  it as an open question, do not open it.
+- A question addressed to the owner or the client stays open: you never decide it, even when
+  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
