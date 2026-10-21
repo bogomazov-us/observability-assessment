@@ -11,6 +11,9 @@ GitHub are taken from the section of the tagged version.
   shown, telemetry health, questions carried from stage 2, blind spots. Read-only: no fault is
   injected and no test traffic sent to production by the assessment. 0.6.0 named the matrix
   and the gate but had no prompt that asked for them.
+- **Stage 5 packaged as a prompt** (`tools/agent/stage-5-maturity.md`): the highest level fully
+  shown per dimension, its evidence and confidence, `not_scored` where nobody looked, no overall
+  number, clean under `tools/maturity.py`. All six stages now have a prompt, in order.
 
 ## 0.6.0 — 2026-10-21
 
