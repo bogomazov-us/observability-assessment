@@ -55,6 +55,7 @@ jobs:
         # always serves the newest PDF (the site links to it).
         run: |
           cp "${{ steps.build.outputs.pdf }}" dist/observability-assessment-kit.pdf
+          scripts/changelog.sh "$GITHUB_REF_NAME" > dist/notes.md
           gh release create "$GITHUB_REF_NAME" "${{ steps.build.outputs.pdf }}" dist/observability-assessment-kit.pdf \
             --title "Observability Assessment Kit $GITHUB_REF_NAME" \
-            --generate-notes --verify-tag
+            --notes-file dist/notes.md --verify-tag

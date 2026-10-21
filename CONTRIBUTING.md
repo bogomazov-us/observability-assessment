@@ -13,7 +13,9 @@
    public checks and skips the denylist; the maintainer runs the denylist locally before
    merging, and pushes to `main` and every release require it.
 4. **A new file** goes into `scripts/files.sh`, or the guardrails fail.
-5. **Release:** raise the version in the README status table, merge to `main`, then tag
+5. **Release:** raise the version in the README status table, move the `Unreleased` entries of
+   `CHANGELOG.md` under a heading for that version (the release notes are taken from it, and the
+   guardrails fail without it), merge to `main`, then tag
    `vX.Y.Z` on `main`. The release workflow re-runs the guardrails, checks the tag against the
    README, builds the PDF, checks the PDF text, and attaches it to the GitHub release.
 6. Build locally with `scripts/build.sh --downloads` (needs pandoc and weasyprint). Another edition

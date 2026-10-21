@@ -49,4 +49,5 @@ an assessment with it, under review once, and then alone.
 
 Each tagged release (`vX.Y.Z`) publishes the whole kit as one PDF on the
 [releases page](../../releases); the newest is always at
-[releases/latest/download/observability-assessment-kit.pdf](https://github.com/bogomazov-us/observability-assessment/releases/latest/download/observability-assessment-kit.pdf). Contributions: see [CONTRIBUTING.md](./CONTRIBUTING.md).
+[releases/latest/download/observability-assessment-kit.pdf](https://github.com/bogomazov-us/observability-assessment/releases/latest/download/observability-assessment-kit.pdf). What changed in each release: [CHANGELOG.md](./CHANGELOG.md).
+Contributions: see [CONTRIBUTING.md](./CONTRIBUTING.md).

@@ -69,7 +69,7 @@ done
 # 4. Every Markdown file is in the build, every build file exists
 miss=0
 for f in "${TRACKED[@]}"; do
-  [[ "$f" == *.md && "$f" != CONTRIBUTING.md ]] || continue
+  [[ "$f" == *.md && "$f" != CONTRIBUTING.md && "$f" != CHANGELOG.md ]] || continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
 done
 for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
@@ -102,6 +102,7 @@ done
 # 7. Version and tag
 VERSION="$(scripts/version.sh)"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && ok "README version $VERSION" || fail "README version not semver"
+scripts/changelog.sh "$VERSION" >/dev/null 2>&1 && ok "CHANGELOG has a section for $VERSION" || fail "CHANGELOG.md has no section for $VERSION"
 if [ "${1:-}" = "--tag" ]; then
   [ "${2:-}" = "v$VERSION" ] && ok "tag ${2} matches README" || fail "tag ${2:-<none>} does not match README version v$VERSION"
 fi
