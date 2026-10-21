@@ -38,7 +38,8 @@ An agent writes fast and generalises easily; a reviewer reads the generalisation
 Every drafted claim names its window and its place, and says no more than its check. Evaluation
 is not detection; absence of data is not a defect by itself; an alarm OK by its missing-data
 setting is reported as such; a total read at account or service level is not attributed to the
-scope; a difference is not a cause. The wording rules are in the
+scope; a difference is not a cause; defined in code is not emitted; a document's statement
+carries its date and is not the current state. The wording rules are in the
 [stage 1 prompt](../tools/agent/stage-1-inventory.md) and apply at every stage.
 
 ## Blind spots are registered when they are confirmed

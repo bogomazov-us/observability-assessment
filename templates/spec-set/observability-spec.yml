@@ -19,6 +19,8 @@ journeys:
       - id: J1.1
         name: "[e.g. sign-in authenticate]"
         route: "[POST /api/session]"
+        # Checkable: the states that count (success / degraded / failure), the empty case and
+        # the time bound, so that a browser or API assertion can decide it.
         success: "[what success means for this function]"
         # Where the requirement comes from: journey model section, captured request, kick-off
         # note (SL017). The ids are stable: never renumber a confirmed function.
@@ -32,7 +34,8 @@ journeys:
 # One row per code or condition, and context where the same code means different things.
 # class: expected / failure / caller_defect / ambiguous / unknown (none: looked like an error,
 # the operation took effect). Ambiguous needs a reconciliation path: an attempt model below,
-# or `reconciliation:` on the row.
+# or `reconciliation:` on the row. Per operation type (create / update / delete): what proves
+# the operation took effect, and whether the attempt and its audit record settle together.
 taxonomy:
   - function: J1.1
     code: "[INVALID_CREDENTIALS]"

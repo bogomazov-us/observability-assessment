@@ -75,6 +75,11 @@ Each claim says what was looked at, and no more:
   labelled so; attribution to the scope is a separate step, done or not done.
 - **A difference is not a cause.** "Counter above the expected number of scheduled runs; cause
   not established" until the cause is shown.
+- **Defined is not emitted.** A metric, label or alert defined in code is "defined in code";
+  it is live only when the series or rule was seen in the estate.
+- **A document's statement has a date.** Client documents mix past and present. Quote a
+  statement with the document's date, and never carry it into the current state without
+  live evidence.
 
 ## Output
 

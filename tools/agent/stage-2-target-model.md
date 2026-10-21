@@ -55,6 +55,25 @@ into business functions, and the error taxonomy of each function. You draft; a p
    different contexts gets one row per context, or stays unknown.
 5. If one business attempt spans several functions, draft the attempt model: which operation
    decides the outcome, after how long an attempt with no result is ambiguous.
+6. **Success is checkable.** Write each function's success so that a browser or API assertion
+   can decide it: the states that count (success, degraded, failure), what an empty result
+   means, and the time bound. Where the owner has not decided one of these, it is an open
+   question for the owner, not a default.
+7. **Reconciliation is per operation type.** For each ambiguous outcome say, per create,
+   update and delete, what evidence proves the operation took effect, and whether the outcome
+   of the attempt and of its audit record are settled together. "Run it on a schedule" is not a
+   reconciliation path. Draft the acceptance scenarios: response lost after the operation
+   landed (per type), the source of truth unavailable during reconciliation, the record changed
+   by someone else, and a re-run that leaves the result unchanged.
+8. **Layers are mapped, not merged.** When the client keeps business functions apart from
+   monitoring functions (or synthetic steps apart from both), keep the layers and draft an
+   explicit mapping. The mapping is checked by exact ids in both directions — every monitoring
+   function is mapped, every mapped id exists — not by searching text. Metric ids and function
+   ids are kept apart. A complete mapping says the references are complete, not that the
+   signals work.
+9. **Names have a history.** Where an alert or metric has several names across sources, draft
+   a legacy → current table with the state of each (live, removed, never existed); do not
+   pick a spelling.
 
 ## Output
 
@@ -79,6 +98,11 @@ into business functions, and the error taxonomy of each function. You draft; a p
       structurally complete, not that it is right.
 - [ ] Every function in scope is present, with a requirement source and its current state.
 - [ ] Every SLO and alert is `proposed`.
+- [ ] Every function's success names its states, the empty case and the time bound, or an open
+      question for the owner.
+- [ ] Every ambiguous outcome is reconciled per operation type, with acceptance scenarios.
+- [ ] When an owner's decision changed a definition, every source that stated the old one was
+      searched and updated; none still states it.
 - [ ] Every function and taxonomy row has a source comment.
 - [ ] No class was given without reading the code path; unread ones are `unknown`.
 - [ ] Every ambiguous row has a reconciliation path or an open question.

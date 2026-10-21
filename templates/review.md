@@ -73,6 +73,12 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] No threshold on a metric that is not collected.
 - [ ] Every function has a stable id, its requirement source and its current state with
       inventory evidence; unknowns are kept.
+- [ ] Success is checkable: states (success, degraded, failure), the empty case and a time
+      bound are written, or open with the owner.
+- [ ] Each ambiguous outcome is reconciled per operation type, with acceptance scenarios
+      (response lost after landing, source of truth unavailable, concurrent change, re-run).
+- [ ] Layers (business, monitoring, synthetic) are mapped by exact ids in both directions;
+      "defined in code" is not shown as live; dated document statements are not current state.
 - [ ] Unagreed targets, owners and thresholds are `proposed`; a clean lint is not taken as
       acceptance.
 

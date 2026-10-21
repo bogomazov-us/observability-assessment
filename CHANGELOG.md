@@ -27,6 +27,12 @@ GitHub are taken from the section of the tagged version.
   person hours are recorded per stage, and a change of granularity is counted apart from
   errors. Spec linter: unknown keys are reported (SL019), an engagement's own field is
   prefixed `x_`.
+- **From the review of the consolidated journey model:** stage 2 makes success checkable
+  (states, empty case, time bound, or an open question for the owner); reconciles ambiguous
+  outcomes per operation type with acceptance scenarios, a schedule alone is not a path; maps
+  business, monitoring and synthetic layers by exact ids in both directions instead of merging
+  them; drafts a legacy → current table for names. Claims: defined in code is not emitted; a
+  document's statement carries its date. Review checklist and spec skeleton follow.
 
 ## 0.5.0 — 2026-10-21
 
