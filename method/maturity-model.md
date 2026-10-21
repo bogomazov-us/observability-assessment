@@ -9,9 +9,11 @@ Report it as a profile, never as one number.
 
 1. **Scope first.** Write down the journeys and services in scope before scoring. "Tier-1" in
    the table below means the functions in that scope.
-2. **A level is reached when all its criteria hold** for the functions in scope, and all lower
-   levels hold too. Criteria that hold for only some functions give **partial**: score the
-   lower level and write the coverage ("level 3 on 2 of 5 functions").
+2. **The score is the highest level whose criteria are fully evidenced** for the functions in
+   scope, provided the capabilities of the levels below it still hold. Cells that describe an
+   absence ("none", "no owners") are starting points, not requirements. Criteria that hold for
+   only some functions give **partial**: score the level below and write the coverage
+   ("level 3 on 2 of 5 functions").
 3. **Evidence per score.** Each score names its evidence: an export, a query, a trace, a code
    path, a configuration. Interviews and documents alone are not enough to go above level 2.
 4. **Not scored** when the evidence could not be obtained (no access, no answer in time). It is

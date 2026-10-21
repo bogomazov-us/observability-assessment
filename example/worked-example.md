@@ -56,8 +56,8 @@ customers' cards being declined. The dashboard stays green.
 (SLO). Moves dimension 3 from 2 to 3.
 
 **F-05 · An order can be paid and not placed.** If C3 does not answer after C2 approved, nothing
-records the attempt; reconciliation is by hand once a week (O-11). (confirmed, code path in
-`checkout`.)
+records the attempt. (confirmed: code path in `checkout`.) Reconciliation is said to be a weekly
+manual export (O-11, still an assumption: to confirm with finance's export before the report).
 
 **F-07 · The checkout dashboard measures page views, not orders** (O-04). A cached confirmation
 page counts as a success.
@@ -78,7 +78,10 @@ page counts as a success.
 | Function | Code or condition | HTTP | Class | Customer sees |
 |---|---|---|---|---|
 | C1 | `SLOT_TAKEN` | 409 | expected | "Choose another slot" |
-| C1 | timeout from `slots` (read-only hold, safe to retry) | 504 | failure | Error, retry offered |
+| C1 | `slots` rejects with a definite error, no hold created | 5xx with `hold_created=false` | failure | Error, retry offered |
+| C1 | timeout from `slots`; read-back by attempt_id finds no hold | 504 | failure | Error, retry offered |
+| C1 | timeout from `slots`; read-back finds the hold | 504 | none: the hold exists, checkout continues | Nothing |
+| C1 | timeout from `slots`; read-back not possible | 504 | ambiguous | Error; slot may be held for 20 minutes |
 | C2 | `DECLINED`, reason `CARD` | 200 | expected | "Your card was declined" |
 | C2 | timeout; provider status says *not authorised* | 200 today (`PROVIDER_TIMEOUT`) | failure | today: "card declined" — wrongly |
 | C2 | timeout; provider status not available | 200 today (`PROVIDER_TIMEOUT`) | ambiguous | today: "card declined" — wrongly |
@@ -86,6 +89,9 @@ page counts as a success.
 | C3 | rejected with a definite error, authorisation voided | 4xx / 5xx with `order_created=false` | failure | Error; no money held |
 | C3 | timeout or no answer after C2 approved | 5xx / none | ambiguous | Error; money may be held |
 | C3 | duplicate submit with the same attempt_id | 409 | caller_defect | Nothing (double click) |
+
+Creating a hold changes state, and the hold call is not proven idempotent, so a C1 timeout is
+not retried blindly: checkout reads the hold back by attempt_id first.
 
 `PROVIDER_TIMEOUT` was an overloaded code: one code for two different outcomes. It is split by
 the provider's status answer.
@@ -104,8 +110,8 @@ the provider's status answer.
 |---|---|
 | C3 created the order | placed |
 | C1, C2 or C3 ended in an `expected` refusal and the customer left | refused |
-| C2 or C3 ended in a `failure` (no money taken, or authorisation voided) | failed |
-| C2 or C3 ended `ambiguous`, or C2 approved and no C3 result within 10 minutes | ambiguous |
+| C1, C2 or C3 ended in a `failure` (no hold, no money taken, or authorisation voided) | failed |
+| C1, C2 or C3 ended `ambiguous` or `unknown` (unclassified), or C2 approved and no C3 result within 10 minutes | ambiguous |
 | `caller_defect` on a duplicate submit | ignored; the original submit decides |
 
 An ambiguous attempt is reconciled by a job every 10 minutes: provider status and orders
@@ -117,7 +123,8 @@ database → placed or failed (and the authorisation voided). Until then it coun
 |---|---|---|---|---|
 | Checkout attempt | placed ÷ (placed + failed + ambiguous), real users, 28 days | excluded: the customer's card or basket, not our service | 99.0 % | Head of e-commerce |
 
-P1 alert "checkout failures": failed + ambiguous above 3 % of attempts for 10 minutes, with at
+Bad attempts are failed + ambiguous; an unclassified code already lands in ambiguous, and a
+caller defect never decides an attempt. P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at
 least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts in shadow.
 
 ## Roadmap with effort
@@ -147,6 +154,7 @@ If the sandbox cannot inject timeouts, M3 needs a stub of the provider: plus one
 | A slow provider is not a decline | 20 timeouts, provider status *not authorised* | 20 failed attempts, 0 refused |
 | An unanswered payment is visible | 10 timeouts, provider status unavailable | 10 ambiguous attempts within 10 min, then reconciled to failed |
 | Paid-but-not-placed is visible | 5 approved C2, C3 does not answer | 5 ambiguous within 10 min; reconciled to placed or failed per the orders database |
+| A lost hold answer is not retried blindly | 10 `slots` timeouts after the hold was written | 10 holds found by read-back, checkout continues, 0 duplicate holds |
 | A definite order rejection is a failure | 5 approved C2, C3 rejects, authorisation voided | 5 failed attempts |
 | Refusals stay out of the SLI | 30 card declines, 10 basket changes | 40 refused, not in the denominator |
 | The alert reaches a person | test P1 | acknowledged by on-call, escalated after the configured timeout |
