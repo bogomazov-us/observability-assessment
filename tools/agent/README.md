@@ -24,7 +24,9 @@ Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
    permissions as well, not by the prompt alone.
 2. Give the agent the prompt file and the inputs it lists. Missing inputs are not substituted:
    the agent stops and names them.
-3. The agent drafts, runs its self-check, and hands over a list of what it could not cite.
+3. The agent drafts, keeps a progress log (`progress/stage-N.md`: the plan, each step started
+   and done, each commit, each stop), runs its self-check, and hands over a list of what it
+   could not cite. While it runs, the person reads the log, not the agent's transcript.
 4. A person confirms what the prompt's last section names, in the tool, and records the result
    in the facts ledger. Only then does the next stage start.
 
@@ -41,7 +43,7 @@ reviewed: it is discarded and the stage re-run.
 
 ## Measuring
 
-Record, per stage and engagement: drafts handed over, drafts accepted without a change of
+Record, per stage and engagement, from the progress logs and the review records: drafts handed over, drafts accepted without a change of
 substance, cited evidence that did not reproduce, agent elapsed time, and hours the person spent
 confirming. Record the person's hours per stage next to the agent's time, in the engagement's
 stage table; without them there is nothing to compare. These are pilot measurements: agent time is not compared with the estimate's

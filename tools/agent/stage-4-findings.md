@@ -57,6 +57,24 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
 2. `stage-4-notes.md`: the facts-ledger rows these findings rest on (proposed, status
    assumption), and "Could not evidence" (claim, what is missing, who can provide it).
 
+## Progress log
+
+Keep `progress/stage-4.md` in the engagement repository while you work, so a person can see
+where the stage is without asking you. Its first line is the plan: the steps, numbered, and
+their count. Then one line when a step starts and one when it ends, one per commit with its
+hash, and one when you stop on something:
+
+```
+14:05 plan — 6 steps: 1 sources, 2 functions, 3 error paths, 4 taxonomy, 5 lint, 6 notes
+14:07 step 1/6 sources — started
+14:31 step 1/6 sources — done; disagreements handed to the person
+14:32 step 2/6 functions — blocked: no capture for J3 (open question 4)
+14:40 commit 3f2a1c9 — functions J1, J2
+```
+
+Append, never rewrite. Times are local, with the time zone once at the top. The log is
+committed with the stage's output; the first and last times are the agent's elapsed time.
+
 ## Self-check before handing over
 
 - [ ] Every claim has an Evidence line a reviewer can re-run without asking.
@@ -66,6 +84,7 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
       stated when that is all there is).
 - [ ] No other client's name, figure or system appears; nothing was written outside the
       engagement repository.
+- [ ] The progress log ends with the last step done and the last commit.
 
 ## What the person confirms
 

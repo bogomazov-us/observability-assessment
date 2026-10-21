@@ -61,6 +61,10 @@ GitHub are taken from the section of the tagged version.
     residual risk with an owner; faults are reproduced on a stage or during implementation,
     never injected in production by the assessment.
   - Acceptance tells spec validated from runtime validated.
+- **Progress logs:** each agent stage keeps `progress/stage-N.md` in the engagement repository —
+  the plan with its step count, each step started and done, each commit with its hash, each
+  stop with the reason. The person reads it while the agent runs; the first and last times are
+  the agent's elapsed time for the pilot measurement.
 
 ## 0.5.0 — 2026-10-21
 

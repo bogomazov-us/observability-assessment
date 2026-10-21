@@ -18,6 +18,7 @@ someone has looked at the evidence it cites.
 | A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
 | The owner's answer is recorded in the client's decision register before any document cites it | A decision nobody can find is read by a reviewer as a proposal |
 | Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
+| Each stage keeps a progress log in the engagement repository: the plan, each step started and done, each commit, each stop | The person sees where the stage is without asking the agent; the log is the pilot's time record |
 
 ## Pipeline: inputs → model → gap → recommendations
 
