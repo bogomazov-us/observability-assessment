@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guardrails-and-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # gitleaks scans the whole history
+
+      - name: Install tools
+        run: scripts/ci-install.sh
+
+      - name: Guardrails
+        env:
+          GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+        run: scripts/guardrails.sh
+
+      - name: Build PDF
+        run: scripts/build.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kit-pdf
+          path: dist/*.pdf
+          retention-days: 14

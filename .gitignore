@@ -1,0 +1,3 @@
+dist/
+.guardrails-denylist
+.DS_Store

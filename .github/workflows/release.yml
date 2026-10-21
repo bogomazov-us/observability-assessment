@@ -1,0 +1,52 @@
+name: release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: write # create the release and upload the PDF
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    environment: release # add required reviewers on this environment for a manual approval gate
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag must be on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
+            || { echo "tag $GITHUB_REF_NAME is not on main"; exit 1; }
+
+      - name: Install tools
+        run: scripts/ci-install.sh
+
+      - name: Guardrails
+        env:
+          GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+        run: scripts/guardrails.sh --tag "$GITHUB_REF_NAME"
+
+      - name: Build PDF
+        id: build
+        run: echo "pdf=$(scripts/build.sh)" >> "$GITHUB_OUTPUT"
+
+      - name: Guardrails on the built PDF
+        env:
+          GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+        run: scripts/check-pdf.sh "${{ steps.build.outputs.pdf }}"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "${{ steps.build.outputs.pdf }}" \
+            --title "Observability Assessment Kit $GITHUB_REF_NAME" \
+            --generate-notes --verify-tag
