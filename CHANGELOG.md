@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.6.1 — 2026-10-21
 
 - **Stage 3 packaged as a prompt** (`tools/agent/stage-3-gap.md`): signal states with evidence
   from the estate, SLIs computable today as readings, alerts and their inputs, the detection
