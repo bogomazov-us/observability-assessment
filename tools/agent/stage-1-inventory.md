@@ -13,8 +13,9 @@ draft; a person confirms.
 - Read-only. You read the code checkout and query the monitoring estate through a read-only
   token, profile or MCP server: list, describe, get and read-only queries only.
 - You write only inside the engagement repository, in the files named under "Output".
-- Never print or write secrets, credentials, account identifiers, notification endpoints or
-  log bodies. Record that a value exists, not the value.
+- Never print or write secrets, credentials, account identifiers, notification endpoints,
+  IP addresses (private ones included) or log bodies. Record that a value exists, not the
+  value. Resource and profile names may be written; they stay in the engagement repository.
 - Every claim cites what it rests on: file:line, or the query or call with its time range.
 - Nothing you write is a fact. It enters the facts ledger as an assumption.
 - No client data leaves the engagement repository.
@@ -35,17 +36,19 @@ draft; a person confirms.
    [collect.md](../collect.md), "Estate export by object class": what should exist.
 2. Query the estate for each object: does it exist, and does it match? Record the query and its
    time range.
-3. Give every checked object exactly one status:
+3. One row per object. Give every row exactly one status, comparing the live object with the
+   code or configuration (never with your own draft):
 
    | Status | Means |
    |---|---|
-   | confirmed | exists as the code or configuration says |
-   | differs | exists, but differs from the code or configuration, or was missing from them |
+   | confirmed | exists as the code or configuration says; a live fact that contradicts nothing (a count, a last run) is stated in the row |
+   | differs | exists, but differs from the code or configuration, or exists live with no code or configuration behind it |
    | not found | no object, or no data, in the checked window |
-   | not verifiable | outside the access granted, or the system is down; say which |
+   | not verifiable | not attempted or not possible: outside the access granted, the system is down, or the comparison needs an attribution not yet done; say which |
 
    The statuses do not overlap. The summary gives each count and their sum, and the sum equals
-   the number of rows.
+   the number of rows. An error in your own draft is corrected in the draft, not recorded as
+   a difference.
 4. Reconcile the classes with each other: an alert with no route to a person, a metric no alert
    reads, a route with no subscriber.
 
@@ -53,7 +56,8 @@ draft; a person confirms.
 
 Each claim says what was looked at, and no more:
 
-- **Name the window and the place.** "0 traces in the trace store in the checked 24 h", not
+- **Name the window and the place.** For a point-in-time read (a configuration, an alarm's
+  current state) the time of the check is the window. "0 traces in the trace store in the checked 24 h", not
   "traces are not delivered": another backend, or another window, was not checked.
 - **Evaluation is not detection.** A rule that evaluates without error and is inactive shows
   that the expression runs. Whether it fires on a failure needs a scenario test.
@@ -71,8 +75,10 @@ Each claim says what was looked at, and no more:
 1. `inventory.md`: scope, sources read, the live verification table (class, object, status,
    evidence), the status summary with its sum, the reconciliation, the code scan leads, and
    what could not be inventoried with the reason.
+   In the reconciliation, a claim may cite the table row that holds its evidence instead of
+   repeating the query; a claim with neither is not written.
 2. A list of **confirmed blind spots** — a check that cannot fire, a notification that reaches
-   nobody — handed to the person for the risk register now, each with a proposed owner. They do
+   nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each with a proposed owner. They do
    not wait for the findings of stage 4; the finding is written there and links the risk.
 
 ## Self-check before handing over
@@ -89,4 +95,5 @@ Each claim says what was looked at, and no more:
 Re-runs a sample of the cited checks, chosen by them, and records each result. A sample that
 reproduces says those claims hold; it is not an estimate of the accuracy of the whole
 inventory. Registers the confirmed blind spots as risks with owners. Confirms the inventory as
-the baseline for stage 2, or returns it.
+the baseline for stage 2, or returns it; on confirmation the document's own status line is
+updated, so it never says "assumption" after it was confirmed.

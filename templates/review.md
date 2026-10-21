@@ -27,8 +27,10 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 
 ## Checklist — inventory (stage 1)
 
-- [ ] Every object has exactly one status (confirmed, differs, not found, not verifiable); the
-      counts sum to the rows.
+- [ ] One object per row, each with exactly one status (confirmed, differs, not found, not
+      verifiable) against the code or configuration; the counts sum to the rows.
+- [ ] Every reconciliation claim cites a query or the table row that holds its evidence.
+- [ ] No secret, account identifier, endpoint or IP address is written.
 - [ ] Every claim names its window and place, and says no more than its check: evaluation is
       not detection, absence is not a defect, an OK by the missing-data setting says so, a total
       is not attributed, a difference is not a cause.
