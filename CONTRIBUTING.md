@@ -7,9 +7,9 @@
    HAR captures or exports — the guardrails reject them. Test fixtures are YAML or are generated
    by the test at run time; tool output never goes into this repository.
 3. **Run the guardrails and the tool tests before every commit:** `scripts/guardrails.sh`,
-   `scripts/test-tools.sh`. Keep your own
-   denylist in `.guardrails-denylist` (git-ignored, one term per line); the CI uses the
-   `GUARDRAIL_DENYLIST` secret. A pull request from a fork gets no secrets, so its CI runs the
+   `scripts/test-tools.sh`. The denylist (one term per line) lives in a private file
+   outside this repository; `scripts/sync-denylist.sh [path]` puts it into the
+   `GUARDRAIL_DENYLIST` secret and into the git-ignored `.guardrails-denylist` for local runs. A pull request from a fork gets no secrets, so its CI runs the
    public checks and skips the denylist; the maintainer runs the denylist locally before
    merging, and pushes to `main` and every release require it.
 4. **A new file** goes into `scripts/files.sh`, or the guardrails fail.

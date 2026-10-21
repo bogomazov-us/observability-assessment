@@ -5,6 +5,9 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+- `scripts/sync-denylist.sh`: the denylist lives in a private file outside the repository; the
+  script puts it into the CI secret and the local git-ignored copy, and refuses an empty list.
+
 ## 0.5.0 — 2026-10-21
 
 - Each release also carries the PDF under a fixed name, so
