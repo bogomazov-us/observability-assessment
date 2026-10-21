@@ -16,6 +16,7 @@ someone has looked at the evidence it cites.
 | The client's own AI-ops tools are inputs, not competitors | Build on the client's work (playbook, principle 6) |
 | The agent reads only the paths and systems its prompt lists, and its permissions enforce it | Scope is a boundary, not a suggestion |
 | A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
+| The owner's answer is recorded in the client's decision register before any document cites it | A decision nobody can find is read by a reviewer as a proposal |
 | Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
 
 ## Pipeline: inputs → model → gap → recommendations

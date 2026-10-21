@@ -33,6 +33,8 @@ GitHub are taken from the section of the tagged version.
   business, monitoring and synthetic layers by exact ids in both directions instead of merging
   them; drafts a legacy → current table for names. Claims: defined in code is not emitted; a
   document's statement carries its date. Review checklist and spec skeleton follow.
+- An owner's answer given in a working session is recorded in the client's decision register
+  before a document cites it; alert and check lists separate live, historical and planned.
 
 ## 0.5.0 — 2026-10-21
 

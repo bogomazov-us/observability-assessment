@@ -32,7 +32,10 @@ Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
 
 A stage starts only on confirmed output of the stage before it, and only when the open
 questions that block it have answers from the owner. A question addressed to the owner is
-never decided by an agent; an agent launched before the answer leaves it open. A finding drafted from an
+never decided by an agent; an agent launched before the answer leaves it open. An answer
+given in a working session is recorded first — in the client's decision register, with the
+date and who decided — and documents cite that record, never "the owner said": a reviewer
+must be able to find it. A finding drafted from an
 unconfirmed inventory, or a recommendation drafted from an unconfirmed finding, is not
 reviewed: it is discarded and the stage re-run.
 

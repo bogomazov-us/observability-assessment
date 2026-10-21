@@ -73,7 +73,9 @@ into business functions, and the error taxonomy of each function. You draft; a p
    signals work.
 9. **Names have a history.** Where an alert or metric has several names across sources, draft
    a legacy → current table with the state of each (live, removed, never existed); do not
-   pick a spelling.
+   pick a spelling. A list of alerts or checks separates live (seen in the estate),
+   historical (removed, when) and planned (required, not built); a planned one is never listed
+   as running.
 
 ## Output
 

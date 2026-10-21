@@ -79,6 +79,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       (response lost after landing, source of truth unavailable, concurrent change, re-run).
 - [ ] Layers (business, monitoring, synthetic) are mapped by exact ids in both directions;
       "defined in code" is not shown as live; dated document statements are not current state.
+- [ ] Alert and check lists separate live, historical and planned.
+- [ ] Every owner decision the document relies on is cited from the decision register.
 - [ ] Unagreed targets, owners and thresholds are `proposed`; a clean lint is not taken as
       acceptance.
 
