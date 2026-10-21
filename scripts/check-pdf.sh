@@ -3,15 +3,23 @@
 # Catches anything that entered through the build itself (metadata, templates).
 set -uo pipefail
 PDF="$1"
-TEXT="$(pdftotext "$PDF" - 2>/dev/null)$(pdfinfo "$PDF" 2>/dev/null)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "$ROOT/scripts/patterns.sh"
+TEXT="$(pdftotext "$PDF" - 2>/dev/null)
+$(pdfinfo "$PDF" 2>/dev/null)"
 FAIL=0
 DENY="${GUARDRAIL_DENYLIST:-}"
-[ -z "$DENY" ] && [ -f "$(dirname "$0")/../.guardrails-denylist" ] && DENY="$(cat "$(dirname "$0")/../.guardrails-denylist")"
+[ -z "$DENY" ] && [ -f "$ROOT/.guardrails-denylist" ] && DENY="$(cat "$ROOT/.guardrails-denylist")"
+if [ -z "$DENY" ]; then
+  if [ "${GUARDRAIL_REQUIRE_DENYLIST:-}" = 1 ]; then echo "✗ denylist missing"; FAIL=1; else echo "! denylist not available — PDF denylist check skipped"; fi
+fi
 while IFS= read -r term; do
   term="${term%%#*}"; term="$(echo "$term" | sed 's/[[:space:]]*$//')"
   [ -z "$term" ] && continue
   echo "$TEXT" | grep -q -i -w -F -- "$term" && { echo "✗ denylisted term in the PDF (term not printed)"; FAIL=1; }
 done <<< "$DENY"
-echo "$TEXT" | grep -q -E 'AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{30,}|dt0[a-z][0-9]{2}\.' && { echo "✗ token pattern in the PDF"; FAIL=1; }
+for p in "${SENSITIVE_PATTERNS[@]}"; do
+  echo "$TEXT" | grep -E -- "$p" | grep -q -v -E "$SENSITIVE_ALLOW" && { echo "✗ sensitive pattern in the PDF (match not printed)"; FAIL=1; }
+done
 [ $FAIL -eq 0 ] && echo "✓ PDF clean"
 exit $FAIL

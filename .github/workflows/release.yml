@@ -32,6 +32,7 @@ jobs:
       - name: Guardrails
         env:
           GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+          GUARDRAIL_REQUIRE_DENYLIST: '1'
         run: scripts/guardrails.sh --tag "$GITHUB_REF_NAME"
 
       - name: Build PDF
@@ -41,6 +42,7 @@ jobs:
       - name: Guardrails on the built PDF
         env:
           GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+          GUARDRAIL_REQUIRE_DENYLIST: '1'
         run: scripts/check-pdf.sh "${{ steps.build.outputs.pdf }}"
 
       - name: Publish release

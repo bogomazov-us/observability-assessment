@@ -22,10 +22,18 @@ jobs:
       - name: Guardrails
         env:
           GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+          # forks get no secrets: pull requests run the public checks, main requires the denylist
+          GUARDRAIL_REQUIRE_DENYLIST: ${{ github.event_name == 'push' && '1' || '' }}
         run: scripts/guardrails.sh
 
       - name: Build PDF
         run: scripts/build.sh
+
+      - name: Guardrails on the built PDF
+        env:
+          GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}
+          GUARDRAIL_REQUIRE_DENYLIST: ${{ github.event_name == 'push' && '1' || '' }}
+        run: scripts/check-pdf.sh dist/*.pdf
 
       - uses: actions/upload-artifact@v4
         with:

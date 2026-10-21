@@ -6,10 +6,12 @@
 # Denylist: words that must never appear (former clients, employers, people, systems).
 # It is NOT stored in this repository — that would publish the very names it protects.
 # Source, in order: $GUARDRAIL_DENYLIST (one term per line; CI secret), else .guardrails-denylist
-# (local, git-ignored). CI fails if neither is present.
+# (local, git-ignored). Missing, the check is skipped — pull requests from forks get no
+# secrets — unless GUARDRAIL_REQUIRE_DENYLIST=1 (pushes to main, releases), then it fails.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 source scripts/files.sh
+source scripts/patterns.sh
 
 FAIL=0
 fail() { echo "✗ $*"; FAIL=1; }
@@ -24,7 +26,8 @@ for f in "${TRACKED[@]}"; do [ -f "$f" ] && [ "$f" != LICENSE ] && TEXT+=("$f");
 DENY="${GUARDRAIL_DENYLIST:-}"
 [ -z "$DENY" ] && [ -f .guardrails-denylist ] && DENY="$(cat .guardrails-denylist)"
 if [ -z "$DENY" ]; then
-  if [ -n "${CI:-}" ]; then fail "denylist missing: set the GUARDRAIL_DENYLIST secret"; else echo "! denylist missing locally (.guardrails-denylist) — check skipped"; fi
+  if [ "${GUARDRAIL_REQUIRE_DENYLIST:-}" = 1 ]; then fail "denylist missing: set the GUARDRAIL_DENYLIST secret"
+  else echo "! denylist not available — check skipped (it runs on main and on release)"; fi
 else
   hits=0
   while IFS= read -r term; do
@@ -40,20 +43,9 @@ else
 fi
 
 # 2. Secrets and personal data patterns
-PATTERNS=(
-  'AKIA[0-9A-Z]{16}'                          # AWS access key id
-  'dt0[a-z][0-9]{2}\.[A-Z0-9]{24}'             # Dynatrace token
-  'gh[pousr]_[A-Za-z0-9]{30,}'                 # GitHub token
-  'xox[baprs]-[A-Za-z0-9-]{10,}'               # Slack token
-  '-----BEGIN [A-Z ]*PRIVATE KEY-----'
-  '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b'            # IPv4
-  '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}' # e-mail
-  '\b[a-z0-9-]+\.(internal|corp|local|lan)\b'  # internal hostnames
-  '\.live\.dynatrace\.com|\.apps\.dynatrace\.com' # tenant URLs
-)
 phits=0
-for p in "${PATTERNS[@]}"; do
-  out="$(grep -n -E -- "$p" "${TEXT[@]}" 2>/dev/null | grep -v -E '@bogomazov\.us|scripts/guardrails\.sh')"
+for p in "${SENSITIVE_PATTERNS[@]}"; do
+  out="$(grep -n -E -- "$p" "${TEXT[@]}" 2>/dev/null | grep -v -E "$SENSITIVE_ALLOW")"
   if [ -n "$out" ]; then echo "$out" | cut -d: -f1,2 | sed 's/^/  sensitive pattern at /'; phits=1; fi
 done
 [ $phits -eq 0 ] && ok "no secrets, e-mails, IPs or internal hosts" || fail "sensitive patterns found"
