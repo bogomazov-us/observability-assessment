@@ -50,15 +50,24 @@ into business functions, and the error taxonomy of each function. You draft; a p
 
 1. `docs/observability/observability-spec.yml`, from the skeleton: `journeys` and `taxonomy`
    filled; for each function one `signals` entry with state `to_build` and a placeholder name;
-   `slos` and `alerts` left as skeleton placeholders. A YAML comment on each row cites its
-   source.
+   `slos` and `alerts` left as skeleton placeholders, or drafted with `status: proposed`. A
+   YAML comment on each row cites its source. For every function in scope:
+   - a stable id (keep the ids of the client's journey model when it has them) and
+     `requirement`, the source of the requirement;
+   - `current`: what exists today, with links to the confirmed inventory rows, kept apart from
+     the target; unknown stays `unknown`;
+   - a signal is `live` only with production evidence from the inventory.
+   No target, owner or threshold is `confirmed` by the agent.
 2. `stage-2-notes.md`: a table per journey (function, route, service, source), then "Open
    questions" (item, what is missing, who can answer).
 
 ## Self-check before handing over
 
 - [ ] `python3 tools/speclint.py docs/observability/observability-spec.yml` reports no errors;
-      only SL016 placeholder warnings remain.
+      only SL016 placeholder warnings remain. Say in the notes that this shows the spec is
+      structurally complete, not that it is right.
+- [ ] Every function in scope is present, with a requirement source and its current state.
+- [ ] Every SLO and alert is `proposed`.
 - [ ] Every function and taxonomy row has a source comment.
 - [ ] No class was given without reading the code path; unread ones are `unknown`.
 - [ ] Every ambiguous row has a reconciliation path or an open question.
@@ -66,6 +75,8 @@ into business functions, and the error taxonomy of each function. You draft; a p
 
 ## What the person confirms
 
-Each function against a captured request and the code; each class against the code path. The
+Each function against a captured request and the code; each class against the code path;
+which proposed targets, owners and thresholds the client has agreed (only those become
+`confirmed`). The
 confirmed rows go into the facts ledger with their source; the rest stay assumptions with an
 owner and a date.

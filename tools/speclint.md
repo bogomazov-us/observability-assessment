@@ -33,12 +33,21 @@ relative to the spec file.
 
 | Section | One entry per | Key fields |
 |---|---|---|
-| `journeys` | journey, with its `functions` | id, name, route, success |
+| `journeys` | journey, with its `functions` | id, name, route, success, requirement, current (state, evidence) |
 | `taxonomy` | code or condition, per context | function, code, context, http, class, customer_sees, confirmed_by |
 | `signals` | event or span | function (or attempt), name, emitted_by, attributes, state, evidence |
 | `attempts` | business attempt spanning several functions (optional) | functions, outcomes, ambiguous_after, reconciliation |
-| `slos` | SLI | subject, good, valid, bad, expected_refusals (treatment, reason), traffic, target, window, owner |
-| `alerts` | alert | slo, severity, condition, for, min_volume, grouping, notifies, runbook, delivery_test, state, owner |
+| `slos` | SLI | subject, good, valid, bad, expected_refusals (treatment, reason), traffic, target, window, owner, status |
+| `alerts` | alert | slo, severity, condition, for, min_volume, grouping, notifies, runbook, delivery_test, state, owner, status |
+
+**Target and current state are kept apart.** Everything except `current` describes the target.
+`current` holds what exists today with its evidence from the inventory; `unknown` is a valid
+state and is never replaced by a guess. A function's `requirement` names where it comes from,
+and its id stays stable once confirmed.
+
+**Proposed until confirmed.** An SLO or alert is `status: proposed` (the default) until the
+client has agreed its target, owner and threshold; then `confirmed`. A drafted spec is all
+proposed. Paging needs confirmed on both the alert and its SLO.
 
 Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect`, `ambiguous`,
 `unknown`, and `none` for a condition that looked like an error but the operation took effect
@@ -63,10 +72,15 @@ Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect
 | SL012 | The runbook file exists (with `--check-files`) | Every P1 has a runbook (slo-alerts, rules) | error |
 | SL013 | Every reference (function, attempt, journey, SLO) resolves | — | error |
 | SL014 | Ids are unique across the file | — | error |
-| SL015 | Signal state, alert state and severity take their allowed values | — | error |
+| SL015 | Signal state, alert state, severity and status take their allowed values | — | error |
 | SL016 | No `[placeholder]` left from the skeleton | — | warning |
+| SL017 | Every function names the source of its requirement | A function traces to the journey agreed with the client (playbook, step 6) | warning |
+| SL018 | An alert in `paging` and its SLO are `confirmed` | Owner, target and threshold are decided with the client (slo-alerts, rules) | error |
 
 ## What it does not check
+
+A clean run means the spec is structurally complete. It is not acceptance: whether the spec is
+right is a separate check by a person, and the summary line says so.
 
 Whether a class is right, whether a target is sensible, whether the query behind an SLI counts
 what it says. Those are the reviewer's and the acceptance harness's job: the linter makes the

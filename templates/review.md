@@ -25,6 +25,16 @@ change, or written down as a known limitation the buyer sees.
 **Severity.** *Blocking*: the deliverable states something its evidence does not support,
 misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missing cross-links.
 
+## Checklist — inventory (stage 1)
+
+- [ ] Every object has exactly one status (confirmed, differs, not found, not verifiable); the
+      counts sum to the rows.
+- [ ] Every claim names its window and place, and says no more than its check: evaluation is
+      not detection, absence is not a defect, an OK by the missing-data setting says so, a total
+      is not attributed, a difference is not a cause.
+- [ ] Confirmed blind spots are in the risk register with owners.
+- [ ] The re-run sample is reported as "n of n selected checks reproduced", not as accuracy.
+
 ## Checklist — finding (`finding.md`)
 
 - [ ] One finding, one claim; the title states it.
@@ -59,6 +69,10 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Refusals returned inside HTTP 200 are recognised.
 - [ ] Each signal has a state (live / to build) and the evidence that shows "live".
 - [ ] No threshold on a metric that is not collected.
+- [ ] Every function has a stable id, its requirement source and its current state with
+      inventory evidence; unknowns are kept.
+- [ ] Unagreed targets, owners and thresholds are `proposed`; a clean lint is not taken as
+      acceptance.
 
 ## Checklist — SLOs and alerts (`spec-set/slo-alerts.md`)
 

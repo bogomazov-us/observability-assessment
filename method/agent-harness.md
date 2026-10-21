@@ -19,8 +19,8 @@ someone has looked at the evidence it cites.
 
 | # | Stage | Agent does | Tool | Person confirms | Playbook step |
 |---|---|---|---|---|---|
-| 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server | [collect.md](../tools/collect.md) | Exports reconcile with each other (counts, names) | 3, 4 |
-| 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers | `observability-spec.yml` skeleton | Each function and class against code and a captured request | 6, 7 |
+| 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server; gives each object one status | [collect.md](../tools/collect.md), [stage 1 prompt](../tools/agent/stage-1-inventory.md) | Exports reconcile with each other (counts, names); statuses sum to the rows; a sample of checks re-run | 3, 4 |
+| 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers; links each function to its requirement and to its current state in the inventory | `observability-spec.yml` skeleton | Each function and class against code and a captured request; which proposals become confirmed | 6, 7 |
 | 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts | [speclint.md](../tools/speclint.md) | Each "live" by browser, agent or tenant evidence | 7, 8 |
 | 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence; sets the status | 8 |
 | 5 | Maturity | Drafts `maturity.yml` from confirmed findings only | [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
@@ -28,6 +28,29 @@ someone has looked at the evidence it cites.
 
 A stage starts only on confirmed output of the stage before it: a finding drafted from an
 unconfirmed inventory is not reviewed.
+
+## Claims stay within what was checked
+
+An agent writes fast and generalises easily; a reviewer reads the generalisation as a finding.
+Every drafted claim names its window and its place, and says no more than its check. Evaluation
+is not detection; absence of data is not a defect by itself; an alarm OK by its missing-data
+setting is reported as such; a total read at account or service level is not attributed to the
+scope; a difference is not a cause. The wording rules are in the
+[stage 1 prompt](../tools/agent/stage-1-inventory.md) and apply at every stage.
+
+## Blind spots are registered when they are confirmed
+
+A confirmed blind spot — a check that cannot fire, a notification that reaches nobody — goes
+into the client's risk register with an owner as soon as a person confirms it, in whatever
+stage. The finding that explains it is still written in stage 4 and links the risk.
+
+## Target and current state in the spec
+
+The drafted spec describes the target. Each function keeps a stable id, the source of its
+requirement and, apart from the target, its current state with links to the inventory; unknown
+stays unknown. Targets, owners and thresholds nobody has agreed are `proposed`. A clean linter
+run means the spec is structurally complete; acceptance of its content is a separate check
+([speclint.md](../tools/speclint.md)).
 
 ## Release check (Implementation and after)
 
@@ -54,8 +77,16 @@ A failed claim blocks the release only where the client has made the release che
 Until both quality targets hold on two engagements, the harness speeds up inventory only, and
 findings are written by people.
 
+**First engagements are pilot measurements.** Record agent elapsed time and person hours
+separately, per stage. Agent elapsed time is not compared with the person-days of the
+estimation model: those include preparation, human review and acceptance, and the scope
+differs. The comparison is made on time recorded for the same work. A reviewer's re-run of a
+sample of checks says that those claims hold; it is not an estimate of the accuracy of the
+whole output — report it as "n of n selected checks reproduced".
+
 ## Status
 
-Specification. The tools behind stages 1, 3 and 5 exist in this kit; stages 2, 4 and 6 are
-packaged as task prompts in [tools/agent/](../tools/agent/README.md), not yet measured on an
-engagement.
+Specification. The tools behind stages 1, 3 and 5 exist in this kit; stages 1, 2, 4 and 6 are
+packaged as task prompts in [tools/agent/](../tools/agent/README.md). Stage 1 has been run once
+on a real engagement and reviewed; its review is behind the rules on claims, statuses, blind
+spots and pilot measurement above. Not yet measured on two engagements.

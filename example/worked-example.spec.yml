@@ -16,14 +16,17 @@ journeys:
         name: Reserve delivery slot
         route: POST /api/slots/hold
         success: Slot held for 20 minutes
+        requirement: worked-example.md, scope — the checkout functions, row C1
       - id: C2
         name: Authorise payment
         route: POST /api/payments/authorise (to the payment provider)
         success: Authorisation approved
+        requirement: worked-example.md, scope — the checkout functions, row C2
       - id: C3
         name: Place order
         route: POST /api/orders
         success: Order created and confirmed to the customer
+        requirement: worked-example.md, scope — the checkout functions, row C3
 
 taxonomy:
   - function: C1
@@ -161,6 +164,7 @@ slos:
     target: 99.0
     window: 28d
     owner: Head of e-commerce
+    status: confirmed             # target signed by the owner
 
 alerts:
   - id: P1-checkout-failures
@@ -177,3 +181,4 @@ alerts:
     # Decided with the client by maturity and organisation: service team, platform SRE or
     # operations centre. Open in the example; the alert stays in shadow until it is set.
     owner: to decide with the client
+    status: proposed              # stays proposed until the owner is decided; no paging

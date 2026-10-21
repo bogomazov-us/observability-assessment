@@ -15,6 +15,7 @@ KIT_FILES=(
   tools/speclint.md
   tools/maturity.md
   tools/agent/README.md
+  tools/agent/stage-1-inventory.md
   tools/agent/stage-2-target-model.md
   tools/agent/stage-4-findings.md
   tools/agent/stage-6-recommendations.md

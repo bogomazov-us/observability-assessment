@@ -20,6 +20,14 @@ journeys:
         name: "[e.g. sign-in authenticate]"
         route: "[POST /api/session]"
         success: "[what success means for this function]"
+        # Where the requirement comes from: journey model section, captured request, kick-off
+        # note (SL017). The ids are stable: never renumber a confirmed function.
+        requirement: "[journey model, section and line]"
+        # What exists today, with its evidence (inventory rows), kept apart from the target
+        # above. Unknown stays "unknown", not a guess. Not linted.
+        current:
+          state: "[what is measured or alerted on today, or unknown]"
+          evidence: ["[inventory.md, row or section]"]
 
 # One row per code or condition, and context where the same code means different things.
 # class: expected / failure / caller_defect / ambiguous / unknown (none: looked like an error,
@@ -73,6 +81,8 @@ slos:
     target: "[99.5]"
     window: 28d
     owner: "[product owner who signs the target]"
+    # proposed (the default) until the owner has signed the target; then confirmed.
+    status: proposed
 
 # A P1 needs owner, runbook, delivery_test, min_volume and grouping. Start in shadow; paging
 # only when every signal behind the SLO is live.
@@ -89,3 +99,6 @@ alerts:
     delivery_test: "[test P1 delivered, acknowledged, escalated]"
     state: shadow
     owner: "[team]"
+    # proposed until owner, threshold and routing are agreed with the client; paging needs
+    # confirmed here and on the SLO (SL018).
+    status: proposed

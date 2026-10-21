@@ -7,6 +7,19 @@ GitHub are taken from the section of the tagged version.
 
 - `scripts/sync-denylist.sh`: the denylist lives in a private file outside the repository; the
   script puts it into the CI secret and the local git-ignored copy, and refuses an empty list.
+- **From the review of the first real stage 1:**
+  - Stage 1 packaged as a prompt (`tools/agent/stage-1-inventory.md`): one status per object
+    (confirmed, differs, not found, not verifiable) whose counts sum to the rows; claims stay
+    within what was checked (window and place; evaluation is not detection; absence is not a
+    defect; an OK by the missing-data setting says so; totals are not attributions; a difference
+    is not a cause); confirmed blind spots go to the risk register at once.
+  - Harness measurement: first engagements are pilot measurements; agent time is not compared
+    with the estimate's person-days; a re-run sample is "n of n selected checks reproduced",
+    not an accuracy estimate.
+  - Spec: each function names its `requirement` (SL017, warning) and keeps its `current` state
+    with inventory evidence apart from the target; SLOs and alerts carry `status` proposed or
+    confirmed, and paging needs both confirmed (SL018). The linter says a clean run is
+    structural only. Stage 2 prompt and review checklists follow.
 
 ## 0.5.0 — 2026-10-21
 

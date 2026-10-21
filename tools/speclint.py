@@ -23,6 +23,7 @@ SIGNAL_STATES = {"live", "to_build"}
 ALERT_STATES = {"shadow", "paging"}
 SEVERITIES = {"P1", "P2", "P3"}
 REFUSAL_TREATMENTS = {"excluded", "good"}
+DECISION_STATUSES = {"proposed", "confirmed"}
 SLO_FIELDS = ("subject", "good", "valid", "bad", "target", "window", "owner")
 P1_FIELDS = ("owner", "runbook", "delivery_test", "min_volume", "grouping")
 POOLED = {"all", "pooled", "none", "global", "service", "total"}
@@ -106,6 +107,9 @@ class Linter:
                     continue
                 self.unique(seen_ids, f["id"], fw)
                 functions[f["id"]] = fw
+                if self.blank(f.get("requirement")):
+                    self.warn(fw + ".requirement", "SL017", "function %r without the source of "
+                              "its requirement (journey model, capture, kick-off note)" % f["id"])
 
         attempts = {}
         for aw, a in self.items(doc, "attempts"):
@@ -185,6 +189,7 @@ class Linter:
             subj = o.get("subject")
             if not self.blank(subj) and subj not in subjects:
                 self.err(ow + ".subject", "SL013", "unknown function or attempt %r" % subj)
+            self.status(ow, o)
             tgt = o.get("target")
             if isinstance(tgt, (int, float)) and not 0 < tgt < 100:
                 self.err(ow + ".target", "SL006", "target %r is not a percentage below 100" % tgt)
@@ -233,12 +238,27 @@ class Linter:
                 if gaps:
                     self.err(lw, "SL011", "paging on signals that are not live: %s"
                              % ", ".join(gaps))
+            self.status(lw, l)
+            if state == "paging":
+                unconfirmed = [w for w, x in ((lw, l), (sid, slo)) if x is not None
+                               and x.get("status") != "confirmed"]
+                if unconfirmed:
+                    self.err(lw, "SL018", "paging on a proposed decision: %s must have status "
+                             "confirmed (owner, target and threshold agreed with the client)"
+                             % " and ".join(str(u) for u in unconfirmed))
             rb = l.get("runbook")
             if self.check_files and isinstance(rb, str) and rb.strip() \
                     and not PLACEHOLDER.match(rb.strip()):
                 full = os.path.join(os.path.dirname(os.path.abspath(self.path)), rb)
                 if not os.path.exists(full):
                     self.err(lw + ".runbook", "SL012", "runbook %s does not exist" % rb)
+
+    def status(self, where, item):
+        """SLOs and alerts carry status proposed (the default) or confirmed."""
+        st = item.get("status", "proposed")
+        if st not in DECISION_STATUSES:
+            self.err(where + ".status", "SL015", "status must be one of %s, not %r"
+                     % ("/".join(sorted(DECISION_STATUSES)), st))
 
     def unique(self, seen, ident, where):
         if ident in seen:
@@ -286,7 +306,8 @@ def main():
         print("%s: %s: %s %s: %s" % (args.spec, where or "(root)", rule, sev, msg))
     errors = sum(1 for f in lint.findings if f[0] == "error")
     warnings = len(lint.findings) - errors
-    sys.stderr.write("speclint: %d error(s), %d warning(s)\n" % (errors, warnings))
+    sys.stderr.write("speclint: %d error(s), %d warning(s); a clean run means the spec is "
+                     "structurally complete, not that it is right\n" % (errors, warnings))
     if errors or (args.strict and warnings):
         return 1
     return 0

@@ -1,17 +1,18 @@
 # Agent stages
 
-Stages 2, 4 and 6 of the [agent harness](../../method/agent-harness.md) packaged as prompts. Each
+Stages 1, 2, 4 and 6 of the [agent harness](../../method/agent-harness.md) packaged as prompts. Each
 file is a task prompt that any agent able to read files and run the kit's tools can take as is.
 The prompts name files and tools, never a product or a model.
 
 | Stage | Prompt | Drafts | Gate before it starts |
 |---|---|---|---|
+| 1 Inventory | [stage-1-inventory.md](stage-1-inventory.md) | `inventory.md`: objects with one status each, reconciliation, confirmed blind spots | Scope agreed; read-only access granted |
 | 2 Target model | [stage-2-target-model.md](stage-2-target-model.md) | `observability-spec.yml`: journeys, functions, error taxonomy | Stage 1 inventory reconciled and confirmed |
 | 4 Findings | [stage-4-findings.md](stage-4-findings.md) | Findings in the `finding.md` format, status *assumption* | Stage 3 gap confirmed: each "live" signal checked by a person |
 | 6 Recommendations | [stage-6-recommendations.md](stage-6-recommendations.md) | Recommendation cards per `report.md` | Findings confirmed; `maturity.yml` confirmed and clean under `tools/maturity.py` |
 
-Stages 1, 3 and 5 are run with the tools directly ([collect.md](../collect.md),
-[speclint.md](../speclint.md), [maturity.md](../maturity.md)).
+Stages 3 and 5 are run with the tools directly ([speclint.md](../speclint.md),
+[maturity.md](../maturity.md)); stage 1 uses [collect.md](../collect.md) under its prompt.
 
 ## How to run a stage
 
@@ -32,7 +33,9 @@ reviewed: it is discarded and the stage re-run.
 ## Measuring
 
 Record, per stage and engagement: drafts handed over, drafts accepted without a change of
-substance, cited evidence that did not reproduce, and hours the person spent confirming. The
+substance, cited evidence that did not reproduce, agent elapsed time, and hours the person spent
+confirming. These are pilot measurements: agent time is not compared with the estimate's
+person-days, and a re-run sample is not an accuracy estimate. The
 targets and the rule for relying on the harness are in
 [agent-harness.md](../../method/agent-harness.md), "Measuring the harness". Until they hold on two
 engagements, people write the findings and the agent drafts only the target model.

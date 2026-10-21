@@ -1,0 +1,43 @@
+# An alert pages on a target nobody has confirmed; every signal is live.
+# expect: SL018
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+        requirement: journey model, step 1
+taxonomy:
+  - function: F1
+    code: INVALID_INPUT
+    class: expected
+signals:
+  - function: F1
+    name: domain.f1.result
+    state: live
+    evidence: tenant query, 2026-01-10
+slos:
+  - id: S1
+    subject: F1
+    good: successful attempts
+    valid: all attempts except refusals
+    bad: [failure, caller_defect, ambiguous, unknown]
+    expected_refusals:
+      treatment: excluded
+      reason: the customer's own input
+    target: 99.5
+    window: 28d
+    owner: product owner
+    status: proposed
+alerts:
+  - id: P1-f1
+    slo: S1
+    severity: P1
+    condition: bad above 5 %
+    for: 10m
+    min_volume: 30
+    grouping: per function
+    notifies: on-call rota
+    runbook: runbooks/f1.md
+    delivery_test: test page acknowledged
+    state: paging
+    owner: service team
+    status: confirmed
