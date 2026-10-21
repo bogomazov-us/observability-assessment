@@ -146,6 +146,7 @@ class Linter:
         functions = {}
         seen_ids = {}
         journeys = set()
+        journey_functions = {}
         for jw, j in self.items(doc, "journeys"):
             if self.blank(j.get("id")):
                 self.err(jw + ".id", "SL000", "journey without an id")
@@ -163,6 +164,8 @@ class Linter:
                     continue
                 self.unique(seen_ids, f["id"], fw)
                 functions[f["id"]] = fw
+                if not self.blank(j.get("id")):
+                    journey_functions.setdefault(j["id"], []).append(f["id"])
                 if self.blank(f.get("requirement")):
                     self.warn(fw + ".requirement", "SL017", "function %r without the source of "
                               "its requirement (journey model, capture, kick-off note)" % f["id"])
@@ -247,8 +250,9 @@ class Linter:
                 if self.blank(o.get(k)):
                     self.err("%s.%s" % (ow, k), "SL006", "SLO without %s" % k)
             subj = o.get("subject")
-            if not self.blank(subj) and subj not in subjects:
-                self.err(ow + ".subject", "SL013", "unknown function or attempt %r" % subj)
+            if not self.blank(subj) and subj not in subjects and subj not in journeys:
+                self.err(ow + ".subject", "SL013", "unknown function, attempt or journey %r"
+                         % subj)
             self.status(ow, o)
             tgt = o.get("target")
             if isinstance(tgt, (int, float)) and not 0 < tgt < 100:
@@ -294,7 +298,8 @@ class Linter:
                 self.err(lw + ".grouping", "SL010", "grouped by %r: alert per function, never "
                          "on a pooled rate or a host" % l.get("grouping"))
             if state == "paging" and slo is not None:
-                gaps = self.gaps(slo.get("subject"), signals_by_subject, attempts)
+                gaps = self.gaps(slo.get("subject"), signals_by_subject, attempts,
+                                 journey_functions)
                 if gaps:
                     self.err(lw, "SL011", "paging on signals that are not live: %s"
                              % ", ".join(gaps))
@@ -345,11 +350,13 @@ class Linter:
             seen[ident] = where
 
     @staticmethod
-    def gaps(subject, signals_by_subject, attempts):
+    def gaps(subject, signals_by_subject, attempts, journey_functions):
         """Signals an SLO rests on that are not live: no threshold on a gap."""
         subjects = [subject]
         if subject in attempts:
             subjects += list(attempts[subject].get("functions") or [])
+        if subject in journey_functions:  # a journey SLO rests on its functions' signals
+            subjects = list(journey_functions[subject])
         out = []
         for s in subjects:
             sigs = signals_by_subject.get(s, [])

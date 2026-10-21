@@ -37,7 +37,7 @@ relative to the spec file.
 | `taxonomy` | code or condition, per context | function, code, context, http, class, customer_sees, confirmed_by |
 | `signals` | event or span | function (or attempt), name, emitted_by, attributes, state, evidence |
 | `attempts` | business attempt spanning several functions (optional) | functions, outcomes, ambiguous_after, reconciliation |
-| `slos` | SLI | subject, good, valid, bad, expected_refusals (treatment, reason), traffic, target, window, owner, status |
+| `slos` | SLI | subject (a function, an attempt or a journey), good, valid, bad, expected_refusals (treatment, reason), traffic, target, window, owner, status |
 | `alerts` | alert | slo, severity, condition, for, min_volume, grouping, notifies, runbook, delivery_test, state, owner, status |
 
 **Target and current state are kept apart.** Everything except `current` describes the target.

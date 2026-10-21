@@ -1,0 +1,24 @@
+# One SLO over a journey's functions: the subject may be the journey id.
+# expect: clean
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+        requirement: journey model, step 1
+      - id: F2
+        requirement: journey model, step 2
+signals:
+  - {function: F1, name: f1.result, emitted_by: bff, attributes: [outcome], state: live, evidence: "query, 2026-10-21"}
+  - {function: F2, name: f2.result, emitted_by: bff, attributes: [outcome], state: live, evidence: "query, 2026-10-21"}
+slos:
+  - id: SLO-J1
+    subject: J1
+    good: "successful reads of F1 and F2"
+    valid: "all reads of F1 and F2"
+    bad: "failure + caller_defect + ambiguous + unknown"
+    expected_refusals:
+      treatment: excluded
+      reason: not found is the customer's own input
+    target: 99
+    window: 28d
+    owner: product owner

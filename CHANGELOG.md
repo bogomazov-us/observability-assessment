@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.6.0 — 2026-10-21
 
 - `scripts/sync-denylist.sh`: the denylist lives in a private file outside the repository; the
   script puts it into the CI secret and the local git-ignored copy, and refuses an empty list.
@@ -61,6 +61,8 @@ GitHub are taken from the section of the tagged version.
     residual risk with an owner; faults are reproduced on a stage or during implementation,
     never injected in production by the assessment.
   - Acceptance tells spec validated from runtime validated.
+- Spec linter: an SLO's subject may be a journey, for one SLO over a journey's functions;
+  paging on it needs every function's signals live (SL011).
 - **Progress logs:** each agent stage keeps `progress/stage-N.md` in the engagement repository —
   the plan with its step count, each step started and done, each commit with its hash, each
   stop with the reason. The person reads it while the agent runs; the first and last times are
