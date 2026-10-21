@@ -51,7 +51,10 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
+        # A copy under a fixed name, so releases/latest/download/observability-assessment-kit.pdf
+        # always serves the newest PDF (the site links to it).
         run: |
-          gh release create "$GITHUB_REF_NAME" "${{ steps.build.outputs.pdf }}" \
+          cp "${{ steps.build.outputs.pdf }}" dist/observability-assessment-kit.pdf
+          gh release create "$GITHUB_REF_NAME" "${{ steps.build.outputs.pdf }}" dist/observability-assessment-kit.pdf \
             --title "Observability Assessment Kit $GITHUB_REF_NAME" \
             --generate-notes --verify-tag
