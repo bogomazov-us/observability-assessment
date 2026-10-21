@@ -14,4 +14,6 @@
 5. **Release:** raise the version in the README status table, merge to `main`, then tag
    `vX.Y.Z` on `main`. The release workflow re-runs the guardrails, checks the tag against the
    README, builds the PDF, checks the PDF text, and attaches it to the GitHub release.
-6. Build locally with `scripts/build.sh --downloads` (needs pandoc and weasyprint).
+6. Build locally with `scripts/build.sh --downloads` (needs pandoc and weasyprint). Another edition
+   (own title, author, footer, file list, extra chapters) is built from a repository that holds
+   this one as a git submodule: `kit/scripts/build.sh --config edition.conf`.
