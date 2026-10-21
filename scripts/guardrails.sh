@@ -59,7 +59,7 @@ done
 [ $phits -eq 0 ] && ok "no secrets, e-mails, IPs or internal hosts" || fail "sensitive patterns found"
 
 if command -v gitleaks >/dev/null; then
-  gitleaks detect --no-banner --redact -q --source . && ok "gitleaks: clean" || fail "gitleaks found secrets"
+  gitleaks git --no-banner --redact --log-level error . && ok "gitleaks: clean" || fail "gitleaks found secrets"
 else
   [ -n "${CI:-}" ] && fail "gitleaks not installed" || echo "! gitleaks not installed locally — skipped"
 fi
