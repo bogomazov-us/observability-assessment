@@ -15,6 +15,7 @@ KIT_FILES=(
   templates/report.md
   templates/roadmap.md
   templates/commitment-baseline.md
+  templates/review.md
   templates/spec-set/README.md
   templates/spec-set/spec-readme.md
   templates/spec-set/userjourneys.md
@@ -26,5 +27,6 @@ KIT_FILES=(
   templates/spec-set/dashboards.md
   templates/spec-set/runbooks/function.md
   practice/building-the-practice.md
+  practice/pilot.md
   backlog.md
 )

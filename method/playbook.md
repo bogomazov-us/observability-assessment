@@ -44,6 +44,7 @@ How an assessment is actually run. Each step names its output and the template b
   [getting-started.md](getting-started.md).
 - **Every finding has a source and a "why it matters / what follows".**
 - **Reviews in rounds.** Significant deliverables go through written review rounds with verdicts;
-  the final round states what is approved and what is still evidence to collect.
+  the final round states what is approved and what is still evidence to collect. Round record
+  and checklists: `templates/review.md`.
 - **Client confidentiality.** Nothing from one client goes into another client's deliverable;
   reuse goes through this kit, sanitized.

@@ -29,4 +29,5 @@ assessment. Six moves.
 
 - Name two or three shadow candidates for the next assessment.
 - One recorded walkthrough of this kit; questions go to a shared channel and a weekly office hour.
-- Run the next assessment with this kit and fill `backlog.md` from what was missing.
+- Run the next assessment with this kit as a [pilot](pilot.md) and fill `backlog.md` from its
+  help log.

@@ -12,7 +12,8 @@ what every step below produces, on a fictional client.
    - `templates/intake-questionnaire.md` and `templates/data-request.md` — send both in week one;
    - `templates/finding.md` — one file or one section per finding;
    - `templates/report.md` and `templates/roadmap.md` — fill in during the last week;
-   - `templates/spec-set/` — only if a Blueprint follows.
+   - `templates/spec-set/` — only if a Blueprint follows;
+   - `templates/review.md` — one copy per deliverable and review round.
 3. Create a facts ledger: a table with ID, fact, status, source, date. Any tool works — a
    Markdown file in the repository is enough. A full 00–09 knowledge-base structure helps on
    long engagements but is optional.
@@ -45,12 +46,13 @@ For the focused format: kick-off, three or four interviews, read-out.
 
 | Role | Focused | Full |
 |---|---|---|
-| Lead (accountable, writes the report) | full time | full time |
+| Lead (accountable, writes the report) | half time | two-thirds time |
 | Observability engineer (tool and code evidence) | full time | full time |
 | Architect | review of findings | part time, from week 2 |
 
-Calibrate the effort on your own engagements: the kit does not yet carry an estimation model
-(backlog).
+Effort by role and phase, and how it grows with journeys, services and tools, is in
+[estimation.md](estimation.md). Its values are a starting calibration: record your actual days
+and feed them back. A first assessment led by someone new runs as a [pilot](../practice/pilot.md).
 
 ## 5. What "finished" looks like
 

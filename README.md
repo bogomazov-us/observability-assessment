@@ -39,8 +39,8 @@ an assessment with it, under review once, and then alone.
 | [method/playbook.md](./method/playbook.md) | Step-by-step method, week by week | running an assessment |
 | [method/maturity-model.md](./method/maturity-model.md) | 12 dimensions × 5 levels with definitions | scoring |
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |
-| [templates/](./templates/) | Intake questionnaire, data request, finding, ADR, report, roadmap, commitment baseline, spec set with nine skeletons | producing artifacts |
-| [practice/](./practice/) | How to build an observability practice around the kit | staffing, succession |
+| [templates/](./templates/) | Intake questionnaire, data request, finding, ADR, report, roadmap, commitment baseline, review rounds and checklists, spec set with nine skeletons | producing artifacts |
+| [practice/](./practice/) | How to build an observability practice around the kit; the pilot protocol for a new lead | staffing, succession |
 | [backlog.md](./backlog.md) | What the kit still lacks | planning kit work |
 
 ## Releases
