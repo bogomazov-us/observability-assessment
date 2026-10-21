@@ -2,6 +2,8 @@
 # the guardrails fail on an unlisted file.
 KIT_FILES=(
   README.md
+  method/getting-started.md
+  example/worked-example.md
   offerings.md
   method/playbook.md
   method/maturity-model.md
@@ -13,6 +15,15 @@ KIT_FILES=(
   templates/roadmap.md
   templates/commitment-baseline.md
   templates/spec-set/README.md
+  templates/spec-set/spec-readme.md
+  templates/spec-set/userjourneys.md
+  templates/spec-set/signals.md
+  templates/spec-set/error-taxonomy.md
+  templates/spec-set/slo-alerts.md
+  templates/spec-set/instrumentation-contract.md
+  templates/spec-set/synthetics.md
+  templates/spec-set/dashboards.md
+  templates/spec-set/runbooks/function.md
   practice/building-the-practice.md
   backlog.md
 )

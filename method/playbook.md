@@ -7,7 +7,7 @@ How an assessment is actually run. Each step names its output and the template b
 1. **Diagnosis over outcome count.** A start/outcome pair per journey tells you *that* something
    broke, not *where*. Signals are defined per business function (sign-in authenticate, search
    request, booking hold, booking complete…), each with typed failures.
-2. **Expected is not failure.** Half of "errors" are the product working: wrong password, no
+2. **Expected is not failure.** Many "errors" are the product working: wrong password, no
    availability, a business refusal. Classify every code: expected / failure / caller defect /
    ambiguous / unknown. Unknown counts as bad until classified.
 3. **Evidence levels.** A signal is *present* only with evidence: seen in the browser, seen in the
@@ -19,7 +19,7 @@ How an assessment is actually run. Each step names its output and the template b
 6. **Build on the client's work.** Most clients already ran an investigation or have an internal
    tool. Position the assessment as building on it, or it is seen as a repeat.
 
-## Week by week (six-week full format; compress for scrappy)
+## Week by week (six-week full format; compress for the focused one)
 
 | # | Step | How | Output | Template |
 |---|---|---|---|---|
@@ -40,7 +40,8 @@ How an assessment is actually run. Each step names its output and the template b
 
 - **One knowledge base per engagement** (00–09 structure: engagement, state, findings,
   decisions, risks, actions, deliverables, client input, technical, comms) with a status-carrying
-  facts ledger. Set up with the `kb-init` skill.
+  facts ledger. A Markdown table in the engagement repository is enough to start; see
+  [getting-started.md](getting-started.md).
 - **Every finding has a source and a "why it matters / what follows".**
 - **Reviews in rounds.** Significant deliverables go through written review rounds with verdicts;
   the final round states what is approved and what is still evidence to collect.

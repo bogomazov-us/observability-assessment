@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.1.0 | [CC BY 4.0](./LICENSE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.2.0 | [CC BY 4.0](./LICENSE) |
 
 A reusable kit for running observability / SRE assessments without the original authors in the
 room: the method, the templates, the offerings and the people model behind them.
@@ -32,11 +32,13 @@ an assessment with it, under review once, and then alone.
 
 | Folder | What | Read when |
 |---|---|---|
+| [method/getting-started.md](./method/getting-started.md) | First assessment with the kit: what to copy, fill, hold | before day one |
+| [example/worked-example.md](./example/worked-example.md) | One fictional engagement, findings to acceptance | before day one |
 | [offerings.md](./offerings.md) | The three formats we sell: Assessment, Blueprint, Implementation | scoping a request |
 | [method/playbook.md](./method/playbook.md) | Step-by-step method, week by week | running an assessment |
 | [method/maturity-model.md](./method/maturity-model.md) | 12 dimensions × 5 levels with definitions | scoring |
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |
-| [templates/](./templates/) | Intake questionnaire, data request, finding, ADR, report, roadmap, commitment baseline, spec set | producing artifacts |
+| [templates/](./templates/) | Intake questionnaire, data request, finding, ADR, report, roadmap, commitment baseline, spec set with nine skeletons | producing artifacts |
 | [practice/](./practice/) | How to build an observability practice around the kit | staffing, succession |
 | [backlog.md](./backlog.md) | What the kit still lacks | planning kit work |
 

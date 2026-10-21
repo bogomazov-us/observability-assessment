@@ -6,7 +6,7 @@ without the authors.
 | | **Assessment** | **Blueprint** | **Implementation + hypercare** |
 |---|---|---|---|
 | Question answered | Where are we, what hurts, what to do first? | What exactly do we build, and how do we know it works? | Build it, prove it on stage, run it through go-live |
-| Duration | 2–3 weeks (scrappy) or 6 weeks (full) | 3–4 weeks after an assessment | 6–10 weeks to go-live + hypercare to BAU |
+| Duration | 2–3 weeks (focused) or 6 weeks (full) | 3–4 weeks after an assessment | 6–10 weeks to go-live + hypercare to BAU |
 | Inputs from the client | Access to code, monitoring tool (read-only), ticketing; 5–8 stakeholder interviews; incident history | Assessment outputs; product owner for SLOs; tier-1 journeys agreed | Back-end and front-end developers; platform access; hypercare rota |
 | Outputs | Current → future → gap → plan; maturity score; top findings with evidence; 30/60/90 plan | Specification set (journeys, signals, error taxonomy, SLOs and alerts, instrumentation contract, synthetics, dashboards, runbooks); roadmap with milestones | Working signals, dashboards, shadow alerts with runbooks, release check; acceptance evidence |
 | Done when | Report accepted; decisions on the next step taken | Spec approved for implementation after review rounds | Acceptance evidence demonstrated; go/no-go taken |
@@ -24,7 +24,7 @@ Proven shape (sold as fixed fee):
 5. **Operationalize** — alert, ownership and runbook model; release check.
 6. **Executive roadmap** — roadmap, 30/60/90 plan, decision request.
 
-## Scrappy assessment, two to three weeks
+## Focused assessment, two to three weeks
 
 When the buyer asks for something fast: current → future → gap → plan on the top journeys, RAG
 thresholds, severity tiers. Deliver the format the buyer asked for — a comprehensive strategy

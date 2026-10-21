@@ -1,7 +1,9 @@
 # Specification set — `docs/observability/` in the client repository
 
 The Blueprint output. Lives in the client's repository next to the architecture docs, so it
-changes with the code. Nine documents. A worked example will be added as a sanitized case study (backlog #1).
+changes with the code. Nine documents; a skeleton for each sits next to this file
+(`spec-readme.md` becomes the client's `README.md`, `runbooks/function.md` one runbook per
+function). The [worked example](../../example/worked-example.md) shows them filled in for one journey.
 
 | File | Answers | Reader | Must contain |
 |---|---|---|---|
