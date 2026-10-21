@@ -35,6 +35,7 @@ an assessment with it, under review once, and then alone.
 | [method/getting-started.md](./method/getting-started.md) | First assessment with the kit: what to copy, fill, hold | before day one |
 | [example/worked-example.md](./example/worked-example.md) | One fictional engagement, findings to acceptance | before day one |
 | [offerings.md](./offerings.md) | The three formats we sell: Assessment, Blueprint, Implementation | scoping a request |
+| [method/estimation.md](./method/estimation.md) | Effort by role per format, increments per journey, service and tool; capacity check | pricing a proposal |
 | [method/playbook.md](./method/playbook.md) | Step-by-step method, week by week | running an assessment |
 | [method/maturity-model.md](./method/maturity-model.md) | 12 dimensions × 5 levels with definitions | scoring |
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |

@@ -4,7 +4,7 @@
 |---|---|---|---|
 | 1 | ~~Neutral worked example~~ — done in 0.2.1: `example/worked-example.md` (fictional) | New leads learn from an example faster than from templates | done |
 | 2 | ~~Spec-set file skeletons~~ — done in 0.2.1: `templates/spec-set/` | Today only the README table exists | done |
-| 3 | Estimation model per offering (effort by role, by number of journeys and tools) | Sales cannot price without the authors | high |
+| 3 | ~~Estimation model per offering~~ — done, unreleased: `method/estimation.md` (starting values; calibrate after the pilot) | Sales cannot price without the authors | done |
 | 4 | Stack-agnostic collection scripts (code scan for RUM, error path, correlation; tool inventory export for Dynatrace, New Relic, Datadog, OTel) | Week-one speed | medium |
 | 5 | SOW / acceptance template for each offering | Contracting | medium |
 | 6 | Privacy and PII checklist for telemetry | Recurring blocker | medium |

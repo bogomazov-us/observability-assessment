@@ -5,6 +5,7 @@ KIT_FILES=(
   method/getting-started.md
   example/worked-example.md
   offerings.md
+  method/estimation.md
   method/playbook.md
   method/maturity-model.md
   method/lessons.md
