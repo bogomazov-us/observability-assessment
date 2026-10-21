@@ -14,7 +14,7 @@ someone has looked at the evidence it cites.
 | Every drafted claim cites its evidence: the query text and its time range, file:line, or the export file | A reviewer can re-run it without asking the agent |
 | No agent writes to the client's monitoring configuration, code or tickets | Write access is a separate, client-owned decision, outside the assessment |
 | The client's own AI-ops tools are inputs, not competitors | Build on the client's work (playbook, principle 6) |
-| The agent reads only the paths and systems its prompt lists, and its permissions enforce it | Scope is a boundary, not a suggestion |
+| The agent reads only the paths and systems its prompt lists and makes no network call it does not list; its permissions enforce both | Scope is a boundary, not a suggestion; a prompt alone was ignored once |
 | A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
 | The owner's answer is recorded in the client's decision register before any document cites it | A decision nobody can find is read by a reviewer as a proposal |
 | Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
@@ -40,8 +40,16 @@ Every drafted claim names its window and its place, and says no more than its ch
 is not detection; absence of data is not a defect by itself; an alarm OK by its missing-data
 setting is reported as such; a total read at account or service level is not attributed to the
 scope; a difference is not a cause; defined in code is not emitted; a document's statement
-carries its date and is not the current state. The wording rules are in the
+carries its date and is not the current state; a claim about a mechanism covers each way it
+runs; a measurement names its method; a passing check shows only what it ran. The wording rules are in the
 [stage 1 prompt](../tools/agent/stage-1-inventory.md) and apply at every stage.
+
+## The review bundle is built from what is cited
+
+A reviewer checks a chain: the target cites an inventory row, the row cites its evidence. The
+documents handed for review are generated from the committed versions they cite, each states
+its commit, and the bundle includes the confirmed baseline the document relies on. A bundle
+with an older baseline cannot be checked and is returned.
 
 ## Blind spots are registered when they are confirmed
 

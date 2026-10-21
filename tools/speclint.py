@@ -18,6 +18,41 @@ except ImportError:  # pragma: no cover
     sys.stderr.write("speclint: PyYAML is required (pip install pyyaml)\n")
     sys.exit(2)
 
+
+
+class _Loader(yaml.SafeLoader):
+    """Safe loader that keeps every repeated mapping key it meets.
+
+    PyYAML keeps the last value of a repeated key and drops the others without a word, so a
+    second `good:` hides the first and a second `id:` renames a row. The linter reports them.
+    """
+
+    def __init__(self, stream):
+        super().__init__(stream)
+        self.repeated = []
+
+    def construct_mapping(self, node, deep=False):
+        seen = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            try:
+                if key in seen:
+                    self.repeated.append((key_node.start_mark.line + 1, key))
+                seen.add(key)
+            except TypeError:  # unhashable key: construct_mapping reports it
+                pass
+        return super().construct_mapping(node, deep=deep)
+
+
+def load(fh):
+    """The document and its repeated keys as (line, key)."""
+    loader = _Loader(fh)
+    try:
+        return loader.get_single_data(), loader.repeated
+    finally:
+        loader.dispose()
+
+
 CLASSES = {"expected", "failure", "caller_defect", "ambiguous", "unknown", "none"}
 SIGNAL_STATES = {"live", "to_build"}
 ALERT_STATES = {"shadow", "paging"}
@@ -330,7 +365,7 @@ def main():
 
     try:
         with open(args.spec, encoding="utf-8") as fh:
-            doc = yaml.safe_load(fh)
+            doc, repeated = load(fh)
     except OSError as e:
         sys.stderr.write("speclint: %s\n" % e)
         return 2
@@ -339,6 +374,9 @@ def main():
         return 2
 
     lint = Linter(args.spec, args.check_files)
+    for line, key in repeated:
+        lint.err("line %d" % line, "SL020", "key %r repeated in one mapping; only the last "
+                 "value would be read" % key)
     lint.run(doc)
     for sev, where, rule, msg in lint.findings:
         print("%s: %s: %s %s: %s" % (args.spec, where or "(root)", rule, sev, msg))

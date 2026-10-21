@@ -80,6 +80,15 @@ Each claim says what was looked at, and no more:
 - **A document's statement has a date.** Client documents mix past and present. Quote a
   statement with the document's date, and never carry it into the current state without
   live evidence.
+- **A mechanism runs in more than one way.** "Each run writes a record" holds only after every
+  way it runs was read: full, partial or filtered runs, stop on the first error, continue on
+  error, dry run, offline, killed. List the modes from the options and the error branches,
+  and say per mode what is written; when a mode was not read, say so.
+- **A measurement names its method.** Say which tool and settings produced a number when they
+  change it — sampling, a default depth, a window. An explanation that goes beyond what was
+  measured ("only a restart would help") is a hypothesis until something shows it.
+- **A passing check shows what it ran.** A green pipeline or test suite covers the paths it
+  exercised; say which. What a pipeline runs is read from its steps, not from a job name.
 
 ## Output
 
@@ -96,8 +105,8 @@ Each claim says what was looked at, and no more:
 
 - [ ] Every row has a stable id and one status; the counts sum to the number of rows.
 - [ ] Every claim names its window and place, and its source.
-- [ ] No claim says more than its check: evaluation, absence, missing-data states, totals and
-      causes are worded as above.
+- [ ] No claim says more than its check: evaluation, absence, missing-data states, totals,
+      causes, modes of a mechanism, measurement methods and passing checks are worded as above.
 - [ ] Nothing secret or identifying was printed or written.
 - [ ] Nothing was written outside the engagement repository.
 

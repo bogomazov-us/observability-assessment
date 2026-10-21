@@ -62,9 +62,15 @@ into business functions, and the error taxonomy of each function. You draft; a p
 7. **Reconciliation is per operation type.** For each ambiguous outcome say, per create,
    update and delete, what evidence proves the operation took effect, and whether the outcome
    of the attempt and of its audit record are settled together. "Run it on a schedule" is not a
-   reconciliation path. Draft the acceptance scenarios: response lost after the operation
-   landed (per type), the source of truth unavailable during reconciliation, the record changed
-   by someone else, and a re-run that leaves the result unchanged.
+   reconciliation path. The evidence must link the change to **this** operation — its key, or a
+   stamp it wrote and kept: a timestamp, equal fields or a deletion that any other writer (a
+   person in the source of truth, an import) could have produced proves the state, not the
+   operation, and leaves the outcome undetermined. An operation of several mutations is
+   settled per mutation, and succeeds only when every one is proven. Draft the acceptance
+   scenarios: response lost after the operation landed (per type), the source of truth
+   unavailable during reconciliation, the record changed by someone else, a composite
+   operation whose first mutation landed and second did not, and a re-run that leaves the
+   result unchanged.
 8. **Layers are mapped, not merged.** When the client keeps business functions apart from
    monitoring functions (or synthetic steps apart from both), keep the layers and draft an
    explicit mapping. The mapping is checked by exact ids in both directions — every monitoring
@@ -76,6 +82,14 @@ into business functions, and the error taxonomy of each function. You draft; a p
    pick a spelling. A list of alerts or checks separates live (seen in the estate),
    historical (removed, when) and planned (required, not built); a planned one is never listed
    as running.
+10. **No traffic is not missing telemetry.** An SLI over counts has three window states: traffic
+    present, no traffic (confirmed by a telemetry health signal), telemetry unknown. A window
+    with telemetry unknown is neither good nor valid and is counted apart; with no valid
+    window the SLO reads "no estimate", not 100 %. Draft the health signal.
+11. **Readings are marked.** Where an owner's decision leaves a parameter open and you fill it
+    from another source, mark the value as your reading, cite the source, and list it for
+    the owner. A decision fixes what was decided; it does not make weak evidence sufficient,
+    and the reviewer still checks the evidence.
 
 ## Output
 
@@ -102,7 +116,11 @@ into business functions, and the error taxonomy of each function. You draft; a p
 - [ ] Every SLO and alert is `proposed`.
 - [ ] Every function's success names its states, the empty case and the time bound, or an open
       question for the owner.
-- [ ] Every ambiguous outcome is reconciled per operation type, with acceptance scenarios.
+- [ ] Every ambiguous outcome is reconciled per operation type, with acceptance scenarios; the
+      evidence links the change to the operation; composite operations are settled per
+      mutation.
+- [ ] Count SLIs separate no traffic from telemetry unknown; no valid window is "no estimate".
+- [ ] Every value filled in where a decision left it open is marked as a reading.
 - [ ] When an owner's decision changed a definition, every source that stated the old one was
       searched and updated; none still states it.
 - [ ] Every function and taxonomy row has a source comment.

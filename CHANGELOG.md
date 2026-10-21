@@ -35,6 +35,19 @@ GitHub are taken from the section of the tagged version.
   document's statement carries its date. Review checklist and spec skeleton follow.
 - An owner's answer given in a working session is recorded in the client's decision register
   before a document cites it; alert and check lists separate live, historical and planned.
+- **From the review of the first stage 2 and of the changes it led to:**
+  - Proof that an operation took effect links the change to that operation (its key or its
+    own stamp); a state any other writer could have produced leaves it undetermined.
+    Composite operations are settled per mutation and get their own acceptance scenario.
+  - Count SLIs separate no traffic from telemetry unknown; with no valid window an SLO reads
+    "no estimate". A value an agent fills in where a decision left it open is marked as its
+    reading; a decision does not stand in for evidence.
+  - Claims: a mechanism is described per way it runs; a measurement names its method; a
+    passing check shows only what it ran.
+  - The review bundle is generated from the committed versions it cites, with their commits
+    and the confirmed baseline. Agent permissions enforce network calls as well as paths.
+  - Spec linter: a key repeated in one mapping is an error (SL020); YAML would keep the last
+    value without a word.
 
 ## 0.5.0 — 2026-10-21
 

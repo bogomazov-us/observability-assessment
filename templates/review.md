@@ -80,7 +80,14 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Layers (business, monitoring, synthetic) are mapped by exact ids in both directions;
       "defined in code" is not shown as live; dated document statements are not current state.
 - [ ] Alert and check lists separate live, historical and planned.
-- [ ] Every owner decision the document relies on is cited from the decision register.
+- [ ] Every owner decision the document relies on is cited from the decision register; a
+      decision does not stand in for evidence — the proof it relies on is checked too.
+- [ ] Proof that an operation took effect links the change to that operation (key, own
+      stamp); composite operations are settled per mutation and have their own scenario.
+- [ ] Count SLIs separate no traffic from telemetry unknown; zero valid windows is "no
+      estimate".
+- [ ] The review bundle is built from the committed versions the document cites, each with
+      its commit, and includes the confirmed baseline it cites.
 - [ ] Unagreed targets, owners and thresholds are `proposed`; a clean lint is not taken as
       acceptance.
 

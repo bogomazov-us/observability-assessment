@@ -1,0 +1,8 @@
+# A repeated key passes as the last value; the first is dropped without a word. SL020 names it.
+# expect: SL020
+journeys:
+  - id: J1
+    functions:
+      - id: F1
+        requirement: journey model, step 1
+        id: F2
