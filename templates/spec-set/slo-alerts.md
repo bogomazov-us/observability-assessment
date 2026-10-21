@@ -14,9 +14,11 @@
     classified;
   - real-user SLIs exclude test traffic; synthetic results may feed their own availability SLO,
     kept separate from real-user SLIs.
-- Every P1 alert has an owner, a runbook and a delivery test. A P1 pages on the bad predicate
-  minus the classes routed elsewhere, and the table says which: caller_defect usually goes to
-  the owning team as a ticket, not to the pager.
+- Every P1 alert has an owner, a runbook and a delivery test. A P1 pages on the bad predicate;
+  routing follows **impact, not class**. caller_defect goes to the owning team as a ticket while
+  it is below the P1 threshold, and pages like any failure when it blocks customers at P1
+  scale (a front-end bug that stops checkout is a P1, whoever fixes it). Ambiguous, unknown
+  and unclassified are kept as separate series, so the cause stays visible.
 - New alerts start in shadow: they fire into a review channel, not to the pager.
 
 ## SLOs
@@ -30,7 +32,7 @@
 
 | Alert | Condition | Grouping | Notifies | Runbook | State |
 |---|---|---|---|---|---|
-| [J1.1 failure burst] | [(failure + ambiguous + unknown) ÷ valid above 5 % for 10 min, at least 30 attempts; caller_defect routed to the owning team] | [per function] | [on-call rota] | `runbooks/<function>.md` | shadow / paging |
+| [J1.1 failure burst] | [bad ÷ valid above 5 % for 10 min, at least 30 attempts; caller_defect alone below 5 % → ticket to the owning team] | [per function] | [on-call rota] | `runbooks/<function>.md` | shadow / paging |
 
 ## Suppression
 

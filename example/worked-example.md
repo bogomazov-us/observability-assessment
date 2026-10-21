@@ -102,7 +102,7 @@ the provider's status answer.
 |---|---|---|---|
 | C2 | `checkout.payment.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M2) |
 | C3 | `checkout.order.result` | attempt_id, outcome, error_class, order_id | to build (M2) |
-| attempt | `checkout.attempt.result` | attempt_id, outcome (placed / refused / failed / ambiguous) | to build (M2) |
+| attempt | `checkout.attempt.result` | attempt_id, outcome (placed / refused / failed / ambiguous / unclassified) | to build (M2) |
 
 **Attempt outcome** — the two-level model, decided by the last operation that ran:
 
@@ -111,20 +111,26 @@ the provider's status answer.
 | C3 created the order | placed |
 | C1, C2 or C3 ended in an `expected` refusal and the customer left | refused |
 | C1, C2 or C3 ended in a `failure` (no hold, no money taken, or authorisation voided) | failed |
-| C1, C2 or C3 ended `ambiguous` or `unknown` (unclassified), or C2 approved and no C3 result within 10 minutes | ambiguous |
+| C1, C2 or C3 ended `ambiguous`, or C2 approved and no C3 result within 10 minutes | ambiguous |
+| C1, C2 or C3 ended in an `unknown` (not yet classified) code | unclassified: the outcome may well be known, the code is not; kept apart for diagnosis |
 | `caller_defect` on a duplicate submit | ignored; the original submit decides |
 
-An ambiguous attempt is reconciled by a job every 10 minutes: provider status and orders
-database → placed or failed (and the authorisation voided). Until then it counts as bad.
+An ambiguous attempt is reconciled by a job every 10 minutes. It reads the hold by attempt_id
+from `slots`, the payment status from the provider and the order from the orders database, and
+sets placed or failed. When the attempt did not reach an order, a hold it finds is released and
+an authorisation is voided. Until then the attempt counts as bad.
+
+An unclassified attempt is not reconciled: its code is classified (taxonomy, "Still to
+confirm"), and the attempt is recounted under its class.
 
 ## SLO and alert
 
 | Function | SLI (good ÷ valid) | Expected refusals | Target | Owner |
 |---|---|---|---|---|
-| Checkout attempt | placed ÷ (placed + failed + ambiguous), real users, 28 days | excluded: the customer's card or basket, not our service | 99.0 % | Head of e-commerce |
+| Checkout attempt | placed ÷ (placed + failed + ambiguous + unclassified), real users, 28 days | excluded: the customer's card or basket, not our service | 99.0 % | Head of e-commerce |
 
-Bad attempts are failed + ambiguous; an unclassified code already lands in ambiguous, and a
-caller defect never decides an attempt. P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at
+Bad attempts are failed + ambiguous + unclassified, each reported separately on the dashboard;
+a caller defect never decides an attempt. P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at
 least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts in shadow.
 
 ## Roadmap with effort
