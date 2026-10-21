@@ -84,7 +84,7 @@ obligation, not in our days.
 
 | Role | Days available = working days × allocation |
 |---|---|
-| Lead | full assessment: 30 × ⅔; focused: 10–15 × ½ |
+| Lead | at most half time: full assessment 30 × ½; focused 10–15 × ½ |
 | Observability engineer | calendar × 1 |
 | Architect | as named in the proposal, usually part time |
 
@@ -93,8 +93,8 @@ starting values:
 
 | Scope | Lead | Obs. engineer | Fits |
 |---|--:|--:|---|
-| Full assessment, base | 17 of 20 | 22 of 30 | yes |
-| Full assessment at the limit (5 journeys, 10 services, 2 tools) | 21.5 of 20 | 32.5 of 30 | no: engineer 2.5 days over, lead 1.5. The limit is kept (owner, 2026-10-21); the top of the range is quoted with a second engineer for 3 days and the lead's excess in contingency |
+| Full assessment, base | 17 of 15 | 22 of 30 | no: lead 2 days over |
+| Full assessment at the limit (5 journeys, 10 services, 2 tools) | 21.5 of 15 | 32.5 of 30 | no: lead 6.5 days over, engineer 2.5. The limit is kept (owner, 2026-10-21); the engineer's excess is a second engineer for 3 days. How the lead's excess is covered is open |
 | Focused, base, 2 weeks | 6 of 5 | 7 of 10 | lead over by 1 day: quote 3 weeks, or the lead at ⅗ |
 | Focused at the limit (3 journeys, 5 services), 3 weeks | 8 of 7.5 | 10 of 15 | lead over by half a day: within contingency |
 
@@ -110,7 +110,8 @@ starting values:
 
 Larkfield (full assessment): 1 journey, 3 services, 1 tool, stage and production, 2 rounds,
 golden-journey proof with a client developer. That is the base: lead 17, engineer 22,
-architect 6 — 45 person-days, inside six weeks at the allocations above.
+architect 6 — 45 person-days. The engineer and the architect fit six weeks; the lead, at half
+time, is 2 days over (capacity check).
 
 ## Calibrating
 

@@ -46,7 +46,7 @@ For the focused format: kick-off, three or four interviews, read-out.
 
 | Role | Focused | Full |
 |---|---|---|
-| Lead (accountable, writes the report) | half time | two-thirds time |
+| Lead (accountable, writes the report) | half time | half time |
 | Observability engineer (tool and code evidence) | full time | full time |
 | Architect | review of findings | part time, from week 2 |
 

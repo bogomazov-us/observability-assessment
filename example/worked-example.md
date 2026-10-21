@@ -69,7 +69,7 @@ page counts as a success.
 | 1 Business-function model | 2 | journeys listed, no functions | product wiki; interviews | medium |
 | 3 Error semantics | 2 (partial 3) | classified on C1 only | `slots` and `payments` error handlers | high |
 | 5 Business outcome data | 2 | outcomes reconstructable from the orders database by hand | ad-hoc query | high |
-| 6 SLOs | 1 | none | — | high |
+| 6 SLOs | 1 | none | SLO export from the tool: empty; contracts and wiki: none | high |
 | 7 Alert quality | 2 | per-service 5xx alerts, no owners | alert export | high |
 | 12 Operational analytics | N/A | client does not intend to use it this year | sponsor, kick-off | — |
 
@@ -132,7 +132,9 @@ confirm"), and the attempt is recounted under its class.
 
 Bad attempts are failed + ambiguous + unclassified, each reported separately on the dashboard;
 a caller defect never decides an attempt. P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at
-least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts in shadow.
+least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts in shadow. Its owner is decided with
+Larkfield by their maturity and organisation (checkout team, platform SRE or operations centre);
+the example leaves it open, and the alert stays in shadow until it is set.
 
 ## Roadmap with effort
 

@@ -117,8 +117,8 @@ def check(doc, rep):
                 rep.error(where, "M13", f"evidence[{j}] needs type ({'/'.join(EVIDENCE_TYPES)}) and ref")
                 continue
             types.append(e["type"])
-        if level >= 2 and not ev:
-            rep.error(where, "M07", "a score above 1 names its evidence")
+        if not ev:
+            rep.error(where, "M07", "every score names its evidence; level 1 names the search that came back empty")
         if level > 2 and not any(t in TOOL_EVIDENCE for t in types):
             rep.error(where, "M08", "above level 2 needs tool evidence (export, query, trace, code, config); interviews and documents cap at 2")
 

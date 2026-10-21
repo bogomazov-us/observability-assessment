@@ -15,7 +15,8 @@ Report it as a profile, never as one number.
    only some functions give **partial**: score the level below and write the coverage
    ("level 3 on 2 of 5 functions").
 3. **Evidence per score.** Each score names its evidence: an export, a query, a trace, a code
-   path, a configuration. Interviews and documents alone are not enough to go above level 2.
+   path, a configuration. Level 1 too: the export or query that came back empty — a level
+   nobody looked for is *not scored* (rule 4), not level 1. Interviews and documents alone are not enough to go above level 2.
 4. **Not scored** when the evidence could not be obtained (no access, no answer in time). It is
    not level 1; it is a gap, and it goes into the findings with the reason.
 5. **N/A** when the dimension does not apply and the client agrees, with one sentence why

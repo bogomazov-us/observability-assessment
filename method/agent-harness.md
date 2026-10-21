@@ -19,7 +19,7 @@ someone has looked at the evidence it cites.
 
 | # | Stage | Agent does | Tool | Person confirms | Playbook step |
 |---|---|---|---|---|---|
-| 1 | Inventory | Runs the exporters and the code scan; queries the tool for what the exports miss | [collect.md](../tools/collect.md) | Exports reconcile with each other (counts, names) | 3, 4 |
+| 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server | [collect.md](../tools/collect.md) | Exports reconcile with each other (counts, names) | 3, 4 |
 | 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers | `observability-spec.yml` skeleton | Each function and class against code and a captured request | 6, 7 |
 | 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts | [speclint.md](../tools/speclint.md) | Each "live" by browser, agent or tenant evidence | 7, 8 |
 | 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence; sets the status | 8 |

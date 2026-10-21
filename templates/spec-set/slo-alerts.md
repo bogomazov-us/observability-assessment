@@ -20,6 +20,9 @@
   scale (a front-end bug that stops checkout is a P1, whoever fixes it). Ambiguous, unknown
   and unclassified are kept as separate series, so the cause stays visible.
 - New alerts start in shadow: they fire into a review channel, not to the pager.
+- **Who owns an alert is decided with the client**, by their maturity and organisation: the team
+  that owns the service, a platform SRE team, or an operations centre that escalates. Until it
+  is decided, the alert stays in shadow and the owner is an open question with a date.
 
 ## SLOs
 

@@ -37,6 +37,9 @@ dimensions:
     status: scored
     level: 1
     coverage: none
+    evidence:
+      - {type: export, ref: "SLO list, empty"}
+      - {type: document, ref: "no SLO in contracts or wiki"}
     confidence: high
   - number: 7
     status: scored

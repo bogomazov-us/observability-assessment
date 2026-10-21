@@ -23,7 +23,7 @@ Python 3.9+ and PyYAML.
 | M04 | Status is scored, partial, not_scored or na | 2, 4, 5 |
 | M05 | A scored level is an integer 1–5 | 2 |
 | M06 | Partial has the coverage written out and a partial level above the scored one | 2 partial |
-| M07 | A score above 1 names its evidence (level 1 describes an absence and may have none) | 3 evidence per score |
+| M07 | Every score names its evidence; level 1 names the search that came back empty | 3 evidence per score; 4 |
 | M08 | Above level 2 at least one piece of tool evidence: export, query, trace, code, config | 3 |
 | M09 | Low confidence with a level above 2 | 6 confidence |
 | M10 | Confidence is high, medium or low | 6 |
@@ -42,7 +42,7 @@ From the worked example's extract (`tools/tests/fixtures/maturity/worked-example
 | 2 Telemetry coverage | not scored | extract only | — | — |
 | 3 Error semantics | 2 (partial 3) | classified on C1 only | `slots` and `payments` error handlers | high |
 | 5 Business outcome data | 2 | outcomes reconstructable from the orders database by hand | ad-hoc query | high |
-| 6 SLOs | 1 | none | — | high |
+| 6 SLOs | 1 | none | export: SLO list, empty; query: no SLO in contracts or wiki | high |
 | 7 Alert quality | 2 | per-service 5xx alerts, no owners | alert export | high |
 
 (Rows for the other not-scored dimensions omitted here.) Below the table:

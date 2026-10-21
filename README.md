@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.3.0 | [CC BY 4.0](./LICENSE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.4.0 | [CC BY 4.0](./LICENSE) |
 
 A reusable kit for running observability / SRE assessments without the original authors in the
 room: the method, the templates, the offerings and the people model behind them.
@@ -26,7 +26,7 @@ an assessment with it, under review once, and then alone.
 4. **The output is implementable.** An assessment ends in a specification and a roadmap with
    demonstrable milestones, not a list of recommendations.
 5. **Tooling.** A structured engagement knowledge base with RAG access, and AI agents with
-   read-only access to the monitoring tool (e.g. Dynatrace MCP) to speed up inventory and checks.
+   read-only access to the monitoring tool (a read-only API or MCP server) to speed up inventory and checks.
 
 ## Map
 
