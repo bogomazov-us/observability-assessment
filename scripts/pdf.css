@@ -41,3 +41,4 @@ pre { background: #f3f4f6; padding: 3mm; font-size: 8.5pt; white-space: pre-wrap
 pre code { background: none; padding: 0; }
 a { color: #0f766e; }
 .id { white-space: nowrap; }
+table.kv td:first-child { width: 22%; overflow-wrap: normal; font-weight: 600; }

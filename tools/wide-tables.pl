@@ -8,7 +8,11 @@ s{<table(?![^>]*class="wide")([^>]*)>(.*?)</table>}{
   my ($attr, $body) = ($1, $2);
   my ($head) = $body =~ m{<tr[^>]*>(.*?)</tr>}s;
   my $cols = () = ($head // '') =~ m{<t[hd][\s>]}g;
-  $cols > 6 ? qq{<table class="wide"$attr>$body</table>} : qq{<table$attr>$body</table>}
+  # A two-column table with an empty header is a list of labels and values ("Checked", "Main
+  # limits"): its label column keeps its words whole.
+  my $kv = $cols == 2 && ($head // '') !~ m{<th[^>]*>\s*[^<\s]};
+  $cols > 6 ? qq{<table class="wide"$attr>$body</table>}
+    : $kv ? qq{<table class="kv"$attr>$body</table>} : qq{<table$attr>$body</table>}
 }gse;
 s{>([^<]+)<}{
   my $t = $1;

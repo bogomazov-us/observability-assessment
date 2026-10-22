@@ -3,6 +3,12 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Report PDF:** a two-column table with an empty header — a list of labels and values such as
+  "Checked", "Main limits", "Next step" — keeps its label column whole; a long value had squeezed
+  the labels until they broke letter by letter.
+
 ## 0.8.0 — 2026-10-22
 
 - **One report for the whole assessment**, from the first engagement, where the client was
