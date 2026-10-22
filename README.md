@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.6.1 | [CC BY 4.0](./LICENSE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.6.2 | [CC BY 4.0](./LICENSE) |
 
 A reusable kit for running observability / SRE assessments without the original authors in the
 room: the method, the templates, the offerings and the people model behind them.

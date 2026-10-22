@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.6.2 — 2026-10-21
 
 - **From the first stage 3 and its review:** speclint accepts the four signal states the stage-3
   prompt names — `live`, `differs`, `to_build`, `not_verifiable` — and SL002 asks for evidence
