@@ -57,6 +57,10 @@ mkdir -p "$(dirname "$OUT")"
 weasyprint -q -s "$HERE/report.css" -s "$TMP/page.css" "$TMP/report.html" "$OUT"
 
 FAIL=0
+# Form checks on the sources: no HTML for print effects; wide tables are named.
+HTML="$(perl -ne '$c=!$c if /^\s*```/; print "$ARGV:$.: $_" if !$c && /<\/?(div|span|br|p|table|font|style)\b/i' "${FILES[@]}")"
+[ -n "$HTML" ] && { echo "✗ HTML in the Markdown (print effects belong in the export style):"; echo "$HTML" | head -5; FAIL=1; }
+perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/ && !/^\|[\s:|-]+\|\s*$/) { $n=()=/\|/g; print "! $ARGV:$.: table of ".($n-1)." columns; at most four of running text\n" if $n-1>5 && !$seen{"$ARGV"}{$n}++ }' "${FILES[@]}"
 TEXT="$(pdftotext "$OUT" - | tr -s ' \n' ' ')"
 MISSING="$(grep -ohE "$IDS" "$TMP/src.md" | sort -u | while read -r id; do
   printf '%s' "$TEXT" | grep -qF -- "$id" || echo "$id"; done)"

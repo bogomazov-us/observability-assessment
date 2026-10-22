@@ -13,3 +13,7 @@ cp "$tmp/ok.md" "$tmp/hidden.md"; printf '\n<!-- E-099 -->\n' >> "$tmp/hidden.md
 if "$tool" --project Demo --stage 3 --version abc1234 --out "$tmp/h.pdf" "$tmp/hidden.md" >/dev/null; then
   echo "✗ an id missing from the PDF text: expected a failure"; exit 1; fi
 echo "✓ an id missing from the PDF text fails"
+cp "$tmp/ok.md" "$tmp/html.md"; printf '\n<div class="pb"></div>\n' >> "$tmp/html.md"
+if "$tool" --project Demo --stage 3 --version abc1234 --out "$tmp/x.pdf" "$tmp/html.md" >/dev/null; then
+  echo "✗ HTML in the Markdown: expected a failure"; exit 1; fi
+echo "✓ HTML in the Markdown fails"

@@ -23,6 +23,9 @@ GitHub are taken from the section of the tagged version.
   superseded decisions marked; at stage 3, what a signal count counts, separate fields for
   absent, differs, not verified and observed failure, and separate candidates for different
   fixes.
+- `tools/report-pdf.sh` also fails on HTML in the Markdown and names tables wider than five
+  columns; the review template gains a checklist for the report's form and the finding's new
+  fields, and the signal states read as speclint accepts them.
 
 ## 0.6.2 — 2026-10-21
 

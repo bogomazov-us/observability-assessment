@@ -158,4 +158,10 @@ short tables, lists, fenced code. No HTML inside the text for print effects.
 
 Build with `tools/report-pdf.sh`, then look at the result: ids broken across lines, tables,
 fonts and symbols, links, page numbers, headings, cut text. The script fails when an id cited
-in the sources cannot be found in the PDF's text.
+in the sources cannot be found in the PDF's text, when a font is not embedded, or when the
+Markdown carries HTML for print effects; it names tables of more than five columns.
+
+A good set: the reader understands the result from the first page; every material claim leads
+to its evidence and window; current decisions are not rebuilt from history; the Markdown reads
+without a special renderer and the PDF at normal zoom; what is decided, built and verified is
+clear apart.

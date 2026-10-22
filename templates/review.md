@@ -37,6 +37,19 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Confirmed blind spots are in the risk register with owners.
 - [ ] The re-run sample is reported as "n of n selected checks reproduced", not as accuracy.
 
+## Checklist — stage report form (`stage-report.md`)
+
+- [ ] A reader understands the result from the first page.
+- [ ] Every material claim leads to its evidence (`E-` id) and its window.
+- [ ] Current decisions are read in the report, not rebuilt from its history; superseded ones
+      are marked where cited.
+- [ ] Decision, implementation and verification are stated apart.
+- [ ] The decision register, the full spec and the progress log are cited by commit, not
+      reprinted; earlier ids are kept, new ones added without renumbering.
+- [ ] The Markdown reads without a special renderer; the PDF reads at normal zoom.
+- [ ] The PDF was looked at: ids not broken across lines, tables, symbols, links, page
+      numbers, headings, no cut text; `tools/report-pdf.sh` passed.
+
 ## Checklist — finding (`finding.md`)
 
 - [ ] One finding, one claim; the title states it.
@@ -47,6 +60,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] *What we see* holds facts only; opinions are in *why it matters*.
 - [ ] *Why it matters* names a customer or business consequence, not a tool property.
 - [ ] *What follows* has an action, an owner and the maturity dimension it moves.
+- [ ] Severity with its reason, confidence and limits, a closing criterion, and the three
+      statuses (decision, implementation, verification).
 - [ ] Nothing in it identifies another client.
 - [ ] No personal data in the evidence quoted (`templates/privacy-checklist.md`).
 
@@ -69,7 +84,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Ambiguous means the outcome is unknown, and each ambiguous outcome has a reconciliation
       path.
 - [ ] Refusals returned inside HTTP 200 are recognised.
-- [ ] Each signal has a state (live / to build) and the evidence that shows "live".
+- [ ] Each signal has a state (live / differs / to build / not verifiable) and the evidence
+      for every state but "to build".
 - [ ] No threshold on a metric that is not collected.
 - [ ] Every function has a stable id, its requirement source and its current state with
       inventory evidence; unknowns are kept.
