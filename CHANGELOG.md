@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.7.0 — 2026-10-22
 
 - **Stage reports in two levels, from the review of the first engagement's stages 1–3** (content
   rated ahead of form): a common skeleton, `templates/stage-report.md` — the result first, scope
