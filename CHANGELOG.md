@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.8.0 — 2026-10-22
 
 - **One report for the whole assessment**, from the first engagement, where the client was
   handed a dozen PDFs (stage reports, notes, question lists, batches, re-checks, plan, drafts):
