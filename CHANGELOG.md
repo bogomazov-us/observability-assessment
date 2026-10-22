@@ -3,6 +3,13 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Report PDF:** a short code token such as a commit hash stays on one line (a change-history cell
+  broke `8a71785` character by character); table headers break only between words, so a narrow
+  `Confidence` column keeps its header whole; `--stage "Stage 5"` no longer prints "stage Stage 5"
+  in the title and footer.
+
 ## 0.7.2 — 2026-10-22
 
 - **Ids stay whole in the PDF:** a narrow table column broke `F-06` at its hyphen, so the text

@@ -39,6 +39,8 @@ done
 [ -n "$PROJECT" ] && [ -n "$STAGE" ] && [ -n "$VERSION" ] && [ -n "$OUT" ] && [ ${#FILES[@]} -gt 0 ] || {
   echo "usage: report-pdf.sh --project NAME --stage STAGE --version COMMIT --out FILE.pdf FILE.md..." >&2; exit 2; }
 for f in "${FILES[@]}"; do [ -f "$f" ] || { echo "missing source: $f" >&2; exit 2; }; done
+# The footer and the title say "stage" themselves; "--stage 'Stage 5'" would print it twice.
+STAGE="${STAGE#[Ss]tage }"
 [ -n "$TITLE" ] || TITLE="Observability assessment — stage $STAGE"
 
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT

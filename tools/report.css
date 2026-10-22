@@ -31,6 +31,7 @@ th { text-align: left; border-bottom: 0.8pt solid #374151; font-weight: 600; }
 th, td { padding: 1.4mm 2mm; vertical-align: top; border-bottom: 0.3pt solid #d1d5db; }
 tr { break-inside: auto; }
 td, th { overflow-wrap: anywhere; hyphens: manual; }
+th { overflow-wrap: normal; }
 
 code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 9pt; overflow-wrap: anywhere; }
 pre { background: #f3f4f6; padding: 3mm; font-size: 8.5pt; white-space: pre-wrap; }

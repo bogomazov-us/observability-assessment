@@ -33,6 +33,7 @@ th { background: #0f766e; color: #fff; text-align: left; }
 th, td { padding: 1.5mm 2mm; vertical-align: top; border-bottom: 0.3pt solid #d1d5db; }
 tr { page-break-inside: avoid; }
 td, th { overflow-wrap: anywhere; }
+th { overflow-wrap: normal; }
 tbody tr:nth-child(even) td { background: #f3f6f5; }
 
 code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 8.5pt; background: #f3f4f6; padding: 0 1mm; }
