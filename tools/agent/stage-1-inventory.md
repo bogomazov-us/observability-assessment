@@ -103,8 +103,16 @@ Each claim says what was looked at, and no more:
 
 ## Output
 
-1. `inventory.md`: scope, sources read, the live verification table (class, object, status,
-   evidence), the status summary with its sum, the reconciliation, the code scan leads, and
+The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
+first, then scope and method, the main results, the records, decisions and open questions, and
+an evidence catalog of `E-` ids. Decision, implementation and verification are separate
+statuses. The progress log, review history, the decision register and the full spec travel
+with the report as files at a stated commit; the report cites them and does not reprint them.
+
+1. `inventory.md`: one page of result (scope, objects by status, material differences, what
+   was not checked), then the live verification table (class, object, status, evidence by
+   `E-` id — the commands and their output go to the evidence catalog), sources read as an
+   appendix, each snapshot with its commit or configuration revision, the status summary with its sum, the reconciliation, the code scan leads, and
    what could not be inventoried with the reason.
    In the reconciliation, a claim may cite the row id that holds its evidence instead of
    repeating the query; a claim with neither is not written.

@@ -3,6 +3,27 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Stage reports in two levels, from the review of the first engagement's stages 1–3** (content
+  rated ahead of form): a common skeleton, `templates/stage-report.md` — the result first, scope
+  and method, main results by stable id, records (observed, expected, difference, consequence,
+  evidence, confidence, limits, next action, done when), decisions and open questions, an
+  evidence catalog of `E-` ids, the changes of the version. History, the decision register, the
+  full spec and the progress log travel with the report as files at a commit, not reprinted.
+- Decision, implementation and verification are separate statuses everywhere; a finding also
+  carries severity with its reason, confidence and limits, and a closing criterion
+  (`templates/finding.md`).
+- One export for every stage report: `tools/report-pdf.sh` with `tools/report.css` (A4
+  portrait, 10.5 pt text, 9 pt tables, contents and bookmarks, repeated table headers, footer
+  with project, stage, version and page). It fails when an id cited in the sources is not in
+  the PDF's text or a font is not embedded. Tested in CI.
+- Stage prompts 1–4 ask for this form: one page of result first; commands in the evidence
+  catalog, not in the tables; the stage-2 notes written around the resulting contract with
+  superseded decisions marked; at stage 3, what a signal count counts, separate fields for
+  absent, differs, not verified and observed failure, and separate candidates for different
+  fixes.
+
 ## 0.6.2 — 2026-10-21
 
 - **From the first stage 3 and its review:** speclint accepts the four signal states the stage-3

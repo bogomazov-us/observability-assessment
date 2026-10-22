@@ -23,6 +23,7 @@ KIT_FILES=(
   tools/agent/stage-6-recommendations.md
   templates/intake-questionnaire.md
   templates/data-request.md
+  templates/stage-report.md
   templates/finding.md
   templates/report.md
   templates/executive-deck.md

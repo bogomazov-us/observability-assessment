@@ -81,18 +81,28 @@ each "live" and each detection claim.
 
 ## Output
 
+The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
+first, then scope and method, the main results, the records, decisions and open questions, and
+an evidence catalog of `E-` ids. Decision, implementation and verification are separate
+statuses. The progress log, review history, the decision register and the full spec travel
+with the report as files at a stated commit; the report cites them and does not reprint them.
+
 1. Updated `observability-spec.yml`: each signal's `state` and `evidence` from step 1; nothing
    else in the target changes. A target the gap shows unreachable is an open question for
    the owner, not an edit.
 2. `stage-3-gap.md`:
+   - first, five to seven results and their consequences;
    - signals: live / to build / differs / not verifiable, with counts that sum to the
-     signals, and the evidence per row;
+     signals and a line on what the count counts (signal rows bound to functions, not
+     necessarily distinct series), and the evidence per row; absent, differs, not verified
+     and an observed failure are separate fields;
    - SLIs computable today, with their readings, and the missing signals for the rest;
    - alerts: rule, inputs present, grouping, state;
    - the detection matrix (proven / scenario written / residual risk) and the scenarios;
    - the paging readiness table (shown / not shown per item);
    - telemetry health, carried questions, blind spots;
-   - stage-4 candidates: each gap with the evidence a finding would cite.
+   - stage-4 candidates: each gap with the evidence a finding would cite; gaps whose fixes
+     differ are separate candidates.
 3. `python3 tools/speclint.py <spec>`: no errors. A paging alert on a signal that is not live
    fails SL011.
 

@@ -51,11 +51,20 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
 
 ## Output
 
+The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
+first, then scope and method, the main results, the records, decisions and open questions, and
+an evidence catalog of `E-` ids. Decision, implementation and verification are separate
+statuses. The progress log, review history, the decision register and the full spec travel
+with the report as files at a stated commit; the report cites them and does not reprint them.
+
 1. One file per finding, `findings/F-NNN.md`, in the `finding.md` format: status
    *assumption*, today's date, source, evidence level (browser / agent / tenant / document
-   only), and an **Evidence** line under each claim with the query and range, file:line or
-   export row.
-2. `stage-4-notes.md`: the facts-ledger rows these findings rest on (proposed, status
+   only), severity with its reason, the three statuses, confidence and limits, the closing
+   criterion, and under each claim its `E-` ids. Candidates whose fixes differ are separate
+   findings.
+2. `stage-4-notes.md`: one page of result first (findings by severity, the five to seven that
+   matter most and their consequence, what was not evidenced, the next step); the evidence
+   catalog (`E-` id: source, window, method, result, limits); the facts-ledger rows these findings rest on (proposed, status
    assumption), and "Could not evidence" (claim, what is missing, who can provide it).
 
 ## Progress log

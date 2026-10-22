@@ -1,0 +1,38 @@
+/* Export style for an engagement's stage reports (templates/stage-report.md).
+   tools/report-pdf.sh adds the footer and, with --landscape, the page orientation. */
+@page { size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page) " / " counter(pages); font: 8.5pt "IBM Plex Sans", Helvetica, Arial, sans-serif; color: #4b5563; } }
+
+html { font: 10.5pt/1.5 "IBM Plex Sans", Helvetica, Arial, sans-serif; color: #111827; }
+body { margin: 0; }
+
+#title-block-header { margin-bottom: 8mm; }
+#title-block-header .title { font-size: 20pt; line-height: 1.2; margin: 0 0 2mm; }
+#title-block-header .subtitle { font-size: 11pt; color: #374151; margin: 0; }
+#title-block-header .date { font-size: 9.5pt; color: #4b5563; margin: 1mm 0 0; }
+
+nav#TOC { page-break-after: always; }
+nav#TOC::before { content: "Contents"; display: block; font-size: 14pt; font-weight: 600; margin-bottom: 3mm; }
+nav#TOC ul { list-style: none; padding-left: 4mm; }
+nav#TOC > ul { padding-left: 0; }
+nav#TOC li { margin: 1mm 0; }
+nav#TOC a { color: #111827; text-decoration: none; }
+nav#TOC a::after { content: leader(".") target-counter(attr(href), page); color: #6b7280; }
+
+h1 { font-size: 16pt; margin: 8mm 0 3mm; }
+h2 { font-size: 13pt; margin: 7mm 0 2.5mm; }
+h3 { font-size: 11pt; margin: 5mm 0 2mm; }
+h1, h2, h3, h4 { page-break-after: avoid; break-after: avoid; }
+p, li { orphans: 3; widows: 3; }
+
+table { border-collapse: collapse; width: 100%; margin: 3mm 0; font-size: 9pt; line-height: 1.35; }
+thead { display: table-header-group; }
+th { text-align: left; border-bottom: 0.8pt solid #374151; font-weight: 600; }
+th, td { padding: 1.4mm 2mm; vertical-align: top; border-bottom: 0.3pt solid #d1d5db; }
+tr { page-break-inside: avoid; break-inside: avoid; }
+td, th { overflow-wrap: break-word; hyphens: manual; }
+
+code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 9pt; overflow-wrap: break-word; }
+pre { background: #f3f4f6; padding: 3mm; font-size: 8.5pt; white-space: pre-wrap; }
+pre code { font-size: 8.5pt; }
+a { color: #0f5f8a; }

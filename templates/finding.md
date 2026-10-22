@@ -2,14 +2,23 @@
 
 | Status | Date | Source | Evidence level |
 |---|---|---|---|
-| confirmed / disputed / refuted | YYYY-MM-DD | code path, query, export, interview | browser / agent / tenant / document only |
+| assumption / confirmed / disputed / refuted | YYYY-MM-DD | code path, query, export, interview | browser / agent / tenant / document only |
 
-**What we see.** Facts only, with the query, file:line or export that shows it.
+**Severity:** P1 / P2 / P3, and why (who is affected, how). · **Decision:** proposed /
+accepted / superseded · **Implementation:** absent / partial / implemented · **Verification:**
+untested / observed / reproduced.
+
+**What we see.** Facts only, each with its evidence id (`E-NNN` in the evidence catalog: source,
+window, method, result, limits).
+
+**Confidence and limits.** High, medium or low, and what the evidence does not establish.
 
 **Why it matters.** The customer or business consequence: what fails silently, what is
 mis-measured, who is not told.
 
 **What follows.** The action, its owner, and which maturity dimension it moves.
+
+**Closing criterion.** The observable result that closes the finding.
 
 **Links.** Related findings, decisions, risks.
 

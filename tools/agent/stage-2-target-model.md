@@ -113,6 +113,12 @@ into business functions, and the error taxonomy of each function. You draft; a p
 
 ## Output
 
+The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
+first, then scope and method, the main results, the records, decisions and open questions, and
+an evidence catalog of `E-` ids. Decision, implementation and verification are separate
+statuses. The progress log, review history, the decision register and the full spec travel
+with the report as files at a stated commit; the report cites them and does not reprint them.
+
 1. `docs/observability/observability-spec.yml`, from the skeleton: `journeys` and `taxonomy`
    filled; for each function one `signals` entry with state `to_build` and a placeholder name;
    `slos` and `alerts` left as skeleton placeholders, or drafted with `status: proposed`. A
@@ -124,8 +130,11 @@ into business functions, and the error taxonomy of each function. You draft; a p
    - a signal is `live` only with production evidence from the inventory.
    No target, owner or threshold is `confirmed` by the agent. A field of the engagement's own
    is prefixed `x_` (SL019).
-2. `stage-2-notes.md`: a table per journey (function, route, service, source), then "Open
-   questions" (item, what is missing, who can answer).
+2. `stage-2-notes.md`, written around the resulting contract, not the rounds that produced
+   it: a compact map of the functions (purpose, success criterion, measurable today, target
+   coverage), a table per journey (function, route, service, source), then "Open questions"
+   (item, what is missing, who can answer). A superseded decision is marked where it is cited.
+   Review rounds and earlier answers go to an appendix or a file of their own.
 
 ## Progress log
 

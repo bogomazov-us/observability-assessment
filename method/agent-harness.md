@@ -48,6 +48,18 @@ is stated with the case it leaves; a health signal vouches for its own stream on
 not impossible. The wording rules are in the
 [stage 1 prompt](../tools/agent/stage-1-inventory.md) and apply at every stage.
 
+## Two levels of reading, from one set of sources
+
+Each stage's report has a main part that supports a decision and an evidence bundle that lets a
+reviewer check each claim by a stable id ([`stage-report.md`](../templates/stage-report.md)).
+The current state comes first; the rounds that produced it are history, kept apart and never
+needed to read the result. Decision, implementation and verification are separate statuses: an
+accepted decision is not a built function, and a built function is not a proven detection.
+One export style for every report, set in the kit (`tools/report-pdf.sh`), and a built PDF is
+checked: every cited id is found in its text. This came from the review of the first
+engagement's stages 1–3, whose content was ahead of their form: the client had to rebuild the
+current state from the edit history, wide tables and appendices.
+
 ## The review bundle is built from what is cited
 
 A reviewer checks a chain: the target cites an inventory row, the row cites its evidence. The

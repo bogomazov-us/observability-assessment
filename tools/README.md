@@ -9,6 +9,7 @@ The kit is tool-agnostic: it names classes of capability, never a product.
 | `tools/collect/code-scan.sh` | Week one: leads in the client's code (RUM, correlation, agents, errors inside HTTP 200) | [collect.md](collect.md) |
 | Estate export by object class | Week one: what to export from whatever monitoring tool the client runs | [collect.md](collect.md) |
 | `tools/speclint.py` | Blueprint: check the chain function → signal → SLO → alert → runbook before each review round | [speclint.md](speclint.md) |
+| `tools/report-pdf.sh` | Every stage: build a stage report or its evidence bundle into a PDF with one style (`tools/report.css`) and check that every cited id reaches its text | [stage-report.md](../templates/stage-report.md) |
 | `tools/maturity.py` | Assessment: check the maturity scores against the scoring rules and print the profile | [maturity.md](maturity.md) |
 
 Output goes into the engagement repository, sanitized, never into this kit. Tests:
