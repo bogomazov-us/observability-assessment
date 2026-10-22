@@ -11,9 +11,10 @@
 # version and page; the build history goes to the PDF metadata.
 # Checks: every id the sources cite (default: L-, E-, G-, F-, D-, REC- with two or three
 # digits) is found in the PDF's text; every font is embedded; no HTML in the Markdown. When the
-# sources hold an evidence catalog (headings "### E-NNN — name"), every cited E- id resolves to
-# an entry here or in an --external file (another stage's report, not rendered), no entry id is
-# repeated, and each entry states its window ("Checked at" or "window"), "Result" and "Limits".
+# sources hold an evidence catalog — headings "### E-NNN — name", or table rows whose first cell
+# is the id — every cited E- id resolves to an entry here or in an --external file (another
+# stage's report, not rendered), no entry id is repeated, and each entry states its window
+# ("Checked at" or "window"), "Result" and "Limits" (for a table: those columns, filled).
 # Needs pandoc, weasyprint, pdftotext, pdffonts.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -68,16 +69,24 @@ HTML="$(perl -ne '$c=!$c if /^\s*```/; print "$ARGV:$.: $_" if !$c && /<\/?(div|
 [ -n "$HTML" ] && { echo "✗ HTML in the Markdown (print effects belong in the export style):"; echo "$HTML" | head -5; FAIL=1; }
 perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/ && !/^\|[\s:|-]+\|\s*$/) { $n=()=/\|/g; print "! $ARGV:$.: table of ".($n-1)." columns; at most four of running text\n" if $n-1>5 && !$seen{"$ARGV"}{$n}++ }' "${FILES[@]}"
 # Evidence catalog: references resolve, ids are unique, entries carry their fields.
-CAT="$(perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/' "${FILES[@]}")"
+catalog_ids() { perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/ || /^\|\s*(E-\d{2,3})\s*\|/' "$@"; }
+CAT="$(catalog_ids "${FILES[@]}")"
 if [ -n "$CAT" ]; then
   DUP="$(echo "$CAT" | sort | uniq -d)"
   [ -n "$DUP" ] && { echo "✗ evidence ids defined more than once: $(echo $DUP)"; FAIL=1; }
-  DEFINED="$(printf '%s\n' "$CAT"; if [ ${#EXTERNAL[@]} -gt 0 ]; then perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/' "${EXTERNAL[@]}"; fi)"
+  DEFINED="$(printf '%s\n' "$CAT"; if [ ${#EXTERNAL[@]} -gt 0 ]; then catalog_ids "${EXTERNAL[@]}"; fi)"
   UNRES="$(grep -ohE '\bE-[0-9]{2,3}\b' "${FILES[@]}" | sort -u | grep -vxF -f <(echo "$DEFINED" | sort -u) || true)"
   [ -n "$UNRES" ] && { echo "✗ evidence ids cited without a catalog entry: $(echo $UNRES | head -c 300)"; FAIL=1; }
   BAD="$(perl -ne 'if (/^#{2,4} (E-\d{2,3})\b/) { check(); $id=$1; $b=""; next } if (/^#{1,4} /) { check(); $id=""; next } $b.=$_ if $id;
       sub check { return unless $id; my @m; push @m,"window" unless $b=~/checked at|window/i; push @m,"result" unless $b=~/\bresult\b/i; push @m,"limits" unless $b=~/\blimits?\b/i; print "$id (no ".join(", ",@m).")\n" if @m }
-      END { check() }' "${FILES[@]}")"
+      END { check() }' "${FILES[@]}")
+$(perl -ne 'chomp; my @c = map { s/^\s+|\s+$//gr } split /\|/, $_, -1; shift @c; pop @c;
+      if (/^\|[\s:|-]+\|\s*$/) { @h = @prev; next } @prev = @c;
+      next unless @c && $c[0] =~ /^E-\d{2,3}$/ && @h;
+      my %i; for my $k (0..$#h) { my $n = lc $h[$k]; $i{w} //= $k if $n =~ /window|checked/; $i{r} //= $k if $n =~ /^result/; $i{l} //= $k if $n =~ /^limits?/ }
+      my @m; for (["w","window"],["r","result"],["l","limits"]) { my ($k,$n)=@$_; push @m,$n if !defined $i{$k} || ($c[$i{$k}] // "") !~ /\S/ }
+      print "$c[0] (no ".join(", ",@m).")\n" if @m' "${FILES[@]}")"
+  BAD="$(printf '%s\n' "$BAD" | sed '/^[[:space:]]*$/d')"
   [ -n "$BAD" ] && { echo "✗ evidence entries missing a field:"; echo "$BAD" | head -10; FAIL=1; }
 fi
 TEXT="$(pdftotext "$OUT" - | tr -s ' \n' ' ')"

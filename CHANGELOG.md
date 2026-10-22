@@ -3,6 +3,16 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Ids stay whole in the PDF:** a narrow table column broke `F-06` at its hyphen, so the text
+  no longer held the id; the HTML post-processing (`tools/wide-tables.pl`) keeps every stable id
+  on one line. Long paths and code in cells now wrap anywhere, so a wide catalog table no longer
+  runs off the page and cuts its right-hand columns; a report row may break across pages.
+- The evidence-catalog check accepts a catalog kept as a table (first cell the id; window,
+  result and limits columns filled), as stage 4's is, so later stages can cite it with
+  `--external`.
+
 ## 0.7.1 — 2026-10-22
 
 - **The kit's own PDF follows its layout rules**, from the review of 0.7.0: a chapter with a

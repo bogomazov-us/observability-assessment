@@ -23,3 +23,8 @@ grep -q "defined more than once: E-001" <<<"$out" || { echo "✗ repeated eviden
 grep -q "without a catalog entry: E-002" <<<"$out" || { echo "✗ unresolved evidence id not reported"; exit 1; }
 grep -q "E-001 (no limits)" <<<"$out" || { echo "✗ missing evidence field not reported"; exit 1; }
 echo "✓ evidence catalog: repeated, unresolved and incomplete entries fail"
+printf '# Stage 4\n\nF-001 rests on E-001 and E-002.\n\n## Evidence catalog\n\n| E-id | Check | Window | Result | Limits |\n|---|---|---|---|---|\n| E-001 | a | 7 d | ok | none |\n| E-002 | b | 7 d | ok |  |\n' > "$tmp/tab.md"
+out="$("$tool" --project Demo --stage 4 --version abc1234 --out "$tmp/t.pdf" "$tmp/tab.md" 2>&1)" && { echo "✗ a table catalog with an empty limit: expected a failure"; exit 1; }
+grep -q "E-002 (no limits)" <<<"$out" || { echo "✗ table catalog field not checked"; exit 1; }
+grep -q "without a catalog entry" <<<"$out" && { echo "✗ table catalog ids not resolved"; exit 1; }
+echo "✓ evidence catalog as a table: ids resolve, empty fields fail"

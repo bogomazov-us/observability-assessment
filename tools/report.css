@@ -29,12 +29,13 @@ table { border-collapse: collapse; width: 100%; margin: 3mm 0; font-size: 9pt; l
 thead { display: table-header-group; }
 th { text-align: left; border-bottom: 0.8pt solid #374151; font-weight: 600; }
 th, td { padding: 1.4mm 2mm; vertical-align: top; border-bottom: 0.3pt solid #d1d5db; }
-tr { page-break-inside: avoid; break-inside: avoid; }
-td, th { overflow-wrap: break-word; hyphens: manual; }
+tr { break-inside: auto; }
+td, th { overflow-wrap: anywhere; hyphens: manual; }
 
-code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 9pt; overflow-wrap: break-word; }
+code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 9pt; overflow-wrap: anywhere; }
 pre { background: #f3f4f6; padding: 3mm; font-size: 8.5pt; white-space: pre-wrap; }
 pre code { font-size: 8.5pt; }
 a { color: #0f5f8a; }
 @page wide { size: A4 landscape; }
 table.wide { page: wide; font-size: 8.5pt; }
+.id { white-space: nowrap; }
