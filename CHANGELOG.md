@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.7.2 — 2026-10-22
 
 - **Ids stay whole in the PDF:** a narrow table column broke `F-06` at its hyphen, so the text
   no longer held the id; the HTML post-processing (`tools/wide-tables.pl`) keeps every stable id
