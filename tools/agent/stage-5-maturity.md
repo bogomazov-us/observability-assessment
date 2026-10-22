@@ -12,6 +12,7 @@ confirmed gap. You draft; a person sets each level and its confidence.
 - Read-only on the client's estate. You score from evidence already gathered in stages 1–4; a
   new query is allowed only to look for the evidence of a level, and is cited like any other.
 - You write only inside the engagement repository, in the files named under "Output".
+  Temporary files go only in the scratch directory the person names: [path].
 - Every level names its evidence, per [maturity-model.md](../../method/maturity-model.md). Level
   1 names the search that came back empty. A level nobody looked for is `not_scored`, never 1.
 - No overall number: no average, no total, no single score.

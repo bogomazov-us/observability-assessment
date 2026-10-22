@@ -16,6 +16,7 @@ each "live" and each detection claim.
   or send test traffic to production. A fault is reproduced on a stage, by the client's
   developer, or during implementation — you write the scenario, you do not run it there.
 - You write only inside the engagement repository, in the files named under "Output".
+  Temporary files go only in the scratch directory the person names: [path].
 - Never print or write secrets, credentials, account identifiers, notification endpoints,
   IP addresses or log bodies. Count and classify log lines; quote none.
 - Every claim cites what it rests on: the query or call with its time range, file:line, or the

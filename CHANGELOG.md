@@ -3,6 +3,16 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **From closing the first stage 2:** a decision that changed a definition is followed into
+  every source that stated it, and a source outside the agent's write paths is listed as a
+  follow-up for the person; a later decision that changes the basis of an earlier one (a
+  window, a unit, a cadence) sends the derived values back to `proposed` with a question.
+- Every stage prompt names one scratch directory for temporary files; a temporary file
+  elsewhere is a write outside the boundary, logged, and the person checks for stray files
+  before confirming. The first run wrote lint output outside its paths twice.
+
 ## 0.6.1 — 2026-10-21
 
 - **Stage 3 packaged as a prompt** (`tools/agent/stage-3-gap.md`): signal states with evidence

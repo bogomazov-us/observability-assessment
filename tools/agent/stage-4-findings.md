@@ -12,6 +12,7 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
 - Read-only on the client's estate: code checkout, monitoring tool, exports. You may run read
   queries in the tool; you never change its configuration, the code or tickets.
 - You write only inside the engagement repository, in the files named under "Output".
+  Temporary files go only in the scratch directory the person names: [path].
 - One claim per finding. Every statement under *What we see* cites its evidence: the query text
   and its time range, file:line, the export file and row, or the inventory row id.
 - Every finding is drafted with status **assumption**. You never write *confirmed*.

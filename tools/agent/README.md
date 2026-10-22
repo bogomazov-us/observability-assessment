@@ -23,7 +23,10 @@ Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
    the drafts, nor the drafts sweep up other work. The agent gets read-only access to the code
    checkout and to the monitoring tool, and write access to the engagement repository only.
    The prompt lists the paths it may read; access outside them is refused by the agent's
-   permissions as well, not by the prompt alone.
+   permissions as well, not by the prompt alone. The prompt also names one scratch directory
+   for temporary files (lint output, rendered pages); a temporary file anywhere else is a
+   write outside the boundary, written in the progress log, and the person checks for stray
+   files (`git status`, the scratch directory) before confirming the stage.
 2. Give the agent the prompt file and the inputs it lists. Missing inputs are not substituted:
    the agent stops and names them.
 3. The agent drafts, keeps a progress log (`progress/stage-N.md`: the plan, each step started

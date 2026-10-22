@@ -12,6 +12,7 @@ into business functions, and the error taxonomy of each function. You draft; a p
 - Read-only. You read the code checkout, the captures and the exports; you never write to the
   client's code, monitoring configuration or tickets.
 - You write only inside the engagement repository, in the files named under "Output".
+  Temporary files go only in the scratch directory the person names: [path].
 - Every function and every taxonomy row cites its source: a captured request (capture file and
   entry), a route in code (file:line), or an error handler (file:line).
 - Nothing you write is a fact. It enters the facts ledger as an assumption.
@@ -166,7 +167,12 @@ committed with the stage's output; the first and last times are the agent's elap
       evaluation and delivery.
 - [ ] Every SLO and alert has its volume per window; insufficient ones are marked.
 - [ ] When an owner's decision changed a definition, every source that stated the old one was
-      searched and updated; none still states it.
+      searched and updated; none still states it. A source outside your write paths (the
+      client's own design document) is listed for the person as a follow-up change, not left
+      silent.
+- [ ] When a later decision changed the basis of an earlier one (a window, a unit, a cadence),
+      every value derived from the earlier one was re-derived and returned to `proposed`
+      with a question, not carried over.
 - [ ] Every function and taxonomy row has a source comment.
 - [ ] No class was given without reading the code path; unread ones are `unknown`.
 - [ ] Every ambiguous row has a reconciliation path or an open question.

@@ -13,6 +13,7 @@ draft; a person confirms.
 - Read-only. You read the code checkout and query the monitoring estate through a read-only
   token, profile or MCP server: list, describe, get and read-only queries only.
 - You write only inside the engagement repository, in the files named under "Output".
+  Temporary files go only in the scratch directory the person names: [path].
 - Never print or write secrets, credentials, account identifiers, notification endpoints,
   IP addresses (private ones included) or log bodies. Record that a value exists, not the
   value. Resource and profile names may be written; they stay in the engagement repository.
