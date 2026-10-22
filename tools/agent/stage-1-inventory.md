@@ -135,7 +135,8 @@ hash, and one when you stop on something:
 14:40 commit 3f2a1c9 — functions J1, J2
 ```
 
-Append, never rewrite. Times are local, with the time zone once at the top. The log is
+Append, never rewrite. Times are local, with the time zone once at the top, and read from
+the clock, never estimated; an estimated time is corrected by an appended note. The log is
 committed with the stage's output; the first and last times are the agent's elapsed time.
 
 ## Self-check before handing over

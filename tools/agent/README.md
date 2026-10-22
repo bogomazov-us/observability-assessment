@@ -10,8 +10,8 @@ The prompts name files and tools, never a product or a model.
 | 2 Target model | [stage-2-target-model.md](stage-2-target-model.md) | `observability-spec.yml`: journeys, functions, error taxonomy | Stage 1 inventory reconciled and confirmed |
 | 3 Gap | [stage-3-gap.md](stage-3-gap.md) | `stage-3-gap.md`: signal states with evidence, SLIs computable today, the detection matrix, paging readiness | Stage 2 spec confirmed; owner answers recorded |
 | 4 Findings | [stage-4-findings.md](stage-4-findings.md) | Findings in the `finding.md` format, status *assumption* | Stage 3 gap confirmed: each "live" signal checked by a person |
-| 5 Maturity | [stage-5-maturity.md](stage-5-maturity.md) | `maturity.yml`: a level per dimension with its evidence and confidence, no overall number | Findings confirmed |
-| 6 Recommendations | [stage-6-recommendations.md](stage-6-recommendations.md) | Recommendation cards per `report.md` | Findings confirmed; `maturity.yml` confirmed and clean under `tools/maturity.py` |
+| 5 Maturity | [stage-5-maturity.md](stage-5-maturity.md) | `maturity.yml`: a level per dimension with its evidence and confidence, no overall number | Findings have their verdicts; a level that still waits on one is provisional |
+| 6 Recommendations | [stage-6-recommendations.md](stage-6-recommendations.md) | A confirmation batch, `REC-` cards on confirmed findings per `report.md`, `V-` verification tasks, `W-` work items | Findings confirmed; `maturity.yml` confirmed and clean under `tools/maturity.py` |
 
 Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
 [speclint.md](../speclint.md), and stage 5 checks the profile with [maturity.md](../maturity.md).

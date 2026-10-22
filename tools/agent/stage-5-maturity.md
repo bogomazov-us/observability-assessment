@@ -26,7 +26,8 @@ confirmed gap. You draft; a person sets each level and its confidence.
 
 | Input | Where |
 |---|---|
-| Findings, confirmed | [findings/] |
+| Findings with their verdicts; those still without one, marked | [findings/] |
+| Support mode as the owner stated it: hours of use, time zone, days, who is responsible | [intake answer or decision register] |
 | Gap, confirmed: signal states, detection matrix, paging readiness | [stage-3-gap.md] |
 | Spec, inventory, facts ledger | [paths] |
 | Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` from the kit |
@@ -45,6 +46,22 @@ confirmed gap. You draft; a person sets each level and its confidence.
    score it.
 6. Mark the dimensions that block the next step, and what would move the profile fastest, as
    proposals for the person.
+7. **Before the verdicts.** A level that rests on a finding still without its verdict is
+   *provisional*, and says which finding. When the verdict comes, re-read the level: it may
+   change its scope, its confidence or the level itself. Record the change as a dated entry;
+   do not overwrite the earlier reading.
+8. **Dimension 8 against the support mode.** Read incident response against the mode the owner
+   agreed. In a service used in working hours only, no off-hours on-call is the agreed mode,
+   not a defect. When the owner has not answered, write "not confirmed by the evidence", never
+   "no on-call".
+9. **Words within the evidence.** Partial telemetry is not coverage of a success criterion:
+   write "with at least partial telemetry". No rules or dashboards for an SLO is "continuous
+   computation and tracking not shown", not "nothing computes an SLO".
+10. **Dimension 12, when scored,** follows the sequence in the
+    [maturity model](../../method/maturity-model.md): inputs fixed and checked first, one or two
+    stable series, a heartbeat is not anomaly detection, deploy windows never removed from a
+    user SLI, four weeks of history is a starting window and not level 3, no cost called small
+    before the spend is attributed.
 
 ## Output
 
@@ -71,7 +88,8 @@ hash, and one when you stop on something:
 14:55 commit 3f2a1c9 — dimensions 1-6
 ```
 
-Append, never rewrite. Times are local, with the time zone once at the top. The log is
+Append, never rewrite. Times are local, with the time zone once at the top, and read from
+the clock, never estimated; an estimated time is corrected by an appended note. The log is
 committed with the stage's output; the first and last times are the agent's elapsed time.
 
 ## Self-check before handing over
@@ -80,10 +98,13 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] Every level names its evidence; every level 1 names the empty search.
 - [ ] No dimension is scored without having been looked for; those are `not_scored`.
 - [ ] No overall number anywhere.
+- [ ] Every provisional level names the finding it waits on; every re-read is a dated entry.
+- [ ] Dimension 8 is read against the support mode the owner stated, or marked not confirmed.
 - [ ] Nothing was written outside the engagement repository.
 - [ ] The progress log ends with the last step done and the last commit.
 
 ## What the person confirms
 
 Each level and its confidence, against the cited evidence; each N/A with the client; which
-dimensions block the next step. Only the confirmed profile goes into stage 6.
+dimensions block the next step; each provisional level when its findings have their verdicts.
+Only the confirmed profile goes into stage 6.

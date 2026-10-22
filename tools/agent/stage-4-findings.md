@@ -48,6 +48,10 @@ confirmed gap. You draft; a person re-runs the evidence and sets the status.
 4. Write *Why it matters* as a customer or business consequence. Write *What follows* as an
    action, the role that owns it, and the maturity dimension it moves.
 5. Where the client's own work already covers a point, say so and build on it.
+6. Bound each claim before you write it: its window and its scope; "not shown" rather than
+   "none exists"; a cause only for the window read; an absence read in part of the estate
+   says what was not checked ("other accounts not checked"). A decision record that adopted a
+   reading is not evidence for it: cite the code and its version, or a query.
 
 ## Output
 
@@ -82,7 +86,8 @@ hash, and one when you stop on something:
 14:40 commit 3f2a1c9 — functions J1, J2
 ```
 
-Append, never rewrite. Times are local, with the time zone once at the top. The log is
+Append, never rewrite. Times are local, with the time zone once at the top, and read from
+the clock, never estimated; an estimated time is corrected by an appended note. The log is
 committed with the stage's output; the first and last times are the agent's elapsed time.
 
 ## Self-check before handing over
@@ -98,6 +103,12 @@ committed with the stage's output; the first and last times are the agent's elap
 
 ## What the person confirms
 
-Re-runs each cited query or opens each cited line, then sets the status: confirmed, disputed or
-refuted. Refuted drafts are kept with the reason; they count against the harness in the
+Re-runs each cited query or opens each cited line, then sets the verdict, one of the five in
+[`finding.md`](../../templates/finding.md): confirmed, disputed (with the reason), refuted,
+inconclusive or resolved. A check that did not reproduce is not a refutation: too little data,
+expired history or a changed configuration gives inconclusive or disputed, and true then but
+fixed since gives resolved. The re-checks are read-only and recorded as evidence with their own
+`E-` ids; a reviewer's reading is a recommendation, and the owner sets the verdict. An anomaly
+seen during a re-check that nothing explains stays an observation of unknown cause, not a new
+finding. Refuted drafts are kept with the reason; they count against the harness in the
 measures.

@@ -62,6 +62,16 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] *What follows* has an action, an owner and the maturity dimension it moves.
 - [ ] Severity with its reason, confidence and limits, a closing criterion, and the three
       statuses (decision, implementation, verification).
+- [ ] The claim is bounded before its verdict: window, scope, "not shown" rather than "none
+      exists"; an absence read in part of the estate says what was not checked; a cause is
+      bounded to the window read.
+- [ ] The verdict is one of the five (confirmed, disputed with a reason, refuted, inconclusive,
+      resolved) and set by the owner; "did not reproduce" is not read as refuted.
+- [ ] No decision record stands as technical evidence; code with its version, or a query, is
+      cited.
+- [ ] Confirmed is not read as fixed, nor as an alert that passed the paging gate.
+- [ ] Re-checks are read-only and in the evidence catalog with their own ids; an unexplained
+      anomaly from a re-check is an observation of unknown cause, not a new finding.
 - [ ] Nothing in it identifies another client.
 - [ ] No personal data in the evidence quoted (`templates/privacy-checklist.md`).
 
@@ -74,6 +84,12 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Not scored and N/A are used as defined, with the reason; neither is shown as level 1.
 - [ ] Confidence per score, consistent with the evidence.
 - [ ] No overall average; the three dimensions that block the next step are named.
+- [ ] A level set before its findings' verdicts is marked provisional and re-read by a dated
+      entry.
+- [ ] Dimension 8 is read against the support mode the owner agreed; an unanswered question is
+      "not confirmed by the evidence", not "no on-call".
+- [ ] Wording stays within the evidence: "with at least partial telemetry", "continuous
+      computation and tracking not shown".
 
 ## Checklist — journeys, error taxonomy, signals
 
@@ -123,6 +139,13 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Every P1 has an owner, a runbook, a delivery test, a minimum volume and a grouping; none
       fires on a pooled rate or on a host.
 - [ ] New alerts start in shadow.
+- [ ] Paging is admitted per alert, by its gate: alert quality (firing, missing data, recovery,
+      delivery), response (primary and backup person, hours, acknowledgement, escalation),
+      outside-in for synthetics, and a tested independent delivery path. A recorded test that
+      missed a requirement is not a pass.
+- [ ] With one responsible person, nothing pages unless an exception accepting the risk of no
+      response is decided.
+- [ ] Missing-data behaviour is set per input; blocked counts as bad in a synthetic SLI.
 
 ## Checklist — report (`report.md`)
 
@@ -131,6 +154,11 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Every statement in the executive part traces to a finding.
 - [ ] Limitations say what the data cannot tell us.
 - [ ] Recommendations are ordered by impact over effort and each links to findings.
+- [ ] `REC-` only on confirmed findings; `V-` for assumptions, with the fix only as a
+      conditional option; `W-` cites an accepted decision; no `REC-` repeats its `W-` items'
+      work or size; no dependency cycle.
+- [ ] Each recommendation closes on a reproducible test and a verified configuration, not on a
+      production event; S, M and L are not read as durations.
 - [ ] The client's own investigation or tool is acknowledged and built on.
 
 ## Checklist — roadmap and commitment baseline

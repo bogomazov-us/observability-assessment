@@ -28,9 +28,17 @@ runs.
 14. ★ Alert volume per app, tool, severity and source; how the non-actionable share is calculated.
 15. Share of alerts that auto-resolve, are duplicates, or need action.
 16. Current MTTD, MTTR, recurrence and reopen rates — and how each is measured.
-17. On-call model, hours, escalation, incident roles; ticketing integration.
+17. ★ Support mode: in which hours is the service used — time zone, days, holidays — and who is
+    responsible in those hours? On-call model, escalation, incident roles; ticketing
+    integration.
 18. Runbook coverage: share of alerts mapped to a runbook.
 19. Timelines of the last 10 major incidents.
+
+When the service is used in working hours only, no on-call outside them is an agreed support
+mode, not a defect: notifications that arrive off hours are reviewed on the next working day,
+and the mode is reviewed if the hours of use widen. Record the mode as the owner states it.
+A question left unanswered is not an answer: write "not confirmed by the evidence", not "no
+on-call", until the owner replies.
 
 ## D. Application and code (architects, developers)
 

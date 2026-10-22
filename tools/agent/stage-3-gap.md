@@ -65,9 +65,15 @@ each "live" and each detection claim.
    (steps, expected firing and time, who runs it, where — never production by you), or
    **residual risk** (why it cannot be shown now; a proposed owner). No-data and recovery are
    part of the scenario.
-5. **Paging readiness.** For each alert meant to page: owner, on-call rota, acknowledgement,
-   escalation, runbook, a delivery test of this alert's route, and a fallback route — each
-   **shown** (cite it) or **not shown**. Stated in a document is not shown.
+5. **Paging readiness.** Per alert, never by a common level: the parts of the paging gate in
+   [slo-alerts](../../templates/spec-set/slo-alerts.md) — alert quality (firing, missing data,
+   recovery, delivery; for a counter, a failure before its first export apart from one after a
+   delivered zero), response (primary and backup person, hours of cover, acknowledgement,
+   escalation), outside-in for synthetics, and a tested independent delivery path — each
+   **shown** (cite it) or **not shown**. Stated in a document is not shown, and a recorded test
+   that missed a requirement is not a pass. A second channel to the same person is delivery
+   backup, not escalation. Missing-data behaviour is read per input: missing expected
+   evaluations are a fault, a missing sparse failure counter may mean no errors.
 6. **Telemetry health.** Walk the telemetry failure table from stage 2: for each failure, is
    its detecting signal live, and what would the failure read as today?
 7. **Open questions carried.** Answer from evidence the questions stage 2 moved here; for each,
@@ -121,7 +127,8 @@ hash, and one when you stop on something:
 15:10 commit 3f2a1c9 — signal states
 ```
 
-Append, never rewrite. Times are local, with the time zone once at the top. The log is
+Append, never rewrite. Times are local, with the time zone once at the top, and read from
+the clock, never estimated; an estimated time is corrected by an appended note. The log is
 committed with the stage's output; the first and last times are the agent's elapsed time.
 
 ## Self-check before handing over
@@ -132,7 +139,7 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] Every SLI reading is labelled a reading, with its window; none is reported as met.
 - [ ] Every P1 alert is in the detection matrix as proven, scenario written or residual risk;
       no fault was injected and no test traffic sent to production.
-- [ ] Every paging item is shown with a citation or marked not shown.
+- [ ] Every paging item is shown with a citation or marked not shown, per alert.
 - [ ] No target, owner or threshold was changed; what the gap questions is an open question.
 - [ ] Nothing secret or identifying was printed or written; nothing was written outside the
       engagement repository.

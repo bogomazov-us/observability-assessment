@@ -16,9 +16,12 @@ someone has looked at the evidence it cites.
 | The client's own AI-ops tools are inputs, not competitors | Build on the client's work (playbook, principle 6) |
 | The agent reads only the paths and systems its prompt lists and makes no network call it does not list; its permissions enforce both | Scope is a boundary, not a suggestion; a prompt alone was ignored once |
 | A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
-| The owner's answer is recorded in the client's decision register before any document cites it | A decision nobody can find is read by a reviewer as a proposal |
+| The owner's answer is recorded in the client's decision register before any document cites it, by the session the owner spoke to; a subagent does not record a decision on an approval relayed to it | A decision nobody can find is read by a reviewer as a proposal; a relayed approval cannot be checked |
+| A reviewer's recommendation stays a recommendation until the owner approves it; it changes no verdict, level or decision by itself | The reviewer reads the evidence; the owner decides |
 | Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
 | Each stage keeps a progress log in the engagement repository: the plan, each step started and done, each commit, each stop | The person sees where the stage is without asking the agent; the log is the pilot's time record |
+| Times in a progress log are read from the clock, never estimated; an estimated time is corrected by an appended note, not rewritten | An estimated time spoils the time record without showing it |
+| Agents working in parallel commit only their own files, named by path, and pull before they push | A broad commit sweeps up another agent's half-written work |
 
 ## Pipeline: inputs → model → gap → recommendations
 
@@ -27,9 +30,9 @@ someone has looked at the evidence it cites.
 | 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server; gives each object one status | [collect.md](../tools/collect.md), [stage 1 prompt](../tools/agent/stage-1-inventory.md) | Exports reconcile with each other (counts, names); statuses sum to the rows; a sample of checks re-run | 3, 4 |
 | 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers; links each function to its requirement and to its current state in the inventory | `observability-spec.yml` skeleton | Each function and class against code and a captured request; which proposals become confirmed | 6, 7 |
 | 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts; for each P1 alert, how its detection is shown | [stage 3 prompt](../tools/agent/stage-3-gap.md), [speclint.md](../tools/speclint.md) | Each "live" by browser, agent or tenant evidence; the detection matrix | 7, 8 |
-| 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence; sets the status | 8 |
-| 5 | Maturity | Drafts `maturity.yml` from confirmed findings only | [stage 5 prompt](../tools/agent/stage-5-maturity.md), [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
-| 6 | Recommendations | Proposes recommendation cards ordered by impact over effort | `templates/report.md` | Owner, effort and order | 11 |
+| 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence read-only; the owner sets the verdict (one of five) | 8 |
+| 5 | Maturity | Drafts `maturity.yml` from confirmed findings; a level that waits on a verdict is provisional | [stage 5 prompt](../tools/agent/stage-5-maturity.md), [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
+| 6 | Recommendations | Proposes a confirmation batch, then `REC-` cards on confirmed findings, `V-` verification tasks and `W-` work items, ordered by impact over effort | `templates/report.md` | Owner, effort and order | 11 |
 
 A stage starts only on confirmed output of the stage before it: a finding drafted from an
 unconfirmed inventory is not reviewed.
@@ -77,7 +80,8 @@ how the chain fault → signal → evaluation → firing → notification → ac
 who runs it), or **residual risk** with an owner. The assessment is read-only, so faults are
 reproduced on a stage with the client's developer or during implementation, never injected in
 production by the assessment. Recovery and no-data are part of the scenario. Paging needs the
-readiness gate in [slo-alerts](../templates/spec-set/slo-alerts.md): shown, not stated.
+per-alert gate in [slo-alerts](../templates/spec-set/slo-alerts.md): shown, not stated, and
+passed by each alert on its own.
 
 ## Blind spots are registered when they are confirmed
 
@@ -133,7 +137,12 @@ moves every line below it.
 
 ## Status
 
-Specification. The tools behind stages 1, 3 and 5 exist in this kit; stages 1, 2, 4 and 6 are
-packaged as task prompts in [tools/agent/](../tools/agent/README.md). Stage 1 has been run once
-on a real engagement and reviewed; its review is behind the rules on claims, statuses, blind
-spots and pilot measurement above. Not yet measured on two engagements.
+Specification. The tools behind stages 1, 3 and 5 exist in this kit; all six stages are
+packaged as task prompts in [tools/agent/](../tools/agent/README.md). All six stages have been
+run once on a real engagement and reviewed. The review of stage 1 is behind the rules on
+claims, statuses, blind spots and pilot measurement above; the reviews of stages 4–6 are behind
+the five verdicts ([finding.md](../templates/finding.md)), the per-alert paging gate
+([slo-alerts](../templates/spec-set/slo-alerts.md)), provisional maturity levels and the
+support mode ([maturity-model.md](maturity-model.md)), the three kinds of stage-6 record, and
+the rules on owner decisions, progress-log times and parallel commits above. Not yet measured
+on two engagements.

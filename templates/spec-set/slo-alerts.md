@@ -29,6 +29,9 @@
 - **Telemetry health is its own signal.** Missing telemetry must not read as no traffic or as
   healthy: an export heartbeat, ingestion and recording-rule health, and a delivery test of
   the notification path are monitored apart from the service.
+- **Missing data is set per input**, not once per alert. Missing expected evaluations (a
+  synthetic that did not run, a heartbeat that stopped) are a fault; a missing sparse failure
+  counter may just mean no errors.
 - New alerts start in shadow: they fire into a review channel, not to the pager.
 - **Who owns an alert is decided with the client**, by their maturity and organisation: the team
   that owns the service, a platform SRE team, or an operations centre that escalates. Until it
@@ -59,10 +62,27 @@
 |---|---|---|---|
 | [exporter drops data] | [series stop, service healthy] | [export heartbeat, to build] | [no traffic] |
 
-## Paging readiness
+## Paging gate
 
-An alert moves from shadow to paging only when each is shown, not stated: owner, on-call rota,
-acknowledgement, escalation, runbook, delivery test of this alert's route, fallback route.
+Paging is admitted **per alert**, not by a common maturity level. An alert moves from shadow to
+paging only when each part of its gate is shown, not stated.
+
+| Part | Shown when |
+|---|---|
+| Alert quality | Firing, missing data, recovery and delivery are checked for this alert. For a counter, a failure before its first export and a failure after a delivered zero are checked separately |
+| Response | A primary and a backup person, the hours they cover, acknowledgement and escalation are named |
+| Outside-in (synthetic alerts) | The check reads the user path it stands for; an edge-blocked check is not a success; a failure of the synthetic itself is told apart from a failure of the product |
+| Independent delivery | A backup delivery path is tested before any alert pages. A watchdog may serve when a test shows it detects the loss of the main path and notifies independently of it; a fallback subscriber alone does not prove that. A second channel to the same person is delivery backup, not escalation |
+
+- **One responsible person** is not a rota. With one person, alerts stay out of paging, unless
+  a separate exception is decided that explicitly accepts the risk of no response.
+- **A recorded test is not a passed gate.** Where a test shows a requirement missed, the alert
+  needs an extra mechanism, or a limitation accepted explicitly for that alert, before it pages.
+- **Where tests run.** Failure scenarios run in an isolated temporary environment with test
+  data. A test of production delivery is a controlled notification, authorised separately,
+  with no application failure. An isolated test proves only its own route.
+- Paging readiness of a function is the gate of each of its alerts; one alert passing does not
+  lift the others.
 
 ## Suppression
 
@@ -71,6 +91,15 @@ acknowledgement, escalation, runbook, delivery test of this alert's route, fallb
 ## Synthetic alerts
 
 [Which synthetics page, and after how many consecutive failures.]
+
+- A base condition to start from: two consecutive failed one-minute checks, with *blocked* and
+  *missing* handled separately from *failed*.
+- **Blocked counts as bad** in the synthetic SLI. It may raise a notification of its own that
+  does not page; then a full block at the edge is not detected by paging — say so, and test a
+  separate escalation scenario for it.
+- **Signed-in probes** use a dedicated synthetic identity: minimal rights, test data, the secret
+  in a managed store, rotation and an owner. A probe that starts from a session or an API token
+  does not check the identity provider's sign-in; say which it does.
 
 ## Hypercare
 

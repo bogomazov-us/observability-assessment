@@ -14,6 +14,27 @@ GitHub are taken from the section of the tagged version.
   stay in the repository as history (`templates/stage-report.md`).
 - `tools/report-pdf.sh`: `--part` sets the footer's middle field; with `--external` the cited
   evidence ids are checked even when the sources hold no catalog of their own.
+- **Five verdicts for a finding**, from the first engagement's stages 4–6 and their reviews:
+  confirmed, disputed (with the reason), refuted, inconclusive, resolved. Did not reproduce is
+  not refuted; a claim is bounded to its window and scope before its verdict; a decision record
+  is not technical evidence; confirmed does not mean fixed. Verdicts are the owner's; re-checks
+  are read-only evidence with their own ids (`finding.md`, stage-4 prompt, review checklist).
+- **Paging is admitted per alert**, not by a maturity level: a gate of alert quality, response,
+  outside-in and a tested independent delivery path; one responsible person is not a rota; a
+  recorded test is not a passed gate; where failure and delivery tests run; synthetic identities,
+  blocked checks and missing data per input (`spec-set/slo-alerts.md`, stage-3 prompt).
+- **Support mode** asked at intake: hours of use and who is responsible in them. Working-hours
+  support without off-hours on-call is an agreed mode, not a defect; dimension 8 is read against
+  it; a silent answer is "not confirmed by the evidence".
+- **Stage 5:** levels may be provisional before the verdicts and are re-read by a dated entry;
+  wording within the evidence; dimension 12 in sequence, inputs first (`maturity-model.md`).
+- **Stage 6:** three kinds of record — `REC-` on confirmed findings only, `V-` verification
+  tasks, `W-` work towards an accepted decision; a confirmation batch before the first `REC-`;
+  no dependency cycles; done when is a reproducible test, not a production event; sizes are
+  not durations.
+- **Harness:** a reviewer's recommendation stays one until the owner approves; owner decisions
+  are recorded by the session the owner spoke to; progress-log times read from the clock;
+  parallel agents commit only their own files.
 
 ## 0.7.3 — 2026-10-22
 

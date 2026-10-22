@@ -9,7 +9,7 @@
 | 5 | ~~SOW / acceptance template for each offering~~ — done: `templates/sow.md`, `templates/acceptance.md` | Contracting | done |
 | 6 | ~~Privacy and PII checklist for telemetry~~ — done: `templates/privacy-checklist.md` | Recurring blocker | done |
 | 7 | ~~Boundary checklist for the client's own AI-ops tools~~ — done: `templates/ai-ops-boundary.md` | Avoid competing with what the client built | done |
-| 8 | ~~Agentic harness spec~~ — done in 0.3.0: `method/agent-harness.md`; all six stages packaged as prompts since 0.6.1 (`tools/agent/`), with progress logs and a scratch directory. Open: measure it on two engagements (the first ran stages 1–4) | Differentiator | medium |
+| 8 | ~~Agentic harness spec~~ — done in 0.3.0: `method/agent-harness.md`; all six stages packaged as prompts since 0.6.1 (`tools/agent/`), with progress logs and a scratch directory. Open: measure it on two engagements (the first ran all six stages, with reviews) | Differentiator | medium |
 | 9 | ~~Executive deck template for the report~~ — done: `templates/executive-deck.md` | Most buyers read slides | done |
 | 10 | ~~Question bank by tool class~~ — done: intake questionnaire section G | Current questions lean on one class of tool | done |
 | 11 | ~~Machine-readable spec set and linter~~ — done in 0.3.0: `tools/speclint.py`, `templates/spec-set/observability-spec.yml` | A broken chain is found before a reviewer reads a page | done |

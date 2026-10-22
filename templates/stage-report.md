@@ -169,7 +169,8 @@ different fields, not one status.
 
 Ids are stable across versions: an id is never renumbered or reused, and a superseded row keeps
 its id with a link to what replaced it. One prefix per kind: `L-` inventory rows, `E-` evidence
-checks, `G-` gap results, `F-` findings, `D-` decisions of the stage, `REC-` recommendations.
+checks, `G-` gap results, `F-` findings, `D-` decisions of the stage, `REC-` recommendations, `V-` verification tasks,
+`W-` work towards an accepted decision.
 A baseline's ids stay as they are; new `E-` ids are added without renumbering it. Every id
 cited in a document appears in its evidence bundle, and a text search of the PDF finds it.
 
@@ -200,17 +201,29 @@ cited in a document appears in its evidence bundle, and a text search of the PDF
   (signal rows bound to functions, not necessarily distinct series). Candidates whose fixes
   differ are separate candidates.
 - **Stage 4.** Per finding: severity on the scale in [`finding.md`](finding.md) with its reason,
-  confidence and limits, the closing criterion, and the three statuses above.
-- **Stage 5.** The result is the profile: per dimension a level, `not_scored` or N/A, never an
+  confidence and limits, the closing criterion, and the three statuses above. The claim is
+  bounded (window, scope, "not shown"); its verdict, one of five, is the owner's.
+- **Stage 5.** Levels set before their findings' verdicts are marked provisional and re-read
+  by a dated entry when the verdicts come. The result is the profile: per dimension a level, `not_scored` or N/A, never an
   overall number. Each record: the level, the evidence that shows it (`E-` ids, findings), the
   empty search behind a level 1, what stops the next level, the confidence and why; N/A with
   the client's agreement. Required: the scope assessed, every dimension present, the dimensions
   that block the next step marked.
 - **Stage 6.** The result is the order of the recommendations and the decisions they need. Each
-  record (`REC-` id): the confirmed findings it answers, the action and the owning role, effort
-  and impact, the metric with its current and target values, done when. Required: every
-  confirmed finding has a recommendation or a line under "left out" with the reason; every
-  decision needed names its decider; a recommendation cites only confirmed findings.
+  record (`REC-` id): the confirmed findings it answers, the `W-` items that deliver it, the
+  action and the owning role, effort and impact, the metric with its current and target
+  values, done when. Required: every confirmed finding has a recommendation or a line under
+  "left out" with the reason; every decision needed names its decider; a recommendation cites
+  only confirmed findings, provisional or not. Three kinds of record are kept apart: `REC-` on
+  confirmed findings; `V-`, a verification task for a finding still an assumption, whose fix
+  is only a conditional option ("if F-012 is confirmed"); `W-`, work towards an accepted
+  decision, citing it. A `REC-` never repeats the work or size of its `W-` items, and the work
+  items have no dependency cycle (split implementation, integration scenario, delivery
+  check). The first `REC-` follows a small confirmation batch, its read-only re-checks
+  recorded as evidence, and the owner's verdicts. Done when is a reproducible test and a
+  verified configuration; a production event is a later validation. Paging is admitted per
+  alert, by its gate in [slo-alerts](spec-set/slo-alerts.md), not by a maturity level. S, M
+  and L are sizes, not durations.
 
 ## Layout
 

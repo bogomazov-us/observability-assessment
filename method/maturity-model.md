@@ -55,6 +55,39 @@ checks them against these rules and prints the profile.
 
 Dimension 12 is not required for reliable operations; score it only when the client wants it.
 
+**Dimension 8 is read against the agreed support mode.** Ask the hours of use and who is
+responsible in them (intake, question 17). A service used in working hours only, with
+off-hours notifications reviewed the next working day, has no off-hours on-call by agreement,
+and that is not a defect; the mode is reviewed if the hours widen. Until the owner answers,
+the absence of on-call is "not confirmed by the evidence", not a fact.
+
+**Levels before the verdicts.** Stage 5 may set levels provisionally before the findings they
+rest on have their verdicts. A verdict can change a level's scope, confidence or the level
+itself; the level is re-read and the change recorded as a dated entry, not overwritten.
+
+**Wording that stays within the evidence.**
+
+- Telemetry that covers part of a success criterion is not coverage of it: write "with at
+  least partial telemetry".
+- No rules and no dashboards for an SLO do not exclude another implementation: write
+  "continuous computation and tracking not shown", not "nothing computes an SLO".
+
+**Dimension 12 in sequence.** Analytics is only as good as its inputs, so:
+
+1. Fix and check the chosen input series first, with only that series' own dependencies.
+   Start with one or two series whose density and meaning are stable; a longer list is
+   candidates, not a commitment.
+2. A heartbeat shows that telemetry arrives; it does not replace anomaly detection. For
+   functions with little traffic, add deterministic synthetics.
+3. A defect in an input reaches a model only if the model uses that computation; say which.
+   Deploy windows may be treated apart when a model is trained, but are never removed from a
+   user SLI.
+4. Level 2 is done when the inputs, their missing-data behaviour, firing and delivery in shadow
+   are checked, the history is reviewed and the limits are written.
+5. Four weeks of history is a starting window, not proof of level 3; level 3 needs breaches
+   that were classified and a shown use of correlation.
+6. Do not call the cost small before the spend is attributed to the series and the models.
+
 ## Example row
 
 | Dimension | Level | Coverage | Evidence | Confidence |

@@ -9,13 +9,22 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
 
 ## Boundaries
 
-- You read only the engagement repository. You do not query the client's estate in this stage:
-  everything you need is already confirmed.
+- You read only the engagement repository. You do not query the client's estate in this stage,
+  except for the read-only re-checks of a confirmation batch the person has approved (step 1);
+  each is recorded as evidence with its own `E-` id and sets no verdict.
 - You write only the file named under "Output".
   Temporary files go only in the scratch directory the person names: [path].
-- Every card links to at least one confirmed finding. A recommendation without a finding behind
-  it is not drafted.
-- Effort and impact are proposals with a one-line reason, not decisions.
+- Three kinds of record, never mixed:
+  - `REC-` — a recommendation, only on confirmed findings. A provisional label does not lift
+    this rule.
+  - `V-` — a verification task for a finding that is still an assumption. Its fix appears only
+    as a conditional option ("if F-012 is confirmed: …"), never as a recommendation.
+  - `W-` — work towards a decision the owner has already accepted, citing that decision.
+- A `REC-` links the `W-` items that deliver it; it never repeats their work or their size.
+- No dependency cycles between work items. Where two items seem to wait on each other, split
+  them: the implementation, the integration scenario, the delivery check.
+- Effort and impact are proposals with a one-line reason, not decisions. S / M / L are sizes,
+  not durations.
 - You do not promise what the kit says not to promise: MTTR reduction without a baseline,
   auto-remediation, a tool migration.
 - No client data leaves the engagement repository.
@@ -28,7 +37,8 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
 
 | Input | Where |
 |---|---|
-| Confirmed findings | [findings folder] — only status *confirmed* |
+| Findings with their verdicts | [findings folder]; `REC-` only on *confirmed* |
+| Decision register: decisions the owner has accepted | [path] |
 | Maturity scores, confirmed | [maturity.yml], clean under `tools/maturity.py` |
 | Buyer's question and the format asked for | [kick-off note or facts ledger] |
 | Report template | `templates/report.md` from the kit |
@@ -36,16 +46,25 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
 
 ## Method
 
-1. Group confirmed findings that one change would close.
-2. For each group, write one card: what to do and why, 3–6 implementation steps each with an
-   owning role, and one metric with its current value (from the finding's evidence) and a
-   target.
-3. Propose effort S / M / L and impact H / M / L, each with a one-line reason. Impact is what
+1. **Confirmation batch first.** When findings are still assumptions, propose a small batch to
+   confirm: the best-evidenced findings the next step depends on. The re-checks are read-only
+   and recorded as evidence; the owner then sets the verdicts (the five in
+   [`finding.md`](../../templates/finding.md)); only then is the first `REC-` drafted. For the
+   rest, draft `V-` tasks.
+2. Group confirmed findings that one change would close. For each group, write one card: what
+   to do and why, 3–6 implementation steps each with an owning role, and one metric with its current value (from the finding's evidence) and a
+   target. Link the `W-` items that deliver it.
+3. **Done when** is a reproducible test and a verified configuration. Waiting for a production
+   event is a later validation, not a closing condition. An alert meant to page closes on its
+   own paging gate ([slo-alerts](../../templates/spec-set/slo-alerts.md)), never on a common
+   maturity level.
+4. Propose effort S / M / L (sizes, not durations) and impact H / M / L, each with a one-line
+   reason. Impact is what
    becomes detectable or correctly measured for the customer-facing functions.
-4. Order by impact over effort. Mark the three or four cards that move the most maturity
+5. Order by impact over effort. Mark the three or four cards that move the most maturity
    dimensions for the least effort ("what moves the score fastest").
-5. Say which cards need a client decision first, and whose.
-6. Fit the buyer's format: if they asked for a short, focused answer, keep to the cards that
+6. Say which cards need a client decision first, and whose.
+7. Fit the buyer's format: if they asked for a short, focused answer, keep to the cards that
    answer their question.
 
 ## Output
@@ -54,10 +73,12 @@ The stage report follows [`stage-report.md`](../../templates/stage-report.md), w
 chain and required fields: the result first, the records, decisions and open questions, and an
 evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
 
-`recommendations.md`: the cards in the `report.md` format (REC-NNN, linked findings, effort,
-impact, description, steps with roles, metric table), in the proposed order, followed by
-"Needs a decision" (card, decision, decider role) and "Left out" (confirmed findings with no
-card, and why).
+`recommendations.md`: the confirmation batch and its result; the cards in the `report.md`
+format (REC-NNN, linked findings, linked `W-` items, effort, impact, description, steps with
+roles, metric table, done when), in the proposed order; the `V-` tasks with their conditional
+options; the `W-` items with the decision each cites and what each depends on; then "Needs a
+decision" (card, decision, decider role) and "Left out" (confirmed findings with no card, and
+why).
 
 ## Progress log
 
@@ -74,13 +95,18 @@ hash, and one when you stop on something:
 14:40 commit 3f2a1c9 — functions J1, J2
 ```
 
-Append, never rewrite. Times are local, with the time zone once at the top. The log is
+Append, never rewrite. Times are local, with the time zone once at the top, and read from
+the clock, never estimated; an estimated time is corrected by an appended note. The log is
 committed with the stage's output; the first and last times are the agent's elapsed time.
 
 ## Self-check before handing over
 
-- [ ] Every card links to confirmed findings only; every confirmed finding is in a card or under
-      "Left out".
+- [ ] Every `REC-` links to confirmed findings only; every confirmed finding is in a card or
+      under "Left out"; every assumption finding the plan relies on has a `V-` task.
+- [ ] Every `W-` cites an accepted decision; no `REC-` repeats the work or size of its `W-`
+      items; the dependencies have no cycle.
+- [ ] Every done when is a reproducible test or a verified configuration, not a production
+      event.
 - [ ] Every metric's current value is traceable to a finding's evidence; none is invented.
 - [ ] Effort and impact each carry a reason.
 - [ ] `python3 tools/maturity.py [maturity.yml]` is clean, and the dimensions named in the cards

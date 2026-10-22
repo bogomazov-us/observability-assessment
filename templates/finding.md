@@ -2,7 +2,7 @@
 
 | Status | Date | Source | Evidence level |
 |---|---|---|---|
-| assumption / confirmed / disputed / refuted | YYYY-MM-DD | code path, query, export, interview | browser / agent / tenant / document only |
+| assumption / confirmed / disputed / refuted / inconclusive / resolved | YYYY-MM-DD | code path, query, export, interview | browser / agent / tenant / document only |
 
 **Severity:** P1 / P2 / P3 on the scale below, and why. · **Decision:** proposed / accepted /
 superseded · **Implementation:** absent / partial / implemented · **Verification:** untested /
@@ -38,6 +38,33 @@ mis-measured, who is not told.
 - A finding whose cause or impact is not established is marked *provisional*. Linked findings
   are assessed together, so one risk is not counted twice.
 - The agent proposes severity; the person sets it, and a change is recorded with its reason.
+
+## Verdicts
+
+A drafted finding is an *assumption*. After a re-check its owner gives it one of five verdicts:
+
+| Verdict | When |
+|---|---|
+| confirmed | The evidence, re-run, shows the claim as bounded |
+| disputed | The evidence does not settle it, and someone holds another reading; the reason is written |
+| refuted | The evidence shows the claim is wrong for the window and scope it names |
+| inconclusive | The check could not be made: too little data, history expired, the configuration changed since |
+| resolved | The claim was true in its window and has since been fixed; the fix is cited |
+
+- **Bound the claim before the verdict.** It names its window and its scope, and says "not
+  shown" rather than "none exists". A cause is bounded to the window read. An absence read in
+  part of the estate says so ("other accounts not checked").
+- **Did not reproduce is not refuted.** Insufficient data, expired history or a changed
+  configuration give *inconclusive* or *disputed*; true then and fixed since gives *resolved*.
+- **A decision record is not technical evidence.** A record that adopted a reading shows the
+  decision, not the system; cite the code and its version, or a query.
+- **Confirmed is about the claim only.** It does not mean the fix is implemented, or that any
+  alert passed the paging gate; those are the separate statuses above.
+- **An anomaly seen during a re-check** that nothing explains is recorded as an observation of
+  unknown cause, not as a new finding.
+- **Verdicts are the owner's.** A reviewer's reading of the evidence is a recommendation. A
+  re-check is read-only, is recorded as evidence with its own `E-` id, and sets no verdict by
+  itself.
 
 ---
 
