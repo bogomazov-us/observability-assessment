@@ -29,7 +29,7 @@ table { border-collapse: collapse; width: 100%; margin: 3mm 0; font-size: 9pt; l
 thead { display: table-header-group; }
 th { text-align: left; border-bottom: 0.8pt solid #374151; font-weight: 600; }
 th, td { padding: 1.4mm 2mm; vertical-align: top; border-bottom: 0.3pt solid #d1d5db; }
-tr { break-inside: auto; }
+tr { break-inside: avoid; }
 td, th { overflow-wrap: anywhere; hyphens: manual; }
 th { overflow-wrap: normal; }
 
