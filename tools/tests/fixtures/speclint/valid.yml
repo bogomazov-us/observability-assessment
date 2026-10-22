@@ -14,6 +14,14 @@ signals:
   - function: F1
     name: domain.f1.result
     state: to_build
+  - function: F1
+    name: domain.f1.duration
+    state: differs
+    evidence: "agent: series exists without the outcome attribute (query, 7 d)"
+  - function: F1
+    name: domain.f1.edge
+    state: not_verifiable
+    evidence: "no read access to the edge; owner question 2"
 slos:
   - id: S1
     subject: F1

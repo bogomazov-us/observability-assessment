@@ -88,6 +88,16 @@ Each claim says what was looked at, and no more:
 - **A measurement names its method.** Say which tool and settings produced a number when they
   change it — sampling, a default depth, a window. An explanation that goes beyond what was
   measured ("only a restart would help") is a hypothesis until something shows it.
+- **Absence everywhere is not a location.** When no layer's counters show an event, say that;
+  it does not place the source in the layer that was not read, and it does not exclude a layer
+  whose counters could miss it. A missing header or field alone does not establish where a
+  response came from: that takes the full request record, correlated in each layer.
+- **A remedy narrows; say what it leaves.** A proposed or decided fix is described with the
+  case it does not cover and the test that would show it, not as closing the gap.
+- **A health signal vouches for its own stream.** A heartbeat shows that its stream arrives,
+  not that any other input exists; each input is checked on its own.
+- **Not built is not impossible.** "Continuous computation is not implemented" when a value
+  was computed once by hand; "cannot be computed" only when the inputs do not exist.
 - **A passing check shows what it ran.** A green pipeline or test suite covers the paths it
   exercised; say which. What a pipeline runs is read from its steps, not from a job name.
 

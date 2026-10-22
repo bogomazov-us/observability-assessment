@@ -55,7 +55,7 @@ def load(fh):
 
 CLASSES = {"expected", "failure", "caller_defect", "ambiguous", "unknown", "none"}
 USER_IMPACTS = {"blocked", "degraded", "unaffected", "unknown"}
-SIGNAL_STATES = {"live", "to_build"}
+SIGNAL_STATES = {"live", "differs", "to_build", "not_verifiable"}
 ALERT_STATES = {"shadow", "paging"}
 SEVERITIES = {"P1", "P2", "P3"}
 REFUSAL_TREATMENTS = {"excluded", "good"}
@@ -200,9 +200,9 @@ class Linter:
             if state not in SIGNAL_STATES:
                 self.err(sw + ".state", "SL015", "state must be one of %s, not %r"
                          % ("/".join(sorted(SIGNAL_STATES)), state))
-            elif state == "live" and self.blank(s.get("evidence")):
-                self.err(sw, "SL002", "signal %r is live without evidence (browser, agent or "
-                         "tenant)" % s.get("name"))
+            elif state != "to_build" and self.blank(s.get("evidence")):
+                self.err(sw, "SL002", "signal %r is %s without evidence (browser, agent or "
+                         "tenant; for not_verifiable, why)" % (s.get("name"), state))
 
         for fid, fw in functions.items():
             if fid not in signals_by_subject:

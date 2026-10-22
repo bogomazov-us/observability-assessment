@@ -59,7 +59,7 @@ Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect
 |---|---|---|---|
 | SL000 | Sections are lists of mappings; journeys and functions have ids | — | error |
 | SL001 | Every function has at least one signal | Diagnosis per function, not outcome counting (playbook, principle 1) | error |
-| SL002 | A `live` signal names its evidence | "Present" requires evidence (playbook, principle 3) | error |
+| SL002 | A `live`, `differs` or `not_verifiable` signal names its evidence (for `not_verifiable`, why it cannot be checked) | "Present" requires evidence (playbook, principle 3) | error |
 | SL003 | Every taxonomy row has a code and exactly one valid class | Classify every code (playbook, principle 2) | error |
 | SL004 | A code is not classified twice in the same context | One class per code; overloaded codes are split by context (error taxonomy) | error |
 | SL005 | Every ambiguous outcome has a reconciliation path: an attempt model with reconciliation, or `reconciliation` on the row | Ambiguous is about the outcome (error taxonomy; runbook "unknown state") | error |

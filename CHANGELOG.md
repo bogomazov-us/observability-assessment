@@ -5,6 +5,20 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+- **From the first stage 3 and its review:** speclint accepts the four signal states the stage-3
+  prompt names — `live`, `differs`, `to_build`, `not_verifiable` — and SL002 asks for evidence
+  on every state but `to_build`; the first run had to store "differs" as `to_build`.
+- New claim rules, from the review of the first gap: absence in every layer read is not a
+  location, and a missing header alone does not establish a source; a remedy is stated with
+  the case it leaves and the test that shows it; a health signal vouches for its own stream
+  only; "not implemented" is not "cannot be computed".
+- Stage 3: a window read for an event starts before it, with margin — the first run's windows
+  began one minute after the origin errors they were looking for; a layer the agent cannot
+  read is `not_verifiable` with an owner question, and a read the owner then allows in the
+  system's own console is a dated addition by the person, recorded as status, path template,
+  host class and time only.
+- How an agent gets single-sign-on credentials its SDK cannot refresh is settled before the
+  run (in-process from the CLI, never printed or written).
 - **From closing the first stage 2:** a decision that changed a definition is followed into
   every source that stated it, and a source outside the agent's write paths is listed as a
   follow-up for the person; a later decision that changes the basis of an earlier one (a

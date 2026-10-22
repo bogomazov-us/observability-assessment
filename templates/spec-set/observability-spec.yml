@@ -53,7 +53,8 @@ taxonomy:
     user_impact: unknown
     reconciliation: "[runbook section: customers left in an unknown state]"
 
-# state: live (needs evidence: browser, agent or tenant) / to_build.
+# state: live (needs evidence: browser, agent or tenant) / differs (exists, does not match the
+# target; evidence says how) / to_build / not_verifiable (evidence says why). Stage 3 sets it.
 signals:
   - function: J1.1
     name: "[domain.function.result]"

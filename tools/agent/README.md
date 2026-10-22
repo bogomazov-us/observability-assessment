@@ -27,6 +27,10 @@ Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
    for temporary files (lint output, rendered pages); a temporary file anywhere else is a
    write outside the boundary, written in the progress log, and the person checks for stray
    files (`git status`, the scratch directory) before confirming the stage.
+   When the agent's SDK cannot refresh a single-sign-on session the CLI can, the agent takes
+   short-lived credentials in-process from the CLI's own export of the session, never
+   printed or written, and says so in the
+   progress log. Settle this before the run: on the first one a helper lost minutes to it.
 2. Give the agent the prompt file and the inputs it lists. Missing inputs are not substituted:
    the agent stops and names them.
 3. The agent drafts, keeps a progress log (`progress/stage-N.md`: the plan, each step started
