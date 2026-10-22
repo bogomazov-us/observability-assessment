@@ -3,19 +3,23 @@
 # then check it. See templates/stage-report.md.
 #
 #   tools/report-pdf.sh --project NAME --stage "3 Gap" --version COMMIT --out FILE.pdf \
-#       [--title TITLE] [--landscape] [--no-toc] [--ids REGEX] FILE.md [FILE.md ...]
+#       [--title TITLE] [--landscape] [--no-toc] [--ids REGEX] [--external FILE]...
+#       FILE.md [FILE.md ...]
 #
 # Sources are plain Markdown, concatenated in order. Relative links keep their text only
 # (the target is not in the PDF); web links stay live. The footer carries project, stage,
 # version and page; the build history goes to the PDF metadata.
-# Checks after the build: every id the sources cite (default: L-, E-, G-, F-, D-, REC- with
-# two or three digits) is found in the PDF's text; every font is embedded.
+# Checks: every id the sources cite (default: L-, E-, G-, F-, D-, REC- with two or three
+# digits) is found in the PDF's text; every font is embedded; no HTML in the Markdown. When the
+# sources hold an evidence catalog (headings "### E-NNN — name"), every cited E- id resolves to
+# an entry here or in an --external file (another stage's report, not rendered), no entry id is
+# repeated, and each entry states its window ("Checked at" or "window"), "Result" and "Limits".
 # Needs pandoc, weasyprint, pdftotext, pdffonts.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 PROJECT=""; STAGE=""; VERSION=""; OUT=""; TITLE=""; LANDSCAPE=""; TOC="--toc"
 IDS='\b(L|E|G|F|D|REC)-[0-9]{2,3}\b'
-FILES=()
+FILES=(); EXTERNAL=()
 while [ $# -gt 0 ]; do
   case "$1" in
     --project) PROJECT="$2"; shift 2 ;;
@@ -26,6 +30,7 @@ while [ $# -gt 0 ]; do
     --landscape) LANDSCAPE=1; shift ;;
     --no-toc) TOC=""; shift ;;
     --ids) IDS="$2"; shift 2 ;;
+    --external) EXTERNAL+=("$2"); shift 2 ;;
     -*) echo "unknown option: $1" >&2; exit 2 ;;
     *) FILES+=("$1"); shift ;;
   esac
@@ -48,6 +53,7 @@ pandoc "$TMP/src.md" -f gfm -t html5 -s $TOC --toc-depth=2 -M document-css=false
   --metadata title="$TITLE" --metadata date="$PROJECT · version $VERSION" \
   --metadata keywords="built $(date -u +%Y-%m-%dT%H:%MZ) from ${FILES[*]##*/}" \
   -o "$TMP/report.html"
+"$HERE/wide-tables.pl" "$TMP/report.html"
 {
   printf '@page { @bottom-left { content: "%s · stage %s · %s"; font: 8.5pt "IBM Plex Sans", Helvetica, Arial, sans-serif; color: #4b5563; } }\n' \
     "$PROJECT" "$STAGE" "$VERSION"
@@ -61,6 +67,19 @@ FAIL=0
 HTML="$(perl -ne '$c=!$c if /^\s*```/; print "$ARGV:$.: $_" if !$c && /<\/?(div|span|br|p|table|font|style)\b/i' "${FILES[@]}")"
 [ -n "$HTML" ] && { echo "✗ HTML in the Markdown (print effects belong in the export style):"; echo "$HTML" | head -5; FAIL=1; }
 perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/ && !/^\|[\s:|-]+\|\s*$/) { $n=()=/\|/g; print "! $ARGV:$.: table of ".($n-1)." columns; at most four of running text\n" if $n-1>5 && !$seen{"$ARGV"}{$n}++ }' "${FILES[@]}"
+# Evidence catalog: references resolve, ids are unique, entries carry their fields.
+CAT="$(perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/' "${FILES[@]}")"
+if [ -n "$CAT" ]; then
+  DUP="$(echo "$CAT" | sort | uniq -d)"
+  [ -n "$DUP" ] && { echo "✗ evidence ids defined more than once: $(echo $DUP)"; FAIL=1; }
+  DEFINED="$(printf '%s\n' "$CAT"; if [ ${#EXTERNAL[@]} -gt 0 ]; then perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/' "${EXTERNAL[@]}"; fi)"
+  UNRES="$(grep -ohE '\bE-[0-9]{2,3}\b' "${FILES[@]}" | sort -u | grep -vxF -f <(echo "$DEFINED" | sort -u) || true)"
+  [ -n "$UNRES" ] && { echo "✗ evidence ids cited without a catalog entry: $(echo $UNRES | head -c 300)"; FAIL=1; }
+  BAD="$(perl -ne 'if (/^#{2,4} (E-\d{2,3})\b/) { check(); $id=$1; $b=""; next } if (/^#{1,4} /) { check(); $id=""; next } $b.=$_ if $id;
+      sub check { return unless $id; my @m; push @m,"window" unless $b=~/checked at|window/i; push @m,"result" unless $b=~/\bresult\b/i; push @m,"limits" unless $b=~/\blimits?\b/i; print "$id (no ".join(", ",@m).")\n" if @m }
+      END { check() }' "${FILES[@]}")"
+  [ -n "$BAD" ] && { echo "✗ evidence entries missing a field:"; echo "$BAD" | head -10; FAIL=1; }
+fi
 TEXT="$(pdftotext "$OUT" - | tr -s ' \n' ' ')"
 MISSING="$(grep -ohE "$IDS" "$TMP/src.md" | sort -u | while read -r id; do
   printf '%s' "$TEXT" | grep -qF -- "$id" || echo "$id"; done)"

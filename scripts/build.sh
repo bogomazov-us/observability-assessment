@@ -44,9 +44,21 @@ for f in "${KIT_FILES[@]}"; do
   # instead of each starting a new, mostly empty page.
   demote=0
   case "$f" in templates/spec-set/README.md) ;; templates/spec-set/*) demote=1 ;; esac
+  # A chapter with a table wider than six columns is set landscape as a whole, so the table does
+  # not leave its heading alone on a portrait page.
+  wide="$(perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/) { $n=()=/\|/g; $w=1 if $n-1>6 } END { print $w?1:0 }' "$f")"
+  [ "$wide" = 1 ] && printf '<div class="landscape">\n\n' >> "$TMP/kit.md"
   perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g;
     if (/^\s*```/) { $c = !$c } elsif (!$c && '"$demote"' && /^#{1,5} /) { s/^/#/ }' "$f" >> "$TMP/kit.md"
+  [ "$wide" = 1 ] && printf '\n\n</div>\n' >> "$TMP/kit.md"
   printf '\n\n' >> "$TMP/kit.md"
+  # After the README: what changed in this version, from the top section of the changelog.
+  if [ "$f" = README.md ] && [ -f CHANGELOG.md ]; then
+    printf '# What is new in this version\n\n' >> "$TMP/kit.md"
+    awk '/^## /{n++} n==1' CHANGELOG.md | sed '1s/^## /**/; 1s/$/**/' \
+      | perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g' >> "$TMP/kit.md"
+    printf '\n\nThe full history is in CHANGELOG.md.\n\n' >> "$TMP/kit.md"
+  fi
 done
 
 pandoc "$TMP/kit.md" -f gfm -t html5 -s --toc --toc-depth=1 \
@@ -55,6 +67,7 @@ pandoc "$TMP/kit.md" -f gfm -t html5 -s --toc --toc-depth=1 \
   --metadata author="$KIT_AUTHOR" \
   --metadata date="v${VERSION} · ${DATE}${KIT_LICENCE:+ · $KIT_LICENCE}" \
   -o "$TMP/kit.html"
+tools/wide-tables.pl "$TMP/kit.html"
 printf '@page { @bottom-left { content: "%s"; } }\n@page :first { @bottom-left { content: none; } }\n' "$KIT_FOOTER" > "$TMP/footer.css"
 weasyprint -s scripts/pdf.css -s "$TMP/footer.css" "$TMP/kit.html" "$OUT"
 

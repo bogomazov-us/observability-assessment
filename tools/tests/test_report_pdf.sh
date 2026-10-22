@@ -17,3 +17,9 @@ cp "$tmp/ok.md" "$tmp/html.md"; printf '\n<div class="pb"></div>\n' >> "$tmp/htm
 if "$tool" --project Demo --stage 3 --version abc1234 --out "$tmp/x.pdf" "$tmp/html.md" >/dev/null; then
   echo "✗ HTML in the Markdown: expected a failure"; exit 1; fi
 echo "✓ HTML in the Markdown fails"
+printf '# Stage 1\n\nG-01 rests on E-001 and E-002.\n\n## Appendix A\n\n### E-001 — a check\n\n- Checked at: 10:00\n- Result: ok\n\n### E-001 — again\n\n- Data window: 7 d\n- Result: ok\n- Limits: none\n' > "$tmp/cat.md"
+out="$("$tool" --project Demo --stage 1 --version abc1234 --out "$tmp/c.pdf" "$tmp/cat.md" 2>&1)" && { echo "✗ a broken catalog: expected a failure"; exit 1; }
+grep -q "defined more than once: E-001" <<<"$out" || { echo "✗ repeated evidence id not reported"; exit 1; }
+grep -q "without a catalog entry: E-002" <<<"$out" || { echo "✗ unresolved evidence id not reported"; exit 1; }
+grep -q "E-001 (no limits)" <<<"$out" || { echo "✗ missing evidence field not reported"; exit 1; }
+echo "✓ evidence catalog: repeated, unresolved and incomplete entries fail"

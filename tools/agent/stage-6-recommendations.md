@@ -50,6 +50,10 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
 
 ## Output
 
+The stage report follows [`stage-report.md`](../../templates/stage-report.md), with this stage's
+chain and required fields: the result first, the records, decisions and open questions, and an
+evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
+
 `recommendations.md`: the cards in the `report.md` format (REC-NNN, linked findings, effort,
 impact, description, steps with roles, metric table), in the proposed order, followed by
 "Needs a decision" (card, decision, decider role) and "Left out" (confirmed findings with no

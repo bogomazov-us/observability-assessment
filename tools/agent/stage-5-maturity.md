@@ -48,6 +48,10 @@ confirmed gap. You draft; a person sets each level and its confidence.
 
 ## Output
 
+The stage report follows [`stage-report.md`](../../templates/stage-report.md), with this stage's
+chain and required fields: the result first, the records, decisions and open questions, and an
+evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
+
 1. `maturity.yml`, clean under `python3 tools/maturity.py --check maturity.yml`.
 2. `stage-5-notes.md`: per dimension, the level, the evidence that shows it, the evidence that
    stops the next level, and the confidence; the profile printed by `tools/maturity.py`.

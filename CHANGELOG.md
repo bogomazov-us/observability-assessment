@@ -3,6 +3,25 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **The kit's own PDF follows its layout rules**, from the review of 0.7.0: a chapter with a
+  table wider than six columns is set landscape as a whole (`tools/wide-tables.pl` marks such
+  tables in stage reports too); chapters no longer force a page break, so no page is left with
+  a line or two; orphans and widows held.
+- **Stages 5 and 6 in the stage-report template:** their chains and required fields (the
+  profile without an overall number, the empty search behind a level 1; every confirmed finding
+  answered or left out with a reason, every decision with its decider).
+- **A severity scale** in `finding.md`: P1, P2, P3 by what happens when the defect meets a
+  failure, not by whether it was seen in production; apart from confidence, implementation
+  priority and the paging severity of an alert; provisional where cause or impact is not
+  established; linked findings assessed together. From the first engagement, where the review
+  moved five severities.
+- `tools/report-pdf.sh` checks the evidence catalog: every cited `E-` id resolves (here or in an
+  `--external` report), no entry id repeats, each entry states its window, result and limits.
+- A short filled example next to the report skeleton; the kit's PDF opens with what is new in
+  the version; the backlog is in step with the text.
+
 ## 0.7.0 — 2026-10-22
 
 - **Stage reports in two levels, from the review of the first engagement's stages 1–3** (content

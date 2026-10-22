@@ -36,3 +36,5 @@ code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 9pt; overflow-
 pre { background: #f3f4f6; padding: 3mm; font-size: 8.5pt; white-space: pre-wrap; }
 pre code { font-size: 8.5pt; }
 a { color: #0f5f8a; }
+@page wide { size: A4 landscape; }
+table.wide { page: wide; font-size: 8.5pt; }

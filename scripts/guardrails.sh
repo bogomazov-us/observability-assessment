@@ -60,7 +60,7 @@ fi
 bad=0
 for f in "${TRACKED[@]}"; do
   case "$f" in
-    *.md|*.sh|*.css|*.yml|*.py|LICENSE|.gitignore) ;;
+    *.md|*.sh|*.css|*.yml|*.py|*.pl|LICENSE|.gitignore) ;;
     *) echo "  unexpected file: $f"; bad=1 ;;
   esac
 done

@@ -93,6 +93,36 @@ result from this section alone.]
 |---|---|
 ```
 
+## A filled example
+
+What a filled report looks like, in short. The project is fictional.
+
+> **Observability assessment — stage 3: gap** · Project: Shopfront · Report version: `4e1a9c2`
+> · Content version: `4e1a9c2` · Date: 2027-03-04 (CET) · Document status: draft · Baseline:
+> stage 2 accepted at `b71d0e5`
+>
+> **1. Result.** Of the 9 signals of checkout, 4 are live, 3 differ and 2 are to build. The
+> P1 alert on payment failures cannot fire on a first failure, so a payment outage shorter than
+> one scrape reaches no one. Checked: production, 2027-02-25 → 03-04. Main limit: the payment
+> provider's own status was not readable. Next step: findings (stage 4).
+>
+> | ID | Function | Result | Evidence |
+> |---|---|---|---|
+> | G-01 | `checkout.pay` | Alert reads a counter created by its first failure; never fired | E-301, E-302 |
+> | G-02 | `checkout.confirm` | Signal differs: no outcome attribute | E-303 |
+>
+> **G-01 — The payment alert cannot see a first failure.** *Observed:* 3 payment failures on
+> 02-27, each the first sample of its series; the rule did not fire (E-301). *Expected:* a P1
+> on any payment failure (decision D-04). *Difference:* the first event is the baseline.
+> *Consequence:* a short payment outage reaches no one. *Confidence:* high. *Limits:* a
+> second failure in the same series was not observed. *Next action:* initialise the counter at
+> 0; scenario S2 on staging. *Done when:* S2's first failure fires the alert.
+>
+> **E-301 — Payment failure series and the rule's state.** Source: metrics store. Checked at:
+> 2027-03-04 10:12 CET. Window: 7 d. Method: raw series and `increase()` per 5 min. Result:
+> 3 series, each first seen at value 1; `increase()` 0 at every step. Limits: one store; the
+> provider's side not read.
+
 ## Statuses are kept apart
 
 | Dimension | Values |
@@ -122,6 +152,8 @@ cited in a document appears in its evidence bundle, and a text search of the PDF
 | 2 Target model | function → success criterion → signal → SLI and SLO → detection |
 | 3 Gap | requirement → observation → difference → confidence → how to check |
 | 4 Findings | finding → impact → severity → recommendation → closing criterion |
+| 5 Maturity | dimension → level → evidence → what stops the next level → confidence |
+| 6 Recommendations | confirmed finding → recommendation → owner role → effort and impact → metric → done when |
 
 - **Stage 1.** One page of result first: scope, objects by status, material differences, what
   was not checked. The object, the claim about it and its evidence are separate; one row does
@@ -138,8 +170,18 @@ cited in a document appears in its evidence bundle, and a text search of the PDF
   statuses and E-ids; the detail goes to the records. A count of signals says what it counts
   (signal rows bound to functions, not necessarily distinct series). Candidates whose fixes
   differ are separate candidates.
-- **Stage 4.** Per finding: severity with its reason, confidence and limits, the closing
-  criterion, and the three statuses above.
+- **Stage 4.** Per finding: severity on the scale in [`finding.md`](finding.md) with its reason,
+  confidence and limits, the closing criterion, and the three statuses above.
+- **Stage 5.** The result is the profile: per dimension a level, `not_scored` or N/A, never an
+  overall number. Each record: the level, the evidence that shows it (`E-` ids, findings), the
+  empty search behind a level 1, what stops the next level, the confidence and why; N/A with
+  the client's agreement. Required: the scope assessed, every dimension present, the dimensions
+  that block the next step marked.
+- **Stage 6.** The result is the order of the recommendations and the decisions they need. Each
+  record (`REC-` id): the confirmed findings it answers, the action and the owning role, effort
+  and impact, the metric with its current and target values, done when. Required: every
+  confirmed finding has a recommendation or a line under "left out" with the reason; every
+  decision needed names its decider; a recommendation cites only confirmed findings.
 
 ## Layout
 
