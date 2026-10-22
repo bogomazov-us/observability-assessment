@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.7.1 — 2026-10-22
 
 - **The kit's own PDF follows its layout rules**, from the review of 0.7.0: a chapter with a
   table wider than six columns is set landscape as a whole (`tools/wide-tables.pl` marks such
