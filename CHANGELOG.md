@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.7.3 — 2026-10-22
 
 - **Report PDF:** a short code token such as a commit hash stays on one line (a change-history cell
   broke `8a71785` character by character); table headers break only between words, so a narrow
