@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.8.1 — 2026-10-22
 
 - **Report PDF:** a two-column table with an empty header — a list of labels and values such as
   "Checked", "Main limits", "Next step" — keeps its label column whole; a long value had squeezed
