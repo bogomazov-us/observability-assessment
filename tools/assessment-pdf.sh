@@ -45,7 +45,7 @@ while read -r part file sel; do
   SEL="$sel" perl -CSD -Mutf8 -e '
     my @sel = split " ", ($ENV{SEL} // ""); my ($title, $keep, $out) = ("", !@sel, "");
     while (<>) {
-      if (!$title && /^# (.*)/) { ($title = $1) =~ s/^Observability assessment\s*[—-]\s*//i; next }
+      if (!$title && /^# (.*)/) { ($title = $1) =~ s/^Observability assessment\s*[,—-]\s*//i; $title = ucfirst $title; next }
       if (/^## (.*)/) { my $h = $1; $keep = !@sel || grep { $h =~ /^(Appendix\s+)?\Q$_\E\b/ } @sel }
       $out .= $_ if $keep;
     }
