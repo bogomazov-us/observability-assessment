@@ -28,3 +28,19 @@ out="$("$tool" --project Demo --stage 4 --version abc1234 --out "$tmp/t.pdf" "$t
 grep -q "E-002 (no limits)" <<<"$out" || { echo "✗ table catalog field not checked"; exit 1; }
 grep -q "without a catalog entry" <<<"$out" && { echo "✗ table catalog ids not resolved"; exit 1; }
 echo "✓ evidence catalog as a table: ids resolve, empty fields fail"
+# The whole assessment: chapters chosen by section, the report's evidence ids resolved in the bundle.
+asm="$here/../assessment-pdf.sh"
+mkdir -p "$tmp/a"
+printf '# Observability assessment — stage 1: inventory\n\n## 1. Result\n\nL-07 is live (E-101).\n\n## 4. Records\n\n### L-07 — prober\n\n- Evidence: E-101\n\n## Appendix A. Evidence catalog\n\n### E-101 — prober runs\n\n- Checked at: 10:00\n- Result: 1 440 a day\n- Limits: one day\n' > "$tmp/a/s1.md"
+printf 'report    s1.md  1\nevidence  s1.md  4 A\n' > "$tmp/a/m.txt"
+"$asm" --manifest "$tmp/a/m.txt" --project Demo --version abc1234 --out-dir "$tmp/a/out" >/dev/null \
+  || { echo "✗ assessment: expected exit 0"; exit 1; }
+pdftotext "$tmp/a/out/observability-assessment-report-abc1234.pdf" - | grep -q "Records" \
+  && { echo "✗ assessment: the records went into the report"; exit 1; }
+pdftotext "$tmp/a/out/observability-assessment-evidence-abc1234.pdf" - | grep -q "1 440 a day" \
+  || { echo "✗ assessment: the catalog is missing from the evidence bundle"; exit 1; }
+sed -i.bak 's/(E-101)/(E-109)/' "$tmp/a/s1.md"
+out="$("$asm" --manifest "$tmp/a/m.txt" --project Demo --version abc1234 --out-dir "$tmp/a/out" 2>&1)" \
+  && { echo "✗ assessment: an id missing from the evidence bundle: expected a failure"; exit 1; }
+grep -q "without a catalog entry: E-109" <<<"$out" || { echo "✗ assessment: unresolved id not reported"; exit 1; }
+echo "✓ assessment: report and evidence split by section; report ids resolve in the bundle"

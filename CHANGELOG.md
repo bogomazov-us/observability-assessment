@@ -3,6 +3,18 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **One report for the whole assessment**, from the first engagement, where the client was
+  handed a dozen PDFs (stage reports, notes, question lists, batches, re-checks, plan, drafts):
+  the client now reads two documents — the assessment report, which grows by a chapter per
+  accepted stage and opens with the current state, and the evidence bundle with every record and
+  catalog. Sources stay per stage; `tools/assessment-pdf.sh` builds both from a manifest that picks
+  each file's sections, and fails when an id the report cites is not in the bundle. Working files
+  stay in the repository as history (`templates/stage-report.md`).
+- `tools/report-pdf.sh`: `--part` sets the footer's middle field; with `--external` the cited
+  evidence ids are checked even when the sources hold no catalog of their own.
+
 ## 0.7.3 — 2026-10-22
 
 - **Report PDF:** a short code token such as a commit hash stays on one line (a change-history cell

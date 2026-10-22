@@ -123,6 +123,35 @@ What a filled report looks like, in short. The project is fictional.
 > 3 series, each first seen at value 1; `increase()` 0 at every step. Limits: one store; the
 > provider's side not read.
 
+## One report for the whole assessment
+
+The client reads two documents, not one per stage and per round: the **assessment report**,
+which grows by a chapter as each stage is accepted, and the **evidence bundle**. The sources stay
+per stage — agents write and reviewers accept them stage by stage, and a stage is fixed at its
+commit — and the two documents are built from them by `tools/assessment-pdf.sh` with a manifest:
+
+```text
+report    summary.md
+report    stage-1-report.md    1 2 3 5
+report    stage-2-report.md    1 2 3 5
+report    recommendations.md
+evidence  stage-1-report.md    4 A
+evidence  stage-2-report.md    4 A
+evidence  stage-6-rechecks.md
+```
+
+- **The report** opens with the current state, in a short file of its own (`summary.md`): the
+  profile, the confirmed findings, the recommendations, the decisions waiting on the client. It
+  is rewritten at each stage; the chapters below it are not. Each stage gives its result, main
+  results and decisions (sections 1, 2, 3, 5); records and catalog go to the bundle.
+- **The bundle** holds the records and every evidence catalog. Stages keep their own `E-` ranges
+  (stage 1 E-1xx, stage 2 E-2xx …), so the catalogs join without renumbering; an id cited in the
+  report must resolve in the bundle, or the build fails.
+- **Working files** — question lists, confirmation batches, drafts, review rounds — stay in the
+  engagement's repository as history. They reach the client through the result they produced.
+- The version of both is the commit in the footer; the change history is one table in
+  `summary.md`, a row per stage and per accepted change.
+
 ## Statuses are kept apart
 
 | Dimension | Values |

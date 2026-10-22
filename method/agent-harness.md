@@ -58,7 +58,9 @@ accepted decision is not a built function, and a built function is not a proven 
 One export style for every report, set in the kit (`tools/report-pdf.sh`), and a built PDF is
 checked: every cited id is found in its text. This came from the review of the first
 engagement's stages 1–3, whose content was ahead of their form: the client had to rebuild the
-current state from the edit history, wide tables and appendices.
+current state from the edit history, wide tables and appendices. The client receives two documents for the whole assessment — a report that grows by a chapter per
+accepted stage and an evidence bundle — built from the per-stage sources by
+`tools/assessment-pdf.sh`; working files stay in the repository as history.
 
 ## The review bundle is built from what is cited
 

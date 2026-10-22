@@ -3,12 +3,12 @@
 # then check it. See templates/stage-report.md.
 #
 #   tools/report-pdf.sh --project NAME --stage "3 Gap" --version COMMIT --out FILE.pdf \
-#       [--title TITLE] [--landscape] [--no-toc] [--ids REGEX] [--external FILE]...
+#       [--title TITLE] [--part TEXT] [--landscape] [--no-toc] [--ids REGEX] [--external FILE]...
 #       FILE.md [FILE.md ...]
 #
 # Sources are plain Markdown, concatenated in order. Relative links keep their text only
 # (the target is not in the PDF); web links stay live. The footer carries project, stage,
-# version and page; the build history goes to the PDF metadata.
+# version and page (--part replaces "stage STAGE" there); the build history goes to the PDF metadata.
 # Checks: every id the sources cite (default: L-, E-, G-, F-, D-, REC- with two or three
 # digits) is found in the PDF's text; every font is embedded; no HTML in the Markdown. When the
 # sources hold an evidence catalog — headings "### E-NNN — name", or table rows whose first cell
@@ -18,7 +18,7 @@
 # Needs pandoc, weasyprint, pdftotext, pdffonts.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
-PROJECT=""; STAGE=""; VERSION=""; OUT=""; TITLE=""; LANDSCAPE=""; TOC="--toc"
+PROJECT=""; STAGE=""; VERSION=""; OUT=""; TITLE=""; PART=""; LANDSCAPE=""; TOC="--toc"
 IDS='\b(L|E|G|F|D|REC)-[0-9]{2,3}\b'
 FILES=(); EXTERNAL=()
 while [ $# -gt 0 ]; do
@@ -28,6 +28,7 @@ while [ $# -gt 0 ]; do
     --version) VERSION="$2"; shift 2 ;;
     --out) OUT="$2"; shift 2 ;;
     --title) TITLE="$2"; shift 2 ;;
+    --part) PART="$2"; shift 2 ;;
     --landscape) LANDSCAPE=1; shift ;;
     --no-toc) TOC=""; shift ;;
     --ids) IDS="$2"; shift 2 ;;
@@ -42,6 +43,7 @@ for f in "${FILES[@]}"; do [ -f "$f" ] || { echo "missing source: $f" >&2; exit 
 # The footer and the title say "stage" themselves; "--stage 'Stage 5'" would print it twice.
 STAGE="${STAGE#[Ss]tage }"
 [ -n "$TITLE" ] || TITLE="Observability assessment — stage $STAGE"
+[ -n "$PART" ] || PART="stage $STAGE"
 
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 : > "$TMP/src.md"
@@ -58,8 +60,8 @@ pandoc "$TMP/src.md" -f gfm -t html5 -s $TOC --toc-depth=2 -M document-css=false
   -o "$TMP/report.html"
 "$HERE/wide-tables.pl" "$TMP/report.html"
 {
-  printf '@page { @bottom-left { content: "%s · stage %s · %s"; font: 8.5pt "IBM Plex Sans", Helvetica, Arial, sans-serif; color: #4b5563; } }\n' \
-    "$PROJECT" "$STAGE" "$VERSION"
+  printf '@page { @bottom-left { content: "%s · %s · %s"; font: 8.5pt "IBM Plex Sans", Helvetica, Arial, sans-serif; color: #4b5563; } }\n' \
+    "$PROJECT" "$PART" "$VERSION"
   [ -n "$LANDSCAPE" ] && printf '@page { size: A4 landscape; }\n'
 } > "$TMP/page.css"
 mkdir -p "$(dirname "$OUT")"
@@ -73,8 +75,9 @@ perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/ && !/^\|[\s:|-]+\|\s*$/)
 # Evidence catalog: references resolve, ids are unique, entries carry their fields.
 catalog_ids() { perl -ne 'print "$1\n" if /^#{2,4} (E-\d{2,3})\b/ || /^\|\s*(E-\d{2,3})\s*\|/' "$@"; }
 CAT="$(catalog_ids "${FILES[@]}")"
-if [ -n "$CAT" ]; then
-  DUP="$(echo "$CAT" | sort | uniq -d)"
+# A report whose catalog is kept apart (--external) is checked against it too.
+if [ -n "$CAT" ] || [ ${#EXTERNAL[@]} -gt 0 ]; then
+  DUP="$(echo "$CAT" | sed '/^$/d' | sort | uniq -d)"
   [ -n "$DUP" ] && { echo "✗ evidence ids defined more than once: $(echo $DUP)"; FAIL=1; }
   DEFINED="$(printf '%s\n' "$CAT"; if [ ${#EXTERNAL[@]} -gt 0 ]; then catalog_ids "${EXTERNAL[@]}"; fi)"
   UNRES="$(grep -ohE '\bE-[0-9]{2,3}\b' "${FILES[@]}" | sort -u | grep -vxF -f <(echo "$DEFINED" | sort -u) || true)"
