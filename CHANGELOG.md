@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.9.0 — 2026-10-23
 
 - **Roadmap from the stage-6 plan** (`templates/roadmap.md`, shape A), from the first
   engagement's roadmap: milestones grouped along the per-alert paging gates; every work item in
