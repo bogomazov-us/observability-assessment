@@ -80,6 +80,10 @@ options; the `W-` items with the decision each cites and what each depends on; t
 decision" (card, decision, decider role) and "Left out" (confirmed findings with no card, and
 why).
 
+The roadmap follows once the first `REC-` cards are accepted: shape A of
+[`roadmap.md`](../../templates/roadmap.md), which groups the `W-` items along the paging gates
+of this plan. It is a separate document, drafted on the person's request.
+
 ## Progress log
 
 Keep `progress/stage-6.md` in the engagement repository while you work, so a person can see

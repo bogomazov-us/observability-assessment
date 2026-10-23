@@ -144,5 +144,14 @@ claims, statuses, blind spots and pilot measurement above; the reviews of stages
 the five verdicts ([finding.md](../templates/finding.md)), the per-alert paging gate
 ([slo-alerts](../templates/spec-set/slo-alerts.md)), provisional maturity levels and the
 support mode ([maturity-model.md](maturity-model.md)), the three kinds of stage-6 record, and
-the rules on owner decisions, progress-log times and parallel commits above. Not yet measured
-on two engagements.
+the rules on owner decisions, progress-log times and parallel commits above.
+
+**First pilot measurement.** On the findings that reached a verdict, the share accepted without
+change of substance was far below the 70 % target: nearly every one was bounded (a window or a
+scope added) or corrected before it was confirmed, and the review reset several severities. Over
+all drafts the share looked close to the target, but most of those drafts had no verdict yet, so
+"unchanged" meant "not yet reviewed". Count the measure on findings with a verdict, and report a
+strict reading (bounds and changes from new input count) beside a lenient one (corrections and
+severities only). The selected evidence checks all reproduced. Person hours were not recorded per
+stage at the time; record them as the stage runs, because they cannot be rebuilt afterwards. Not
+yet measured on a second engagement.

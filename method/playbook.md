@@ -33,7 +33,7 @@ How an assessment is actually run. Each step names its output and the template b
 | 8 | Diagnose | Per function: what is seen, what is missing, how errors travel, what is pooled | Findings with evidence | `templates/finding.md` |
 | 9 | Prove one golden journey | Instrument one journey end to end on stage | Demo + evidence | — |
 | 10 | Operating model | Alert ownership, severity, hypercare, release check, firing review | Alert and ownership model | `templates/spec-set/slo-alerts.md` |
-| 11 | Report and roadmap | In the format the buyer asked for; decision request on the last page | Report, roadmap, 30/60/90 | `templates/report.md`, `templates/roadmap.md` |
+| 11 | Report and roadmap | In the format the buyer asked for; decision request on the last page; roadmap from the stage-6 plan, no dates until the executor is known | Report, roadmap, 30/60/90; optionally a living book behind the client's sign-in (lessons, cases) | `templates/report.md`, `templates/roadmap.md` |
 | 12 | Commitment baseline (if continuing) | Quantified deliverables and an explicit "not promised" list | Baseline | `templates/commitment-baseline.md` |
 
 ## Working rules for the team

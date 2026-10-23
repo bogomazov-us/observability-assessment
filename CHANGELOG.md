@@ -3,6 +3,22 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Roadmap from the stage-6 plan** (`templates/roadmap.md`, shape A), from the first
+  engagement's roadmap: milestones grouped along the per-alert paging gates; every work item in
+  exactly one milestone, checked by a script; dependencies only backwards; an exit result that
+  is a recorded test or a configuration read; a recommendation delivered only when its work
+  items' exits are recorded; no dates until the executor is known, effort as engineer-day ranges
+  from a stated size mapping; per milestone what it moves on the profile and what it changes in
+  the architecture. The launch-to-BAU milestones stay as shape B. The stage-6 prompt and the
+  playbook point to it.
+- **Two lessons told as cases** (`method/lessons.md`): read the bill before sizing telemetry
+  work, with no formula, because reading and attributing it depends on the platform; and a living
+  book behind the client's sign-in as the working view beside the report of record.
+- **First pilot measurement of the harness** (`method/agent-harness.md`): count acceptance on
+  findings with a verdict, strict and lenient; record person hours while each stage runs.
+
 ## 0.8.1 — 2026-10-22
 
 - **Report PDF:** a two-column table with an empty header — a list of labels and values such as

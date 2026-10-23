@@ -22,3 +22,31 @@ Each lesson cost us time once on a real engagement.
 | 16 | Monitoring sections in migration questionnaires are too thin | Three questions about monitoring cannot size the work; use the intake questionnaire |
 | 17 | Separate technical readiness from switching users on and from live paging | A single go-live date hides three decisions and three owners |
 | 18 | Approve a spec for implementation, then accept on evidence | Endless document rounds; or sign-off on text that was never run |
+| 19 | Read the bill before sizing telemetry work | The roadmap adds series, probes and rules while nobody knows what monitoring already costs, or which budget it is paid from; credits hide the amount from the people who pay |
+| 20 | The PDF is the record; a living book is the working view | A dozen PDFs go stale the day after acceptance; or a live page replaces the accepted record, and nobody can say what was agreed |
+
+## Cases
+
+Cases are told, not turned into rules: what carried over is in the last sentence of each.
+
+**The cost of telemetry on a small cloud estate** (lesson 19). One product on one cloud
+account, running on startup credits inside a small monthly budget that also paid for the team's
+subscriptions. The assessment read the billing API by month and by service. The managed
+metrics, logs and alerting services were a visible share of the bill, larger than anyone had
+assumed, and the credits had hidden it. The additions on the roadmap were priced against that
+budget before they were proposed. Afterwards the project kept a cost chapter rebuilt daily from
+the billing API, with the budget as its only decided target and the others proposed until the
+owner approved them. What carried over: ask for the bill at intake (question 28), read it by
+service, and name the budget it sits in. How to read and attribute it depends on the platform,
+its accounts and its tags, so the kit gives no formula.
+
+**A living book behind sign-in, beside the report of record** (lesson 20). After acceptance
+the client's people needed the current state, not the accepted one. The engagement published
+one static page, rebuilt daily from the repositories that hold the code, the decisions and the
+infrastructure, to a host behind the client's own sign-in. Every header shows the build date
+and the commits it was built from; a gate checks before and after each deploy that no address
+serves the page without sign-in; a guard refuses names and secrets in the content. The report
+pinned to a commit stays the record of what was accepted, and the book says that it is the
+working view. What carried over: offer it when the client keeps its decisions and
+infrastructure in repositories; publish it only behind the client's access control; never let
+it replace the accepted record.
