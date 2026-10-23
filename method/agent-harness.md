@@ -153,5 +153,8 @@ all drafts the share looked close to the target, but most of those drafts had no
 "unchanged" meant "not yet reviewed". Count the measure on findings with a verdict, and report a
 strict reading (bounds and changes from new input count) beside a lenient one (corrections and
 severities only). The selected evidence checks all reproduced. Person hours were not recorded per
-stage at the time; record them as the stage runs, because they cannot be rebuilt afterwards. Not
+stage at the time. Rebuilt afterwards from the timestamps of the person's messages, they came to a
+range whose upper end was twice its lower: time present in the chat against time inside each
+stage's window, with reading and outside review rounds invisible to both. Record them as the
+stage runs. Not
 yet measured on a second engagement.

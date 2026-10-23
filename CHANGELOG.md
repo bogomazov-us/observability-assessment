@@ -17,7 +17,8 @@ GitHub are taken from the section of the tagged version.
   work, with no formula, because reading and attributing it depends on the platform; and a living
   book behind the client's sign-in as the working view beside the report of record.
 - **First pilot measurement of the harness** (`method/agent-harness.md`): count acceptance on
-  findings with a verdict, strict and lenient; record person hours while each stage runs.
+  findings with a verdict, strict and lenient; record person hours while each stage runs, because
+  rebuilt from message timestamps they are only a wide range.
 
 ## 0.8.1 — 2026-10-22
 
