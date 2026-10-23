@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Tests for tools/maturity.py: the worked example passes; each rule has a fixture that trips it.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"

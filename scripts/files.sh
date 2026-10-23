@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Order of the kit in the PDF. Every Markdown file except CONTRIBUTING.md and CHANGELOG.md must be listed here;
 # the guardrails fail on an unlisted file.
 KIT_FILES=(

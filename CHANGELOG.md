@@ -3,6 +3,13 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## 0.10.0 — 2026-10-23
+
+- **Two licences.** Text stays under CC BY 4.0; the code in `tools/` and `scripts/` (`.py`, `.sh`,
+  `.pl`, `.css` and the test fixtures) is under Apache 2.0 (`LICENSE-CODE`), which carries the
+  patent grant code users expect. Each code file has an SPDX line; the PDF footer names both.
+  Releases up to 0.9.0 stay available under CC BY 4.0.
+
 ## 0.9.0 — 2026-10-23
 
 - **Roadmap from the stage-6 plan** (`templates/roadmap.md`, shape A), from the first

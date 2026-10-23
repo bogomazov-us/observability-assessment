@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Guardrails: run before every commit, in CI on every push, and before every release.
 #   scripts/guardrails.sh             all checks
 #   scripts/guardrails.sh --tag vX.Y.Z  also check the tag matches the README version
@@ -20,7 +21,7 @@ ok()   { echo "✓ $*"; }
 TRACKED=()
 while IFS= read -r f; do TRACKED+=("$f"); done < <(git ls-files --cached --others --exclude-standard)
 TEXT=()
-for f in "${TRACKED[@]}"; do [ -f "$f" ] && [ "$f" != LICENSE ] && TEXT+=("$f"); done
+for f in "${TRACKED[@]}"; do [ -f "$f" ] && [ "$f" != LICENSE ] && [ "$f" != LICENSE-CODE ] && TEXT+=("$f"); done
 
 # 1. Denylist
 DENY="${GUARDRAIL_DENYLIST:-}"
@@ -60,7 +61,7 @@ fi
 bad=0
 for f in "${TRACKED[@]}"; do
   case "$f" in
-    *.md|*.sh|*.css|*.yml|*.py|*.pl|LICENSE|.gitignore) ;;
+    *.md|*.sh|*.css|*.yml|*.py|*.pl|LICENSE|LICENSE-CODE|.gitignore) ;;
     *) echo "  unexpected file: $f"; bad=1 ;;
   esac
 done

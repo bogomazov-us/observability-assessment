@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Tests for tools/collect: no network. The fake source tree is generated at
 # run time, so no foreign file types are committed to the kit.
 set -euo pipefail

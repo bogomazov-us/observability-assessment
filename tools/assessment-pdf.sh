@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Build the two documents of a whole assessment from its stage sources (templates/stage-report.md,
 # "One report for the whole assessment"): the assessment report, which grows by a chapter per
 # stage, and the evidence bundle. Each is built and checked by tools/report-pdf.sh.

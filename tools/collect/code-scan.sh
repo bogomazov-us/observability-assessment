@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Week-one code scan: grep a client code repository for observability leads.
 #   tools/collect/code-scan.sh [--signatures FILE] REPO_DIR [OUT.md]
 # Writes a Markdown report (stdout when OUT.md is omitted). Every hit is a lead, not

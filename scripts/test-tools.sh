@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Runs every tool test (tools/tests/test_*.sh). In CI on every push, and before every release.
 set -uo pipefail
 cd "$(dirname "$0")/.."

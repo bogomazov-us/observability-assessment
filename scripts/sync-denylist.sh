@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Sync the denylist from its private source to the two places the guardrails read it:
 #   the GUARDRAIL_DENYLIST secret of this repository (CI, release) and .guardrails-denylist
 #   (local runs, git-ignored).

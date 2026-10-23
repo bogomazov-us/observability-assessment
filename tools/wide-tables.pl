@@ -1,4 +1,5 @@
 #!/usr/bin/perl -0777 -pi
+# SPDX-License-Identifier: Apache-2.0
 # Post-processes pandoc's HTML before the PDF is set (scripts/build.sh, tools/report-pdf.sh):
 # - tables wider than six columns get class "wide", which the export style sets landscape;
 # - stable ids (L-07, E-301, OQ4-1, REC-012 …) are kept on one line, so a narrow column cannot

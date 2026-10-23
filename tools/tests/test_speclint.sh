@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # speclint: the worked example and the template pass; every fixture fails with its own rule.
 # Each fixture names what it expects in its header: "# expect: SLnnn" or "# expect: clean",
 # and optional "# args: ..." for the linter.

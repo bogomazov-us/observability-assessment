@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Build the kit into one PDF: dist/observability-assessment-kit-v<version>.pdf
 #   scripts/build.sh                       build into dist/
 #   scripts/build.sh --downloads           build and copy to ~/Downloads (local use)
@@ -25,8 +26,8 @@ source scripts/files.sh
 KIT_TITLE="Observability Assessment Kit"
 KIT_SUBTITLE="Method, templates and practice for observability and SRE assessments"
 KIT_AUTHOR="Ivan Bogomazov · bogomazov.us"
-KIT_LICENCE="CC BY 4.0"
-KIT_FOOTER="Observability Assessment Kit · CC BY 4.0"
+KIT_LICENCE="CC BY 4.0, code Apache 2.0"
+KIT_FOOTER="Observability Assessment Kit · CC BY 4.0 · code Apache 2.0"
 KIT_NAME="observability-assessment-kit"
 KIT_OUT_DIR="$ROOT/dist"
 if [ -n "$CONFIG" ]; then CONFIG_DIR="$(dirname "$CONFIG")"; source "$CONFIG"; fi

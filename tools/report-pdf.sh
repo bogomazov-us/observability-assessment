@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Build one stage report (or its evidence bundle) into a PDF with the kit's report style,
 # then check it. See templates/stage-report.md.
 #

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Tests for tools/report-pdf.sh: a clean source builds and passes; an id that does not reach the
 # PDF text fails the build.
 set -euo pipefail

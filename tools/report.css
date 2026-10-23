@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Export style for an engagement's stage reports (templates/stage-report.md).
    tools/report-pdf.sh adds the footer and, with --landscape, the page orientation. */
 @page { size: A4; margin: 20mm 20mm 22mm;

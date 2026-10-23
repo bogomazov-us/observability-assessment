@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Prints the CHANGELOG.md section of a version (default: the README version), without its heading.
 # Exit 1 when the section is missing or empty. Used by the guardrails and by the release notes.
 set -euo pipefail

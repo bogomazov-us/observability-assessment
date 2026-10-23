@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Lint an observability-spec.yml: the checkable core of a Blueprint specification set.
 
 The nine Markdown documents of the spec set stay the human documents; this file holds the

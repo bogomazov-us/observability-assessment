@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Pinned tool versions for CI (Ubuntu 24.04).
 set -euo pipefail
 PANDOC=3.5

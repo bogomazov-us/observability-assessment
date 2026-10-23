@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.9.0 | [CC BY 4.0](./LICENSE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.10.0 | [CC BY 4.0](./LICENSE) · code [Apache 2.0](./LICENSE-CODE) |
 
 A reusable kit for running observability / SRE assessments without the original authors in the
 room: the method, the templates, the offerings and the people model behind them.
@@ -52,3 +52,15 @@ Each tagged release (`vX.Y.Z`) publishes the whole kit as one PDF on the
 [releases page](../../releases); the newest is always at
 [releases/latest/download/observability-assessment-kit.pdf](https://github.com/bogomazov-us/observability-assessment/releases/latest/download/observability-assessment-kit.pdf). What changed in each release: [CHANGELOG.md](./CHANGELOG.md).
 Contributions: see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Licence
+
+Two licences, by kind of file:
+
+- **Text** — every Markdown file, the templates (including their YAML) and the worked example:
+  [CC BY 4.0](./LICENSE).
+- **Code** — the `.py`, `.sh`, `.pl` and `.css` files and the test fixtures under `tools/` and
+  `scripts/`: [Apache 2.0](./LICENSE-CODE). Each code file carries an
+  `SPDX-License-Identifier: Apache-2.0` line.
+
+Releases up to 0.9.0 were published under CC BY 4.0 alone and stay available under it.

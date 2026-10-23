@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Sensitive patterns, shared by guardrails.sh (sources) and check-pdf.sh (built PDF text).
 # Extended regular expressions; a line matching SENSITIVE_ALLOW is not reported.
 SENSITIVE_PATTERNS=(

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Check a maturity scoring file against the kit's scoring rules and print the profile.
 
     tools/maturity.py maturity.yml              check, then print the profile (Markdown)

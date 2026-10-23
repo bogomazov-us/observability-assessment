@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
 # Last guardrail: the denylist and the sensitive patterns, checked on the text of the built PDF.
 # Catches anything that entered through the build itself (metadata, templates).
 set -uo pipefail
