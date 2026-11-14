@@ -1,28 +1,26 @@
 # Stage 2 — target model
 
-*Task prompt. Paste as is; replace the bracketed values.*
+*Task prompt. Assemble it with `tools/agent/prompt.sh 2`, which appends the rule files it
+names, and paste the result as is; replace the bracketed values.*
 
 ---
 
 You draft the target model of an observability assessment: the journeys in scope, decomposed
 into business functions, and the error taxonomy of each function. You draft; a person confirms.
 
+## Rules
+
+The rule files in [`rules/`](rules/) apply to this stage: [boundaries](rules/boundaries.md),
+[evidence](rules/evidence.md), [claims](rules/claims.md),
+[owner questions](rules/owner-questions.md) and the [progress log](rules/progress-log.md),
+with N = 2. The boundaries below are this stage's own and add to the common ones.
+
 ## Boundaries
 
 - Read-only. You read the code checkout, the captures and the exports; you never write to the
   client's code, monitoring configuration or tickets.
-- You write only inside the engagement repository, in the files named under "Output".
-  Temporary files go only in the scratch directory the person names: [path].
 - Every function and every taxonomy row cites its source: a captured request (capture file and
   entry), a route in code (file:line), or an error handler (file:line).
-- Nothing you write is a fact. It enters the facts ledger as an assumption.
-- When a source is missing or contradicts another, stop on that item: write it under "Open
-  questions" and go on with the rest. Never fill a gap with a plausible guess.
-- No client data leaves the engagement repository.
-- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
-  it as an open question, do not open it.
-- A question addressed to the owner or the client stays open: you never decide it, even when
-  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -136,25 +134,6 @@ with the report as files at a stated commit; the report cites them and does not 
    (item, what is missing, who can answer). A superseded decision is marked where it is cited.
    Review rounds and earlier answers go to an appendix or a file of their own.
 
-## Progress log
-
-Keep `progress/stage-2.md` in the engagement repository while you work, so a person can see
-where the stage is without asking you. Its first line is the plan: the steps, numbered, and
-their count. Then one line when a step starts and one when it ends, one per commit with its
-hash, and one when you stop on something:
-
-```
-14:05 plan — 6 steps: 1 sources, 2 functions, 3 error paths, 4 taxonomy, 5 lint, 6 notes
-14:07 step 1/6 sources — started
-14:31 step 1/6 sources — done; disagreements handed to the person
-14:32 step 2/6 functions — blocked: no capture for J3 (open question 4)
-14:40 commit 3f2a1c9 — functions J1, J2
-```
-
-Append, never rewrite. Times are local, with the time zone once at the top, and read from
-the clock, never estimated; an estimated time is corrected by an appended note. The log is
-committed with the stage's output; the first and last times are the agent's elapsed time.
-
 ## Self-check before handing over
 
 - [ ] `python3 tools/speclint.py docs/observability/observability-spec.yml` reports no errors;
@@ -186,8 +165,7 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] Every function and taxonomy row has a source comment.
 - [ ] No class was given without reading the code path; unread ones are `unknown`.
 - [ ] Every ambiguous row has a reconciliation path or an open question.
-- [ ] Nothing was written outside the engagement repository.
-- [ ] The progress log ends with the last step done and the last commit.
+- [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 

@@ -48,8 +48,8 @@ carries its date and is not the current state; a claim about a mechanism covers 
 runs; a measurement names its method; a passing check shows only what it ran; absence in every
 layer read is not a location, and a missing header alone does not establish a source; a remedy
 is stated with the case it leaves; a health signal vouches for its own stream only; not built is
-not impossible. The wording rules are in the
-[stage 1 prompt](../tools/agent/stage-1-inventory.md) and apply at every stage.
+not impossible. The wording rules are in
+[`rules/claims.md`](../tools/agent/rules/claims.md), which every stage prompt names.
 
 ## Two levels of reading, from one set of sources
 

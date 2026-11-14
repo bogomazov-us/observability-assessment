@@ -3,6 +3,14 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **Rules every agent stage shares, in one place** (`tools/agent/rules/`): common boundaries,
+  citing evidence, claims within what was checked, owner questions, the progress log. The six
+  stage prompts name them instead of copying them; stages 2, 4, 5 and 6 now carry the claim
+  wording rules and the rule on secrets, which only stages 1 and 3 had. `tools/agent/prompt.sh N`
+  assembles a stage with its rules into one prompt to paste.
+
 ## 0.10.0 — 2026-10-23
 
 - **Two licences.** Text stays under CC BY 4.0; the code in `tools/` and `scripts/` (`.py`, `.sh`,

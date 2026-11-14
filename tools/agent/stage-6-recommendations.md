@@ -1,11 +1,19 @@
 # Stage 6 — recommendations
 
-*Task prompt. Paste as is; replace the bracketed values.*
+*Task prompt. Assemble it with `tools/agent/prompt.sh 6`, which appends the rule files it
+names, and paste the result as is; replace the bracketed values.*
 
 ---
 
 You draft the recommendation cards of an observability assessment report from confirmed findings
 and a confirmed maturity profile. You propose; a person sets the owner, the effort and the order.
+
+## Rules
+
+The rule files in [`rules/`](rules/) apply to this stage: [boundaries](rules/boundaries.md),
+[evidence](rules/evidence.md), [claims](rules/claims.md),
+[owner questions](rules/owner-questions.md) and the [progress log](rules/progress-log.md),
+with N = 6. The boundaries below are this stage's own and add to the common ones.
 
 ## Boundaries
 
@@ -13,7 +21,6 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
   except for the read-only re-checks of a confirmation batch the person has approved (step 1);
   each is recorded as evidence with its own `E-` id and sets no verdict.
 - You write only the file named under "Output".
-  Temporary files go only in the scratch directory the person names: [path].
 - Three kinds of record, never mixed:
   - `REC-` — a recommendation, only on confirmed findings. A provisional label does not lift
     this rule.
@@ -27,11 +34,6 @@ and a confirmed maturity profile. You propose; a person sets the owner, the effo
   not durations.
 - You do not promise what the kit says not to promise: MTTR reduction without a baseline,
   auto-remediation, a tool migration.
-- No client data leaves the engagement repository.
-- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
-  it as an open question, do not open it.
-- A question addressed to the owner or the client stays open: you never decide it, even when
-  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -84,25 +86,6 @@ The roadmap follows once the first `REC-` cards are accepted: shape A of
 [`roadmap.md`](../../templates/roadmap.md), which groups the `W-` items along the paging gates
 of this plan. It is a separate document, drafted on the person's request.
 
-## Progress log
-
-Keep `progress/stage-6.md` in the engagement repository while you work, so a person can see
-where the stage is without asking you. Its first line is the plan: the steps, numbered, and
-their count. Then one line when a step starts and one when it ends, one per commit with its
-hash, and one when you stop on something:
-
-```
-14:05 plan — 6 steps: 1 sources, 2 functions, 3 error paths, 4 taxonomy, 5 lint, 6 notes
-14:07 step 1/6 sources — started
-14:31 step 1/6 sources — done; disagreements handed to the person
-14:32 step 2/6 functions — blocked: no capture for J3 (open question 4)
-14:40 commit 3f2a1c9 — functions J1, J2
-```
-
-Append, never rewrite. Times are local, with the time zone once at the top, and read from
-the clock, never estimated; an estimated time is corrected by an appended note. The log is
-committed with the stage's output; the first and last times are the agent's elapsed time.
-
 ## Self-check before handing over
 
 - [ ] Every `REC-` links to confirmed findings only; every confirmed finding is in a card or
@@ -115,9 +98,8 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] Effort and impact each carry a reason.
 - [ ] `python3 tools/maturity.py [maturity.yml]` is clean, and the dimensions named in the cards
       match it.
-- [ ] Nothing promised that the offerings exclude; nothing written outside the engagement
-      repository.
-- [ ] The progress log ends with the last step done and the last commit.
+- [ ] Nothing promised that the offerings exclude.
+- [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 

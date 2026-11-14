@@ -1,6 +1,7 @@
 # Stage 3 — gap
 
-*Task prompt. Paste as is; replace the bracketed values.*
+*Task prompt. Assemble it with `tools/agent/prompt.sh 3`, which appends the rule files it
+names, and paste the result as is; replace the bracketed values.*
 
 ---
 
@@ -9,29 +10,23 @@ work, which SLIs could be computed today, which alerts could detect what they ar
 and what stands between each alert and a person who acts on it. You draft; a person confirms
 each "live" and each detection claim.
 
+## Rules
+
+The rule files in [`rules/`](rules/) apply to this stage: [boundaries](rules/boundaries.md),
+[evidence](rules/evidence.md), [claims](rules/claims.md),
+[owner questions](rules/owner-questions.md) and the [progress log](rules/progress-log.md),
+with N = 3. The boundaries below are this stage's own and add to the common ones.
+
 ## Boundaries
 
 - Read-only on the client's estate: code checkout, monitoring tool, exports, logs. You may run
   read queries; you never change configuration, code or tickets, and you never inject a fault
   or send test traffic to production. A fault is reproduced on a stage, by the client's
   developer, or during implementation — you write the scenario, you do not run it there.
-- You write only inside the engagement repository, in the files named under "Output".
-  Temporary files go only in the scratch directory the person names: [path].
-- Never print or write secrets, credentials, account identifiers, notification endpoints,
-  IP addresses or log bodies. Count and classify log lines; quote none.
-- Every claim cites what it rests on: the query or call with its time range, file:line, or the
-  inventory row id. The claim rules of the [stage 1 prompt](stage-1-inventory.md) apply: name
-  the window and the place; evaluation is not detection; absence is not a defect; defined is
-  not emitted; a mechanism is described per way it runs; absence in every layer read is not a
-  location; a remedy is stated with the case it leaves.
+- Count and classify log lines; quote none.
 - A window read for an event starts before it, with margin: a window that starts at the
   event's minute can miss it, and a counter that buckets by period reports at the end of its
   bucket.
-- Nothing you write is a fact. It enters the facts ledger as an assumption.
-- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
-  it as an open question, do not open it.
-- A question addressed to the owner or the client stays open: you never decide it. You may
-  list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -112,25 +107,6 @@ with the report as files at a stated commit; the report cites them and does not 
 3. `python3 tools/speclint.py <spec>`: no errors. A paging alert on a signal that is not live
    fails SL011.
 
-## Progress log
-
-Keep `progress/stage-3.md` in the engagement repository while you work, so a person can see
-where the stage is without asking you. Its first line is the plan: the steps, numbered, and
-their count. Then one line when a step starts and one when it ends, one per commit with its
-hash, and one when you stop on something:
-
-```
-14:05 plan — 8 steps: 1 signals, 2 SLIs, 3 alerts, 4 detection, 5 paging, 6 telemetry, 7 questions, 8 blind spots
-14:07 step 1/8 signals — started
-14:52 step 1/8 signals — done; 14 live, 30 to build, 2 differ, 1 not verifiable
-14:53 step 2/8 SLIs — blocked: no read access to the log store (open question 3)
-15:10 commit 3f2a1c9 — signal states
-```
-
-Append, never rewrite. Times are local, with the time zone once at the top, and read from
-the clock, never estimated; an estimated time is corrected by an appended note. The log is
-committed with the stage's output; the first and last times are the agent's elapsed time.
-
 ## Self-check before handing over
 
 - [ ] Every `live` has evidence from the estate in a stated window; nothing is live because the
@@ -141,9 +117,7 @@ committed with the stage's output; the first and last times are the agent's elap
       no fault was injected and no test traffic sent to production.
 - [ ] Every paging item is shown with a citation or marked not shown, per alert.
 - [ ] No target, owner or threshold was changed; what the gap questions is an open question.
-- [ ] Nothing secret or identifying was printed or written; nothing was written outside the
-      engagement repository.
-- [ ] The progress log ends with the last step done and the last commit.
+- [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 

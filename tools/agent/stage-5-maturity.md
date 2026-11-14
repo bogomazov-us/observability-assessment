@@ -1,26 +1,29 @@
 # Stage 5 — maturity
 
-*Task prompt. Paste as is; replace the bracketed values.*
+*Task prompt. Assemble it with `tools/agent/prompt.sh 5`, which appends the rule files it
+names, and paste the result as is; replace the bracketed values.*
 
 ---
 
 You draft the maturity profile of an observability assessment from confirmed findings and the
 confirmed gap. You draft; a person sets each level and its confidence.
 
+## Rules
+
+The rule files in [`rules/`](rules/) apply to this stage: [boundaries](rules/boundaries.md),
+[evidence](rules/evidence.md), [claims](rules/claims.md),
+[owner questions](rules/owner-questions.md) and the [progress log](rules/progress-log.md),
+with N = 5. The boundaries below are this stage's own and add to the common ones.
+
 ## Boundaries
 
 - Read-only on the client's estate. You score from evidence already gathered in stages 1–4; a
   new query is allowed only to look for the evidence of a level, and is cited like any other.
-- You write only inside the engagement repository, in the files named under "Output".
-  Temporary files go only in the scratch directory the person names: [path].
 - Every level names its evidence, per [maturity-model.md](../../method/maturity-model.md). Level
   1 names the search that came back empty. A level nobody looked for is `not_scored`, never 1.
 - No overall number: no average, no total, no single score.
-- Nothing you write is a fact. Every level is a proposal until the person sets it.
-- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
-  it as an open question, do not open it.
-- A question addressed to the owner or the client stays open: you never decide it. N/A outside
-  dimension 12 needs the client's agreement — propose it, do not set it.
+- Every level is a proposal until the person sets it.
+- N/A outside dimension 12 needs the client's agreement — propose it, do not set it.
 
 ## Inputs
 
@@ -73,25 +76,6 @@ evidence catalog of `E-` ids; it cites the progress log and its inputs by commit
 2. `stage-5-notes.md`: per dimension, the level, the evidence that shows it, the evidence that
    stops the next level, and the confidence; the profile printed by `tools/maturity.py`.
 
-## Progress log
-
-Keep `progress/stage-5.md` in the engagement repository while you work, so a person can see
-where the stage is without asking you. Its first line is the plan: the steps, numbered, and
-their count. Then one line when a step starts and one when it ends, one per commit with its
-hash, and one when you stop on something:
-
-```
-14:05 plan — 4 steps: 1 scope, 2 dimensions 1-6, 3 dimensions 7-12, 4 check and notes
-14:07 step 1/4 scope — started
-14:10 step 1/4 scope — done
-14:41 step 2/4 dimensions 1-6 — blocked: no finding covers dimension 5 (open question 2)
-14:55 commit 3f2a1c9 — dimensions 1-6
-```
-
-Append, never rewrite. Times are local, with the time zone once at the top, and read from
-the clock, never estimated; an estimated time is corrected by an appended note. The log is
-committed with the stage's output; the first and last times are the agent's elapsed time.
-
 ## Self-check before handing over
 
 - [ ] `python3 tools/maturity.py --check maturity.yml` exits 0.
@@ -100,8 +84,7 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] No overall number anywhere.
 - [ ] Every provisional level names the finding it waits on; every re-read is a dated entry.
 - [ ] Dimension 8 is read against the support mode the owner stated, or marked not confirmed.
-- [ ] Nothing was written outside the engagement repository.
-- [ ] The progress log ends with the last step done and the last commit.
+- [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 
