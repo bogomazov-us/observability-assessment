@@ -19,7 +19,7 @@ assemble() {
   for r in "${RULES[@]}"; do
     [ -f "$DIR/rules/$r.md" ] || { echo "missing rule file: rules/$r.md" >&2; exit 1; }
     printf '\n---\n\n'
-    sed "s/stage-N\.md/stage-$N.md/g; s/N is the stage's number\./N = $N./" "$DIR/rules/$r.md"
+    sed "s/stage-N\.md/stage-$N.md/g; s/N is the stage's number\./N = $N./; s/check engagement-state\.yml N\`/check engagement-state.yml $N\`/" "$DIR/rules/$r.md"
   done
 }
 

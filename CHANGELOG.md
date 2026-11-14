@@ -10,6 +10,12 @@ GitHub are taken from the section of the tagged version.
   stage prompts name them instead of copying them; stages 2, 4, 5 and 6 now carry the claim
   wording rules and the rule on secrets, which only stages 1 and 3 had. `tools/agent/prompt.sh N`
   assembles a stage with its rules into one prompt to paste.
+- **Stage gate in a file** (`templates/engagement-state.yml`, `tools/stagegate.py`): each
+  stage's status, who confirmed it, when, and the decision-register reference; the owner
+  questions that block a stage. `check N` says whether stage N may start; `lint` checks the
+  file, and with `--since REV` that no review was edited and no confirmation rewritten. Every
+  stage runs the check first and stops on a shut gate (`rules/boundaries.md`); the agent never
+  sets a stage confirmed.
 
 ## 0.10.0 — 2026-10-23
 

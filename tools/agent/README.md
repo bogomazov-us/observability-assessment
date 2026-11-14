@@ -55,9 +55,17 @@ assembles stage N with the rule files into one prompt.
    and done, each commit, each stop), runs its self-check, and hands over a list of what it
    could not cite. While it runs, the person reads the log, not the agent's transcript.
 4. A person confirms what the prompt's last section names, in the tool, and records the result
-   in the facts ledger. Only then does the next stage start.
+   in the facts ledger and the decision register; then sets the stage `confirmed` in
+   `engagement-state.yml` and runs `tools/stagegate.py lint engagement-state.yml --since REV`
+   against the last confirmation's commit. Only then does the next stage start.
 
 ## Gates
+
+The gates are kept in `engagement-state.yml` (skeleton:
+[`templates/engagement-state.yml`](../../templates/engagement-state.yml)) and checked by
+[`tools/stagegate.py`](../stagegate.md): the agent runs its `check` before it starts and stops
+when the gate is shut; the person confirms a stage by recording the decision and then setting
+the stage `confirmed` with who, when and the decision reference.
 
 A stage starts only on confirmed output of the stage before it, and only when the open
 questions that block it have answers from the owner. A question addressed to the owner is

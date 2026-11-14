@@ -17,6 +17,7 @@ for n in 1 2 3 4 5 6; do
     grep -qF "# Rule: $h" "$T/s$n.md" && pass "stage $n has rule: $h" || fail "stage $n lacks rule: $h"
   done
   grep -qF "progress/stage-$n.md" "$T/s$n.md" && pass "stage $n log path" || fail "stage $n: log path not set"
+  grep -qF "check engagement-state.yml $n\`" "$T/s$n.md" && pass "stage $n gate check" || fail "stage $n: gate check not set to $n"
   grep -qF "stage-N.md" "$T/s$n.md" && fail "stage $n: N left in place" || pass "stage $n: N replaced"
   grep -qF "prompt.sh $n\`" "tools/agent/stage-$n-"*.md && pass "stage $n names its command" || fail "stage $n: header does not name prompt.sh $n"
   # a rule must live in one place: the stage file does not repeat it

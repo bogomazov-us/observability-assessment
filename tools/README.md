@@ -12,6 +12,7 @@ The kit is tool-agnostic: it names classes of capability, never a product.
 | `tools/assessment-pdf.sh` | Each accepted stage: rebuild the assessment report and the evidence bundle from a manifest of stage sources, sections chosen per file; ids in the report must resolve in the bundle | [stage-report.md](../templates/stage-report.md) |
 | `tools/report-pdf.sh` | Every stage: build a stage report or its evidence bundle into a PDF with one style (`tools/report.css`) and check that every cited id reaches its text | [stage-report.md](../templates/stage-report.md) |
 | `tools/agent/prompt.sh` | Each agent stage: assemble the stage's task prompt with the rule files it names | [agent/README.md](agent/README.md) |
+| `tools/stagegate.py` | Each agent stage: may it start (the stage before confirmed, its blocking questions answered); is the state file sound and unrewritten | [stagegate.md](stagegate.md) |
 | `tools/maturity.py` | Assessment: check the maturity scores against the scoring rules and print the profile | [maturity.md](maturity.md) |
 
 Output goes into the engagement repository, sanitized, never into this kit. Tests:
