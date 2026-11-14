@@ -5,6 +5,10 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+- **Stage and rule skills** (`tools/agent/skills/`, optional): a skill per stage that only the
+  person starts, and a skill per shared rule that the agent reaches for unasked. Each points
+  at the stage prompt or rule file and copies nothing; `install.sh SKILLS_DIR` installs them
+  into an engagement with this kit checkout's path.
 - **The build fails on a missing chapter.** `scripts/build.sh` stops and names every file
   listed in the build (or in an edition's config) that does not exist. Before, it printed a
   warning and produced a PDF without the chapter.

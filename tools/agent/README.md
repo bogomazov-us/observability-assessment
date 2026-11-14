@@ -33,6 +33,10 @@ A stage file holds only what is its own: its boundaries on top of the common one
 method, output, self-check and what the person confirms. `tools/agent/prompt.sh N [OUT.md]`
 assembles stage N with the rule files into one prompt.
 
+For agent tools that load skills, [`skills/`](skills/README.md) has thin wrappers: a skill per
+stage that only the person starts, and a skill per rule that the agent reaches for itself.
+They point at these files and copy nothing.
+
 ## How to run a stage
 
 1. Work in the engagement repository, never in this kit, on a branch or worktree of the

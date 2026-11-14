@@ -28,6 +28,7 @@ KIT_FILES=(
   tools/agent/rules/claims.md
   tools/agent/rules/owner-questions.md
   tools/agent/rules/progress-log.md
+  tools/agent/skills/README.md
   templates/intake-questionnaire.md
   templates/data-request.md
   templates/stage-report.md
