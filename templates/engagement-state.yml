@@ -1,0 +1,54 @@
+# Engagement state: where each agent stage is, and what opened its gate.
+# Check with: tools/stagegate.py lint engagement-state.yml
+# Before a stage starts: tools/stagegate.py check engagement-state.yml N
+# Gates: tools/agent/README.md, "Gates". Rule IDs: tools/stagegate.md.
+#
+# status:   not_started | draft | handed_over | returned | confirmed
+#           The agent may set its own stage to draft or handed_over. Only a person sets
+#           returned or confirmed, by editing this file.
+# confirmed: confirmed_by (role or name), confirmed_on (YYYY-MM-DD) and decision_ref (the id
+#           of the decision-register entry that records the confirmation), all three.
+#           A confirmation is never rewritten; a stage re-opened after it is a new decision.
+# reviews:  appended, never edited or removed; a review sets no status.
+# questions: owner questions that block a stage. answer_ref is the decision-register id
+#           of the answer; absent while the question is open.
+
+scope:
+  decision_ref: "[decision-register id of the agreed scope]"
+  access_granted_on: [YYYY-MM-DD]    # read-only access to code and monitoring estate
+
+stages:
+  - number: 1                        # Inventory
+    status: not_started
+    reviews: []
+  - number: 2                        # Target model
+    status: not_started
+    reviews: []
+  - number: 3                        # Gap
+    status: not_started
+    reviews: []
+  - number: 4                        # Findings
+    status: not_started
+    reviews: []
+  - number: 5                        # Maturity
+    status: not_started
+    reviews: []
+  - number: 6                        # Recommendations
+    status: not_started
+    reviews: []
+
+# A confirmed stage, for reference:
+#  - number: 1
+#    status: confirmed
+#    confirmed_by: "[engagement lead]"
+#    confirmed_on: [YYYY-MM-DD]
+#    decision_ref: "[D-..]"
+#    reviews:
+#      - {date: [YYYY-MM-DD], by: "[reviewer]", file: "[reviews/stage-1-round-1.md]"}
+
+questions: []
+#  - id: Q-01
+#    question: "[in plain words]"
+#    to: "[owner role]"
+#    blocks: [3]
+#    answer_ref: "[D-..]"            # absent while open

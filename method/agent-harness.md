@@ -34,7 +34,8 @@ someone has looked at the evidence it cites.
 | 5 | Maturity | Drafts `maturity.yml` from confirmed findings; a level that waits on a verdict is provisional | [stage 5 prompt](../tools/agent/stage-5-maturity.md), [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
 | 6 | Recommendations | Proposes a confirmation batch, then `REC-` cards on confirmed findings, `V-` verification tasks and `W-` work items, ordered by impact over effort | `templates/report.md` | Owner, effort and order | 11 |
 
-A stage starts only on confirmed output of the stage before it: a finding drafted from an
+A stage starts only on confirmed output of the stage before it, checked by
+[`tools/stagegate.py`](../tools/stagegate.md) against the engagement state file: a finding drafted from an
 unconfirmed inventory is not reviewed.
 
 ## Claims stay within what was checked
