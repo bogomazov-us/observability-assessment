@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.11.0 — 2026-11-14
 
 - **Rules every agent stage shares, in one place** (`tools/agent/rules/`): common boundaries,
   citing evidence, claims within what was checked, owner questions, the progress log. The six
