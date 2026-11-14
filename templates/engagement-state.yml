@@ -10,8 +10,9 @@
 #           of the decision-register entry that records the confirmation), all three.
 #           A confirmation is never rewritten; a stage re-opened after it is a new decision.
 # reviews:  appended, never edited or removed; a review sets no status.
-# questions: owner questions that block a stage. answer_ref is the decision-register id
-#           of the answer; absent while the question is open.
+# questions: owner questions that block a stage, asked in the format of
+#           templates/owner-questions.md. answer_ref is the decision-register id of the
+#           answer; absent while the question is open.
 
 scope:
   decision_ref: "[decision-register id of the agreed scope]"

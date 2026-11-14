@@ -1,6 +1,9 @@
 # A minimal spec with nothing to report.
 # expect: clean
 # args: --strict
+glossary:
+  - {term: J1, names: J1}
+  - {term: F1, names: F1}
 journeys:
   - id: J1
     functions:

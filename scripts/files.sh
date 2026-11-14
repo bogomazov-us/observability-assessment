@@ -31,6 +31,7 @@ KIT_FILES=(
   tools/agent/skills/README.md
   templates/intake-questionnaire.md
   templates/data-request.md
+  templates/owner-questions.md
   templates/stage-report.md
   templates/finding.md
   templates/report.md

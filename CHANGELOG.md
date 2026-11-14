@@ -9,6 +9,15 @@ GitHub are taken from the section of the tagged version.
   person starts, and a skill per shared rule that the agent reaches for unasked. Each points
   at the stage prompt or rule file and copies nothing; `install.sh SKILLS_DIR` installs them
   into an engagement with this kit checkout's path.
+- **Owner questions as a written batch** (`templates/owner-questions.md`): one decision per
+  question in plain words, what it blocks, candidates marked with what each rests on, the
+  answer recorded in the decision register before use; with a verdict batch for the findings
+  after stage 4. The shared owner-questions rule hands questions over in this format.
+- **Engagement glossary in the spec** (`glossary` in `observability-spec.yml`): the names of
+  journeys, functions and attempts, fixed in stage 2 and used after it. `tools/speclint.py`
+  reports an item without an entry (SL021), a renamed item (SL022), a term defined twice
+  (SL023) and an entry naming an unknown id (SL013). The worked example has its glossary.
+  An existing spec without a glossary now gets one SL021 warning, which fails `--strict`.
 - **The build fails on a missing chapter.** `scripts/build.sh` stops and names every file
   listed in the build (or in an edition's config) that does not exist. Before, it printed a
   warning and produced a PDF without the chapter.

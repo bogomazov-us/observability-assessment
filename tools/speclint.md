@@ -33,6 +33,7 @@ relative to the spec file.
 
 | Section | One entry per | Key fields |
 |---|---|---|
+| `glossary` | name of a journey, function or attempt, or a domain word | term, names (the id it names; none for a domain word), means |
 | `journeys` | journey, with its `functions` | id, name, route, success, requirement, current (state, evidence) |
 | `taxonomy` | code or condition, per context | function, code, context, http, class, customer_sees, confirmed_by |
 | `signals` | event or span | function (or attempt), name, emitted_by, attributes, state, evidence |
@@ -70,13 +71,16 @@ Classes are the six of the error taxonomy: `expected`, `failure`, `caller_defect
 | SL010 | No alert grouped by host, or pooled across functions | Never alert on a pooled rate or a host (lessons 2) | error |
 | SL011 | An alert in `paging` rests only on `live` signals | No threshold on a gap (playbook, principle 4) | error |
 | SL012 | The runbook file exists (with `--check-files`) | Every P1 has a runbook (slo-alerts, rules) | error |
-| SL013 | Every reference (function, attempt, journey, SLO) resolves | — | error |
+| SL013 | Every reference (function, attempt, journey, SLO, glossary `names`) resolves | — | error |
 | SL014 | Ids are unique across the file | — | error |
 | SL015 | Signal state, alert state, severity, status and user impact take their allowed values | — | error |
 | SL016 | No `[placeholder]` left from the skeleton | — | warning |
 | SL017 | Every function names the source of its requirement | A function traces to the journey agreed with the client (playbook, step 6) | warning |
 | SL018 | An alert in `paging` and its SLO are `confirmed` | Owner, target and threshold are decided with the client (slo-alerts, rules) | error |
 | SL019 | No unknown key; an engagement's own field is prefixed `x_` | A misspelt field must not pass silently | warning |
+| SL021 | Every journey, function and attempt has a glossary entry; a spec without a glossary is reported once | Names are fixed once, while interviewing, and used everywhere after (stage 2) | warning |
+| SL022 | A glossary term equals the `name` of the item it names | A renamed function breaks the chain from journey to owner without any reference failing | warning |
+| SL023 | No term defined twice (case and spacing ignored) | One word, one thing | error |
 | SL020 | No key repeated in one mapping | A YAML reader keeps the last value and drops the others silently; a second `good:` or `id:` would pass | error |
 
 ## What it does not check

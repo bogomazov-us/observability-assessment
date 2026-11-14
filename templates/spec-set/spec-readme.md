@@ -44,5 +44,16 @@ Milestones: see `roadmap.md` or the tracker. Dependencies:
 
 ## Glossary · Open questions
 
+The glossary is the `glossary` section of `observability-spec.yml`: the names of journeys,
+functions and attempts as agreed with the client, and the domain words the documents use.
+List it here as a table (term, what it names, meaning); the linter keeps the YAML in step with
+the spec (SL021–SL023).
+
+| Term | Names | Means |
+|---|---|---|
+| [term] | [id, or none for a domain word] | [one line, in the client's words] |
+
+Open questions:
+
 | # | Question | Owner | Due |
 |---|---|---|---|

@@ -1,0 +1,13 @@
+# A glossary entry naming a function that is not in the spec (renamed id, or removed).
+# expect: SL013
+glossary:
+  - {term: Checkout, names: J1}
+  - {term: Reserve slot, names: F1}
+  - {term: Pay, names: F9}
+journeys:
+  - id: J1
+    name: Checkout
+    functions:
+      - {id: F1, name: Reserve slot, requirement: journey model, step 1}
+signals:
+  - {function: F1, name: f1.result, state: to_build}

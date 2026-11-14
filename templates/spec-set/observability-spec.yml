@@ -11,6 +11,18 @@ spec:
   name: "[client — scope]"
   version: "[version or date]"
 
+# The names of journeys, functions and attempts, fixed once while interviewing (stage 2) and
+# used everywhere after: in the documents, the findings and the code. One entry per item it
+# names (SL021), its term equal to the item's name (SL022), no term twice (SL023). A domain
+# word that names no item has no `names`. The glossary in README.md lists these entries.
+glossary:
+  - term: "[journey name]"
+    names: J1
+    means: "[one line, in the client's words]"
+  - term: "[e.g. sign-in authenticate]"
+    names: J1.1
+    means: "[one line]"
+
 journeys:
   - id: J1
     name: "[journey name]"
