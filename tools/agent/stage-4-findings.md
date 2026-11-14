@@ -1,29 +1,28 @@
 # Stage 4 — findings
 
-*Task prompt. Paste as is; replace the bracketed values.*
+*Task prompt. Assemble it with `tools/agent/prompt.sh 4`, which appends the rule files it
+names, and paste the result as is; replace the bracketed values.*
 
 ---
 
 You draft the findings of an observability assessment from a confirmed target model and a
 confirmed gap. You draft; a person re-runs the evidence and sets the status.
 
+## Rules
+
+The rule files in [`rules/`](rules/) apply to this stage: [boundaries](rules/boundaries.md),
+[evidence](rules/evidence.md), [claims](rules/claims.md),
+[owner questions](rules/owner-questions.md) and the [progress log](rules/progress-log.md),
+with N = 4. The boundaries below are this stage's own and add to the common ones.
+
 ## Boundaries
 
 - Read-only on the client's estate: code checkout, monitoring tool, exports. You may run read
   queries in the tool; you never change its configuration, the code or tickets.
-- You write only inside the engagement repository, in the files named under "Output".
-  Temporary files go only in the scratch directory the person names: [path].
 - One claim per finding. Every statement under *What we see* cites its evidence: the query text
   and its time range, file:line, the export file and row, or the inventory row id.
 - Every finding is drafted with status **assumption**. You never write *confirmed*.
-- When the evidence for a claim cannot be obtained, do not write the claim: list it under
-  "Could not evidence" with what is missing.
 - Expected refusals are not failures; a metric that is not collected is a gap, not a green.
-- No client data leaves the engagement repository.
-- Read only the paths and systems listed under "Inputs". Anything else is out of scope: name
-  it as an open question, do not open it.
-- A question addressed to the owner or the client stays open: you never decide it, even when
-  one answer looks obvious. You may list candidate answers, marked as candidates.
 
 ## Inputs
 
@@ -71,25 +70,6 @@ with the report as files at a stated commit; the report cites them and does not 
    catalog (`E-` id: source, window, method, result, limits); the facts-ledger rows these findings rest on (proposed, status
    assumption), and "Could not evidence" (claim, what is missing, who can provide it).
 
-## Progress log
-
-Keep `progress/stage-4.md` in the engagement repository while you work, so a person can see
-where the stage is without asking you. Its first line is the plan: the steps, numbered, and
-their count. Then one line when a step starts and one when it ends, one per commit with its
-hash, and one when you stop on something:
-
-```
-14:05 plan — 6 steps: 1 sources, 2 functions, 3 error paths, 4 taxonomy, 5 lint, 6 notes
-14:07 step 1/6 sources — started
-14:31 step 1/6 sources — done; disagreements handed to the person
-14:32 step 2/6 functions — blocked: no capture for J3 (open question 4)
-14:40 commit 3f2a1c9 — functions J1, J2
-```
-
-Append, never rewrite. Times are local, with the time zone once at the top, and read from
-the clock, never estimated; an estimated time is corrected by an appended note. The log is
-committed with the stage's output; the first and last times are the agent's elapsed time.
-
 ## Self-check before handing over
 
 - [ ] Every claim has an Evidence line a reviewer can re-run without asking.
@@ -97,9 +77,8 @@ committed with the stage's output; the first and last times are the agent's elap
 - [ ] Every *What follows* names an action, an owning role and a maturity dimension.
 - [ ] No finding rests on an interview or a slide alone (evidence level *document only* is
       stated when that is all there is).
-- [ ] No other client's name, figure or system appears; nothing was written outside the
-      engagement repository.
-- [ ] The progress log ends with the last step done and the last commit.
+- [ ] No other client's name, figure or system appears.
+- [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 

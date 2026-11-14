@@ -16,6 +16,23 @@ The prompts name files and tools, never a product or a model.
 Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
 [speclint.md](../speclint.md), and stage 5 checks the profile with [maturity.md](../maturity.md).
 
+## Rules every stage shares
+
+What holds at every stage lives in one file each under [`rules/`](rules/), and each stage
+prompt names them instead of repeating them:
+
+| Rule | Holds |
+|---|---|
+| [boundaries.md](rules/boundaries.md) | Read-only on the estate, writes only in the engagement repository and the scratch directory, nothing secret printed, nothing written is a fact, read only the listed inputs |
+| [evidence.md](rules/evidence.md) | Every claim cites what it rests on; what cannot be evidenced is listed, never guessed |
+| [claims.md](rules/claims.md) | Claims stay within what was checked: window and place, evaluation is not detection, and the rest |
+| [owner-questions.md](rules/owner-questions.md) | Owner questions stay open, candidates are marked, answers count once recorded in the decision register |
+| [progress-log.md](rules/progress-log.md) | The progress log: plan, steps, commits, stops, times read from the clock |
+
+A stage file holds only what is its own: its boundaries on top of the common ones, inputs,
+method, output, self-check and what the person confirms. `tools/agent/prompt.sh N [OUT.md]`
+assembles stage N with the rule files into one prompt.
+
 ## How to run a stage
 
 1. Work in the engagement repository, never in this kit, on a branch or worktree of the
@@ -31,7 +48,8 @@ Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
    short-lived credentials in-process from the CLI's own export of the session, never
    printed or written, and says so in the
    progress log. Settle this before the run: on the first one a helper lost minutes to it.
-2. Give the agent the prompt file and the inputs it lists. Missing inputs are not substituted:
+2. Assemble the prompt with `tools/agent/prompt.sh N` and give the agent the result and the
+   inputs it lists. Missing inputs are not substituted:
    the agent stops and names them.
 3. The agent drafts, keeps a progress log (`progress/stage-N.md`: the plan, each step started
    and done, each commit, each stop), runs its self-check, and hands over a list of what it

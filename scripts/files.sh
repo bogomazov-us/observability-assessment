@@ -22,6 +22,11 @@ KIT_FILES=(
   tools/agent/stage-4-findings.md
   tools/agent/stage-5-maturity.md
   tools/agent/stage-6-recommendations.md
+  tools/agent/rules/boundaries.md
+  tools/agent/rules/evidence.md
+  tools/agent/rules/claims.md
+  tools/agent/rules/owner-questions.md
+  tools/agent/rules/progress-log.md
   templates/intake-questionnaire.md
   templates/data-request.md
   templates/stage-report.md
