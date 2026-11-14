@@ -71,6 +71,8 @@ done
 miss=0
 for f in "${TRACKED[@]}"; do
   [[ "$f" == *.md && "$f" != CONTRIBUTING.md && "$f" != CHANGELOG.md ]] || continue
+  # Skill wrappers are installed into an engagement, not read in the PDF; their README is.
+  [[ "$f" == tools/agent/skills/*/SKILL.md ]] && continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
 done
 for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
