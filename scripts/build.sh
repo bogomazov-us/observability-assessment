@@ -38,6 +38,14 @@ mkdir -p "$KIT_OUT_DIR"
 OUT="$KIT_OUT_DIR/${KIT_NAME}-v${VERSION}.pdf"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
+# A chapter that is listed but missing fails the build: a PDF without it would look complete.
+MISSING=()
+for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || MISSING+=("$f"); done
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "✗ chapters listed but not found:" >&2; printf '    %s\n' "${MISSING[@]}" >&2
+  exit 1
+fi
+
 : > "$TMP/kit.md"
 for f in "${KIT_FILES[@]}"; do
   # relative links do not work inside one PDF: keep the link text only.

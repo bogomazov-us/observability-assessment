@@ -3,6 +3,12 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **The build fails on a missing chapter.** `scripts/build.sh` stops and names every file
+  listed in the build (or in an edition's config) that does not exist. Before, it printed a
+  warning and produced a PDF without the chapter.
+
 ## 0.11.0 — 2026-11-14
 
 - **Rules every agent stage shares, in one place** (`tools/agent/rules/`): common boundaries,
