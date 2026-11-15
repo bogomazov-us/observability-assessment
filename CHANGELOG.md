@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.12.0 — 2026-11-14
 
 - **Stage and rule skills** (`tools/agent/skills/`, optional): a skill per stage that only the
   person starts, and a skill per shared rule that the agent reaches for unasked. Each points
