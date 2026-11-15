@@ -32,6 +32,7 @@ KIT_FILES=(
   templates/intake-questionnaire.md
   templates/data-request.md
   templates/owner-questions.md
+  templates/agent-instructions.md
   templates/stage-report.md
   templates/finding.md
   templates/report.md

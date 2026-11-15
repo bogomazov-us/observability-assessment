@@ -37,6 +37,31 @@ For agent tools that load skills, [`skills/`](skills/README.md) has thin wrapper
 stage that only the person starts, and a skill per rule that the agent reaches for itself.
 They point at these files and copy nothing.
 
+## Setting up the engagement repository
+
+Once per engagement, before stage 1:
+
+```
+tools/agent/init-engagement.sh --repo ENGAGEMENT_REPO --code CODE_CHECKOUT [--code ...] \
+    [--skills SKILLS_DIR] [--instructions NAME]
+```
+
+It writes into the engagement repository, and commits nothing:
+
+| File | What |
+|---|---|
+| `AGENTS.md` (or `--instructions NAME`, the file your agent tool reads) | The agent's standing instructions: where the code, the kit, the working folder, the ledger and the register are; how a stage runs; the rules. From [`templates/agent-instructions.md`](../../templates/agent-instructions.md) with the paths filled in; the client and the monitoring tool are left for the person |
+| `assessment/engagement-state.yml` | The gates, from the template; the agent's first check reads it |
+| `assessment/owner-questions.md`, `assessment/progress/` | The owner-questions batch and the progress logs |
+| `facts.md`, `decisions.md` | Facts ledger and decision register, created only when absent; point `--facts` and `--decisions` at existing ones |
+| `.scratch/` | The scratch directory, added to `.gitignore` |
+
+With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
+A re-run keeps what exists; `--force` replaces the instructions, the state file and the skills,
+never the ledger, the register, the questions or a progress log. The agent's read-only
+boundary is set in the agent tool's own permissions as well: the instructions file alone does
+not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
+
 ## How to run a stage
 
 1. Work in the engagement repository, never in this kit, on a branch or worktree of the
