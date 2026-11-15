@@ -38,6 +38,7 @@ done
 
 out="$("$SK/install.sh" "$T/skills")"
 grep -q "installed $count skills" <<<"$out" && ok "install: all skills" || ko "install: $out"
+grep -q "kept" <<<"$out" && ko "install: kept 0 reported" || ok "install: no kept count when nothing kept"
 grep -rq "__KIT__" "$T/skills" && ko "install: placeholder left" || ok "install: no placeholder left"
 grep -qF "bash $KIT/tools/agent/prompt.sh 1" "$T/skills/oa-stage-1-inventory/SKILL.md" \
   && ok "install: kit path written" || ko "install: kit path not written"
@@ -45,6 +46,7 @@ grep -qF "$KIT/tools/agent/rules/claims.md" "$T/skills/oa-rule-claims/SKILL.md" 
   && ok "install: rule path written" || ko "install: rule path not written"
 echo "local change" >> "$T/skills/oa-rule-claims/SKILL.md"
 out="$("$SK/install.sh" "$T/skills")"
+grep -q ", kept 1" <<<"$out" && ok "install: kept count reported" || ko "install: kept count missing"
 grep -q "kept: oa-rule-claims" <<<"$out" && grep -q "local change" "$T/skills/oa-rule-claims/SKILL.md" \
   && ok "install: existing skill kept" || ko "install: existing skill overwritten"
 "$SK/install.sh" --force "$T/skills" >/dev/null

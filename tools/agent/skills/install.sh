@@ -27,4 +27,5 @@ for src in "$HERE"/oa-*/; do
   sed "s|__KIT__|$KIT|g" "$src/SKILL.md" > "$DEST/$name/SKILL.md"
   n=$((n + 1))
 done
-echo "installed $n skills into $DEST${kept:+, kept $kept}"
+msg="installed $n skills into $DEST"; [ "$kept" -gt 0 ] && msg="$msg, kept $kept"
+echo "$msg"
