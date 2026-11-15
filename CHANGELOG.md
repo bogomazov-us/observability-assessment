@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.13.1 — 2026-11-14
 
 - `tools/agent/init-engagement.sh --force` no longer replaces `engagement-state.yml`: it holds
   the stage confirmations, and `--force` is for refreshing the instructions and skills after a
