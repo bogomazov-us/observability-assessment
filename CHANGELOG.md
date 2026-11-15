@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.13.0 — 2026-11-14
 
 - **Engagement setup in one command** (`tools/agent/init-engagement.sh`): writes the agent's
   standing instructions (`AGENTS.md` or the file your agent tool reads, from the new
