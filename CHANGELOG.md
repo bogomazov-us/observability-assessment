@@ -3,6 +3,10 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- `tools/agent/skills/install.sh` no longer reports "kept 0" when it kept nothing.
+
 ## 0.12.0 — 2026-11-14
 
 - **Stage and rule skills** (`tools/agent/skills/`, optional): a skill per stage that only the
