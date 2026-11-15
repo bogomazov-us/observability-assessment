@@ -35,12 +35,14 @@ grep -qx ".scratch/" "$R/.gitignore" && [ -d "$R/.scratch" ] && ok "scratch igno
 
 echo "| F-1 | kept | assumption | x | 2026-01-01 |" >> "$R/facts.md"
 echo "local" >> "$R/AGENTS.md"
+echo "# confirmed" >> "$R/assessment/engagement-state.yml"
 out="$("$INIT" --repo "$R" --code "$T/code-a")"
 grep -q "F-1" "$R/facts.md" && grep -q "^local$" "$R/AGENTS.md" && ok "re-run keeps what exists" || ko "re-run replaced a file"
 [ "$(grep -c "^.scratch/$" "$R/.gitignore")" -eq 1 ] && ok "gitignore line added once" || ko "gitignore line repeated"
 "$INIT" --repo "$R" --code "$T/code-a" --force >/dev/null
 grep -q "^local$" "$R/AGENTS.md" && ko "--force: instructions not replaced" || ok "--force replaces instructions"
 grep -q "F-1" "$R/facts.md" && ok "--force never replaces the ledger" || ko "--force replaced the ledger"
+grep -q "^# confirmed$" "$R/assessment/engagement-state.yml" && ok "--force never replaces the state file" || ko "--force replaced the state file"
 
 "$INIT" --repo "$R" --code "$T/code-a" --instructions OTHER.md --work work >/dev/null
 [ -f "$R/OTHER.md" ] && grep -qF "work/engagement-state.yml" "$R/OTHER.md" \

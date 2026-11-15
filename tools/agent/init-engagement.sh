@@ -14,16 +14,17 @@
 # --scratch       scratch directory (default: --repo/.scratch, added to .gitignore)
 # --instructions  file name the agent tool reads for instructions (default: AGENTS.md)
 # --skills        also install the stage and rule skills into this folder, relative to --repo
-# --force         replace the instructions file, the state file and the skills
+# --force         replace the instructions file and the skills
 #
-# Writes only inside --repo and the scratch directory, commits nothing, and never overwrites a
-# facts ledger, decision register, owner-questions file or progress log.
+# Writes only inside --repo and the scratch directory, commits nothing, and never overwrites the
+# state file, a facts ledger, decision register, owner-questions file or progress log: they are
+# records, and --force is for refreshing the instructions and skills after a kit upgrade.
 set -euo pipefail
 KIT="$(cd "$(dirname "$0")/../.." && pwd)"
 REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" SCRATCH=""
 NAME="AGENTS.md" SKILLS="" FORCE=0
 CODE=()
-usage() { sed -n '3,19p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+usage() { sed -n '3,21p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 while [ $# -gt 0 ]; do
   case "$1" in
     --repo) REPO="${2:-}"; shift 2 ;;
@@ -84,7 +85,7 @@ decisions() {
 }
 
 put "$REPO/$NAME" force instructions
-put "$REPO/$WORK/engagement-state.yml" force cat "$KIT/templates/engagement-state.yml"
+put "$REPO/$WORK/engagement-state.yml" keep cat "$KIT/templates/engagement-state.yml"
 put "$REPO/$WORK/owner-questions.md" keep cat "$KIT/templates/owner-questions.md"
 [ -d "$REPO/$WORK/progress" ] || { mkdir -p "$REPO/$WORK/progress"; : > "$REPO/$WORK/progress/.gitkeep"; say "wrote $WORK/progress/"; }
 put "$REPO/$FACTS" keep facts

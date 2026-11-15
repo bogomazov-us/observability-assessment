@@ -57,8 +57,8 @@ It writes into the engagement repository, and commits nothing:
 | `.scratch/` | The scratch directory, added to `.gitignore` |
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
-A re-run keeps what exists; `--force` replaces the instructions, the state file and the skills,
-never the ledger, the register, the questions or a progress log. The agent's read-only
+A re-run keeps what exists; `--force` replaces the instructions and the skills (after a kit
+upgrade), never the state file, the ledger, the register, the questions or a progress log. The agent's read-only
 boundary is set in the agent tool's own permissions as well: the instructions file alone does
 not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
 
