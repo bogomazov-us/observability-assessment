@@ -1,0 +1,12 @@
+# A function the glossary does not name.
+# expect: SL021
+# args: --strict
+glossary:
+  - {term: Checkout, names: J1}
+journeys:
+  - id: J1
+    name: Checkout
+    functions:
+      - {id: F1, name: Reserve slot, requirement: journey model, step 1}
+signals:
+  - {function: F1, name: f1.result, state: to_build}

@@ -68,7 +68,8 @@ PLACEHOLDER = re.compile(r"^\[[^\]]*\]$")
 # Known keys per section; anything else is a typo or an engagement's own field (prefix x_).
 COMMON = {"note", "source"}
 KNOWN = {
-    "(root)": {"spec", "journeys", "taxonomy", "signals", "attempts", "slos", "alerts"},
+    "(root)": {"spec", "glossary", "journeys", "taxonomy", "signals", "attempts", "slos", "alerts"},
+    "glossary": {"term", "names", "means"},
     "spec": {"name", "version"},
     "journeys": {"id", "name", "success", "functions", "requirement"},
     "functions": {"id", "name", "route", "success", "requirement", "current", "severity",
@@ -188,6 +189,7 @@ class Linter:
                 self.err(aw, "SL005", "the attempt can end ambiguous but has no reconciliation")
 
         subjects = set(functions) | set(attempts)
+        self.glossary(doc)
 
         # Signals.
         signals_by_subject = {}
@@ -319,6 +321,50 @@ class Linter:
                 if not os.path.exists(full):
                     self.err(lw + ".runbook", "SL012", "runbook %s does not exist" % rb)
 
+    def glossary(self, doc):
+        """Names fixed once, while interviewing: every journey, function and attempt has its
+        entry, the entry's term is the item's name, and no term names two things."""
+        named = {}  # id -> (where, name) for journeys, functions and attempts
+        for jw, j in self.items(doc, "journeys"):
+            if not self.blank(j.get("id")):
+                named[j["id"]] = (jw, j.get("name"))
+            for i, f in enumerate(j.get("functions") or [] if isinstance(j.get("functions"), list) else []):
+                if isinstance(f, dict) and not self.blank(f.get("id")):
+                    named[f["id"]] = ("%s.functions[%d]" % (jw, i), f.get("name"))
+        for aw, a in self.items(doc, "attempts"):
+            if not self.blank(a.get("id")):
+                named[a["id"]] = (aw, a.get("name"))
+        if doc.get("glossary") is None:
+            if named:
+                self.warn("glossary", "SL021", "no glossary: the names of journeys, functions and "
+                          "attempts are not fixed anywhere")
+            return
+        covered, terms = set(), {}
+        for gw, g in self.items(doc, "glossary"):
+            term = g.get("term")
+            if self.blank(term):
+                self.err(gw + ".term", "SL000", "glossary entry without a term")
+                continue
+            key = " ".join(str(term).lower().split())
+            if key in terms:
+                self.err(gw, "SL023", "term %r already defined at %s" % (term, terms[key]))
+            else:
+                terms[key] = gw
+            ident = g.get("names")
+            if self.blank(ident):
+                continue  # a domain word, not the name of an item in the spec
+            if ident not in named:
+                self.err(gw + ".names", "SL013", "unknown journey, function or attempt %r" % ident)
+                continue
+            covered.add(ident)
+            where, name = named[ident]
+            if not self.blank(name) and " ".join(str(name).split()) != " ".join(str(term).split()):
+                self.warn(where + ".name", "SL022", "%r is named %r here but %r in the glossary: "
+                          "rename one, or record the rename" % (ident, name, term))
+        for ident, (where, _) in named.items():
+            if ident not in covered:
+                self.warn(where, "SL021", "%r has no glossary entry" % ident)
+
     def keys(self, doc):
         """Unknown keys: a misspelt field would otherwise pass silently."""
         def check(where, item, section):
@@ -330,7 +376,7 @@ class Linter:
                               "(a typo, or an engagement's own field: prefix it x_)" % k)
         check("", doc, "(root)")
         check("spec", doc.get("spec"), "spec")
-        for section in ("journeys", "taxonomy", "signals", "attempts", "slos", "alerts"):
+        for section in ("glossary", "journeys", "taxonomy", "signals", "attempts", "slos", "alerts"):
             for i, item in enumerate(doc.get(section) or []):
                 check("%s[%d]" % (section, i), item, section)
                 if section == "journeys" and isinstance(item, dict):

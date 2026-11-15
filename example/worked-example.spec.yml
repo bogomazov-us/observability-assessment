@@ -7,6 +7,15 @@ spec:
   name: Larkfield Grocer — checkout
   version: "after week 6 of the assessment"
 
+# Names fixed in the week-two interviews; the documents and the code use these words.
+glossary:
+  - {term: Checkout, names: J1, means: "from the basket to a placed order"}
+  - {term: Reserve delivery slot, names: C1, means: "hold a delivery window for the basket"}
+  - {term: Authorise payment, names: C2, means: "reserve the amount on the customer's card"}
+  - {term: Place order, names: C3, means: "turn the held slot and the authorised payment into an order"}
+  - {term: Checkout attempt, names: A1, means: "one customer's pass through C1 to C3, by attempt_id"}
+  - {term: Read-back, means: "reading the slot hold by attempt_id after a timeout, to learn whether it took effect"}
+
 journeys:
   - id: J1
     name: Checkout

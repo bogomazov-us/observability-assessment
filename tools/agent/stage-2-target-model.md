@@ -42,7 +42,11 @@ with N = 2. The boundaries below are this stage's own and add to the common ones
    disagreements to the person as a table — source, what it says, file:line. Draft only after
    the owner has said how they are reconciled: one source governs, or all are brought to one
    current state.
-1. For each journey, list the calls a customer's attempt makes, in order, from the captures.
+1. **Names first.** Take the names of journeys and business steps in the client's own words,
+   from the journey model and the kick-off notes, and keep them: they go into the spec's
+   `glossary`, and every later stage uses them. Where two sources name one thing differently,
+   the name is an open question for the owner, not your choice.
+   For each journey, list the calls a customer's attempt makes, in order, from the captures.
    Group them into business functions: one function per business step that can fail on its
    own (reserve, authorise, place), not one per endpoint.
 2. Confirm each function's route in code; note the service that handles it.
@@ -128,6 +132,9 @@ with the report as files at a stated commit; the report cites them and does not 
    - a signal is `live` only with production evidence from the inventory.
    No target, owner or threshold is `confirmed` by the agent. A field of the engagement's own
    is prefixed `x_` (SL019).
+   - `glossary`: one entry per journey, function and attempt, its term equal to the item's
+     `name` (SL021, SL022), with a one-line meaning in the client's words; domain words that
+     name no item may be added without `names`.
 2. `stage-2-notes.md`, written around the resulting contract, not the rounds that produced
    it: a compact map of the functions (purpose, success criterion, measurable today, target
    coverage), a table per journey (function, route, service, source), then "Open questions"
@@ -140,6 +147,8 @@ with the report as files at a stated commit; the report cites them and does not 
       only SL016 placeholder warnings remain. Say in the notes that this shows the spec is
       structurally complete, not that it is right.
 - [ ] Every function in scope is present, with a requirement source and its current state.
+- [ ] Every journey, function and attempt has its glossary entry, under its name (no SL021,
+      SL022 or SL023).
 - [ ] Every SLO and alert is `proposed`.
 - [ ] Every function's success names its states, the empty case and the time bound, or an open
       question for the owner.

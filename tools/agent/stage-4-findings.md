@@ -87,7 +87,8 @@ Re-runs each cited query or opens each cited line, then sets the verdict, one of
 inconclusive or resolved. A check that did not reproduce is not a refutation: too little data,
 expired history or a changed configuration gives inconclusive or disputed, and true then but
 fixed since gives resolved. The re-checks are read-only and recorded as evidence with their own
-`E-` ids; a reviewer's reading is a recommendation, and the owner sets the verdict. An anomaly
+`E-` ids; a reviewer's reading is a recommendation, and the owner sets the verdict, in writing,
+through the verdict batch of [`owner-questions.md`](../../templates/owner-questions.md). An anomaly
 seen during a re-check that nothing explains stays an observation of unknown cause, not a new
 finding. Refuted drafts are kept with the reason; they count against the harness in the
 measures.

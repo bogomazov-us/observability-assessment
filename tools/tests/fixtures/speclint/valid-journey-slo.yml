@@ -1,5 +1,9 @@
 # One SLO over a journey's functions: the subject may be the journey id.
 # expect: clean
+glossary:
+  - {term: Journey one, names: J1}
+  - {term: Step one, names: F1}
+  - {term: Step two, names: F2}
 journeys:
   - id: J1
     functions:
