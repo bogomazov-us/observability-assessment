@@ -3,7 +3,7 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.13.2 — 2026-11-14
 
 - **A "live" signal is confirmed through another path** than the agent's query: lesson 21 in
   `method/lessons.md`; what the person confirms in stages 1 and 3; the harness table in
