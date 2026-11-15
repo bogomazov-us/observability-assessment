@@ -5,6 +5,14 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+- **Engagement setup in one command** (`tools/agent/init-engagement.sh`): writes the agent's
+  standing instructions (`AGENTS.md` or the file your agent tool reads, from the new
+  `templates/agent-instructions.md`) with the paths filled in, the stage-gate state file, the
+  owner-questions file, the progress folder, a facts ledger and a decision register, and
+  optionally installs the skills.
+- **Getting started with the agent stages** (`method/getting-started.md`, section 6): the
+  whole route with an agent, from setup to the last confirmed stage, and what the person does
+  at each step.
 - `tools/agent/skills/install.sh` no longer reports "kept 0" when it kept nothing.
 
 ## 0.12.0 — 2026-11-14
