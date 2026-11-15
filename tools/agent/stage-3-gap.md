@@ -121,6 +121,8 @@ with the report as files at a stated commit; the report cites them and does not 
 
 ## What the person confirms
 
-Re-runs a sample of the "live" checks, chosen by them, and each "proven" in the detection
-matrix. Agrees the owners of the residual risks and registers the blind spots. Decides which
+Checks a sample of the "live" signals, chosen by them, through another path than the
+agent's query: the tool's own interface, a browser, or a query they write. Re-running the
+agent's query shows that it repeats, not that the signal is live. Checks each "proven" in the
+detection matrix the same way. Agrees the owners of the residual risks and registers the blind spots. Decides which
 scenarios are run, where and by whom. Confirms the gap as the input to stage 4, or returns it.

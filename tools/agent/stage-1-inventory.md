@@ -81,7 +81,9 @@ with the report as files at a stated commit; the report cites them and does not 
 
 ## What the person confirms
 
-Re-runs a sample of the cited checks, chosen by them, and records each result. A sample that
+Re-runs a sample of the cited checks, chosen by them, and records each result; an object
+confirmed by a live fact is checked through another path than the agent's query (the tool's
+own interface, a browser, or a query they write). A sample that
 reproduces says those claims hold; it is not an estimate of the accuracy of the whole
 inventory. Registers the confirmed blind spots as risks with owners. Confirms the inventory as
 the baseline for stage 2, or returns it; on confirmation the document's own status line is

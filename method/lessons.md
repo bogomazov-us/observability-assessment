@@ -24,6 +24,7 @@ Each lesson cost us time once on a real engagement.
 | 18 | Approve a spec for implementation, then accept on evidence | Endless document rounds; or sign-off on text that was never run |
 | 19 | Read the bill before sizing telemetry work | The roadmap adds series, probes and rules while nobody knows what monitoring already costs, or which budget it is paid from; credits hide the amount from the people who pay |
 | 20 | The PDF is the record; a living book is the working view | A dozen PDFs go stale the day after acceptance; or a live page replaces the accepted record, and nobody can say what was agreed |
+| 21 | Confirm a "live" signal through another path than the one that reported it | Re-running the agent's own query repeats its mistake (wrong series, wrong filter, wrong window) and reads as a confirmation; the person checks in the tool's own interface, a browser, or a query they write |
 
 ## Cases
 
