@@ -1,13 +1,14 @@
 # The worked example (worked-example.md) as an observability-spec.yml. Fictional.
 # Lint: python3 tools/speclint.py example/worked-example.spec.yml
-# Schema and rules: tools/speclint.md. The state is "after week 6": every signal still to build,
-# so the P1 alert can only be in shadow (rule SL011).
+# Schema and rules: tools/speclint.md. In the engagement this is spec/observability-spec.yml,
+# as confirmed with stage 3 (D-06) and unchanged to the read-out. No signal is live, so the
+# P1 alert can only be in shadow (rule SL011).
 
 spec:
   name: Larkfield Grocer — checkout
-  version: "after week 6 of the assessment"
+  version: "stage 3 confirmed (D-06)"
 
-# Names fixed in the week-two interviews; the documents and the code use these words.
+# Names agreed at the journey walk-through (Q-01, D-03); the documents and the code use them.
 glossary:
   - {term: Checkout, names: J1, means: "from the basket to a placed order"}
   - {term: Reserve delivery slot, names: C1, means: "hold a delivery window for the basket"}
@@ -43,74 +44,86 @@ taxonomy:
     http: "409"
     class: expected
     customer_sees: Choose another slot
+    user_impact: degraded
   - function: C1
     code: slots rejects with a definite error
     context: no hold created
     http: 5xx with hold_created=false
     class: failure
     customer_sees: Error, retry offered
+    user_impact: degraded
   - function: C1
     code: timeout from slots
     context: read-back by attempt_id finds no hold
     http: "504"
     class: failure
     customer_sees: Error, retry offered
+    user_impact: degraded
   - function: C1
     code: timeout from slots
     context: read-back finds the hold
     http: "504"
     class: none            # the hold exists and checkout continues: not an error
     customer_sees: Nothing
+    user_impact: unaffected
   - function: C1
     code: timeout from slots
     context: read-back not possible
     http: "504"
     class: ambiguous       # reconciled by the attempt model below
     customer_sees: Error; slot may be held for 20 minutes
+    user_impact: unknown
   - function: C2
     code: DECLINED
     context: reason CARD
     http: "200"
     class: expected
     customer_sees: Your card was declined
+    user_impact: blocked
   - function: C2
     code: PROVIDER_TIMEOUT
     context: provider status says not authorised
     http: 200 today
     class: failure
     customer_sees: "today: card declined — wrongly"
-    confirmed_by: checkout payment client, code path; span query (O-09)
+    user_impact: blocked
+    confirmed_by: checkout payment client, code path; span query E-301 (O-09)
   - function: C2
     code: PROVIDER_TIMEOUT
     context: provider status not available
     http: 200 today
     class: ambiguous
     customer_sees: "today: card declined — wrongly"
-    confirmed_by: checkout payment client, code path; span query (O-09)
+    user_impact: blocked
+    confirmed_by: checkout payment client, code path; span query E-301 (O-09)
   - function: C3
     code: BASKET_CHANGED
     context: authorisation voided
     http: "409"
     class: expected
     customer_sees: Your basket changed
+    user_impact: degraded
   - function: C3
     code: rejected with a definite error
     context: authorisation voided, order_created=false
     http: 4xx / 5xx
     class: failure
     customer_sees: Error; no money held
+    user_impact: blocked
   - function: C3
     code: timeout or no answer
     context: after C2 approved
     http: 5xx / none
     class: ambiguous
     customer_sees: Error; money may be held
+    user_impact: unknown
   - function: C3
     code: duplicate submit
     context: same attempt_id
     http: "409"
     class: caller_defect
     customer_sees: Nothing (double click)
+    user_impact: unaffected
 
 signals:
   - function: C1
@@ -122,7 +135,8 @@ signals:
     name: checkout.payment.result
     emitted_by: checkout
     attributes: [attempt_id, operation_id, outcome, error_class, reason]
-    state: to_build
+    state: differs
+    evidence: "tenant: payments.authorise spans carry outcome and reason, no attempt_id or error_class (stage 3, G-02, E-302, E-306)"
   - function: C3
     name: checkout.order.result
     emitted_by: checkout
@@ -173,7 +187,7 @@ slos:
     target: 99.0
     window: 28d
     owner: Head of e-commerce
-    status: confirmed             # target signed by the owner
+    status: proposed              # the owner signs the target in milestone M-1
 
 alerts:
   - id: P1-checkout-failures
@@ -185,9 +199,7 @@ alerts:
     grouping: per function
     notifies: on-call rota
     runbook: runbooks/checkout.md
-    delivery_test: test P1 delivered, acknowledged and escalated (milestone M4)
+    delivery_test: test P1 delivered, acknowledged and escalated (milestone M-4)
     state: shadow
-    # Decided with the client by maturity and organisation: service team, platform SRE or
-    # operations centre. Open in the example; the alert stays in shadow until it is set.
-    owner: to decide with the client
+    owner: to decide with the client   # service team, platform SRE or operations centre
     status: proposed              # stays proposed until the owner is decided; no paging
