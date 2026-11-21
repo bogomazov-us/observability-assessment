@@ -40,17 +40,9 @@ unconfirmed inventory is not reviewed.
 
 ## Claims stay within what was checked
 
-An agent writes fast and generalises easily; a reviewer reads the generalisation as a finding.
-Every drafted claim names its window and its place, and says no more than its check. Evaluation
-is not detection; absence of data is not a defect by itself; an alarm OK by its missing-data
-setting is reported as such; a total read at account or service level is not attributed to the
-scope; a difference is not a cause; defined in code is not emitted; a document's statement
-carries its date and is not the current state; a claim about a mechanism covers each way it
-runs; a measurement names its method; a passing check shows only what it ran; absence in every
-layer read is not a location, and a missing header alone does not establish a source; a remedy
-is stated with the case it leaves; a health signal vouches for its own stream only; not built is
-not impossible. The wording rules are in
-[`rules/claims.md`](../tools/agent/rules/claims.md), which every stage prompt names.
+An agent generalises easily and a reviewer reads the generalisation as a finding, so every stage
+prompt names one checklist of wording rules that keeps each claim within its check:
+[`rules/claims.md`](../tools/agent/rules/claims.md).
 
 ## Two levels of reading, from one set of sources
 

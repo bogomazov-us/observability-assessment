@@ -1,49 +1,47 @@
 # Rule: claims stay within what was checked
 
 *Applies to every stage. An agent writes fast and generalises easily; a reviewer reads the
-generalisation as a finding.*
+generalisation as a finding. Before handing over, tick each item against every claim.*
 
-Each claim says what was looked at, and no more:
-
-- **Name the window and the place.** For a point-in-time read (a configuration, an alarm's
-  current state) the time of the check is the window. "0 traces in the trace store in the checked 24 h", not
-  "traces are not delivered": another backend, or another window, was not checked.
-- **Evaluation is not detection.** A rule that evaluates without error and is inactive shows
-  that the expression runs. Whether it fires on a failure needs a scenario test.
-- **Absence of data is not a defect by itself.** An error series that does not exist may mean
-  no such error happened. Say what would tell the two apart.
-- **Say how a state was reached.** An alarm that is OK because missing data is treated as not
-  breaching is "no data, OK by the missing-data setting", not "OK".
-- **Totals are not attributions.** A cost or volume read at account or service level is
-  labelled so; attribution to the scope is a separate step, done or not done.
-- **A difference is not a cause.** "Counter above the expected number of scheduled runs; cause
-  not established" until the cause is shown.
-- **Defined is not emitted.** A metric, label or alert defined in code is "defined in code";
-  it is live only when the series or rule was seen in the estate.
-- **A document's statement has a date.** Client documents mix past and present. Quote a
-  statement with the document's date, and never carry it into the current state without
-  live evidence.
-- **A mechanism runs in more than one way.** "Each run writes a record" holds only after every
-  way it runs was read: full, partial or filtered runs, stop on the first error, continue on
-  error, dry run, offline, killed. List the modes from the options and the error branches,
-  and say per mode what is written; when a mode was not read, say so.
-- **A measurement names its method.** Say which tool and settings produced a number when they
-  change it — sampling, a default depth, a window. An explanation that goes beyond what was
-  measured ("only a restart would help") is a hypothesis until something shows it.
-- **Absence everywhere is not a location.** When no layer's counters show an event, say that;
-  it does not place the source in the layer that was not read, and it does not exclude a layer
-  whose counters could miss it. A missing header or field alone does not establish where a
-  response came from: that takes the full request record, correlated in each layer.
-- **A remedy narrows; say what it leaves.** A proposed or decided fix is described with the
-  case it does not cover and the test that would show it, not as closing the gap.
-- **A health signal vouches for its own stream.** A heartbeat shows that its stream arrives,
-  not that any other input exists; each input is checked on its own.
-- **Not built is not impossible.** "Continuous computation is not implemented" when a value
-  was computed once by hand; "cannot be computed" only when the inputs do not exist.
-- **A passing check shows what it ran.** A green pipeline or test suite covers the paths it
-  exercised; say which. What a pipeline runs is read from its steps, not from a job name.
-
-
-**Before handing over:** no claim says more than its check: evaluation, absence, missing-data
-states, totals, causes, modes of a mechanism, measurement methods and passing checks are worded
-as above.
+1. A claim says what was looked at, and no more.
+2. A claim names the window and the place of its check; for a point-in-time read (a
+   configuration, an alarm's current state) the window is the time of the check.
+   Bad: "traces are not delivered". Good: "0 traces in the trace store in the checked 24 h".
+3. Evaluation is not detection: a rule that evaluates without error and is inactive shows only
+   that the expression runs, and whether it fires on a failure needs a scenario test.
+4. Absence of data is not a defect by itself (an error series that does not exist may mean no
+   such error happened), so say what would tell the two apart.
+   Bad: "no alert exists". Good: "no alert shown in the folder read".
+5. A state says how it was reached.
+   Bad: "OK". Good: "no data, OK by the missing-data setting".
+6. A cost or volume read at account or service level is labelled so, and its attribution to the
+   scope is a separate step, stated as done or not done.
+7. A difference is not a cause: a cause is "not established" until shown, and a shown cause is
+   bounded to the window read.
+   Good: "counter above the expected number of scheduled runs; cause not established".
+8. A metric, label or alert defined in code is "defined in code", and live only when the series
+   or rule was seen in the estate.
+9. A document's statement is quoted with the document's date and never carried into the current
+   state without live evidence, since documents mix past and present.
+10. A claim about a mechanism covers each way it runs (full, partial or filtered runs, stop on
+    the first error, continue on error, dry run, offline, killed): list the modes from the
+    options and the error branches, say per mode what is written, and name each mode not read.
+    Bad: "each run writes a record", with only the full run read.
+11. A measurement names the tool and the settings that change its number, such as sampling, a
+    default depth or a window.
+12. An explanation beyond what was measured is a hypothesis until something shows it.
+    Bad: "only a restart would help", stated as found.
+13. When no layer's counters show an event, say that, without placing the source in a layer
+    that was not read or excluding a layer whose counters could miss it.
+14. A missing header or field alone does not establish where a response came from; that takes
+    the full request record, correlated in each layer.
+15. A proposed or decided remedy is stated with the case it does not cover and the test that
+    would show it, not as closing the gap.
+16. A health signal vouches for its own stream only: a heartbeat shows that its stream arrives,
+    and each other input is checked on its own.
+17. Not built is not impossible: "cannot be computed" only when the inputs do not exist.
+    Bad: "cannot be computed". Good: "continuous computation is not implemented; computed once
+    by hand".
+18. A passing check covers only the paths it exercised, so a green pipeline or test suite says
+    which.
+19. What a pipeline runs is read from its steps, not from a job name.

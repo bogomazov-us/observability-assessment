@@ -31,9 +31,7 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       verifiable) against the code or configuration; the counts sum to the rows.
 - [ ] Every reconciliation claim cites a query or the table row that holds its evidence.
 - [ ] No secret, account identifier, endpoint or IP address is written.
-- [ ] Every claim names its window and place, and says no more than its check: evaluation is
-      not detection, absence is not a defect, an OK by the missing-data setting says so, a total
-      is not attributed, a difference is not a cause.
+- [ ] Every claim passes [claims](../tools/agent/rules/claims.md) items 1–7.
 - [ ] Confirmed blind spots are in the risk register with owners.
 - [ ] The re-run sample is reported as "n of n selected checks reproduced", not as accuracy.
 
@@ -62,9 +60,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] *What follows* has an action, an owner and the maturity dimension it moves.
 - [ ] Severity with its reason, confidence and limits, a closing criterion, and the three
       statuses (decision, implementation, verification).
-- [ ] The claim is bounded before its verdict: window, scope, "not shown" rather than "none
-      exists"; an absence read in part of the estate says what was not checked; a cause is
-      bounded to the window read.
+- [ ] The claim is bounded before its verdict by [claims](../tools/agent/rules/claims.md) items 1, 2, 4
+      and 7.
 - [ ] The verdict is one of the five (confirmed, disputed with a reason, refuted, inconclusive,
       resolved) and set by the owner; "did not reproduce" is not read as refuted.
 - [ ] No decision record stands as technical evidence; code with its version, or a query, is
