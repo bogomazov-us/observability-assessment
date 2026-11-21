@@ -45,7 +45,10 @@ The agent runs `check` for its stage before anything else and stops when it is b
 what it reports ([`rules/boundaries.md`](agent/rules/boundaries.md)). It may set its own stage
 to `draft` and then `handed_over`; it never sets `returned` or `confirmed`. Before confirming,
 the person runs `lint --since` against the commit of the last confirmation, so that an edited
-review or a rewritten confirmation is seen.
+review or a rewritten confirmation is seen. On the first confirmation there is none: pass the
+commit that added the file (`git log --diff-filter=A --format=%h -- engagement-state.yml`), so
+the command is the same at every stage; there is no earlier confirmation to protect. A
+revision at which the file did not exist exits 2 and names that command.
 
 Tests: `tools/tests/test_stagegate.sh` (a sound file passes; one fixture per rule fails; the
 gate opens and stays shut as the state says; `--since` catches edits).

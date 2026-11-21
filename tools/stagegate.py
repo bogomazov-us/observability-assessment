@@ -167,12 +167,20 @@ def gate(doc, n, rep):
 def since(doc, path, rev, rep):
     """Compare with the file at a git revision: reviews only grow, confirmations stay as written."""
     d, name = os.path.split(os.path.abspath(path))
+    git = lambda *args: subprocess.run(["git", "-C", d, *args], capture_output=True, text=True)
     try:
-        old_text = subprocess.run(["git", "-C", d, "show", f"{rev}:./{name}"],
-                                  capture_output=True, text=True, check=True).stdout
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f"stagegate.py: cannot read {path} at {rev}: {getattr(e, 'stderr', e)}".strip(), file=sys.stderr)
+        if git("rev-parse", "--verify", "--quiet", f"{rev}^{{commit}}").returncode != 0:
+            print(f"stagegate.py: --since {rev}: no such revision, or {path} is not in a git repository", file=sys.stderr)
+            sys.exit(2)
+        shown = git("show", f"{rev}:./{name}")
+    except FileNotFoundError as e:
+        print(f"stagegate.py: --since needs git: {e}", file=sys.stderr)
         sys.exit(2)
+    if shown.returncode != 0:
+        print(f"stagegate.py: {name} did not exist at {rev}. On the first confirmation, pass the commit "
+              f"that added it: git log --diff-filter=A --format=%h -- {name}", file=sys.stderr)
+        sys.exit(2)
+    old_text = shown.stdout
     old = stages_by_number(yaml.safe_load(old_text) or {}, Report(f"{path}@{rev}"))
     new = stages_by_number(doc, Report(path))
     for n, o in sorted(old.items()):

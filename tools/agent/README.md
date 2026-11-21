@@ -113,7 +113,9 @@ The spec is drafted here; the person takes the confirmed spec set to the client'
    could not cite. While it runs, the person reads the log, not the agent's transcript.4. A person confirms what the prompt's last section names, in the tool, and records the result
    in the facts ledger and the decision register; then sets the stage `confirmed` in
    `engagement-state.yml` and runs `tools/stagegate.py lint engagement-state.yml --since REV`
-   against the last confirmation's commit. Only then does the next stage start.
+   against the last confirmation's commit; on the first, the commit that added the file
+   (`git log --diff-filter=A --format=%h -- engagement-state.yml`). Only then does the next
+   stage start.
 
 ## Gates
 

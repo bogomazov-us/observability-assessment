@@ -65,5 +65,13 @@ grep -q " G11 " <<<"$out" && ok "G11 edited review" || ko "G11: exit $code: $out
 grep -q " G12 " <<<"$out" && ok "G12 rewritten confirmation" || ko "G12: exit $code: $out"
 run "$tool" lint "$R/state.yml" --since no-such-rev
 [ $code -eq 2 ] && ok "unknown revision exits 2" || ko "unknown revision: exit $code"
+# --since a revision before the file existed: a clear message naming the commit to pass
+run "$tool" lint "$R/state.yml" --since HEAD~1
+[ $code -eq 2 ] && grep -q "did not exist at HEAD~1" <<<"$out" && grep -q "diff-filter=A" <<<"$out" \
+  && ! grep -q "Traceback" <<<"$out" && ok "file absent at the revision: clear message" || ko "file absent at the revision: exit $code: $out"
+first="$(git -C "$R" log --diff-filter=A --format=%h -- state.yml)"
+git -C "$R" checkout -q -- state.yml
+run "$tool" lint "$R/state.yml" --since "$first"
+[ $code -eq 0 ] && ok "first confirmation: --since the commit that added the file" || ko "--since the adding commit: exit $code: $out"
 
 exit $fail
