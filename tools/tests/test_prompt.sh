@@ -6,6 +6,7 @@ cd "$(dirname "$0")/../.."
 P=tools/agent/prompt.sh
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 FAIL=0
+BUDGET=2500 # words per assembled stage prompt, every stage
 pass() { echo "✓ $*"; }
 fail() { echo "✗ $*"; FAIL=1; }
 
@@ -26,12 +27,19 @@ for n in 1 2 3 4 5 6; do
   done
 done
 
-# stage 2 keeps its reference tables in a file the prompt links, not one prompt.sh appends
-R=tools/agent/reference/stage-2-reference.md
-[ -f "$R" ] && grep -qF "(reference/stage-2-reference.md)" tools/agent/stage-2-*.md \
-  && pass "stage 2 links its reference" || fail "stage 2: reference missing or not linked"
-grep -qF "# Stage 2 reference" "$T/s2.md" && fail "stage 2: reference appended" || pass "stage 2: reference not appended"
-w=$(( $(wc -w < "$T/s2.md") )); [ "$w" -le 2500 ] && pass "stage 2 prompt $w words (≤ 2500)" || fail "stage 2 prompt $w words (> 2500)"
+# a long stage keeps its reference in a file the prompt links, not one prompt.sh appends
+for n in 2 3; do
+  R=tools/agent/reference/stage-$n-reference.md
+  [ -f "$R" ] && grep -qF "(reference/stage-$n-reference.md)" tools/agent/stage-$n-*.md \
+    && pass "stage $n links its reference" || fail "stage $n: reference missing or not linked"
+  grep -qF "# Stage $n reference" "$T/s$n.md" && fail "stage $n: reference appended" || pass "stage $n: reference not appended"
+done
+
+# size budget: every assembled prompt fits
+for n in 1 2 3 4 5 6; do
+  w=$(( $(wc -w < "$T/s$n.md") ))
+  [ "$w" -le "$BUDGET" ] && pass "stage $n prompt $w words (≤ $BUDGET)" || fail "stage $n prompt $w words (> $BUDGET)"
+done
 
 "$P" 7 >/dev/null 2>&1 && fail "stage 7 accepted" || pass "stage 7 refused"
 "$P" >/dev/null 2>&1 && fail "no argument accepted" || pass "no argument refused"
