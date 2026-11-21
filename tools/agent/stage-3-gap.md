@@ -8,7 +8,7 @@ names, and paste the result as is; replace the bracketed values.*
 You check a confirmed target model against the live estate: which of its signals exist and
 work, which SLIs could be computed today, which alerts could detect what they are meant to,
 and what stands between each alert and a person who acts on it. You draft; a person confirms
-each "live" and each detection claim.
+a sample of the "live" signals and each "proven" detection.
 
 ## Rules
 
@@ -92,7 +92,7 @@ travel with it as files at a stated commit, cited, not reprinted.
    the owner, not an edit.
 2. `stage-3-gap.md`:
    - first, five to seven results and their consequences;
-   - signals: live / to build / differs / not verifiable, with counts that sum to the
+   - signals: live / to build / differs / not verifiable ([records.md](../../method/records.md)), with counts that sum to the
      signals and a line on what the count counts (signal rows bound to functions, not
      necessarily distinct series), and the evidence per row; absent, differs, not verified
      and an observed failure are separate fields;
@@ -120,7 +120,7 @@ travel with it as files at a stated commit, cited, not reprinted.
 
 ## What the person confirms
 
-Checks a sample of the "live" signals, chosen by them, through another path than the
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives, checks a sample of the "live" signals, chosen by them, through another path than the
 agent's query: the tool's own interface, a browser, or a query they write. Re-running the
 agent's query shows that it repeats, not that the signal is live. Checks each "proven" in the
 detection matrix the same way. Agrees the owners of the residual risks and registers the blind spots. Decides which

@@ -34,10 +34,12 @@ with N = 5. The boundaries below are this stage's own and add to the common ones
 | Gap, confirmed: signal states, detection matrix, paging readiness | `stage-3-gap.md` |
 | Spec, inventory, facts ledger | `spec/observability-spec.yml`, `inventory.md`, facts ledger |
 | Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` |
+| Provisional baseline, if written | `maturity.yml` |
 
 ## Method
 
-1. Copy `templates/maturity.yml` and fill the scope: the journeys and services assessed.
+1. Copy `templates/maturity.yml`, or start from the provisional baseline and re-score every
+   level in it; fill the scope: the journeys and services assessed.
 2. For each dimension, read its levels in the model and find the highest level fully shown by
    evidence: a confirmed finding, an inventory row, a gap row, a query. A level shown for part
    of the scope is `partial`, with the coverage written out.
@@ -88,6 +90,6 @@ travel with it as files at a stated commit, cited, not reprinted.
 
 ## What the person confirms
 
-Each level and its confidence, against the cited evidence; each N/A with the client; which
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives: each level and its confidence, against the cited evidence; each N/A with the client; which
 dimensions block the next step; each provisional level when its findings have their verdicts.
 Only the confirmed profile goes into stage 6.

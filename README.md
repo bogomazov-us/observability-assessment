@@ -32,17 +32,18 @@ an assessment with it, under review once, and then alone.
 
 | Folder | What | Read when |
 |---|---|---|
-| [method/getting-started.md](./method/getting-started.md) | First assessment with the kit: what to copy, fill, hold | before day one |
+| [method/getting-started.md](./method/getting-started.md) | First assessment with the kit: what to copy, fill, hold; the engagement calendar | before day one |
 | [example/worked-example.md](./example/worked-example.md) | One fictional engagement, findings to acceptance | before day one |
 | [offerings.md](./offerings.md) | The three formats we sell: Assessment, Blueprint, Implementation | scoping a request |
 | [method/estimation.md](./method/estimation.md) | Effort by role per format, increments per journey, service and tool; capacity check | pricing a proposal |
-| [method/playbook.md](./method/playbook.md) | Step-by-step method, week by week | running an assessment |
+| [method/playbook.md](./method/playbook.md) | Step-by-step method, each step with its week | running an assessment |
 | [method/maturity-model.md](./method/maturity-model.md) | 12 dimensions × 5 levels with definitions | scoring |
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |
 | [method/agent-harness.md](./method/agent-harness.md) | Where AI agents draft and people confirm; the release check | using agents on an engagement |
+| [method/records.md](./method/records.md) | Roles, decision records, id prefixes, status sets | writing any record |
 | [tools/](./tools/) | Code scan and estate export by class, spec linter, maturity calculator | week one; before each review round |
 | [tools/agent/](./tools/agent/) | Prompts for all six harness stages, inventory to recommendations; one command to set up an engagement repository for them | running the agent harness |
-| [templates/](./templates/) | Intake questionnaire (with questions by tool class), data request, finding, ADR, report, executive deck, roadmap, commitment baseline, statement of work and acceptance record, review rounds and checklists, privacy and AI-ops boundary checklists, spec set with nine skeletons | producing artifacts |
+| [templates/](./templates/) | Intake questionnaire (with questions by tool class), data request, kick-off note, interview guide, finding, ADR (`templates/adr.md`), golden journey proof, report, executive deck, roadmap, commitment baseline, statement of work and acceptance record, review rounds and checklists, privacy and AI-ops boundary checklists, spec set with nine skeletons | producing artifacts |
 | [practice/](./practice/) | How to build an observability practice around the kit; the pilot protocol for a new lead | staffing, succession |
 | [backlog.md](./backlog.md) | What the kit still lacks | planning kit work |
 

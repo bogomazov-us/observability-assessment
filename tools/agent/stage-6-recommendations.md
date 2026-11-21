@@ -42,7 +42,7 @@ with N = 6. The boundaries below are this stage's own and add to the common ones
 | Findings with their verdicts | `findings/`; `REC-` only on *confirmed* |
 | Decision register: decisions the owner has accepted | instructions file |
 | Maturity scores, confirmed | `maturity.yml`, clean under `tools/maturity.py` |
-| Buyer's question and the format asked for | `kickoff-note.md` or facts ledger |
+| Buyer's question and the format asked for | `kickoff-note.md` |
 | Report template | `templates/report.md` |
 | Roadmap template | `templates/roadmap.md` |
 
@@ -103,5 +103,5 @@ of this plan. It is a separate document, drafted on the person's request.
 
 ## What the person confirms
 
-The owner of each card (a named person on the client side), the effort against the team's own
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives: the owner of each card (a named person on the client side), the effort against the team's own
 estimate, and the order. The lead decides what reaches the report's executive part.
