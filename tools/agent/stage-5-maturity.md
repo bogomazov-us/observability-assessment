@@ -29,15 +29,17 @@ with N = 5. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Findings with their verdicts; those still without one, marked | [findings/] |
+| Findings with their verdicts; those still without one, marked | `findings/` |
 | Support mode as the owner stated it: hours of use, time zone, days, who is responsible | [intake answer or decision register] |
-| Gap, confirmed: signal states, detection matrix, paging readiness | [stage-3-gap.md] |
-| Spec, inventory, facts ledger | [paths] |
-| Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` from the kit |
+| Gap, confirmed: signal states, detection matrix, paging readiness | `stage-3-gap.md` |
+| Spec, inventory, facts ledger | `spec/observability-spec.yml`, `inventory.md`, facts ledger |
+| Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` |
+| Provisional baseline, if written | `maturity.yml` |
 
 ## Method
 
-1. Copy `templates/maturity.yml` and fill the scope: the journeys and services assessed.
+1. Copy `templates/maturity.yml`, or start from the provisional baseline and re-score every
+   level in it; fill the scope: the journeys and services assessed.
 2. For each dimension, read its levels in the model and find the highest level fully shown by
    evidence: a confirmed finding, an inventory row, a gap row, a query. A level shown for part
    of the scope is `partial`, with the coverage written out.
@@ -68,9 +70,9 @@ with N = 5. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md), with this stage's
-chain and required fields: the result first, the records, decisions and open questions, and an
-evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
+The stage report, `stage-5-notes.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
 1. `maturity.yml`, clean under `python3 tools/maturity.py --check maturity.yml`.
 2. `stage-5-notes.md`: per dimension, the level, the evidence that shows it, the evidence that
@@ -88,6 +90,6 @@ evidence catalog of `E-` ids; it cites the progress log and its inputs by commit
 
 ## What the person confirms
 
-Each level and its confidence, against the cited evidence; each N/A with the client; which
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives: each level and its confidence, against the cited evidence; each N/A with the client; which
 dimensions block the next step; each provisional level when its findings have their verdicts.
 Only the confirmed profile goes into stage 6.

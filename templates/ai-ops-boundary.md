@@ -39,7 +39,7 @@ that pages or acts.
 Say in the proposal and on the report's first pages what the tool already does and what the
 assessment adds: "builds on the anomaly detection you run; adds per-function outcomes it can
 learn from", never "replaces". If the client commissioned the tool recently, review its scope
-with its owner before the findings preview (getting started, week 4).
+with its owner before the findings preview ([calendar](../method/getting-started.md#3-calendar)).
 
 ## Questions for the owner
 

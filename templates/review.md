@@ -1,7 +1,8 @@
 # Review — round record and checklists
 
-Significant deliverables go through written review rounds with verdicts (playbook, working
-rules). This file is the record of one round and the checks a reviewer runs. Copy it per
+Significant deliverables go through written review rounds with verdicts
+([playbook](../method/playbook.md#working-rules-for-the-team), "Reviews in rounds": client-facing
+rounds and internal stage reviews). This file is the record of one round and the checks a reviewer runs. Copy it per
 deliverable and round. A reviewer who needs the author in the room to judge a check has found a
 gap in the deliverable, or in the kit.
 
@@ -31,10 +32,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       verifiable) against the code or configuration; the counts sum to the rows.
 - [ ] Every reconciliation claim cites a query or the table row that holds its evidence.
 - [ ] No secret, account identifier, endpoint or IP address is written.
-- [ ] Every claim names its window and place, and says no more than its check: evaluation is
-      not detection, absence is not a defect, an OK by the missing-data setting says so, a total
-      is not attributed, a difference is not a cause.
-- [ ] Confirmed blind spots are in the risk register with owners.
+- [ ] Every claim passes [claims](../tools/agent/rules/claims.md) items 1–7.
+- [ ] Confirmed blind spots are in the risk register (`risks.md`) with owners.
 - [ ] The re-run sample is reported as "n of n selected checks reproduced", not as accuracy.
 
 ## Checklist — stage report form (`stage-report.md`)
@@ -62,9 +61,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] *What follows* has an action, an owner and the maturity dimension it moves.
 - [ ] Severity with its reason, confidence and limits, a closing criterion, and the three
       statuses (decision, implementation, verification).
-- [ ] The claim is bounded before its verdict: window, scope, "not shown" rather than "none
-      exists"; an absence read in part of the estate says what was not checked; a cause is
-      bounded to the window read.
+- [ ] The claim is bounded before its verdict by [claims](../tools/agent/rules/claims.md) items 1, 2, 4
+      and 7.
 - [ ] The verdict is one of the five (confirmed, disputed with a reason, refuted, inconclusive,
       resolved) and set by the owner; "did not reproduce" is not read as refuted.
 - [ ] No decision record stands as technical evidence; code with its version, or a query, is
@@ -147,11 +145,11 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       response is decided.
 - [ ] Missing-data behaviour is set per input; blocked counts as bad in a synthetic SLI.
 
-## Checklist — report (`report.md`)
+## Checklist — assessment report (`summary.md`, from `report.md`)
 
 - [ ] Page one answers the buyer's question in the buyer's words, in the format they asked for.
 - [ ] The last page asks for a decision, with who decides and by when.
-- [ ] Every statement in the executive part traces to a finding.
+- [ ] Every statement in the summary traces to a finding.
 - [ ] Limitations say what the data cannot tell us.
 - [ ] Recommendations are ordered by impact over effort and each links to findings.
 - [ ] `REC-` only on confirmed findings; `V-` for assumptions, with the fix only as a

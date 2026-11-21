@@ -43,7 +43,7 @@ that the buyer did not agree to.
 
 Pick the block for the deliverable.
 
-**Assessment, Blueprint:** accepted · accepted with the limitations above · rejected (criteria
+**Assessment, Blueprint:** accepted · accepted with limitations (those above) · rejected (criteria
 not met: [#]).
 
 **Implementation — go / no-go:**

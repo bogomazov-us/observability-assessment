@@ -8,63 +8,50 @@ someone has looked at the evidence it cites.
 
 | Rule | Why |
 |---|---|
-| Read-only access only: code checkout, monitoring tool through a read-only token or a read-only MCP server, exports already in the engagement repository | An assessment never changes the client's estate (offerings, not included) |
+| Read-only access only: code checkout, monitoring tool through a read-only token or a read-only MCP server, exports already in the engagement repository; no writes to the client's monitoring configuration, code or tickets | An assessment never changes the client's estate; write access is a separate, client-owned decision |
 | Everything the agent reads and writes stays in the engagement repository and the client's tool | Client confidentiality (playbook, working rules) |
 | Agent output enters the facts ledger as an assumption, never as confirmed | "Confirmed means there is an artefact" — the agent's summary is not one |
 | Every drafted claim cites its evidence: the query text and its time range, file:line, or the export file | A reviewer can re-run it without asking the agent |
-| No agent writes to the client's monitoring configuration, code or tickets | Write access is a separate, client-owned decision, outside the assessment |
 | The client's own AI-ops tools are inputs, not competitors | Build on the client's work (playbook, principle 6) |
 | The agent reads only the paths and systems its prompt lists and makes no network call it does not list; its permissions enforce both | Scope is a boundary, not a suggestion; a prompt alone was ignored once |
-| A question addressed to the owner or the client is never decided by an agent; candidate answers are marked as candidates | A plausible guess is read as an answer |
-| The owner's answer is recorded in the client's decision register before any document cites it, by the session the owner spoke to; a subagent does not record a decision on an approval relayed to it | A decision nobody can find is read by a reviewer as a proposal; a relayed approval cannot be checked |
-| A reviewer's recommendation stays a recommendation until the owner approves it; it changes no verdict, level or decision by itself | The reviewer reads the evidence; the owner decides |
+| Owner questions stay open and answers count once in the decision register, recorded by the session the owner spoke to; a reviewer's recommendation decides nothing ([rule](../tools/agent/rules/owner-questions.md), [records.md](records.md)) | A plausible guess is read as an answer; a decision nobody can find is read as a proposal; a relayed approval cannot be checked; the owner decides |
 | Assessment work runs on its own branch or worktree from the first stage | Drafts and other work must not sweep each other up |
-| Each stage keeps a progress log in the engagement repository: the plan, each step started and done, each commit, each stop | The person sees where the stage is without asking the agent; the log is the pilot's time record |
-| Times in a progress log are read from the clock, never estimated; an estimated time is corrected by an appended note, not rewritten | An estimated time spoils the time record without showing it |
+| Each stage keeps a [progress log](../tools/agent/rules/progress-log.md), times read from the clock | The log is the pilot's time record; an estimated time spoils it without showing it |
 | Agents working in parallel commit only their own files, named by path, and pull before they push | A broad commit sweeps up another agent's half-written work |
 
 ## Pipeline: inputs → model → gap → recommendations
 
-| # | Stage | Agent does | Tool | Person confirms | Playbook step |
-|---|---|---|---|---|---|
-| 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server; gives each object one status | [collect.md](../tools/collect.md), [stage 1 prompt](../tools/agent/stage-1-inventory.md) | Exports reconcile with each other (counts, names); statuses sum to the rows; a sample of checks re-run | 3, 4 |
-| 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers; links each function to its requirement and to its current state in the inventory | `observability-spec.yml` skeleton | Each function and class against code and a captured request; which proposals become confirmed | 6, 7 |
-| 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts; for each P1 alert, how its detection is shown | [stage 3 prompt](../tools/agent/stage-3-gap.md), [speclint.md](../tools/speclint.md) | Each "live" through another path than the agent's query (the tool's interface, a browser, a query the person writes); the detection matrix | 7, 8 |
-| 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | `templates/finding.md` | Re-runs the evidence read-only; the owner sets the verdict (one of five) | 8 |
-| 5 | Maturity | Drafts `maturity.yml` from confirmed findings; a level that waits on a verdict is provisional | [stage 5 prompt](../tools/agent/stage-5-maturity.md), [maturity.md](../tools/maturity.md) | Level and confidence per dimension | 5 |
-| 6 | Recommendations | Proposes a confirmation batch, then `REC-` cards on confirmed findings, `V-` verification tasks and `W-` work items, ordered by impact over effort | `templates/report.md` | Owner, effort and order | 11 |
+Each stage's prompt, tool, gate and what the person confirms are in
+[tools/agent/](../tools/agent/README.md); its weeks are in the
+[calendar](getting-started.md#3-calendar).
 
-A stage starts only on confirmed output of the stage before it, checked by
-[`tools/stagegate.py`](../tools/stagegate.md) against the engagement state file: a finding drafted from an
-unconfirmed inventory is not reviewed.
+| # | Stage | Agent does | Playbook step |
+|---|---|---|---|
+| 1 | Inventory | Runs the code scan; exports the estate by object class through the tool's read-only API or MCP server; gives each object one status | 3, 4 |
+| 2 | Target model | Drafts journeys → functions from HAR captures, routes and code; drafts the error taxonomy from error handlers; links each function to its requirement and to its current state in the inventory | 6, 7 |
+| 3 | Gap | Checks the drafted model against the estate: which signals are live, which SLIs could be computed today, which alerts sit on pooled rates or hosts; for each P1 alert, how its detection is shown | 7, 8 |
+| 4 | Findings | Drafts findings in the `finding.md` format, status *assumption*, with the cited evidence | 8 |
+| 5 | Maturity | Drafts `maturity.yml` from confirmed findings; a level that waits on a verdict is provisional | 5 |
+| 6 | Recommendations | Proposes a confirmation batch, then `REC-` cards on confirmed findings, `V-` verification tasks and `W-` work items, ordered by impact over effort | 11 |
 
 ## Claims stay within what was checked
 
-An agent writes fast and generalises easily; a reviewer reads the generalisation as a finding.
-Every drafted claim names its window and its place, and says no more than its check. Evaluation
-is not detection; absence of data is not a defect by itself; an alarm OK by its missing-data
-setting is reported as such; a total read at account or service level is not attributed to the
-scope; a difference is not a cause; defined in code is not emitted; a document's statement
-carries its date and is not the current state; a claim about a mechanism covers each way it
-runs; a measurement names its method; a passing check shows only what it ran; absence in every
-layer read is not a location, and a missing header alone does not establish a source; a remedy
-is stated with the case it leaves; a health signal vouches for its own stream only; not built is
-not impossible. The wording rules are in
-[`rules/claims.md`](../tools/agent/rules/claims.md), which every stage prompt names.
+An agent generalises easily and a reviewer reads the generalisation as a finding, so every stage
+prompt names one checklist of wording rules that keeps each claim within its check:
+[`rules/claims.md`](../tools/agent/rules/claims.md).
 
 ## Two levels of reading, from one set of sources
 
-Each stage's report has a main part that supports a decision and an evidence bundle that lets a
-reviewer check each claim by a stable id ([`stage-report.md`](../templates/stage-report.md)).
-The current state comes first; the rounds that produced it are history, kept apart and never
-needed to read the result. Decision, implementation and verification are separate statuses: an
-accepted decision is not a built function, and a built function is not a proven detection.
-One export style for every report, set in the kit (`tools/report-pdf.sh`), and a built PDF is
-checked: every cited id is found in its text. This came from the review of the first
+Each stage's notes file has a main part that supports a decision and an evidence part that lets
+a reviewer check each claim by a stable id; the current state comes first, and the rounds that
+produced it are history, never needed to read the result
+([`stage-report.md`](../templates/stage-report.md)). The client receives two documents for the
+whole assessment, built by `tools/assessment-pdf.sh` from the per-stage sources: a report — the
+lead's summary (`summary.md`, from [`report.md`](../templates/report.md)), then a chapter per
+stage, drafted by the agent and accepted when the lead confirms the stage — and an evidence
+bundle of their records and catalogs. Working files stay in the repository as history. This came from the review of the first
 engagement's stages 1–3, whose content was ahead of their form: the client had to rebuild the
-current state from the edit history, wide tables and appendices. The client receives two documents for the whole assessment — a report that grows by a chapter per
-accepted stage and an evidence bundle — built from the per-stage sources by
-`tools/assessment-pdf.sh`; working files stay in the repository as history.
+current state from the edit history, wide tables and appendices.
 
 ## The review bundle is built from what is cited
 
@@ -120,42 +107,29 @@ A failed claim blocks the release only where the client has made the release che
 | Drafted claims whose cited evidence did not reproduce | 0 | Reviewer re-runs every cited query in the first two engagements |
 | Days from access to reconciled inventory | lower than the estimate's inventory phase | Actuals log (`practice/pilot.md`) |
 
-Until both quality targets hold on two engagements, the harness speeds up inventory only, and
-findings are written by people.
+**Until both quality targets hold on two engagements, every stage runs as a draft to compare
+against, and people write the findings.** Stage 4 reconciles its drafts with the findings people
+wrote, never redrafting one.
 
 **First engagements are pilot measurements.** Record agent elapsed time and person hours
 separately, per stage. Agent elapsed time is not compared with the person-days of the
 estimation model: those include preparation, human review and acceptance, and the scope
 differs. The comparison is made on time recorded for the same work. A reviewer's re-run of a
 sample of checks says that those claims hold; it is not an estimate of the accuracy of the
-whole output — report it as "n of n selected checks reproduced". Record the person's hours per
-stage next to the agent's time. When a row is split or merged during review (the inventory
+whole output — report it as "n of n selected checks reproduced". When a row is split or merged during review (the inventory
 changes granularity), count it apart from drafts corrected in substance: it is a change of
 granularity, not an error of the draft.
 
-Later stages cite inventory rows by a stable id, never by line number: an edit after review
-moves every line below it.
-
 ## Status
 
-Specification. The tools behind stages 1, 3 and 5 exist in this kit; all six stages are
-packaged as task prompts in [tools/agent/](../tools/agent/README.md). All six stages have been
-run once on a real engagement and reviewed. The review of stage 1 is behind the rules on
-claims, statuses, blind spots and pilot measurement above; the reviews of stages 4–6 are behind
-the five verdicts ([finding.md](../templates/finding.md)), the per-alert paging gate
-([slo-alerts](../templates/spec-set/slo-alerts.md)), provisional maturity levels and the
-support mode ([maturity-model.md](maturity-model.md)), the three kinds of stage-6 record, and
-the rules on owner decisions, progress-log times and parallel commits above.
+Specification. All six stages have been run once on a real engagement and reviewed; the rules
+above came from those reviews, each named in the changelog.
 
-**First pilot measurement.** On the findings that reached a verdict, the share accepted without
-change of substance was far below the 70 % target: nearly every one was bounded (a window or a
-scope added) or corrected before it was confirmed, and the review reset several severities. Over
-all drafts the share looked close to the target, but most of those drafts had no verdict yet, so
-"unchanged" meant "not yet reviewed". Count the measure on findings with a verdict, and report a
+**First pilot measurement.** On findings with a verdict, the share accepted without change of
+substance was far below the 70 % target: nearly every one was bounded (a window or a scope
+added) or corrected, and the review reset several severities; over all drafts it looked close,
+because most had no verdict yet. Count the measure on findings with a verdict, and report a
 strict reading (bounds and changes from new input count) beside a lenient one (corrections and
-severities only). The selected evidence checks all reproduced. Person hours were not recorded per
-stage at the time. Rebuilt afterwards from the timestamps of the person's messages, they came to a
-range whose upper end was twice its lower: time present in the chat against time inside each
-stage's window, with reading and outside review rounds invisible to both. Record them as the
-stage runs. Not
-yet measured on a second engagement.
+severities only). The selected evidence checks all reproduced. Person hours, rebuilt afterwards
+from message timestamps, spanned a factor of two, with reading and outside review rounds
+invisible: record them as the stage runs. Not yet measured on a second engagement.

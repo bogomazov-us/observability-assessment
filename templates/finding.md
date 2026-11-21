@@ -6,7 +6,7 @@
 
 **Severity:** P1 / P2 / P3 on the scale below, and why. · **Decision:** proposed / accepted /
 superseded · **Implementation:** absent / partial / implemented · **Verification:** untested /
-observed / reproduced.
+observed / reproduced. Who sets each status: [records.md](../method/records.md).
 
 **What we see.** Facts only, each with its evidence id (`E-NNN` in the evidence catalog: source,
 window, method, result, limits).
@@ -37,11 +37,12 @@ mis-measured, who is not told.
   priority are separate fields.
 - A finding whose cause or impact is not established is marked *provisional*. Linked findings
   are assessed together, so one risk is not counted twice.
-- The agent proposes severity; the person sets it, and a change is recorded with its reason.
+- The agent proposes severity; the lead sets it, and a change is recorded with its reason.
 
 ## Verdicts
 
-A drafted finding is an *assumption*. After a re-check its owner gives it one of five verdicts:
+A drafted finding is an *assumption*. After a re-check its owner (the owner of the finding's
+verdict, [records.md](../method/records.md)) gives it one of five verdicts:
 
 | Verdict | When |
 |---|---|
@@ -66,16 +67,3 @@ A drafted finding is an *assumption*. After a re-check its owner gives it one of
   re-check is read-only, is recorded as evidence with its own `E-` id, and sets no verdict by
   itself.
 
----
-
-# ADR-NNN · [decision]
-
-**Status:** proposed / accepted / superseded by ADR-MMM · **Date:** YYYY-MM-DD
-
-**Context.** What forced the decision.
-
-**Decision.** One paragraph.
-
-**Alternatives.** What else was considered and why not.
-
-**Consequences.** What becomes easier, what becomes harder, what we must now do.

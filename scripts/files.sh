@@ -5,12 +5,17 @@ KIT_FILES=(
   README.md
   method/getting-started.md
   example/worked-example.md
+  example/agent/progress/stage-3.md
+  example/agent/owner-questions.md
+  example/agent/stage-3-gap.md
+  example/agent/reviews/stage-3-round-1.md
   offerings.md
   method/estimation.md
   method/playbook.md
   method/maturity-model.md
   method/lessons.md
   method/agent-harness.md
+  method/records.md
   tools/README.md
   tools/collect.md
   tools/speclint.md
@@ -19,7 +24,9 @@ KIT_FILES=(
   tools/agent/README.md
   tools/agent/stage-1-inventory.md
   tools/agent/stage-2-target-model.md
+  tools/agent/reference/stage-2-reference.md
   tools/agent/stage-3-gap.md
+  tools/agent/reference/stage-3-reference.md
   tools/agent/stage-4-findings.md
   tools/agent/stage-5-maturity.md
   tools/agent/stage-6-recommendations.md
@@ -30,18 +37,23 @@ KIT_FILES=(
   tools/agent/rules/progress-log.md
   tools/agent/skills/README.md
   templates/intake-questionnaire.md
+  templates/kickoff-note.md
+  templates/interview-guide.md
   templates/data-request.md
   templates/owner-questions.md
   templates/agent-instructions.md
   templates/stage-report.md
   templates/finding.md
+  templates/adr.md
   templates/report.md
   templates/executive-deck.md
   templates/roadmap.md
   templates/commitment-baseline.md
   templates/sow.md
   templates/acceptance.md
+  templates/golden-journey-proof.md
   templates/review.md
+  templates/risk-register.md
   templates/privacy-checklist.md
   templates/ai-ops-boundary.md
   templates/spec-set/README.md

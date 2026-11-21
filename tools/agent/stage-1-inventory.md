@@ -25,11 +25,10 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Scope: journeys and services, as agreed at kick-off | [facts ledger or kick-off note] |
+| Scope: journeys and services, as agreed at kick-off | `kickoff-note.md`, decision register |
 | Code checkout (read-only) | [path] |
-| Code scan report | output of `tools/collect/code-scan.sh` ([scan.md]) |
 | Read-only access to the monitoring estate | [token, profile or MCP server; named, never pasted] |
-| Facts ledger, risk register | [paths] |
+| Facts ledger, risk register | instructions file |
 
 ## Method
 
@@ -49,7 +48,7 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
    | not found | no object, or no data, in the checked window |
    | not verifiable | not attempted or not possible: outside the access granted, the system is down, or the comparison needs an attribution not yet done; say which |
 
-   The statuses do not overlap. The summary gives each count and their sum, and the sum equals
+   The statuses do not overlap (status sets: [records.md](../../method/records.md)). The summary gives each count and their sum, and the sum equals
    the number of rows. An error in your own draft is corrected in the draft, not recorded as
    a difference.
 4. Reconcile the classes with each other: an alert with no route to a person, a metric no alert
@@ -57,11 +56,9 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
-first, then scope and method, the main results, the records, decisions and open questions, and
-an evidence catalog of `E-` ids. Decision, implementation and verification are separate
-statuses. The progress log, review history, the decision register and the full spec travel
-with the report as files at a stated commit; the report cites them and does not reprint them.
+The stage report, `inventory.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
 1. `inventory.md`: one page of result (scope, objects by status, material differences, what
    was not checked), then the live verification table (class, object, status, evidence by
@@ -71,17 +68,25 @@ with the report as files at a stated commit; the report cites them and does not 
    In the reconciliation, a claim may cite the row id that holds its evidence instead of
    repeating the query; a claim with neither is not written.
 2. A list of **confirmed blind spots** — a check that cannot fire, a notification that reaches
-   nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each with a proposed owner. They do
+   nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each as a row of its columns: risk, source (blind spot, stage 1, row id), proposed owner, status *open*, date. They do
    not wait for the findings of stage 4; the finding is written there and links the risk.
+3. `scan.md`: the report of `tools/collect/code-scan.sh` on the code checkout, unless the
+   person has run it already.
+4. `exports/`: what you read from the estate, a file per object class named with the class
+   and export date (`exports/alert-rules-2027-03-01.json`), sanitized per the
+   [privacy checklist](../../templates/privacy-checklist.md), stating its query or call, time
+   and count ([collect.md](../collect.md)).
 
 ## Self-check before handing over
 
 - [ ] Every row has a stable id and one status; the counts sum to the number of rows.
+- [ ] Every inventory row cites an export file or a query.
 - [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 
-Re-runs a sample of the cited checks, chosen by them, and records each result; an object
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives, checks that the
+exports reconcile (counts, names) and the statuses sum to the rows; re-runs a sample of the cited checks, chosen by them, and records each result; an object
 confirmed by a live fact is checked through another path than the agent's query (the tool's
 own interface, a browser, or a query they write). A sample that
 reproduces says those claims hold; it is not an estimate of the accuracy of the whole

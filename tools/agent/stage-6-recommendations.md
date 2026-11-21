@@ -39,12 +39,12 @@ with N = 6. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Findings with their verdicts | [findings folder]; `REC-` only on *confirmed* |
-| Decision register: decisions the owner has accepted | [path] |
-| Maturity scores, confirmed | [maturity.yml], clean under `tools/maturity.py` |
-| Buyer's question and the format asked for | [kick-off note or facts ledger] |
-| Report template | `templates/report.md` from the kit |
-| Roadmap template | `templates/roadmap.md` from the kit |
+| Findings with their verdicts | `findings/`; `REC-` only on *confirmed* |
+| Decision register: decisions the owner has accepted | instructions file |
+| Maturity scores, confirmed | `maturity.yml`, clean under `tools/maturity.py` |
+| Buyer's question and the format asked for | `kickoff-note.md` |
+| Report template | `templates/report.md` |
+| Roadmap template | `templates/roadmap.md` |
 
 ## Method
 
@@ -71,11 +71,11 @@ with N = 6. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md), with this stage's
-chain and required fields: the result first, the records, decisions and open questions, and an
-evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
+The stage report, `recommendations.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
-`recommendations.md`: the confirmation batch and its result; the cards in the `report.md`
+`recommendations.md`: the confirmation batch and its result; the cards in the `templates/report.md`
 format (REC-NNN, linked findings, linked `W-` items, effort, impact, description, steps with
 roles, metric table, done when), in the proposed order; the `V-` tasks with their conditional
 options; the `W-` items with the decision each cites and what each depends on; then "Needs a
@@ -96,12 +96,12 @@ of this plan. It is a separate document, drafted on the person's request.
       event.
 - [ ] Every metric's current value is traceable to a finding's evidence; none is invented.
 - [ ] Effort and impact each carry a reason.
-- [ ] `python3 tools/maturity.py [maturity.yml]` is clean, and the dimensions named in the cards
+- [ ] `python3 tools/maturity.py maturity.yml` is clean, and the dimensions named in the cards
       match it.
 - [ ] Nothing promised that the offerings exclude.
 - [ ] The check at the end of each rule file holds.
 
 ## What the person confirms
 
-The owner of each card (a named person on the client side), the effort against the team's own
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives: the owner of each card (a named person on the client side), the effort against the team's own
 estimate, and the order. The lead decides what reaches the report's executive part.

@@ -6,13 +6,6 @@ a reviewer check each claim by its id. The current state comes first. How the do
 there (review rounds, earlier answers, the progress log) is history, kept in an appendix or a
 file of its own and never needed to read the result.
 
-| Main report | Evidence bundle |
-|---|---|
-| Result, conclusions, decisions, limits | Queries and their output, inventory rows, scenarios |
-| Read in order; short tables | Navigated by stable ids |
-| Markdown and PDF | Markdown and YAML; PDF when asked |
-| The current version of the model | History, reviews, technical detail |
-
 The decision register, the full spec (YAML) and the progress log travel **with** the report as
 files at a stated commit. The report cites them; it does not reprint them.
 
@@ -67,7 +60,8 @@ result from this section alone.]
 
 | ID | Question or decision | Owner | Status |
 |---|---|---|---|
-| D-01 | … | … | proposed / accepted / superseded by D-NN |
+| Q-01 | … | … | open, or the D- id of its answer |
+| D-NN | … | … | proposed / accepted / superseded by D-NN |
 
 ## 6. Conditions to complete the stage
 
@@ -125,65 +119,67 @@ What a filled report looks like, in short. The project is fictional.
 
 ## One report for the whole assessment
 
-The client reads two documents, not one per stage and per round: the **assessment report**,
-which grows by a chapter as each stage is accepted, and the **evidence bundle**. The sources stay
-per stage — agents write and reviewers accept them stage by stage, and a stage is fixed at its
-commit — and the two documents are built from them by `tools/assessment-pdf.sh` with a manifest:
+The client reads two documents, not one per stage and per round: the **assessment report** and
+the **evidence bundle**.
+
+| Chapter | File ([path table](../tools/agent/README.md#artifact-paths)) | Written by | Accepted when |
+|---|---|---|---|
+| Summary, first | `summary.md`, from [report.md](report.md) | The lead, rewritten at each accepted stage | The sponsor accepts the report |
+| One per stage, in order | The stage's notes file (table below) | The agent drafts it at stage N, or the lead writes it from this skeleton | The lead sets the stage `confirmed` and its document status `accepted` |
+
+Sources stay per stage, each fixed at its commit. At each accepted stage the lead adds its lines
+to `manifest.txt` in the working folder, rewrites `summary.md`, and builds both documents with
+`tools/assessment-pdf.sh`; after stage 6 that build is the final report. The manifest then:
 
 ```text
 report    summary.md
-report    stage-1-report.md    1 2 3 5
-report    stage-2-report.md    1 2 3 5
-report    recommendations.md
-evidence  stage-1-report.md    4 A
-evidence  stage-2-report.md    4 A
-evidence  stage-6-rechecks.md
+report    inventory.md            1 2 3 5
+report    stage-2-notes.md        1 2 3 5
+report    stage-3-gap.md          1 2 3 5
+report    stage-4-notes.md        1 2 3 5
+report    stage-5-notes.md        1 2 3 5
+report    recommendations.md      1 2 3 5
+evidence  inventory.md            4 A
+evidence  stage-2-notes.md        4 A
+evidence  stage-3-gap.md          4 A
+evidence  stage-4-notes.md        4 A
+evidence  findings/F-001.md
+evidence  stage-5-notes.md        4 A
+evidence  recommendations.md      4 A
 ```
 
-- **The report** opens with the current state, in a short file of its own (`summary.md`): the
-  profile, the confirmed findings, the recommendations, the decisions waiting on the client. It
-  is rewritten at each stage; the chapters below it are not. Each stage gives its result, main
-  results and decisions (sections 1, 2, 3, 5); records and catalog go to the bundle.
-- **The bundle** holds the records and every evidence catalog. Stages keep their own `E-` ranges
-  (stage 1 E-1xx, stage 2 E-2xx …), so the catalogs join without renumbering; an id cited in the
-  report must resolve in the bundle, or the build fails.
-- **Working files** — question lists, confirmation batches, drafts, review rounds — stay in the
-  engagement's repository as history. They reach the client through the result they produced.
-- The version of both is the commit in the footer; the change history is one table in
-  `summary.md`, a row per stage and per accepted change.
+- **The report** takes sections 1, 2, 3 and 5 of each chapter; only the summary is rewritten.
+- **The bundle** holds the records (section 4; at stage 4, a line per finding file) and every
+  evidence catalog (Appendix A). Stages keep their own `E-` ranges (stage 1 E-1xx, stage 2
+  E-2xx …), so the catalogs join without renumbering; an id cited in the report must resolve in
+  the bundle, or the build fails.
+- **Neither** carries section 6 or Appendix B: the conditions serve the review, and the change
+  history is one table in `summary.md`, a row per stage and per accepted change. Working files —
+  question lists, confirmation batches, drafts, review rounds — stay in the engagement's
+  repository as history; they reach the client through the result they produced.
+- The version of both is the commit in the footer. The roadmap is a document of its own
+  ([roadmap.md](roadmap.md)).
 
-## Statuses are kept apart
+## Statuses and ids
 
-| Dimension | Values |
-|---|---|
-| Decision | proposed / accepted / superseded |
-| Implementation | absent / partial / implemented |
-| Verification | untested / observed / reproduced |
-
-An accepted decision is not an implemented function, and an implemented function is not a
-proven detection. A row states each dimension it has; one word never stands for two. The same
-holds for a signal at stage 3: absent, differs, not verified and an observed failure are
-different fields, not one status.
-
-## Ids
-
-Ids are stable across versions: an id is never renumbered or reused, and a superseded row keeps
-its id with a link to what replaced it. One prefix per kind: `L-` inventory rows, `E-` evidence
-checks, `G-` gap results, `F-` findings, `D-` decisions of the stage, `REC-` recommendations, `V-` verification tasks,
-`W-` work towards an accepted decision.
-A baseline's ids stay as they are; new `E-` ids are added without renumbering it. Every id
-cited in a document appears in its evidence bundle, and a text search of the PDF finds it.
+Status values, who sets each, and the id prefixes are in
+[records.md](../method/records.md); one word never stands for two, and at stage 3 a signal's
+absence, difference, verification and an observed failure are separate fields. A baseline's ids
+stay and new `E-` ids are added after them. Section 5 cites the decision register's `D-` ids and
+the owner questions' `Q-` ids; a stage does not number decisions of its own.
 
 ## Per stage
 
-| Stage | The chain the document follows |
-|---|---|
-| 1 Inventory | object → defined state → observed state → evidence |
-| 2 Target model | function → success criterion → signal → SLI and SLO → detection |
-| 3 Gap | requirement → observation → difference → confidence → how to check |
-| 4 Findings | finding → impact → severity → recommendation → closing criterion |
-| 5 Maturity | dimension → level → evidence → what stops the next level → confidence |
-| 6 Recommendations | confirmed finding → recommendation → owner role → effort and impact → metric → done when |
+Every notes file carries the skeleton's sections under their numbers, for the manifest to select:
+
+| Stage | Notes file | The chain the document follows | 3 Main results (report) | 4 Records (bundle) |
+|---|---|---|---|---|
+| 1 Inventory | `inventory.md` | object → defined state → observed state → evidence | Objects by status, summed; material differences | `L-` rows, reconciliation, code-scan leads, what was not inventoried |
+| 2 Target model | `stage-2-notes.md` | function → success criterion → signal → SLI and SLO → detection | The map of the functions | A table per journey (open questions: section 5) |
+| 3 Gap | `stage-3-gap.md` | requirement → observation → difference → confidence → how to check | Five to seven results and their consequences, first; signal counts; the detection matrix | `G-` records: signals, SLIs, alerts, paging readiness, telemetry health, candidates |
+| 4 Findings | `stage-4-notes.md` | finding → impact → severity → recommendation → closing criterion | Findings by severity; the five to seven that matter | Ledger rows they rest on, "could not evidence"; the `findings/` files |
+| 5 Maturity | `stage-5-notes.md` | dimension → level → evidence → what stops the next level → confidence | The profile | A record per dimension |
+| 6 Recommendations | `recommendations.md` | confirmed finding → recommendation → owner role → effort and impact → metric → done when | The order; the decisions needed | The confirmation batch, `REC-` cards, `V-` tasks, `W-` items, "left out" |
 
 - **Stage 1.** One page of result first: scope, objects by status, material differences, what
   was not checked. The object, the claim about it and its evidence are separate; one row does
@@ -196,23 +192,22 @@ cited in a document appears in its evidence bundle, and a text search of the PDF
   this part"). A contract that needs its own reasoning (an ambiguous write, a reconciliation)
   is a document of its own. The full YAML is published as a file at its commit; the report
   shows the key rows.
-- **Stage 3.** Five to seven results and their consequences first. The detection matrix keeps
-  statuses and E-ids; the detail goes to the records. A count of signals says what it counts
-  (signal rows bound to functions, not necessarily distinct series). Candidates whose fixes
-  differ are separate candidates.
+- **Stage 3.** The detection matrix keeps statuses and E-ids. A count of signals says what it
+  counts (signal rows bound to functions, not necessarily distinct series). Candidates whose
+  fixes differ are separate candidates.
 - **Stage 4.** Per finding: severity on the scale in [`finding.md`](finding.md) with its reason,
-  confidence and limits, the closing criterion, and the three statuses above. The claim is
-  bounded (window, scope, "not shown"); its verdict, one of five, is the owner's.
+  confidence and limits, the closing criterion, and the decision, implementation and
+  verification statuses. The claim is bounded (window, scope, "not shown"); its verdict, one
+  of five, is the owner's.
 - **Stage 5.** Levels set before their findings' verdicts are marked provisional and re-read
-  by a dated entry when the verdicts come. The result is the profile: per dimension a level, `not_scored` or N/A, never an
+  by a dated entry when the verdicts come. Per dimension a level, `not_scored` or N/A, never an
   overall number. Each record: the level, the evidence that shows it (`E-` ids, findings), the
   empty search behind a level 1, what stops the next level, the confidence and why; N/A with
   the client's agreement. Required: the scope assessed, every dimension present, the dimensions
   that block the next step marked.
-- **Stage 6.** The result is the order of the recommendations and the decisions they need. Each
-  record (`REC-` id): the confirmed findings it answers, the `W-` items that deliver it, the
-  action and the owning role, effort and impact, the metric with its current and target
-  values, done when. Required: every confirmed finding has a recommendation or a line under
+- **Stage 6.** Each record (`REC-` id): the confirmed findings it answers, the `W-` items that
+  deliver it, the action and the owning role, effort and impact, the metric with its current
+  and target values, done when. Required: every confirmed finding has a recommendation or a line under
   "left out" with the reason; every decision needed names its decider; a recommendation cites
   only confirmed findings, provisional or not. Three kinds of record are kept apart: `REC-` on
   confirmed findings; `V-`, a verification task for a finding still an assumption, whose fix
@@ -245,7 +240,4 @@ fonts and symbols, links, page numbers, headings, cut text. The script fails whe
 in the sources cannot be found in the PDF's text, when a font is not embedded, or when the
 Markdown carries HTML for print effects; it names tables of more than five columns.
 
-A good set: the reader understands the result from the first page; every material claim leads
-to its evidence and window; current decisions are not rebuilt from history; the Markdown reads
-without a special renderer and the PDF at normal zoom; what is decided, built and verified is
-clear apart.
+A reviewer checks the set against the stage report form checklist in [review.md](review.md).

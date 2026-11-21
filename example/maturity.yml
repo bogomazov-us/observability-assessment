@@ -1,4 +1,5 @@
-# Larkfield Grocer (fictional) — maturity extract from example/worked-example.md.
+# Larkfield Grocer (fictional): the maturity profile of example/worked-example.md, final at stage 5.
+# Check: tools/maturity.py example/maturity.yml (CI: tools/tests/test_example.sh).
 scope:
   journeys: [checkout]
   services: [web front end, checkout, payments]
@@ -23,6 +24,7 @@ dimensions:
     evidence:
       - {type: code, ref: "`slots` and `payments` error handlers"}
     confidence: high
+    blocks_next_step: true
   - number: 4
     status: not_scored
     reason: extract only
@@ -33,6 +35,7 @@ dimensions:
     evidence:
       - {type: query, ref: ad-hoc query}
     confidence: high
+    blocks_next_step: true
   - number: 6
     status: scored
     level: 1
@@ -41,6 +44,7 @@ dimensions:
       - {type: export, ref: "SLO list, empty"}
       - {type: document, ref: "no SLO in contracts or wiki"}
     confidence: high
+    blocks_next_step: true
   - number: 7
     status: scored
     level: 2
@@ -66,4 +70,4 @@ dimensions:
     agreed_by: sponsor, kick-off
 
 moves_fastest:
-  - "Ask the provider for the status after a timeout, classify by the answer, emit the outcome per attempt (F-03: moves 3 from 2 to 3)"
+  - "Ask the provider for the status after a timeout, classify by the answer, emit the outcome per attempt (F-003: moves 3 from 2 to 3)"
