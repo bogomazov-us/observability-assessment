@@ -26,6 +26,13 @@ for n in 1 2 3 4 5 6; do
   done
 done
 
+# stage 2 keeps its reference tables in a file the prompt links, not one prompt.sh appends
+R=tools/agent/reference/stage-2-reference.md
+[ -f "$R" ] && grep -qF "(reference/stage-2-reference.md)" tools/agent/stage-2-*.md \
+  && pass "stage 2 links its reference" || fail "stage 2: reference missing or not linked"
+grep -qF "# Stage 2 reference" "$T/s2.md" && fail "stage 2: reference appended" || pass "stage 2: reference not appended"
+w=$(( $(wc -w < "$T/s2.md") )); [ "$w" -le 2500 ] && pass "stage 2 prompt $w words (≤ 2500)" || fail "stage 2 prompt $w words (> 2500)"
+
 "$P" 7 >/dev/null 2>&1 && fail "stage 7 accepted" || pass "stage 7 refused"
 "$P" >/dev/null 2>&1 && fail "no argument accepted" || pass "no argument refused"
 "$P" 1 > "$T/out.md" && cmp -s "$T/out.md" "$T/s1.md" && pass "stdout equals file output" || fail "stdout differs from file output"
