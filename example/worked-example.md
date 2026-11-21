@@ -2,8 +2,11 @@
 
 **Fictional.** Larkfield Grocer, its systems, people and numbers are invented to show the method
 end to end. Any resemblance to a real company is accidental. The example follows one journey
-through every artefact: request → facts → findings → maturity → error taxonomy → signals →
-SLO and alert → roadmap with effort → acceptance.
+through every artefact: request → registers → findings → maturity → error taxonomy → signals →
+SLO and alert → roadmap with effort → acceptance → report. It shows the state after the
+read-out; [the agent thread](#the-agent-thread-at-stage-3) shows one stage's records as they
+were handed over and confirmed. Weeks: the [calendar](../method/getting-started.md#3-calendar).
+Ids, roles and statuses: [records.md](../method/records.md).
 
 ## The request
 
@@ -12,8 +15,8 @@ twice that on Mondays. The head of engineering asks for a six-week assessment: "
 dashboard shows 99.6 % success, but every Monday support gets 30–50 tickets from customers
 whose order did not go through. Where are we blind, and what do we fix first?"
 
-In scope: the checkout journey; three services (web front end, `checkout`, `payments`); one
-monitoring tool; stage and production; two review rounds.
+In scope (D-01): the checkout journey; three services (web front end, `checkout`, `payments`);
+one monitoring tool; stage and production; two review rounds.
 
 ## Journey and functions
 
@@ -23,46 +26,95 @@ monitoring tool; stage and production; two review rounds.
 | C2 | Authorise payment | `POST /api/payments/authorise` (to the payment provider) | Authorisation approved |
 | C3 | Place order | `POST /api/orders` | Order created and confirmed to the customer |
 
-A checkout **attempt** is C1 → C2 → C3 for one basket. A customer may retry C2 several times
-within one attempt.
+A checkout **attempt** (A1) is C1 → C2 → C3 for one basket. A customer may retry C2 several
+times within one attempt. The names are the spec's glossary (D-03).
+
+## Decision register (extract)
+
+Every decision is a row here before a document cites it. None of these needed an ADR file.
+
+| ID | Decision | Decided by | Date | Evidence | Status |
+|---|---|---|---|---|---|
+| D-01 | Scope as above | Sponsor (head of engineering) | 2027-04-05 | Kick-off note | accepted |
+| D-02 | Stage 1 confirmed | Lead | 2027-04-13 | `inventory.md` at `b04f6c3` | accepted |
+| D-03 | Names of J1, C1–C3, A1 as in the glossary (Q-01) | Product owner | 2027-04-14 | Written answer | accepted |
+| D-04 | Card declines and basket changes excluded from the checkout SLI (Q-02) | Head of e-commerce | 2027-04-15 | Written answer | accepted |
+| D-05 | Stage 2 confirmed | Lead | 2027-04-16 | Spec at `a3c90e1` | accepted |
+| D-06 | Stage 3 confirmed, G-02 changed before | Lead | 2027-04-22 | `stage-3-gap.md` at `5e8a2d7` | accepted |
+| D-07 | The provider's status call answers in production, 10 a second (Q-03) | Payments technical owner | 2027-04-22 | Written answer | accepted |
+| D-08 | R-02 owned and accepted until the reconciliation job runs (Q-04) | Sponsor | 2027-04-22 | Written answer | accepted |
+| D-09 | Verdicts: F-003, F-005, F-007 confirmed | Checkout technical owner | 2027-05-04 | Verdict batch; re-checks E-401 to E-403 | accepted |
 
 ## Facts ledger (extract)
 
 | # | Fact | Status | Source | Date |
 |---|---|---|---|---|
-| O-04 | The checkout success tile counts views of the confirmation page | confirmed | dashboard definition export | week 2 |
-| O-07 | "Every timeout is retried three times" | refuted by O-09 | interview, platform lead | week 1 |
-| O-09 | `checkout` retries a provider timeout twice, then returns `DECLINED` with reason `PROVIDER_TIMEOUT` | confirmed | `checkout` payment client, code path; span query | week 3 |
-| O-11 | Reconciliation of paid-but-not-placed orders is a weekly manual export | assumption | interview, finance | week 3 |
+| O-04 | The checkout success tile counts views of the confirmation page | confirmed | Dashboard definition export, E-303 | 2027-04-08 |
+| O-07 | "Every timeout is retried three times" | refuted by O-09 | Interview, platform lead | 2027-04-06 |
+| O-09 | `checkout` retries a provider timeout twice, then returns `DECLINED` with reason `PROVIDER_TIMEOUT` | confirmed | `checkout` payment client, code path; E-301 | 2027-04-19 |
+| O-11 | Reconciliation of paid-but-not-placed orders is a weekly manual export | assumption | Interview, finance | 2027-04-13 |
 
-## Findings (weeks 2–4)
+## Risk register (extract)
 
-**F-03 · Payment timeouts are reported to the customer and to monitoring as card declines.**
+| ID | Risk | Source | Owner | Status | Date | Decision |
+|---|---|---|---|---|---|---|
+| R-01 | A slow provider is shown to customers as a decline while money may be held, and no alert reaches anyone | Residual risk, stage 3, G-01 | Head of e-commerce, *proposed* | open | 2027-04-22 | |
+| R-02 | An order paid for and not placed is seen only at the weekly export | Residual risk, stage 3, G-04 | Head of e-commerce | accepted | 2027-04-22 | D-08 |
+
+## Findings
+
+People wrote the findings as they appeared ([agent-harness.md](../method/agent-harness.md#measuring-the-harness));
+each is a file `findings/F-NNN.md` in [finding.md](../templates/finding.md)'s format. Verdicts
+came from the batch sent at the findings preview (D-09).
+
+**F-003 · Payment timeouts are reported to the customer and to monitoring as card declines.**
 
 | Status | Date | Source | Evidence level |
 |---|---|---|---|
-| confirmed | week 3 | O-09; query over 7 days of spans | tenant |
+| confirmed | 2027-05-04 | Code path; span query E-301, re-run E-401 | tenant |
 
-*What we see.* `payments` returns HTTP 200 with `{"status":"DECLINED"}` for a card decline. When
-the provider is slow, `checkout` retries twice and then also returns `DECLINED`, with reason
-`PROVIDER_TIMEOUT`. Over 7 days, 4 % of "declines" carry that reason, 9 % on the Monday. Whether
-the provider authorised the payment is not checked.
+**Severity:** P1: a failure of C2 is reported wrongly to the customer and reaches no alert. ·
+**Decision:** proposed · **Implementation:** absent · **Verification:** untested.
 
-*Why it matters.* On a slow-provider Monday, failed — or possibly taken — payments look like
+**What we see.** `payments` returns HTTP 200 with `{"status":"DECLINED"}` for a card decline.
+When the provider is slow, `checkout` retries twice and then also returns `DECLINED`, with
+reason `PROVIDER_TIMEOUT` (O-09). In 2027-04-12 → 04-18, 4 % of declines carry that reason,
+9 % on the Monday (E-301); the re-run over the next week gave 5 % and 8 % (E-401).
+
+**Confidence and limits.** High for the windows read. Whether the provider authorised any of
+these payments is not shown: its side was not read.
+
+**Why it matters.** On a slow-provider Monday, failed — or possibly taken — payments look like
 customers' cards being declined. The dashboard stays green.
 
-*What follows.* Ask the provider for the status after a timeout and classify by the answer
-(taxonomy); emit the outcome per attempt (signals); alert on failed and ambiguous attempts
-(SLO). Moves dimension 3 from 2 to 3.
+**What follows.** Ask the provider for the status after a timeout (D-07) and classify by the
+answer; emit the outcome per attempt; alert on failed and ambiguous attempts. Checkout tech
+lead, M-2. Moves dimension 3 from 2 to 3.
 
-**F-05 · An order can be paid and not placed.** If C3 does not answer after C2 approved, nothing
-records the attempt. (confirmed: code path in `checkout`.) Reconciliation is said to be a weekly
-manual export (O-11, still an assumption: to confirm with finance's export before the report).
+**Closing criterion.** The first two rows of the acceptance evidence pass on stage.
 
-**F-07 · The checkout dashboard measures page views, not orders** (O-04). A cached confirmation
-page counts as a success.
+**Links.** G-01, G-02; R-01; F-005.
+
+**F-005 · An order can be paid for and not placed.** confirmed, 2027-05-04, tenant · P1: a
+write can be reported wrongly · proposed, absent, untested. *What we see:* if C3 does not
+answer after C2 approved, nothing records the attempt (code path, E-304, re-checked E-402).
+Reconciliation is said to be a weekly manual export (O-11, an assumption). *Limits:* how often
+it happens is not shown: nothing records it. *Why it matters:* money held without an order.
+*What follows:* the reconciliation job (checkout tech lead, M-2); dimension 5. *Closing
+criterion:* the acceptance row "Paid-but-not-placed is visible" passes. *Links:* G-04, R-02.
+
+**F-007 · The checkout dashboard measures page views, not orders.** confirmed, 2027-05-04,
+tenant · P2: measurement is wrong for a function in scope · proposed, absent, untested. *What
+we see:* the success tile counts views of the confirmation page, so a cached page counts as a
+success (O-04, E-303, re-checked E-403). *Limits:* other dashboards not read. *Why it
+matters:* the 99.6 % is not a checkout success rate. *What follows:* the tile reads the SLI
+(observability engineer, M-3); dimension 6. *Closing criterion:* the tile matches the SLI query
+on the harness run. *Links:* G-03.
 
 ## Maturity profile (extract)
+
+Final at stage 5; the baseline set in phase 1 was provisional. As a file:
+[maturity.yml](maturity.yml), checked by `tools/maturity.py`.
 
 | Dimension | Level | Coverage | Evidence | Confidence |
 |---|---|---|---|---|
@@ -73,7 +125,11 @@ page counts as a success.
 | 7 Alert quality | 2 | per-service 5xx alerts, no owners | alert export | high |
 | 12 Operational analytics | N/A | client does not intend to use it this year | sponsor, kick-off | — |
 
+Block the next step: 3, 5 and 6.
+
 ## Error taxonomy (extract)
+
+As a file, with user impact per row: [worked-example.spec.yml](worked-example.spec.yml).
 
 | Function | Code or condition | HTTP | Class | Customer sees |
 |---|---|---|---|---|
@@ -90,20 +146,17 @@ page counts as a success.
 | C3 | timeout or no answer after C2 approved | 5xx / none | ambiguous | Error; money may be held |
 | C3 | duplicate submit with the same attempt_id | 409 | caller_defect | Nothing (double click) |
 
-Creating a hold changes state, and the hold call is not proven idempotent, so a C1 timeout is
-not retried blindly: checkout reads the hold back by attempt_id first.
-
-`PROVIDER_TIMEOUT` was an overloaded code: one code for two different outcomes. It is split by
-the provider's status answer.
+The hold call is not proven idempotent, so a C1 timeout is read back before any retry.
+`PROVIDER_TIMEOUT` was an overloaded code, split by the provider's status answer.
 
 ## Signals (extract)
 
-| Function | Event | Attributes | State after week 6 |
+| Function | Event | Attributes | State at stage 3 (D-06) |
 |---|---|---|---|
-| C1 | `checkout.slot.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M2) |
-| C2 | `checkout.payment.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M2) |
-| C3 | `checkout.order.result` | attempt_id, outcome, error_class, order_id | to build (M2) |
-| attempt | `checkout.attempt.result` | attempt_id, outcome (placed / refused / failed / ambiguous / unclassified) | to build (M2) |
+| C1 | `checkout.slot.result` | attempt_id, operation_id, outcome, error_class, reason | to build (M-2) |
+| C2 | `checkout.payment.result` | attempt_id, operation_id, outcome, error_class, reason | differs: no attempt_id, error_class (G-02); M-2 |
+| C3 | `checkout.order.result` | attempt_id, outcome, error_class, order_id | to build (M-2) |
+| attempt | `checkout.attempt.result` | attempt_id, outcome (placed / refused / failed / ambiguous / unclassified) | to build (M-2) |
 
 **Attempt outcome** — the two-level model, decided by the last operation that ran:
 
@@ -113,48 +166,45 @@ the provider's status answer.
 | C1, C2 or C3 ended in an `expected` refusal and the customer left | refused |
 | C1, C2 or C3 ended in a `failure` (no hold, no money taken, or authorisation voided) | failed |
 | C1, C2 or C3 ended `ambiguous`, or C2 approved and no C3 result within 10 minutes | ambiguous |
-| C1, C2 or C3 ended in an `unknown` (not yet classified) code | unclassified: the outcome may well be known, the code is not; kept apart for diagnosis |
+| C1, C2 or C3 ended in an `unknown` (not yet classified) code | unclassified: kept apart for diagnosis |
 | `caller_defect` on a duplicate submit | ignored; the original submit decides |
 
-An ambiguous attempt is reconciled by a job every 10 minutes. It reads the hold by attempt_id
-from `slots`, the payment status from the provider and the order from the orders database, and
-sets placed or failed. When the attempt did not reach an order, a hold it finds is released and
-an authorisation is voided. Until then the attempt counts as bad.
-
-An unclassified attempt is not reconciled: its code is classified (taxonomy, "Still to
-confirm"), and the attempt is recounted under its class.
+A job every 10 minutes reconciles an ambiguous attempt from the hold, the provider's payment
+status and the orders database, sets placed or failed, and releases a hold or voids an
+authorisation the attempt left behind; until then it counts as bad. An unclassified attempt is
+recounted once its code is classified. The full rules: the spec's `attempts`.
 
 ## SLO and alert
 
 | Function | SLI (good ÷ valid) | Expected refusals | Target | Owner |
 |---|---|---|---|---|
-| Checkout attempt | placed ÷ (placed + failed + ambiguous + unclassified), real users, 28 days | excluded: the customer's card or basket, not our service | 99.0 % | Head of e-commerce |
+| Checkout attempt | placed ÷ (placed + failed + ambiguous + unclassified), real users, 28 days | excluded (D-04) | 99.0 %, *proposed* | Head of e-commerce |
 
-Bad attempts are failed + ambiguous + unclassified, each reported separately on the dashboard;
-a caller defect never decides an attempt. P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at
-least 50 attempts; grouped per function; runbook `runbooks/checkout.md`; starts in shadow. Its owner is decided with
-Larkfield by their maturity and organisation (checkout team, platform SRE or operations centre);
-the example leaves it open, and the alert stays in shadow until it is set.
+Bad attempts are failed + ambiguous + unclassified, each reported separately on the dashboard.
+P1 alert "checkout failures": bad attempts above 3 % of attempts for 10 minutes, with at least
+50 attempts; grouped per function; runbook `runbooks/checkout.md`. It starts in shadow and
+stays there until its owner is decided with Larkfield and its
+[paging gate](../templates/spec-set/slo-alerts.md) is shown.
 
 ## Roadmap with effort
 
 | Milestone | Done when (demonstrated) | Accountable | Weeks |
 |---|---|---|---|
-| M0 — Decisions | SLO target signed; provider status call confirmed available in sandbox | Lead | 1 |
-| M2 — Business outcomes observable | `PROVIDER_TIMEOUT` split by status; four events emitted on stage; reconciliation job on stage | Checkout tech lead | 2 |
-| M3 — Measurements validated | Harness cases below reproduce exactly in the SLI query | Observability engineer | 1 |
-| M4 — Operational acceptance | Test P1 delivered, acknowledged, escalated; runbook exercised; go decision | Lead | 1 |
+| M-1 — Decisions | SLO target signed; alert owner set | Lead | 1 |
+| M-2 — Business outcomes observable | `PROVIDER_TIMEOUT` split by status; four events emitted on stage; reconciliation job on stage | Checkout tech lead | 2 |
+| M-3 — Measurements validated | Harness cases below reproduce exactly in the SLI query; the tile reads the SLI | Observability engineer | 1 |
+| M-4 — Operational acceptance | Test P1 delivered, acknowledged, escalated; runbook exercised; go decision | Lead | 1 |
 
 **Five weeks, on these assumptions** (each one goes into the facts ledger as an assumption and
 into the decision request):
 
-- two checkout developers at half time for M2 (about 10 developer-days: status call and split
+- two checkout developers at half time for M-2 (about 10 developer-days: status call and split
   1–2, four events 3, reconciliation job 4, tests 2);
 - the provider's sandbox can inject timeouts and answer status calls;
-- the product owner signs the target in week 1;
-- one observability engineer full time from M2 to M4, the lead half time.
+- the head of e-commerce signs the target during M-1;
+- one observability engineer full time from M-2 to M-4, the lead half time.
 
-If the sandbox cannot inject timeouts, M3 needs a stub of the provider: plus one week.
+If the sandbox cannot inject timeouts, M-3 needs a stub of the provider: plus one week.
 
 ## Acceptance evidence
 
@@ -168,10 +218,32 @@ If the sandbox cannot inject timeouts, M3 needs a stub of the provider: plus one
 | Refusals stay out of the SLI | 30 card declines, 10 basket changes | 40 refused, not in the denominator |
 | The alert reaches a person | test P1 | acknowledged by on-call, escalated after the configured timeout |
 
-## What the buyer read on page one
+## The report
+
+One report ([stage-report.md](../templates/stage-report.md#one-report-for-the-whole-assessment)):
+the summary chapter, rewritten at each accepted stage, then a chapter per stage —
+`inventory.md`, `stage-2-notes.md`, [`stage-3-gap.md`](agent/stage-3-gap.md),
+`stage-4-notes.md`, `stage-5-notes.md`, `recommendations.md`. Page one of the summary:
 
 "Your checkout is not measured: the dashboard counts confirmation pages, and a slow payment
 provider is reported to customers as their card being declined — some of those payments may
-have been taken. Three changes in `checkout`, a reconciliation job and one alert close this in
-about five weeks, on the assumptions listed. Decision needed: who owns the checkout SLO target,
-and two checkout developers at half time for two weeks."
+have been taken (F-003, F-005, F-007). Three changes in `checkout`, a reconciliation job and
+one alert close this in about five weeks, on the assumptions listed. Decision needed: the
+checkout SLO target, signed by the head of e-commerce, and two checkout developers at half
+time for two weeks."
+
+## The agent thread at stage 3
+
+What the lead held on 2027-04-22, when stage 3 was confirmed, at the
+[artifact paths](../tools/agent/README.md#artifact-paths) of the working folder:
+
+| Path | Record |
+|---|---|
+| [`engagement-state.yml`](agent/engagement-state.yml) | Stages 1–3 confirmed with their decision ids; questions answered; `stagegate.py check … 4` opens |
+| [`progress/stage-3.md`](agent/progress/stage-3.md) | The agent's log, clock-read times, plan, commits, the step blocked on Q-03 |
+| [`owner-questions.md`](agent/owner-questions.md) | The stage-3 batch, answers recorded as D-07 and D-08 |
+| `spec/observability-spec.yml` | [worked-example.spec.yml](worked-example.spec.yml): the glossary, signal states set by stage 3 |
+| [`stage-3-gap.md`](agent/stage-3-gap.md) | The stage report chapter |
+| [`reviews/stage-3-round-1.md`](agent/reviews/stage-3-round-1.md) | The draft the lead changed before confirming: G-02 drafted `live`, read through the trace view, changed to `differs`; counted for the harness measures |
+
+`tools/tests/test_example.sh` runs speclint, maturity and stagegate on these files in CI.

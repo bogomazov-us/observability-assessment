@@ -1,0 +1,61 @@
+# Larkfield Grocer (fictional): the engagement state on the day stage 3 was confirmed.
+# Skeleton and field rules: templates/engagement-state.yml. Decision ids: the register in
+# example/worked-example.md. Checked in CI by tools/tests/test_example.sh:
+#   tools/stagegate.py lint example/agent/engagement-state.yml
+#   tools/stagegate.py check example/agent/engagement-state.yml 4    # opens
+
+scope:
+  decision_ref: D-01
+  access_granted_on: 2027-04-06
+
+stages:
+  - number: 1                        # Inventory
+    status: confirmed
+    confirmed_by: engagement lead
+    confirmed_on: 2027-04-13
+    decision_ref: D-02
+    reviews: []
+  - number: 2                        # Target model
+    status: confirmed
+    confirmed_by: engagement lead
+    confirmed_on: 2027-04-16
+    decision_ref: D-05
+    reviews: []
+  - number: 3                        # Gap
+    status: confirmed
+    confirmed_by: engagement lead
+    confirmed_on: 2027-04-22
+    decision_ref: D-06
+    reviews:
+      - {date: 2027-04-22, by: engagement lead, file: reviews/stage-3-round-1.md}
+  - number: 4                        # Findings
+    status: not_started
+    reviews: []
+  - number: 5                        # Maturity
+    status: not_started
+    reviews: []
+  - number: 6                        # Recommendations
+    status: not_started
+    reviews: []
+
+questions:
+  - id: Q-01
+    question: What are the checkout functions called, in the words the team uses?
+    to: product owner
+    blocks: [3]
+    answer_ref: D-03
+  - id: Q-02
+    question: Do card declines and basket changes count against the checkout SLI?
+    to: head of e-commerce
+    blocks: [3]
+    answer_ref: D-04
+  - id: Q-03
+    question: Does the provider answer a status call for a timed-out authorisation in production?
+    to: payments technical owner
+    blocks: [4]
+    answer_ref: D-07
+  - id: Q-04
+    question: Who owns the risk that a paid-but-not-placed order is seen only at the weekly export?
+    to: sponsor
+    blocks: [4]
+    answer_ref: D-08

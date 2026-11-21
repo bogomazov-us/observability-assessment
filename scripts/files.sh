@@ -5,6 +5,10 @@ KIT_FILES=(
   README.md
   method/getting-started.md
   example/worked-example.md
+  example/agent/progress/stage-3.md
+  example/agent/owner-questions.md
+  example/agent/stage-3-gap.md
+  example/agent/reviews/stage-3-round-1.md
   offerings.md
   method/estimation.md
   method/playbook.md
