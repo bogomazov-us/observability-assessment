@@ -20,6 +20,7 @@ KIT_FILES=(
   tools/agent/README.md
   tools/agent/stage-1-inventory.md
   tools/agent/stage-2-target-model.md
+  tools/agent/reference/stage-2-reference.md
   tools/agent/stage-3-gap.md
   tools/agent/stage-4-findings.md
   tools/agent/stage-5-maturity.md
