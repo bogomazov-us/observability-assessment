@@ -26,13 +26,13 @@ with N = 2. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Journeys in scope, as agreed at kick-off | [facts ledger or kick-off note] |
-| Sanitized captures of each journey | [captures folder] |
+| Journeys in scope, as agreed at kick-off | `kickoff-note.md`, decision register |
+| Sanitized captures of each journey | `captures/` |
 | Code checkout (read-only) | [path] |
-| Code scan report (stage 1) | [scan.md] |
-| Estate export by object class (stage 1, confirmed) | [export folder] |
-| Facts ledger | [facts ledger] |
-| Spec skeleton | `templates/spec-set/observability-spec.yml` from the kit |
+| Code scan report (stage 1) | `scan.md` |
+| Estate export by object class (stage 1, confirmed) | `exports/` |
+| Facts ledger | instructions file |
+| Spec skeleton | `templates/spec-set/observability-spec.yml` |
 
 ## Method
 
@@ -115,13 +115,11 @@ with N = 2. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
-first, then scope and method, the main results, the records, decisions and open questions, and
-an evidence catalog of `E-` ids. Decision, implementation and verification are separate
-statuses. The progress log, review history, the decision register and the full spec travel
-with the report as files at a stated commit; the report cites them and does not reprint them.
+The stage report, `stage-2-notes.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
-1. `docs/observability/observability-spec.yml`, from the skeleton: `journeys` and `taxonomy`
+1. `spec/observability-spec.yml`, from the skeleton: `journeys` and `taxonomy`
    filled; for each function one `signals` entry with state `to_build` and a placeholder name;
    `slos` and `alerts` left as skeleton placeholders, or drafted with `status: proposed`. A
    YAML comment on each row cites its source. For every function in scope:
@@ -143,7 +141,7 @@ with the report as files at a stated commit; the report cites them and does not 
 
 ## Self-check before handing over
 
-- [ ] `python3 tools/speclint.py docs/observability/observability-spec.yml` reports no errors;
+- [ ] `python3 tools/speclint.py spec/observability-spec.yml` reports no errors;
       only SL016 placeholder warnings remain. Say in the notes that this shows the spec is
       structurally complete, not that it is right.
 - [ ] Every function in scope is present, with a requirement source and its current state.

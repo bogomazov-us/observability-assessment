@@ -29,11 +29,11 @@ with N = 5. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Findings with their verdicts; those still without one, marked | [findings/] |
+| Findings with their verdicts; those still without one, marked | `findings/` |
 | Support mode as the owner stated it: hours of use, time zone, days, who is responsible | [intake answer or decision register] |
-| Gap, confirmed: signal states, detection matrix, paging readiness | [stage-3-gap.md] |
-| Spec, inventory, facts ledger | [paths] |
-| Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` from the kit |
+| Gap, confirmed: signal states, detection matrix, paging readiness | `stage-3-gap.md` |
+| Spec, inventory, facts ledger | `spec/observability-spec.yml`, `inventory.md`, facts ledger |
+| Maturity model and skeleton | `method/maturity-model.md`, `templates/maturity.yml` |
 
 ## Method
 
@@ -68,9 +68,9 @@ with N = 5. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md), with this stage's
-chain and required fields: the result first, the records, decisions and open questions, and an
-evidence catalog of `E-` ids; it cites the progress log and its inputs by commit.
+The stage report, `stage-5-notes.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
 1. `maturity.yml`, clean under `python3 tools/maturity.py --check maturity.yml`.
 2. `stage-5-notes.md`: per dimension, the level, the evidence that shows it, the evidence that

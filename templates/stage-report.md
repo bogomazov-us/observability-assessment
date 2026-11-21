@@ -129,16 +129,18 @@ What a filled report looks like, in short. The project is fictional.
 The client reads two documents, not one per stage and per round: the **assessment report**,
 which grows by a chapter as each stage is accepted, and the **evidence bundle**. The sources stay
 per stage — agents write and reviewers accept them stage by stage, and a stage is fixed at its
-commit — and the two documents are built from them by `tools/assessment-pdf.sh` with a manifest:
+commit — and the two documents are built from them by `tools/assessment-pdf.sh` with a manifest,
+`manifest.txt` in the working folder, whose paths are those of the
+[path table](../tools/agent/README.md#artifact-paths):
 
 ```text
 report    summary.md
-report    stage-1-report.md    1 2 3 5
-report    stage-2-report.md    1 2 3 5
-report    recommendations.md
-evidence  stage-1-report.md    4 A
-evidence  stage-2-report.md    4 A
-evidence  stage-6-rechecks.md
+report    inventory.md            1 2 3 5
+report    stage-2-notes.md        1 2 3 5
+report    recommendations.md      1 2 3 5
+evidence  inventory.md            4 A
+evidence  stage-2-notes.md        4 A
+evidence  recommendations.md      4 A
 ```
 
 - **The report** opens with the current state, in a short file of its own (`summary.md`): the

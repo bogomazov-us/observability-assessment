@@ -13,9 +13,10 @@ the rows still in square brackets.
 | This repository | `.` | read and write, on the assessment branch only |
 | The client's code | __CODE__ | read only |
 | The kit | `__KIT__` | read only: prompts in `tools/agent/`, templates in `templates/`, tools in `tools/` |
-| The assessment's working folder | `__WORK__` | the stage drafts, `engagement-state.yml`, `progress/` |
+| The assessment's working folder | `__WORK__` | what the stages read and write, laid out as the table "Artifact paths" in `__KIT__/tools/agent/README.md`; a path in a stage prompt is relative to this folder, except under `tools/`, `templates/` and `method/`, which are in the kit |
 | Facts ledger | `__FACTS__` | agent rows enter as *assumption* |
 | Decision register | `__DECISIONS__` | written by the person, read by the agent |
+| Risk register | `__RISKS__` | written by the person; the agent hands over proposed rows |
 | Scratch | `__SCRATCH__` | temporary files only; nothing else is written outside this repository |
 | Monitoring tool | [tool] through [read-only token, profile or server; named, never pasted] | read only |
 
