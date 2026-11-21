@@ -28,11 +28,11 @@ with N = 4. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Spec with gap results (stages 2–3, confirmed) | [docs/observability/observability-spec.yml] |
-| Gap notes: which signals are live, by what evidence; the detection matrix | [stage-3-gap.md] |
-| Code scan report and estate export by class | [scan.md], [export folder] |
-| Facts ledger | [facts ledger] |
-| Finding template | `templates/finding.md` from the kit |
+| Spec with gap results (stages 2–3, confirmed) | `spec/observability-spec.yml` |
+| Gap notes: which signals are live, by what evidence; the detection matrix | `stage-3-gap.md` |
+| Code scan report and estate export by class | `scan.md`, `exports/` |
+| Facts ledger | instructions file |
+| Finding template | `templates/finding.md` |
 | The client's own investigation or tools, if any | [folder] |
 
 ## Method
@@ -54,13 +54,11 @@ with N = 4. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
-first, then scope and method, the main results, the records, decisions and open questions, and
-an evidence catalog of `E-` ids. Decision, implementation and verification are separate
-statuses. The progress log, review history, the decision register and the full spec travel
-with the report as files at a stated commit; the report cites them and does not reprint them.
+The stage report, `stage-4-notes.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
-1. One file per finding, `findings/F-NNN.md`, in the `finding.md` format: status
+1. One file per finding, `findings/F-NNN.md`, in the `templates/finding.md` format: status
    *assumption*, today's date, source, evidence level (browser / agent / tenant / document
    only), severity with its reason, the three statuses, confidence and limits, the closing
    criterion, and under each claim its `E-` ids. Candidates whose fixes differ are separate

@@ -25,11 +25,10 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Scope: journeys and services, as agreed at kick-off | [facts ledger or kick-off note] |
+| Scope: journeys and services, as agreed at kick-off | `kickoff-note.md`, decision register |
 | Code checkout (read-only) | [path] |
-| Code scan report | output of `tools/collect/code-scan.sh` ([scan.md]) |
 | Read-only access to the monitoring estate | [token, profile or MCP server; named, never pasted] |
-| Facts ledger, risk register | [paths] |
+| Facts ledger, risk register | instructions file |
 
 ## Method
 
@@ -57,11 +56,9 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
-first, then scope and method, the main results, the records, decisions and open questions, and
-an evidence catalog of `E-` ids. Decision, implementation and verification are separate
-statuses. The progress log, review history, the decision register and the full spec travel
-with the report as files at a stated commit; the report cites them and does not reprint them.
+The stage report, `inventory.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
 1. `inventory.md`: one page of result (scope, objects by status, material differences, what
    was not checked), then the live verification table (class, object, status, evidence by
@@ -73,6 +70,8 @@ with the report as files at a stated commit; the report cites them and does not 
 2. A list of **confirmed blind spots** — a check that cannot fire, a notification that reaches
    nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each with a proposed owner. They do
    not wait for the findings of stage 4; the finding is written there and links the risk.
+3. `scan.md`: the report of `tools/collect/code-scan.sh` on the code checkout, unless the
+   person has run it already.
 
 ## Self-check before handing over
 

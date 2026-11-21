@@ -46,21 +46,49 @@ tools/agent/init-engagement.sh --repo ENGAGEMENT_REPO --code CODE_CHECKOUT [--co
     [--skills SKILLS_DIR] [--instructions NAME]
 ```
 
-It writes into the engagement repository, and commits nothing:
-
-| File | What |
-|---|---|
-| `AGENTS.md` (or `--instructions NAME`, the file your agent tool reads) | The agent's standing instructions: where the code, the kit, the working folder, the ledger and the register are; how a stage runs; the rules. From [`templates/agent-instructions.md`](../../templates/agent-instructions.md) with the paths filled in; the client and the monitoring tool are left for the person |
-| `assessment/engagement-state.yml` | The gates, from the template; the agent's first check reads it |
-| `assessment/owner-questions.md`, `assessment/progress/` | The owner-questions batch and the progress logs |
-| `facts.md`, `decisions.md` | Facts ledger and decision register, created only when absent; point `--facts` and `--decisions` at existing ones |
-| `.scratch/` | The scratch directory, added to `.gitignore` |
+It commits nothing. It writes the agent's standing instructions to `AGENTS.md` (or
+`--instructions NAME`, the file your agent tool reads): where the code, the kit, the working
+folder and the registers are; how a stage runs; the rules. They come from
+[`templates/agent-instructions.md`](../../templates/agent-instructions.md) with the paths
+filled in; the client and the monitoring tool are left for the person. It also makes what the
+path table below marks *init*, and the scratch directory `.scratch/`, added to `.gitignore`.
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
 A re-run keeps what exists; `--force` replaces the instructions and the skills (after a kit
 upgrade), never the state file, the ledger, the register, the questions or a progress log. The agent's read-only
 boundary is set in the agent tool's own permissions as well: the instructions file alone does
 not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
+
+## Artifact paths
+
+Every stage reads and writes at these paths, relative to the working folder (`assessment/`, or
+`--work`). The facts ledger and decision register sit at the repository root
+(`facts.md`, `decisions.md`, from init, created only when absent) unless
+`--facts` or `--decisions` point at existing ones; the instructions file names them.
+Paths under `tools/`, `templates/` and `method/` are in the kit.
+
+| Path | Holds | Made by | Read by |
+|---|---|---|---|
+| `engagement-state.yml` | The gates | init | every stage, `tools/stagegate.py` |
+| `owner-questions.md` | The owner-questions batch | init; every stage adds | the person |
+| `progress/stage-N.md` | Progress log of stage N | stage N, in the folder init makes | the person |
+| `kickoff-note.md` | Scope, journeys, the buyer's question | the person, from `templates/kickoff-note.md` | 1, 2, 6 |
+| `captures/` | Sanitized captures of each journey | the person, in the folder init makes | 2 |
+| `scan.md` | Code scan report | 1 | 2, 4 |
+| `exports/` | Estate export, a file per object class and date | 1, in the folder init makes | 2, 4 |
+| `inventory.md` | Stage 1 report | 1 | 2, 3, 5, report |
+| `spec/observability-spec.yml` | The spec | 2; 3 sets the signal states | 3, 4, 5 |
+| `stage-2-notes.md` | Stage 2 report | 2 | 3, report |
+| `stage-3-gap.md` | Stage 3 report | 3 | 4, 5, report |
+| `findings/F-NNN.md` | One finding each | 4, in the folder init makes | 5, 6 |
+| `stage-4-notes.md` | Stage 4 report | 4 | report |
+| `maturity.yml`, `stage-5-notes.md` | Profile; stage 5 report | 5 | 6, report |
+| `recommendations.md` | Stage 6 report | 6 | report |
+| `summary.md`, `manifest.txt` | Summary chapter, from `templates/report.md`; manifest of `tools/assessment-pdf.sh` | the person, at each accepted stage | report |
+
+The spec is drafted here; the person takes the confirmed spec set to the client's
+`docs/observability/`.
+`tools/tests/test_paths.sh` checks the prompts against this table.
 
 ## How to run a stage
 
@@ -82,8 +110,7 @@ not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
    the agent stops and names them.
 3. The agent drafts, keeps a progress log (`progress/stage-N.md`: the plan, each step started
    and done, each commit, each stop), runs its self-check, and hands over a list of what it
-   could not cite. While it runs, the person reads the log, not the agent's transcript.
-4. A person confirms what the prompt's last section names, in the tool, and records the result
+   could not cite. While it runs, the person reads the log, not the agent's transcript.4. A person confirms what the prompt's last section names, in the tool, and records the result
    in the facts ledger and the decision register; then sets the stage `confirmed` in
    `engagement-state.yml` and runs `tools/stagegate.py lint engagement-state.yml --since REV`
    against the last confirmation's commit. Only then does the next stage start.

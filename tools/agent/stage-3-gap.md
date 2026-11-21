@@ -32,14 +32,14 @@ with N = 3. The boundaries below are this stage's own and add to the common ones
 
 | Input | Where |
 |---|---|
-| Spec, confirmed at stage 2 | [docs/observability/observability-spec.yml] |
-| Stage 2 notes and the decision register | [stage-2-notes.md], [decision register] |
-| Inventory, confirmed at stage 1 | [inventory.md] |
+| Spec, confirmed at stage 2 | `spec/observability-spec.yml` |
+| Stage 2 notes and the decision register | `stage-2-notes.md`, decision register |
+| Inventory, confirmed at stage 1 | `inventory.md` |
 | Code checkout (read-only) | [path] |
 | Read-only access to the monitoring estate and its logs | [token, profile or MCP server; named, never pasted] |
 | A system without read access for the agent (an edge, a SaaS console) | [none, or: read by the person in its own console under an owner decision recorded first] |
-| Open questions carried from stage 2 | [list] |
-| Facts ledger, risk register | [paths] |
+| Open questions carried from stage 2 | `stage-2-notes.md`, "Open questions" |
+| Facts ledger, risk register | instructions file |
 
 ## Method
 
@@ -82,13 +82,11 @@ with N = 3. The boundaries below are this stage's own and add to the common ones
 
 ## Output
 
-The stage report follows [`stage-report.md`](../../templates/stage-report.md): the result
-first, then scope and method, the main results, the records, decisions and open questions, and
-an evidence catalog of `E-` ids. Decision, implementation and verification are separate
-statuses. The progress log, review history, the decision register and the full spec travel
-with the report as files at a stated commit; the report cites them and does not reprint them.
+The stage report, `stage-3-gap.md`, follows [`stage-report.md`](../../templates/stage-report.md)
+and its chain for this stage; the progress log, the decision register and the full spec
+travel with it as files at a stated commit, cited, not reprinted.
 
-1. Updated `observability-spec.yml`: each signal's `state` and `evidence` from step 1; nothing
+1. Updated `spec/observability-spec.yml`: each signal's `state` and `evidence` from step 1; nothing
    else in the target changes. A target the gap shows unreachable is an open question for
    the owner, not an edit.
 2. `stage-3-gap.md`:
@@ -104,7 +102,7 @@ with the report as files at a stated commit; the report cites them and does not 
    - telemetry health, carried questions, blind spots;
    - stage-4 candidates: each gap with the evidence a finding would cite; gaps whose fixes
      differ are separate candidates.
-3. `python3 tools/speclint.py <spec>`: no errors. A paging alert on a signal that is not live
+3. `python3 tools/speclint.py spec/observability-spec.yml`: no errors. A paging alert on a signal that is not live
    fails SL011.
 
 ## Self-check before handing over

@@ -87,7 +87,10 @@ decisions() {
 put "$REPO/$NAME" force instructions
 put "$REPO/$WORK/engagement-state.yml" keep cat "$KIT/templates/engagement-state.yml"
 put "$REPO/$WORK/owner-questions.md" keep cat "$KIT/templates/owner-questions.md"
-[ -d "$REPO/$WORK/progress" ] || { mkdir -p "$REPO/$WORK/progress"; : > "$REPO/$WORK/progress/.gitkeep"; say "wrote $WORK/progress/"; }
+# The folders of the path table in tools/agent/README.md, "Artifact paths".
+for d in progress captures exports spec findings; do
+  [ -d "$REPO/$WORK/$d" ] || { mkdir -p "$REPO/$WORK/$d"; : > "$REPO/$WORK/$d/.gitkeep"; say "wrote $WORK/$d/"; }
+done
 put "$REPO/$FACTS" keep facts
 put "$REPO/$DECISIONS" keep decisions
 
