@@ -32,7 +32,7 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Every reconciliation claim cites a query or the table row that holds its evidence.
 - [ ] No secret, account identifier, endpoint or IP address is written.
 - [ ] Every claim passes [claims](../tools/agent/rules/claims.md) items 1–7.
-- [ ] Confirmed blind spots are in the risk register with owners.
+- [ ] Confirmed blind spots are in the risk register (`risks.md`) with owners.
 - [ ] The re-run sample is reported as "n of n selected checks reproduced", not as accuracy.
 
 ## Checklist — stage report form (`stage-report.md`)
@@ -144,11 +144,11 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
       response is decided.
 - [ ] Missing-data behaviour is set per input; blocked counts as bad in a synthetic SLI.
 
-## Checklist — report (`report.md`)
+## Checklist — assessment report (`summary.md`, from `report.md`)
 
 - [ ] Page one answers the buyer's question in the buyer's words, in the format they asked for.
 - [ ] The last page asks for a decision, with who decides and by when.
-- [ ] Every statement in the executive part traces to a finding.
+- [ ] Every statement in the summary traces to a finding.
 - [ ] Limitations say what the data cannot tell us.
 - [ ] Recommendations are ordered by impact over effort and each links to findings.
 - [ ] `REC-` only on confirmed findings; `V-` for assumptions, with the fix only as a

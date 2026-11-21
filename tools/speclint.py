@@ -60,7 +60,7 @@ SIGNAL_STATES = {"live", "differs", "to_build", "not_verifiable"}
 ALERT_STATES = {"shadow", "paging"}
 SEVERITIES = {"P1", "P2", "P3"}
 REFUSAL_TREATMENTS = {"excluded", "good"}
-DECISION_STATUSES = {"proposed", "confirmed"}
+SPEC_ROW_STATUSES = {"proposed", "confirmed"}
 SLO_FIELDS = ("subject", "good", "valid", "bad", "target", "window", "owner")
 P1_FIELDS = ("owner", "runbook", "delivery_test", "min_volume", "grouping")
 POOLED = {"all", "pooled", "none", "global", "service", "total"}
@@ -386,9 +386,9 @@ class Linter:
     def status(self, where, item):
         """SLOs and alerts carry status proposed (the default) or confirmed."""
         st = item.get("status", "proposed")
-        if st not in DECISION_STATUSES:
+        if st not in SPEC_ROW_STATUSES:
             self.err(where + ".status", "SL015", "status must be one of %s, not %r"
-                     % ("/".join(sorted(DECISION_STATUSES)), st))
+                     % ("/".join(sorted(SPEC_ROW_STATUSES)), st))
 
     def unique(self, seen, ident, where):
         if ident in seen:

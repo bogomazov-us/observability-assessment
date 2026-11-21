@@ -12,7 +12,7 @@ root = sys.argv[1]
 ENFORCED = {
     "Stage status": ("stagegate.py", "STATUSES"),
     "Signal state": ("speclint.py", "SIGNAL_STATES"),
-    "Spec row status": ("speclint.py", "DECISION_STATUSES"),
+    "Spec row status": ("speclint.py", "SPEC_ROW_STATUSES"),
     "Alert state": ("speclint.py", "ALERT_STATES"),
     "Error class": ("speclint.py", "CLASSES"),
     "User impact": ("speclint.py", "USER_IMPACTS"),

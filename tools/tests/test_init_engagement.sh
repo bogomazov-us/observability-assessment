@@ -28,6 +28,8 @@ python3 tools/stagegate.py check "$R/assessment/engagement-state.yml" 2 >/dev/nu
   && ok "owner questions and progress folder" || ko "working folder incomplete"
 grep -q "| ID | Fact | Status | Source | Date |" "$R/facts.md" && ok "facts ledger" || ko "facts ledger"
 grep -q "| ID | Decision |" "$R/decisions.md" && ok "decision register" || ko "decision register"
+grep -q '`O-01`' "$R/facts.md" && ok "ledger names O- ids" || ko "ledger header without O- ids"
+grep -q "ADR file, cited under Evidence" "$R/decisions.md" && ok "register points architecture decisions to an ADR" || ko "register header without the ADR rule"
 grep -q "| ID | Risk | Source | Owner | Status | Date | Decision |" "$R/risks.md" && ok "risk register created" || ko "risk register not created"
 grep -qF "| \`risks.md\` |" "$R/AGENTS.md" && ok "risk register named in the instructions" || ko "risk register not named"
 [ "$(ls -d "$R"/skills/oa-* | wc -l | tr -d ' ')" -eq "$(ls -d tools/agent/skills/oa-* | wc -l | tr -d ' ')" ] \

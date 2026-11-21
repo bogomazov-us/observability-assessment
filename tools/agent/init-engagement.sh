@@ -80,10 +80,10 @@ sys.stdout.write(t)
 PY
 }
 facts() {
-  printf '# Facts ledger\n\nWhat is known about the estate, with a status and a source. Agent output enters as\n*assumption* until a person confirms it.\n\n| ID | Fact | Status | Source | Date |\n|---|---|---|---|---|\n'
+  printf '# Facts ledger\n\nWhat is known about the estate, with a status and a source. Ids are `O-01`, `O-02` …, never\nrenumbered. Agent output enters as *assumption* until a person confirms it.\n\n| ID | Fact | Status | Source | Date |\n|---|---|---|---|---|\n'
 }
 decisions() {
-  printf '# Decision register\n\nOwner answers, scope and stage confirmations, each with who decided and when. Documents cite\nthese ids, never "the owner said".\n\n| ID | Decision | Decided by | Date | Evidence |\n|---|---|---|---|---|\n'
+  printf '# Decision register\n\nOwner answers, scope and stage confirmations, each with who decided and when. Ids are `D-01`,\n`D-02` …; documents cite them, never "the owner said". An architecture decision also gets an\nADR file, cited under Evidence.\n\n| ID | Decision | Decided by | Date | Evidence |\n|---|---|---|---|---|\n'
 }
 
 put "$REPO/$NAME" force instructions

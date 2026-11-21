@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Build the two documents of a whole assessment from its stage sources (templates/stage-report.md,
-# "One report for the whole assessment"): the assessment report, which grows by a chapter per
-# stage, and the evidence bundle. Each is built and checked by tools/report-pdf.sh.
+# "One report for the whole assessment"): the assessment report — the summary chapter, then a
+# chapter per accepted stage — and the evidence bundle. Each is built and checked by
+# tools/report-pdf.sh.
 #
 #   tools/assessment-pdf.sh --manifest FILE --project NAME --version COMMIT --out-dir DIR \
 #       [--name PREFIX]
@@ -10,15 +11,16 @@
 # The manifest lists the sources in reading order, one per line, paths relative to the manifest:
 #
 #   report    summary.md
-#   report    stage-1-report.md    1 2 3 5
-#   evidence  stage-1-report.md    4 A
-#   evidence  stage-6-rechecks.md
+#   report    inventory.md         1 2 3 5
+#   evidence  inventory.md         4 A
+#   evidence  findings/F-001.md
 #
 # The first word is the document (report | evidence); the optional words after the file select
 # its "## " sections by the start of their heading ("1" takes "## 1. Result", "A" takes
 # "## Appendix A. …"); none takes the whole file. A file's "# " heading becomes its chapter
 # title, without "Observability assessment — ". Blank lines and "#" comments are ignored.
-# Evidence ids cited in the report resolve against the evidence bundle.
+# Evidence ids cited in the report resolve against the evidence bundle. The file names are those of
+# the path table in tools/agent/README.md ("Artifact paths").
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MANIFEST=""; PROJECT=""; VERSION=""; OUTDIR=""; NAME="observability-assessment"

@@ -1,27 +1,50 @@
-# Assessment report — skeleton
+# Assessment report — summary chapter
 
-Combines a performance-assessment skeleton with per-dimension maturity reporting. Keep the
-executive part to five pages; everything else is appendix.
+The first chapter of the assessment report (`summary.md`); the stage chapters follow it
+([one report](stage-report.md#one-report-for-the-whole-assessment)). It carries only what no
+chapter does, in five pages at most: the first page answers the buyer's question, the last asks
+for a decision.
 
-1. **Executive summary** — three findings that matter, maturity at a glance ("you are here"),
-   the decision we ask for.
-2. **Context and objectives** — what the client asked, in their words.
-3. **Approach** — scope, interviews (by stream, count), tools and queries used, limitations and
-   dependencies, what this data cannot tell us.
-4. **Answers to the client's key questions** — one slide or section per question.
-5. **Maturity by dimension** — table from `method/maturity-model.md`; per dimension: Highlights /
-   Keep an eye on / Lowlights.
-6. **Findings by layer** — user experience, application and integration, code, data, runtime,
-   cross-cutting. Each finding in the `finding.md` format.
-7. **Recommendations** — cards (below), ordered by impact over effort.
-8. **Golden journey proof** (full format) — what was instrumented, what it showed.
-9. **Target model** — journey → function → signal → SLI → threshold → owner for tier-1.
-10. **Roadmap** — quick-fix hardening → adoption → evolution; 30/60/90; milestones per
-    `roadmap.md`.
-11. **Business impact** — what becomes detectable, how fast, and what it is worth where data allows.
-12. **Appendix** — inputs received, inventory exports, question log.
+```markdown
+# Observability assessment — summary
+
+Project: [name] · Version: [commit] · Date: [date] · Document status: draft | accepted ·
+Stages accepted: [1–N]
+
+## 1. Answer
+[The buyer's question in their words, and the answer, in the format they asked for; the three
+findings that matter; maturity at a glance ("you are here"); the decision we ask for.]
+
+## 2. Context
+[What the client asked, in their words; interviews by stream and count; dependencies; what this
+data cannot tell us. Scope and method are in each chapter.]
+
+## 3. Answers to the client's key questions
+[A section per question, citing the chapter and the ids that carry it.]
+
+## 4. Maturity by dimension
+[The stage 5 profile; per dimension: Highlights / Keep an eye on / Lowlights.]
+
+## 5. Recommendations and roadmap
+[The `REC-` cards of stage 6 in their order, impact over effort. Golden journey proof (full
+format): what was instrumented, what it showed. The roadmap in brief: quick-fix hardening →
+adoption → evolution, 30/60/90, milestones per `roadmap.md`.]
+
+## 6. Business impact
+[What becomes detectable, how fast, and what it is worth where data allows.]
+
+## 7. Changes
+| Version | Stage or change | Date |
+|---|---|---|
+
+## 8. Decision requested
+[On a page of its own: the decision in one sentence; the options if there are several; who
+decides; by when.]
+```
 
 ## Recommendation card
+
+Stage 6 writes one per `REC-`.
 
 | REC-NNN | Linked findings | Effort S/M/L | Impact H/M/L |
 |---|---|---|---|
