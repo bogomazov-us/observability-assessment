@@ -73,6 +73,8 @@ for f in "${TRACKED[@]}"; do
   [[ "$f" == *.md && "$f" != CONTRIBUTING.md && "$f" != CHANGELOG.md ]] || continue
   # Skill wrappers are installed into an engagement, not read in the PDF; their README is.
   [[ "$f" == tools/agent/skills/*/SKILL.md ]] && continue
+  # Test fixtures are inputs to the tool tests, not kit pages.
+  [[ "$f" == tools/tests/fixtures/* ]] && continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
 done
 for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
@@ -102,7 +104,13 @@ for f in "${TRACKED[@]}"; do
 done
 [ $ph -eq 0 ] && ok "no raw angle-bracket placeholders" || fail "raw placeholders (use [text] or \`code\`)"
 
-# 7. Version and tag
+# 7. Consistency: week numbers only in the calendar, id prefixes and status lists as in
+#    method/records.md, stage gates as the prompts say (scripts/consistency.py; exceptions with
+#    a reason in scripts/consistency-allow.yml).
+if out="$(python3 scripts/consistency.py 2>&1)"; then ok "consistent with the calendar, records.md and the stage prompts"
+else echo "$out"; fail "inconsistencies (fix them, or add a reasoned line to scripts/consistency-allow.yml)"; fi
+
+# 8. Version and tag
 VERSION="$(scripts/version.sh)"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && ok "README version $VERSION" || fail "README version not semver"
 scripts/changelog.sh "$VERSION" >/dev/null 2>&1 && ok "CHANGELOG has a section for $VERSION" || fail "CHANGELOG.md has no section for $VERSION"
