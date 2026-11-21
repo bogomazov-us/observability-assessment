@@ -1,7 +1,8 @@
 # Review — round record and checklists
 
-Significant deliverables go through written review rounds with verdicts (playbook, working
-rules). This file is the record of one round and the checks a reviewer runs. Copy it per
+Significant deliverables go through written review rounds with verdicts
+([playbook](../method/playbook.md#working-rules-for-the-team), "Reviews in rounds": client-facing
+rounds and internal stage reviews). This file is the record of one round and the checks a reviewer runs. Copy it per
 deliverable and round. A reviewer who needs the author in the room to judge a check has found a
 gap in the deliverable, or in the kit.
 

@@ -7,13 +7,14 @@ tool="$here/../maturity.py"
 fx="$here/fixtures/maturity"
 fail=0
 
-out="$("$tool" "$fx/worked-example.yml")" || { echo "✗ worked example: expected exit 0"; exit 1; }
+out="$("$tool" "$here/../../example/maturity.yml")" || { echo "✗ worked example: expected exit 0"; exit 1; }
 grep -q '^\*\*Distribution:\*\* 1 dimension at 1, 4 at 2, 6 not scored$' <<<"$out" \
   || { echo "✗ worked example: distribution line"; fail=1; }
 grep -qi 'average' <<<"$out" && { echo "✗ worked example: prints an average"; fail=1; }
 grep -q '| 3 Error semantics | 2 (partial 3) |' <<<"$out" || { echo "✗ worked example: partial cell"; fail=1; }
 grep -q 'Operational analytics |' <<<"$out" && { echo "✗ worked example: N/A shown in the profile"; fail=1; }
-grep -q 'none marked' <<<"$out" || { echo "✗ worked example: blocks line should say none marked"; fail=1; }
+grep -q '^\*\*Block the next step:\*\* 3 Error semantics; 5 Business outcome data; 6 SLOs$' <<<"$out" \
+  || { echo "✗ worked example: blocks line"; fail=1; }
 [ $fail -eq 0 ] && echo "✓ worked example"
 
 for f in "$fx"/fail-M*.yml; do

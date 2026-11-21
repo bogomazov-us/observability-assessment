@@ -12,7 +12,7 @@
 
 | Tile | Shows | Source |
 |---|---|---|
-| [J1.1 outcomes] | attempts by class (expected / failure / caller_defect / ambiguous / unknown) | [event query] |
+| [J1.1 outcomes] | attempts by class (expected / failure / caller_defect / ambiguous / unknown / none) | [event query] |
 | [J1.1 telemetry health] | volume vs floor, missing attributes | [query] |
 
 ## Daily health (operations)

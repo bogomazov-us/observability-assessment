@@ -1,0 +1,3 @@
+# Fixture allow-list: one justified exception.
+allow:
+  - "weeks | method/getting-started.md | joins from week 1 | staffing, not a step, stage or meeting"

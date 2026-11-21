@@ -1,7 +1,7 @@
 # Data we ask for first
 
 Send on day one. Every item is an export or read access, not a meeting. "Needed by" is the week
-of the engagement (`method/getting-started.md` §3) by which the stage that uses the item starts;
+of the engagement ([calendar](../method/getting-started.md#3-calendar)) by which the stage that uses the item starts;
 "Client provider" is a named person, filled in at kick-off.
 
 | # | Item | Why | Client provider | Needed by (week) | Received |

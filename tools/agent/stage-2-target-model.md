@@ -110,7 +110,7 @@ in the [reference, Output](reference/stage-2-reference.md#output).
 
 ## What the person confirms
 
-Each function against a captured request and the code; each class against the code path;
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives: each function against a captured request and the code; each class against the code path;
 which proposed targets, owners and thresholds the client has agreed (only those become
 `confirmed`). The confirmed rows go into the facts ledger with their source; the rest stay
 assumptions with an owner and a date.

@@ -28,7 +28,7 @@ data cannot tell us. Scope and method are in each chapter.]
 ## 5. Recommendations and roadmap
 [The `REC-` cards of stage 6 in their order, impact over effort. Golden journey proof (full
 format): what was instrumented, what it showed. The roadmap in brief: quick-fix hardening →
-adoption → evolution, 30/60/90, milestones per `roadmap.md`.]
+adoption → evolution, in sequence with effort ranges (dates once the executor is known), milestones per `roadmap.md`.]
 
 ## 6. Business impact
 [What becomes detectable, how fast, and what it is worth where data allows.]
