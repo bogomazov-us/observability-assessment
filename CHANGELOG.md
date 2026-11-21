@@ -3,6 +3,10 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- CI writes the word delta of each pull request to the job summary.
+
 ## 0.14.0 — 2026-11-21
 
 Closes the gaps found in the 0.13.2 retrospective: the method says each thing once, the agent
