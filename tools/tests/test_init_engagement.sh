@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/agent/init-engagement.sh: it writes the instructions with every path filled
-# in, the state file the gate reads, the ledger and register; keeps what exists unless
+# in, the state file the gate reads, the ledger and registers; keeps what exists unless
 # --force, never replaces a ledger or register, and refuses bad arguments.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -28,25 +28,35 @@ python3 tools/stagegate.py check "$R/assessment/engagement-state.yml" 2 >/dev/nu
   && ok "owner questions and progress folder" || ko "working folder incomplete"
 grep -q "| ID | Fact | Status | Source | Date |" "$R/facts.md" && ok "facts ledger" || ko "facts ledger"
 grep -q "| ID | Decision |" "$R/decisions.md" && ok "decision register" || ko "decision register"
+grep -q "| ID | Risk | Source | Owner | Status | Date | Decision |" "$R/risks.md" && ok "risk register created" || ko "risk register not created"
+grep -qF "| \`risks.md\` |" "$R/AGENTS.md" && ok "risk register named in the instructions" || ko "risk register not named"
 [ "$(ls -d "$R"/skills/oa-* | wc -l | tr -d ' ')" -eq "$(ls -d tools/agent/skills/oa-* | wc -l | tr -d ' ')" ] \
   && ok "skills installed" || ko "skills not installed"
 grep -qx ".scratch/" "$R/.gitignore" && [ -d "$R/.scratch" ] && ok "scratch ignored" || ko "scratch not ignored"
 [ -z "$(git -C "$R" log --oneline 2>/dev/null)" ] && ok "nothing committed" || ko "something committed"
 
 echo "| F-1 | kept | assumption | x | 2026-01-01 |" >> "$R/facts.md"
+echo "| R-01 | kept | blind spot | x | open | 2026-01-01 | |" >> "$R/risks.md"
 echo "local" >> "$R/AGENTS.md"
 echo "# confirmed" >> "$R/assessment/engagement-state.yml"
 out="$("$INIT" --repo "$R" --code "$T/code-a")"
 grep -q "F-1" "$R/facts.md" && grep -q "^local$" "$R/AGENTS.md" && ok "re-run keeps what exists" || ko "re-run replaced a file"
+grep -q "R-01" "$R/risks.md" && ok "re-run keeps the risk register" || ko "re-run replaced the risk register"
 [ "$(grep -c "^.scratch/$" "$R/.gitignore")" -eq 1 ] && ok "gitignore line added once" || ko "gitignore line repeated"
 "$INIT" --repo "$R" --code "$T/code-a" --force >/dev/null
 grep -q "^local$" "$R/AGENTS.md" && ko "--force: instructions not replaced" || ok "--force replaces instructions"
 grep -q "F-1" "$R/facts.md" && ok "--force never replaces the ledger" || ko "--force replaced the ledger"
+grep -q "R-01" "$R/risks.md" && ok "--force never replaces the risk register" || ko "--force replaced the risk register"
 grep -q "^# confirmed$" "$R/assessment/engagement-state.yml" && ok "--force never replaces the state file" || ko "--force replaced the state file"
 
 "$INIT" --repo "$R" --code "$T/code-a" --instructions OTHER.md --work work >/dev/null
 [ -f "$R/OTHER.md" ] && grep -qF "work/engagement-state.yml" "$R/OTHER.md" \
   && ok "instructions name and working folder chosen" || ko "--instructions or --work ignored"
+
+mkdir -p "$R/04-risks"; echo "existing" > "$R/04-risks/risk-register.md"
+"$INIT" --repo "$R" --code "$T/code-a" --instructions THIRD.md --risks 04-risks/risk-register.md >/dev/null
+grep -qx "existing" "$R/04-risks/risk-register.md" && grep -qF "04-risks/risk-register.md" "$R/THIRD.md" \
+  && ok "--risks points at an existing register" || ko "--risks ignored or the register replaced"
 
 refused() { set +e; "$INIT" "$@" >/dev/null 2>&1; local c=$?; set -e; [ $c -ne 0 ]; }
 refused --code "$T/code-a" && ok "refused: no --repo" || ko "accepted: no --repo"

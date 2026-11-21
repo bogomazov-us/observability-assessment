@@ -55,16 +55,16 @@ path table below marks *init*, and the scratch directory `.scratch/`, added to `
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
 A re-run keeps what exists; `--force` replaces the instructions and the skills (after a kit
-upgrade), never the state file, the ledger, the register, the questions or a progress log. The agent's read-only
+upgrade), never the state file, a register, the questions or a progress log. The agent's read-only
 boundary is set in the agent tool's own permissions as well: the instructions file alone does
 not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
 
 ## Artifact paths
 
 Every stage reads and writes at these paths, relative to the working folder (`assessment/`, or
-`--work`). The facts ledger and decision register sit at the repository root
-(`facts.md`, `decisions.md`, from init, created only when absent) unless
-`--facts` or `--decisions` point at existing ones; the instructions file names them.
+`--work`). The facts ledger, decision register and risk register sit at the repository root
+(`facts.md`, `decisions.md`, `risks.md`, from init, created only when absent) unless
+`--facts`, `--decisions` or `--risks` point at existing ones; the instructions file names them.
 Paths under `tools/`, `templates/` and `method/` are in the kit.
 
 | Path | Holds | Made by | Read by |

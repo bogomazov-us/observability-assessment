@@ -3,7 +3,7 @@
 # Sets up an engagement repository for running the agent stages.
 #
 #   tools/agent/init-engagement.sh --repo DIR --code DIR [--code DIR ...]
-#       [--work PATH] [--facts PATH] [--decisions PATH] [--scratch DIR]
+#       [--work PATH] [--facts PATH] [--decisions PATH] [--risks PATH] [--scratch DIR]
 #       [--instructions NAME] [--skills PATH] [--force]
 #
 # --repo          the engagement repository (exists; a git repository)
@@ -11,20 +11,21 @@
 # --work          working folder for the stages, relative to --repo (default: assessment)
 # --facts         facts ledger, relative to --repo (default: facts.md; created if absent)
 # --decisions     decision register, relative to --repo (default: decisions.md; created if absent)
+# --risks         risk register, relative to --repo (default: risks.md; created if absent)
 # --scratch       scratch directory (default: --repo/.scratch, added to .gitignore)
 # --instructions  file name the agent tool reads for instructions (default: AGENTS.md)
 # --skills        also install the stage and rule skills into this folder, relative to --repo
 # --force         replace the instructions file and the skills
 #
 # Writes only inside --repo and the scratch directory, commits nothing, and never overwrites the
-# state file, a facts ledger, decision register, owner-questions file or progress log: they are
+# state file, a facts ledger, decision or risk register, owner-questions file or progress log: they are
 # records, and --force is for refreshing the instructions and skills after a kit upgrade.
 set -euo pipefail
 KIT="$(cd "$(dirname "$0")/../.." && pwd)"
-REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" SCRATCH=""
+REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" RISKS="risks.md" SCRATCH=""
 NAME="AGENTS.md" SKILLS="" FORCE=0
 CODE=()
-usage() { sed -n '3,21p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+usage() { sed -n '3,22p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 while [ $# -gt 0 ]; do
   case "$1" in
     --repo) REPO="${2:-}"; shift 2 ;;
@@ -32,6 +33,7 @@ while [ $# -gt 0 ]; do
     --work) WORK="${2:-}"; shift 2 ;;
     --facts) FACTS="${2:-}"; shift 2 ;;
     --decisions) DECISIONS="${2:-}"; shift 2 ;;
+    --risks) RISKS="${2:-}"; shift 2 ;;
     --scratch) SCRATCH="${2:-}"; shift 2 ;;
     --instructions) NAME="${2:-}"; shift 2 ;;
     --skills) SKILLS="${2:-}"; shift 2 ;;
@@ -42,7 +44,7 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$REPO" ] && [ -d "$REPO" ] || { echo "--repo: an existing engagement repository is required" >&2; exit 2; }
 [ ${#CODE[@]} -gt 0 ] || { echo "--code: at least one client code checkout is required" >&2; exit 2; }
-for p in "$WORK" "$FACTS" "$DECISIONS" "$NAME" ${SKILLS:+"$SKILLS"}; do
+for p in "$WORK" "$FACTS" "$DECISIONS" "$RISKS" "$NAME" ${SKILLS:+"$SKILLS"}; do
   case "$p" in /*|*..*) echo "paths under --repo are relative and stay inside it: $p" >&2; exit 2 ;; esac
 done
 abs() { (cd "$1" && pwd); }
@@ -66,12 +68,12 @@ put() {  # put TARGET keep|force COMMAND...: a "keep" file is never replaced, a 
 }
 
 instructions() {
-  python3 - "$KIT/templates/agent-instructions.md" "$KIT" "$WORK" "$FACTS" "$DECISIONS" "$SCRATCH" "${CODE[@]}" <<'PY'
+  python3 - "$KIT/templates/agent-instructions.md" "$KIT" "$WORK" "$FACTS" "$DECISIONS" "$RISKS" "$SCRATCH" "${CODE[@]}" <<'PY'
 import sys
-src, kit, work, facts, decisions, scratch, *code = sys.argv[1:]
+src, kit, work, facts, decisions, risks, scratch, *code = sys.argv[1:]
 t = open(src).read()
 for k, v in (("__KIT__", kit), ("__WORK__", work), ("__FACTS__", facts),
-             ("__DECISIONS__", decisions), ("__SCRATCH__", scratch),
+             ("__DECISIONS__", decisions), ("__RISKS__", risks), ("__SCRATCH__", scratch),
              ("__CODE__", ", ".join(f"`{c}`" for c in code))):
     t = t.replace(k, v)
 sys.stdout.write(t)
@@ -93,6 +95,7 @@ for d in progress captures exports spec findings; do
 done
 put "$REPO/$FACTS" keep facts
 put "$REPO/$DECISIONS" keep decisions
+put "$REPO/$RISKS" keep cat "$KIT/templates/risk-register.md"
 
 if [ -n "$SKILLS" ]; then
   if [ "$FORCE" = 1 ]; then "$KIT/tools/agent/skills/install.sh" --force "$REPO/$SKILLS"

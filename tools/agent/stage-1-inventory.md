@@ -68,7 +68,7 @@ travel with it as files at a stated commit, cited, not reprinted.
    In the reconciliation, a claim may cite the row id that holds its evidence instead of
    repeating the query; a claim with neither is not written.
 2. A list of **confirmed blind spots** — a check that cannot fire, a notification that reaches
-   nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each with a proposed owner. They do
+   nobody, a check the design or the journey definitions rely on that does not exist — handed to the person for the risk register now, each as a row of its columns: risk, source (blind spot, stage 1, row id), proposed owner, status *open*, date. They do
    not wait for the findings of stage 4; the finding is written there and links the risk.
 3. `scan.md`: the report of `tools/collect/code-scan.sh` on the code checkout, unless the
    person has run it already.

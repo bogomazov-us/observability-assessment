@@ -77,8 +77,9 @@ with N = 3. The boundaries below are this stage's own and add to the common ones
    console, the person does it read-only and records status, path template, host class and
    time only, as a dated addition to your draft, not as your evidence.
 8. **Blind spots.** A check that cannot fire, a route that reaches nobody, an alert that reads
-   no data as healthy: hand each to the person for the risk register now, with a proposed
-   owner.
+   no data as healthy, and each residual risk of step 4: hand each to the person for the risk
+   register now, as a row of its columns: risk, source (stage 3, row id), proposed owner,
+   status *open*, date.
 
 ## Output
 

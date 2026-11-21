@@ -45,6 +45,7 @@ KIT_FILES=(
   templates/sow.md
   templates/acceptance.md
   templates/review.md
+  templates/risk-register.md
   templates/privacy-checklist.md
   templates/ai-ops-boundary.md
   templates/spec-set/README.md
