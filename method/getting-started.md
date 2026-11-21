@@ -15,7 +15,7 @@ what every step below produces, on a fictional client.
    - `templates/finding.md` — one file per finding, in `findings/`;
    - `templates/report.md` — the summary chapter, rewritten at each accepted stage; and
      `templates/roadmap.md`;
-   - `templates/adr.md` — for an architecture decision only;
+   - [`templates/adr.md`](../templates/adr.md) — for an architecture decision only;
    - `templates/spec-set/observability-spec.yml` — journeys, functions, error taxonomy and
      signal states; the rest of `templates/spec-set/` is the Blueprint's;
    - `templates/review.md` — one copy per deliverable and review round.
