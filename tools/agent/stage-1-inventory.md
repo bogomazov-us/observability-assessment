@@ -72,10 +72,10 @@ travel with it as files at a stated commit, cited, not reprinted.
    not wait for the findings of stage 4; the finding is written there and links the risk.
 3. `scan.md`: the report of `tools/collect/code-scan.sh` on the code checkout, unless the
    person has run it already.
-4. `exports/`: what you read from the estate, one file per object class named with the class
-   and the export date (`exports/alert-rules-2027-03-01.json`), sanitized per the
-   [privacy checklist](../../templates/privacy-checklist.md), each stating its query or call,
-   time and object count ([collect.md](../collect.md)).
+4. `exports/`: what you read from the estate, a file per object class named with the class
+   and export date (`exports/alert-rules-2027-03-01.json`), sanitized per the
+   [privacy checklist](../../templates/privacy-checklist.md), stating its query or call, time
+   and count ([collect.md](../collect.md)).
 
 ## Self-check before handing over
 

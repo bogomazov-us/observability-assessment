@@ -3,8 +3,8 @@
 # Tests the stage prompts against the path table in tools/agent/README.md, "Artifact paths":
 # every path a stage's Output names is in the table as made by that stage; every path its
 # Inputs name is made by an earlier stage, by init-engagement.sh (checked on a fresh
-# repository) or by the person, and the table lists the stage as a reader. Kit paths
-# (tools/, templates/, method/) must exist in the kit.
+# repository) or by the person, and the table lists the stage as a reader; init makes every
+# folder the table names. Kit paths (tools/, templates/, method/) must exist in the kit.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -34,15 +34,16 @@ def paths(text):
             out.append(c)
     return list(dict.fromkeys(out))
 
+KIT = ("tools/", "templates/", "method/")
 readme = open("tools/agent/README.md").read()
 rows = []
 for line in section(readme, "Artifact paths").splitlines():
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
-    if len(cells) != 4 or not cells[0].startswith("`"):
+    if len(cells) != 3 or not cells[0].startswith("`"):
         continue
-    made, read = cells[2], cells[3]
+    made, read = cells[1], cells[2]
     rows.append({
-        "paths": re.findall(r"`([^`]+)`", cells[0]),
+        "paths": [p for p in re.findall(r"`([^`]+)`", cells[0]) if not p.startswith(KIT)],
         "stages": {int(s) for s in re.findall(r"\b([1-6])\b", made)},
         "init": "init" in made, "person": "person" in made,
         "readers": {int(s) for s in re.findall(r"\b([1-6])\b", read)} | ({1, 2, 3, 4, 5, 6} if "every stage" in read else set()),
@@ -56,7 +57,6 @@ def find(p):
                 return r
     return None
 
-KIT = ("tools/", "templates/", "method/")
 for n in range(1, 7):
     text = open(os.path.join(T, f"s{n}.md")).read()
     for kind in ("Inputs", "Output"):
@@ -82,9 +82,11 @@ for n in range(1, 7):
             (ok if n in r["readers"] else ko)(f"stage {n} input {p}: the table lists stage {n} as a reader")
 
 for r in rows:
-    if r["init"]:
-        for q in r["paths"]:
-            d = os.path.dirname(q) if "N" in q else q.rstrip("/")
-            (ok if os.path.exists(os.path.join(WORK, d)) else ko)(f"init makes {d}")
+    for q in r["paths"]:
+        if r["init"]:
+            (ok if os.path.exists(os.path.join(WORK, q)) else ko)(f"init makes {q}")
+        if "/" in q:
+            d = q if q.endswith("/") else os.path.dirname(q) + "/"
+            (ok if os.path.isdir(os.path.join(WORK, d)) else ko)(f"init makes the folder {d}")
 sys.exit(fail)
 PY

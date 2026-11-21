@@ -46,12 +46,11 @@ tools/agent/init-engagement.sh --repo ENGAGEMENT_REPO --code CODE_CHECKOUT [--co
     [--skills SKILLS_DIR] [--instructions NAME]
 ```
 
-It commits nothing. It writes the agent's standing instructions to `AGENTS.md` (or
-`--instructions NAME`, the file your agent tool reads): where the code, the kit, the working
-folder and the registers are; how a stage runs; the rules. They come from
+It commits nothing. It writes the agent's standing instructions, from
 [`templates/agent-instructions.md`](../../templates/agent-instructions.md) with the paths
-filled in; the client and the monitoring tool are left for the person. It also makes what the
-path table below marks *init*, and the scratch directory `.scratch/`, added to `.gitignore`.
+filled in, to `AGENTS.md` (or `--instructions NAME`, the file your agent tool reads); the
+client and the monitoring tool are left for the person. It makes what the path table marks
+*init*, its folders, and the scratch directory `.scratch/`, added to `.gitignore`.
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
 A re-run keeps what exists; `--force` replaces the instructions and the skills (after a kit
@@ -61,30 +60,30 @@ not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
 
 ## Artifact paths
 
-Every stage reads and writes at these paths, relative to the working folder (`assessment/`, or
-`--work`). The facts ledger, decision register and risk register sit at the repository root
-(`facts.md`, `decisions.md`, `risks.md`, from init, created only when absent) unless
-`--facts`, `--decisions` or `--risks` point at existing ones; the instructions file names them.
-Paths under `tools/`, `templates/` and `method/` are in the kit.
+Stages read and write at these paths, relative to the working folder (`assessment/`, or
+`--work`); `tools/`, `templates/` and `method/` are in the kit. The facts ledger and the
+decision and risk registers are at the repository root (`facts.md`, `decisions.md`,
+`risks.md`, created only when absent), or where `--facts`, `--decisions`, `--risks` point;
+the instructions file names them.
 
-| Path | Holds | Made by | Read by |
-|---|---|---|---|
-| `engagement-state.yml` | The gates | init | every stage, `tools/stagegate.py` |
-| `owner-questions.md` | The owner-questions batch | init; every stage adds | the person |
-| `progress/stage-N.md` | Progress log of stage N | stage N, in the folder init makes | the person |
-| `kickoff-note.md` | Scope, journeys, the buyer's question | the person, from `templates/kickoff-note.md` | 1, 2, 6 |
-| `captures/` | Sanitized captures of each journey | the person, in the folder init makes | 2 |
-| `scan.md` | Code scan report | 1 | 2, 4 |
-| `exports/` | Estate export, a file per object class and date | 1, in the folder init makes | 2, 4 |
-| `inventory.md` | Stage 1 report | 1 | 2, 3, 5, report |
-| `spec/observability-spec.yml` | The spec | 2; 3 sets the signal states | 3, 4, 5 |
-| `stage-2-notes.md` | Stage 2 report | 2 | 3, report |
-| `stage-3-gap.md` | Stage 3 report | 3 | 4, 5, report |
-| `findings/F-NNN.md` | One finding each | 4, in the folder init makes | 5, 6 |
-| `stage-4-notes.md` | Stage 4 report | 4 | report |
-| `maturity.yml`, `stage-5-notes.md` | Profile; stage 5 report | 5 | 6, report |
-| `recommendations.md` | Stage 6 report | 6 | report |
-| `summary.md`, `manifest.txt` | Summary chapter, from `templates/report.md`; manifest of `tools/assessment-pdf.sh` | the person, at each accepted stage | report |
+| Path | Made by | Read by |
+|---|---|---|
+| `engagement-state.yml` | init | every stage, `tools/stagegate.py` |
+| `owner-questions.md` | init; every stage adds | the person |
+| `progress/stage-N.md` | stage N | the person |
+| `kickoff-note.md` (scope, journeys, buyer's question) | the person, from `templates/kickoff-note.md` | 1, 2, 6 |
+| `captures/` (sanitized journey captures) | the person | 2 |
+| `scan.md` (code scan) | 1 | 2, 4 |
+| `exports/` (a file per object class and date) | 1 | 2, 4 |
+| `inventory.md` | 1 | 2, 3, 5, report |
+| `spec/observability-spec.yml` | 2; 3 sets the signal states | 3, 4, 5 |
+| `stage-2-notes.md` | 2 | 3, report |
+| `stage-3-gap.md` | 3 | 4, 5, report |
+| `findings/F-NNN.md` | 4 | 5, 6 |
+| `stage-4-notes.md` | 4 | report |
+| `maturity.yml`, `stage-5-notes.md` | 5 | 6, report |
+| `recommendations.md` | 6 | report |
+| `summary.md` (from `templates/report.md`), `manifest.txt` | the person, at each accepted stage | `tools/assessment-pdf.sh` |
 
 The spec is drafted here; the person takes the confirmed spec set to the client's
 `docs/observability/`.
