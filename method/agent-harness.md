@@ -46,17 +46,16 @@ prompt names one checklist of wording rules that keeps each claim within its che
 
 ## Two levels of reading, from one set of sources
 
-Each stage's report has a main part that supports a decision and an evidence bundle that lets a
-reviewer check each claim by a stable id ([`stage-report.md`](../templates/stage-report.md)).
-The current state comes first; the rounds that produced it are history, kept apart and never
-needed to read the result. Decision, implementation and verification are separate statuses: an
-accepted decision is not a built function, and a built function is not a proven detection.
-One export style for every report, set in the kit (`tools/report-pdf.sh`), and a built PDF is
-checked: every cited id is found in its text. This came from the review of the first
+Each stage's notes file has a main part that supports a decision and an evidence part that lets
+a reviewer check each claim by a stable id; the current state comes first, and the rounds that
+produced it are history, never needed to read the result
+([`stage-report.md`](../templates/stage-report.md)). The client receives two documents for the
+whole assessment, built by `tools/assessment-pdf.sh` from the per-stage sources: a report — the
+lead's summary (`summary.md`, from [`report.md`](../templates/report.md)), then a chapter per
+stage, drafted by the agent and accepted when the lead confirms the stage — and an evidence
+bundle of their records and catalogs. Working files stay in the repository as history. This came from the review of the first
 engagement's stages 1–3, whose content was ahead of their form: the client had to rebuild the
-current state from the edit history, wide tables and appendices. The client receives two documents for the whole assessment — a report that grows by a chapter per
-accepted stage and an evidence bundle — built from the per-stage sources by
-`tools/assessment-pdf.sh`; working files stay in the repository as history.
+current state from the edit history, wide tables and appendices.
 
 ## The review bundle is built from what is cited
 
