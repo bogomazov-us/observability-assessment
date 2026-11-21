@@ -2,9 +2,10 @@
 # Check with: tools/stagegate.py lint engagement-state.yml
 # Before a stage starts: tools/stagegate.py check engagement-state.yml N
 # Gates: tools/agent/README.md, "Gates". Rule IDs: tools/stagegate.md.
+# Roles, status values and id prefixes: method/records.md.
 #
 # status:   not_started | draft | handed_over | returned | confirmed
-#           The agent may set its own stage to draft or handed_over. Only a person sets
+#           The agent may set its own stage to draft or handed_over. Only the lead sets
 #           returned or confirmed, by editing this file.
 # confirmed: confirmed_by (role or name), confirmed_on (YYYY-MM-DD) and decision_ref (the id
 #           of the decision-register entry that records the confirmation), all three.

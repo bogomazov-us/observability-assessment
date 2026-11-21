@@ -11,6 +11,7 @@ KIT_FILES=(
   method/maturity-model.md
   method/lessons.md
   method/agent-harness.md
+  method/records.md
   tools/README.md
   tools/collect.md
   tools/speclint.md
