@@ -1,6 +1,6 @@
 # Interview guide
 
-For the interviews in weeks 1–2 (`method/getting-started.md` §3). The intake questionnaire is
+For the interviews in the [calendar](../method/getting-started.md#3-calendar)'s weeks. The intake questionnaire is
 sent before; an interview does not re-ask it. It checks the written answers against the
 interviewee's own screen and asks for what a form cannot: a walk-through, the last real case,
 the export behind a number. 45–60 minutes; ask to share the screen.

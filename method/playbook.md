@@ -9,7 +9,7 @@ How an assessment is actually run. Each step names its output and the template b
    request, booking hold, booking complete…), each with typed failures.
 2. **Expected is not failure.** Many "errors" are the product working: wrong password, no
    availability, a business refusal. Classify every code: expected / failure / caller defect /
-   ambiguous / unknown. Unknown counts as bad until classified.
+   ambiguous / unknown / none. Unknown counts as bad until classified.
 3. **Evidence levels.** A signal is *present* only with evidence: seen in the browser, seen in the
    beacon / agent, or queried in the tenant. An inventory or a slide is not evidence.
 4. **No threshold on a gap.** A metric that is not collected cannot be green.

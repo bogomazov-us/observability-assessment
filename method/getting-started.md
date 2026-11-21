@@ -99,29 +99,32 @@ The report is assembled from chapters per accepted stage; see
 
 ## 6. With the agent stages
 
-A person starts each [agent stage](../tools/agent/README.md) and confirms its result. What the drafts
-count for until the harness targets hold: [agent-harness.md](agent-harness.md), "Measuring the
-harness".
+A person starts each [agent stage](../tools/agent/README.md) and confirms it in the
+[calendar](#3-calendar)'s weeks. What the drafts count for until the harness targets hold:
+[agent-harness.md](agent-harness.md), "Measuring the harness".
 
-The person, per stage (the agent's side is in its [rules](../tools/agent/rules/)):
+The person, per stage (agent's side: its [rules](../tools/agent/rules/)):
 
 1. **Once:** runs `tools/agent/init-engagement.sh` and finishes what it leaves
    ([README](../tools/agent/README.md), "Setting up"); records the scope in the decision
-   register and in `engagement-state.yml`; commits on the assessment branch.
+   register and `engagement-state.yml`; commits on the assessment branch.
 2. **Start:** by name (`prompt.sh N`, or the skill `oa-stage-N-…`), with the inputs the prompt
    lists. The agent checks the gate first and names a missing input instead of substituting it.
 3. **While it runs:** reads `progress/stage-N.md`, not the transcript.
 4. **Hand-over:** receives the draft, what could not be cited and the open owner questions as
-   one batch; sends the questions in the format of `templates/owner-questions.md` and records
-   each answer in the decision register with date and who decided.
-5. **Confirm:** checks what the prompt's last section names, in the tool and by another path
-   than the agent's query; records the result in the ledger and the register; sets the stage
-   `confirmed` with who, when and the decision id; runs
-   `tools/stagegate.py lint engagement-state.yml --since REV` against the last confirmation's
-   commit — on the first, the commit that added the file
-   (`git log --diff-filter=A --format=%h -- engagement-state.yml`). Only then starts the next.
+   one batch; sends the questions (`templates/owner-questions.md`) and records each answer in
+   the decision register with date and who decided.
+5. **Confirm**, in order, before the next stage starts:
+   1. Check: what the prompt's last section names, in the tool, by another path than
+      the agent's query.
+   2. Facts ledger (`facts.md`): the result.
+   3. Decision register (`decisions.md`): the result and confirmation, a `D-` row.
+   4. `engagement-state.yml`: the stage `confirmed`, with who, when and that `D-` id.
+   5. Lint: `tools/stagegate.py lint engagement-state.yml --since REV`, REV the last
+      confirmation's commit (on the first:
+      `git log --diff-filter=A --format=%h -- engagement-state.yml`).
 
 At each accepted stage the person rewrites `summary.md` (from `templates/report.md`), adds the
 stage's lines to `manifest.txt` and builds with `tools/assessment-pdf.sh`; after stage 6 they
-finish the summary and the roadmap from the confirmed results (section 5), and record the
-agent's time and the person's hours per stage, as [the harness](agent-harness.md) asks.
+finish the summary and the roadmap from the confirmed results (section 5), and record per
+stage the agent's time and their hours ([the harness](agent-harness.md)).

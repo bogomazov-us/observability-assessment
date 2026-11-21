@@ -34,7 +34,7 @@ deck is slides 1, 2, 5 and 13.
 | 8 | [What you already have that we build on] | The client's own investigation or tool and what it gave us | Summary §2, playbook principle 6 | Criticism of the client's team |
 | 9 | [Target: every failure has an address] | The target model in one picture: journey → function → signal → SLI → threshold → owner, for one tier-1 journey | Stage 2, spec set | All journeys at once |
 | 10 | [What moves the most, first] | Three or four recommendations ordered by impact over effort, each with its findings and effort size | Summary §5, stage 6 | The full recommendation list |
-| 11 | [Roadmap] — e.g. "Five weeks to a checkout that is measured, on four assumptions" | Milestones closed by demonstration, accountable owner per milestone, 30/60/90; the assumptions | Summary §5, `roadmap.md` | Gantt detail, task lists |
+| 11 | [Roadmap] — e.g. "Five weeks to a checkout that is measured, on four assumptions" | Milestones closed by demonstration, accountable owner per milestone, effort ranges (dates once the executor is known); the assumptions | Summary §5, `roadmap.md` | Gantt detail, task lists |
 | 12 | [What it needs from you] | Client obligations and decisions per milestone: owners, people, access | Roadmap, commitment baseline | Our staffing |
 | 13 | [Decision requested] | The decision in one sentence; the options if there are several; who decides; by when | Summary §8 | New information |
 

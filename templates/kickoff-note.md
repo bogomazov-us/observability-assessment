@@ -1,6 +1,6 @@
 # Kick-off note
 
-Filled at the kick-off (week 1) and kept at `[working folder]/kickoff-note.md`
+Filled at the kick-off ([calendar](../method/getting-started.md#3-calendar)) and kept at `[working folder]/kickoff-note.md`
 (`assessment/kickoff-note.md` by default): the agent stages read their scope from it. What the
 client states enters the facts ledger as an assumption until shown; what is agreed enters the
 decision register, and this note cites its ids.
@@ -19,7 +19,7 @@ Engagement: [name] · Date: [date] · Format: [focused or full] · Present: [rol
 
 ## Journeys in scope
 
-| Journey (client's words) | Owner | Mandatory at the next go-live | Golden journey proof |
+| Journey (client's words) | Owner | Mandatory at the next go-live | [Golden journey proof](golden-journey-proof.md) |
 |---|---|---|---|
 | [journey] | [name, role] | [yes / no] | [yes / no] |
 

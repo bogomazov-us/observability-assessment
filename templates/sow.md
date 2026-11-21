@@ -33,8 +33,9 @@ than the limit, never larger.
 
 | Format | Deliverable | Accepted when |
 |---|---|---|
-| Assessment | Current → future → gap → plan; maturity profile; prioritised findings with evidence; 30/60/90 plan; decision request | Report accepted after the review rounds, and the next-step decision taken |
+| Assessment | Current → future → gap → plan; maturity profile; prioritised findings with evidence; roadmap in sequence with effort ranges, dated once the executor is known; decision request | Report accepted after the review rounds, and the next-step decision taken |
 | Full assessment, additionally | Golden-journey proof on stage (only with the obligations in section 4) | Demonstrated, or delivered as a design and checklist when the obligations were not met |
+| Full assessment, optional add-on (priced separately) | Operationalize: alert ownership and runbook model, release check | Model agreed with the alert owners; release check run on one release |
 | Blueprint | Specification set (journeys, error taxonomy, signals, SLOs and alerts, instrumentation contract, synthetics, dashboards, runbooks); acceptance scenarios; milestone roadmap | Spec approved for implementation after the review rounds |
 | Implementation | Working chain signals → calculations → alerts → response on stage and production; acceptance evidence | Acceptance evidence demonstrated and the go decision taken |
 | Hypercare | Alerts tuned on live traffic; runbooks exercised; on-call handover | See section 9: the paid period ends at its date; BAU readiness is accepted separately |
@@ -49,7 +50,7 @@ it is missed, with the new date, and tells the sponsor.
 | Format | Obligation | By |
 |---|---|---|
 | Assessment | Read-only access to the monitoring tool, code and ticketing | day 3 |
-| Assessment | 5–8 interviews held | end of week 2 |
+| Assessment | 5–8 interviews held | [date] |
 | Assessment | Incident history for [period] | day 3 |
 | Full assessment, golden-journey proof | Stage access with write rights to the monitoring configuration; one client developer for 5 days; the client owns the code change | week [n] |
 | Blueprint | A product owner who signs the SLOs; tier-1 journeys agreed | start |
@@ -124,6 +125,7 @@ risks are written down and the client decides: extend, or hand over with those r
 | Line | Basis | Amount | Invoiced |
 |---|---|---|---|
 | [Format] | fixed fee for the scope in section 2 | [amount] | [on acceptance / by milestone] |
+| Operationalize (optional add-on to the full assessment) | fixed fee, separate from the assessment | [amount] | [on acceptance] |
 | Hypercare extension | per week | [amount] | [weekly] |
 | Change requests | per section 8 | [as signed] | [on acceptance] |
 
