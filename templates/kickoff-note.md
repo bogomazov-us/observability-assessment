@@ -43,13 +43,13 @@ Engagement: [name] · Date: [date] · Format: [focused or full] · Present: [rol
 
 ## Who decides what
 
-Roles as defined in the roles table.
+Roles as defined in the [roles table](../method/records.md#roles).
 
 | Decision | Role | Name |
 |---|---|---|
 | Scope change (journeys, services, tools) | Sponsor | [name] |
-| SLO targets per journey | Journey owner | [name] |
-| Verdict on a finding | Technical owner | [name] |
+| SLO targets per journey | Technical owner | [name] |
+| Verdict on a finding | Owner of the finding's verdict | [name] |
 | Acceptance of the report | Sponsor | [name] |
 
 ## Agreed scope in the decision register

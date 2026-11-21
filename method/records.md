@@ -27,8 +27,8 @@ never decided by the lead, a reviewer or an agent.
   written answer). It is recorded before any document cites it; documents cite the id, never
   "the owner said".
 - **An architecture decision also gets an ADR file** — one that fixes how the client's system
-  or its telemetry is built, with alternatives worth keeping. It uses the
-  ADR format at the end of [finding.md](../templates/finding.md) (`ADR-` id); its register row cites
+  or its telemetry is built, with alternatives worth keeping. It uses
+  [adr.md](../templates/adr.md) (`ADR-` id); its register row cites
   the ADR id under Evidence. The ADR does not replace the row.
 - **A row is never edited.** A changed decision is a new row whose status line names the row it
   supersedes; the old row is marked superseded with a link to the new one.
@@ -42,7 +42,8 @@ replaced it. One prefix, one kind of record.
 |---|---|---|---|
 | `O-` | Fact | Facts ledger (`facts.md`) | Lead |
 | `D-` | Decision | Decision register (`decisions.md`) | Lead, for the owner of the decision |
-| `ADR-` | Architecture decision | ADR file, cited from its `D-` row | Lead |
+| `ADR-` | Architecture decision | [adr.md](../templates/adr.md), cited from its `D-` row | Lead |
+| `R-` | Risk | Risk register (`risks.md`, [risk-register.md](../templates/risk-register.md)) | Lead; the agent proposes |
 | `Q-` | Owner question | [owner-questions.md](../templates/owner-questions.md), `engagement-state.yml` | Lead; the agent proposes |
 | `L-` | Inventory row | Stage 1 `inventory.md` | Agent or lead |
 | `E-` | Evidence check | Evidence catalog of each stage (stage 1 E-1xx, stage 2 E-2xx …) | Whoever ran the check |
@@ -78,6 +79,7 @@ implemented function, and an implemented function is not a proven detection.
 | Implementation | absent · partial · implemented | Finding, stage report | Lead, from evidence |
 | Verification | untested · observed · reproduced | Finding, stage report | Lead, from evidence |
 | Fact | assumption · confirmed · disputed · refuted | Facts ledger | Agent output enters as assumption; lead confirms; never deleted |
+| Risk | open · accepted · mitigated · closed · superseded | Risk register | Lead records; owner *proposed* until the client's owner accepts |
 | Evidence level | browser · agent · tenant · document only | Finding; playbook principle 3 | Whoever cites it |
 | Confidence | `high` · `medium` · `low` | Finding, stage report, maturity; maturity.py | Author, with the reason |
 | Maturity score | `scored` · `partial` · `not_scored` · `na`; a level 1–5, marked provisional until its findings' verdicts | `maturity.yml`; maturity.py | Agent; lead confirms with stage 5; `na` with the client's agreement |

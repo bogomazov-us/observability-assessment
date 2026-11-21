@@ -8,9 +8,9 @@
 
 ## Event registry
 
-| Function | Event or span name | Emitted by | Attributes | State |
+| Function | Event or span name | Emitted by | Attributes | State ([signal state](../../method/records.md#status-sets)) |
 |---|---|---|---|---|
-| [J1.1] | `<domain.function.result>` | [service] | outcome, error_class, error_code, attempt_id, operation_id | live / to build |
+| [J1.1] | `<domain.function.result>` | [service] | outcome, error_class, error_code, attempt_id, operation_id | `live` · `differs` · `to_build` · `not_verifiable` |
 
 ## Identity
 

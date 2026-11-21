@@ -20,4 +20,4 @@ the export behind a number. 45–60 minutes; ask to share the screen.
   tool shows it, and *refuted* when the evidence shows otherwise.
 - An export promised in the interview becomes a data request row with a provider and a week.
 - A question nobody in the room could answer goes to `owner-questions.md`, with an owner.
-- Who rules on what is in the roles table; an interviewee's view is not a verdict.
+- Who rules on what is in the [roles table](../method/records.md#roles); an interviewee's view is not a verdict.

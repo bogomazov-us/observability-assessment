@@ -27,8 +27,9 @@ delivered as a design and a checklist.
 
 ## Monitoring access by object class
 
-One row per class in `tools/collect.md`. A class that could not be exported keeps its row, with
-the reason, an owner and a date to retry.
+One row per class in `tools/collect.md`; the exports go to `exports/` in the working folder, a
+file per class and date. A class that could not be exported keeps its row, with the reason, an
+owner and a date to retry.
 
 | Class | Route (API token, MCP server, UI export, admin export) | Date | Not exported: reason, owner, retry by |
 |---|---|---|---|

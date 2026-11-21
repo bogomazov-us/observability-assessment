@@ -39,6 +39,7 @@ KIT_FILES=(
   templates/agent-instructions.md
   templates/stage-report.md
   templates/finding.md
+  templates/adr.md
   templates/report.md
   templates/executive-deck.md
   templates/roadmap.md
