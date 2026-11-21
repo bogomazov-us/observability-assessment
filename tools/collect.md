@@ -75,6 +75,14 @@ interface; an export run by the client's administrator. Record the route and the
 class in the data request (`templates/data-request.md`); a class that could not be exported is a
 gap with a reason, not an empty class.
 
+**With no script for the client's tool**, take each class through the tool's own configuration
+export, its read-only API, or the agent's read-only queries saved as files. Keep one file per
+class in the working folder's `exports/`, named with the class and the export date
+([path table](agent/README.md#artifact-paths)), sanitized per the
+[privacy checklist](../templates/privacy-checklist.md). A file is cited only when it states the
+query or call that produced it, when it ran, and how many objects it returned; without these it
+is a lead, not evidence.
+
 **Scripts for a specific tool** are written in the engagement repository, read-only by
 construction (GET or read-only queries, credentials from the environment, a failed request fails
 the run so that a missing permission never looks like an empty estate). What generalises comes
