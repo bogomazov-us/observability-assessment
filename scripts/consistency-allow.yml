@@ -4,4 +4,4 @@
 # check is weeks, prefix, status or gate. An entry that matches nothing fails the check.
 allow:
   - "weeks | method/getting-started.md | the engineer usually from week 1 | staffing (when a role joins), not a step, stage or meeting"
-  - "weeks | templates/roadmap.md | M0 — Blocking decisions | the implementation roadmap's own relative weeks, not the assessment calendar"
+  - "weeks | templates/roadmap.md | M-0 — Blocking decisions | the implementation roadmap's own relative weeks, not the assessment calendar"

@@ -123,6 +123,7 @@ reviewed: it is discarded and the stage re-run.
 
 Record, per stage and engagement, from the progress logs and the review records: drafts handed
 over, drafts accepted without a change of substance, cited evidence that did not reproduce,
-agent elapsed time, and the person's hours confirming, in the engagement's stage table. The
+agent elapsed time, and the person's hours confirming, at the end of the stage's review record
+([example](../../example/agent/reviews/stage-3-round-1.md)). The
 targets, how to count them and what the drafts count for until they hold:
 [agent-harness.md](../../method/agent-harness.md), "Measuring the harness".

@@ -34,7 +34,7 @@ Python 3.9+ and PyYAML.
 
 ## Output
 
-From the worked example's extract (`tools/tests/fixtures/maturity/worked-example.yml`):
+From the worked example's profile (`example/maturity.yml`):
 
 | Dimension | Level | Coverage | Evidence | Confidence |
 |---|---|---|---|---|
@@ -42,7 +42,7 @@ From the worked example's extract (`tools/tests/fixtures/maturity/worked-example
 | 2 Telemetry coverage | not scored | extract only | — | — |
 | 3 Error semantics | 2 (partial 3) | classified on C1 only | `slots` and `payments` error handlers | high |
 | 5 Business outcome data | 2 | outcomes reconstructable from the orders database by hand | ad-hoc query | high |
-| 6 SLOs | 1 | none | export: SLO list, empty; query: no SLO in contracts or wiki | high |
+| 6 SLOs | 1 | none | SLO list, empty; no SLO in contracts or wiki | high |
 | 7 Alert quality | 2 | per-service 5xx alerts, no owners | alert export | high |
 
 (Rows for the other not-scored dimensions omitted here.) Below the table:

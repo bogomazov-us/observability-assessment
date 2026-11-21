@@ -22,7 +22,7 @@ import re
 import sys
 
 # Files and folders checked, relative to the root. Extend here (e.g. "example").
-SCOPE = ["README.md", "offerings.md", "backlog.md", "method", "templates", "tools", "practice"]
+SCOPE = ["README.md", "offerings.md", "backlog.md", "method", "templates", "tools", "practice", "example"]
 EXCLUDE = ["tools/tests"]
 EXTENSIONS = (".md", ".yml")
 
