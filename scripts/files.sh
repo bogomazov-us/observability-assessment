@@ -22,6 +22,7 @@ KIT_FILES=(
   tools/agent/stage-2-target-model.md
   tools/agent/reference/stage-2-reference.md
   tools/agent/stage-3-gap.md
+  tools/agent/reference/stage-3-reference.md
   tools/agent/stage-4-findings.md
   tools/agent/stage-5-maturity.md
   tools/agent/stage-6-recommendations.md
