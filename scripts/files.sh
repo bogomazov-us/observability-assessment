@@ -30,6 +30,8 @@ KIT_FILES=(
   tools/agent/rules/progress-log.md
   tools/agent/skills/README.md
   templates/intake-questionnaire.md
+  templates/kickoff-note.md
+  templates/interview-guide.md
   templates/data-request.md
   templates/owner-questions.md
   templates/agent-instructions.md
