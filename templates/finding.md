@@ -6,7 +6,7 @@
 
 **Severity:** P1 / P2 / P3 on the scale below, and why. · **Decision:** proposed / accepted /
 superseded · **Implementation:** absent / partial / implemented · **Verification:** untested /
-observed / reproduced.
+observed / reproduced. Who sets each status: [records.md](../method/records.md).
 
 **What we see.** Facts only, each with its evidence id (`E-NNN` in the evidence catalog: source,
 window, method, result, limits).
@@ -37,11 +37,12 @@ mis-measured, who is not told.
   priority are separate fields.
 - A finding whose cause or impact is not established is marked *provisional*. Linked findings
   are assessed together, so one risk is not counted twice.
-- The agent proposes severity; the person sets it, and a change is recorded with its reason.
+- The agent proposes severity; the lead sets it, and a change is recorded with its reason.
 
 ## Verdicts
 
-A drafted finding is an *assumption*. After a re-check its owner gives it one of five verdicts:
+A drafted finding is an *assumption*. After a re-check its owner (the owner of the finding's
+verdict, [records.md](../method/records.md)) gives it one of five verdicts:
 
 | Verdict | When |
 |---|---|
@@ -70,7 +71,10 @@ A drafted finding is an *assumption*. After a re-check its owner gives it one of
 
 # ADR-NNN · [decision]
 
-**Status:** proposed / accepted / superseded by ADR-MMM · **Date:** YYYY-MM-DD
+**Status:** proposed / accepted / superseded by ADR-MMM · **Date:** YYYY-MM-DD · **Register:** D-NN
+
+Only for an architecture decision; every decision is a row in the decision register, which
+cites this file ([records.md](../method/records.md)).
 
 **Context.** What forced the decision.
 

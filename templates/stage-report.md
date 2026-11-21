@@ -67,7 +67,8 @@ result from this section alone.]
 
 | ID | Question or decision | Owner | Status |
 |---|---|---|---|
-| D-01 | … | … | proposed / accepted / superseded by D-NN |
+| Q-01 | … | … | open, or the D- id of its answer |
+| D-NN | … | … | proposed / accepted / superseded by D-NN |
 
 ## 6. Conditions to complete the stage
 
@@ -152,27 +153,15 @@ evidence  stage-6-rechecks.md
 - The version of both is the commit in the footer; the change history is one table in
   `summary.md`, a row per stage and per accepted change.
 
-## Statuses are kept apart
+## Statuses and ids
 
-| Dimension | Values |
-|---|---|
-| Decision | proposed / accepted / superseded |
-| Implementation | absent / partial / implemented |
-| Verification | untested / observed / reproduced |
-
-An accepted decision is not an implemented function, and an implemented function is not a
-proven detection. A row states each dimension it has; one word never stands for two. The same
-holds for a signal at stage 3: absent, differs, not verified and an observed failure are
-different fields, not one status.
-
-## Ids
-
-Ids are stable across versions: an id is never renumbered or reused, and a superseded row keeps
-its id with a link to what replaced it. One prefix per kind: `L-` inventory rows, `E-` evidence
-checks, `G-` gap results, `F-` findings, `D-` decisions of the stage, `REC-` recommendations, `V-` verification tasks,
-`W-` work towards an accepted decision.
-A baseline's ids stay as they are; new `E-` ids are added without renumbering it. Every id
-cited in a document appears in its evidence bundle, and a text search of the PDF finds it.
+Status values, who sets each, and the id prefixes are in
+[records.md](../method/records.md). Decision, implementation and verification are separate
+fields, as are a signal's absence, difference, verification and an observed failure at stage 3;
+one word never stands for two. Ids are never renumbered or reused; a baseline's ids stay and new
+`E-` ids are added after them. Section 5 cites the decision register's `D-` ids and the owner
+questions' `Q-` ids; a stage does not number decisions of its own. Every id cited in a document
+appears in its evidence bundle, and a text search of the PDF finds it.
 
 ## Per stage
 
@@ -201,8 +190,9 @@ cited in a document appears in its evidence bundle, and a text search of the PDF
   (signal rows bound to functions, not necessarily distinct series). Candidates whose fixes
   differ are separate candidates.
 - **Stage 4.** Per finding: severity on the scale in [`finding.md`](finding.md) with its reason,
-  confidence and limits, the closing criterion, and the three statuses above. The claim is
-  bounded (window, scope, "not shown"); its verdict, one of five, is the owner's.
+  confidence and limits, the closing criterion, and the decision, implementation and
+  verification statuses. The claim is bounded (window, scope, "not shown"); its verdict, one
+  of five, is the owner's.
 - **Stage 5.** Levels set before their findings' verdicts are marked provisional and re-read
   by a dated entry when the verdicts come. The result is the profile: per dimension a level, `not_scored` or N/A, never an
   overall number. Each record: the level, the evidence that shows it (`E-` ids, findings), the

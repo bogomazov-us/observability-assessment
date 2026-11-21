@@ -1,6 +1,7 @@
 # Owner questions
 
-A written questionnaire for decisions only the owner or the client can make. The agent, or the
+A written questionnaire for decisions only the owner or the client can make (roles and the
+decision register: [records.md](../method/records.md)). The agent, or the
 lead, gathers the open questions of a stage into one batch; the owner answers in writing; each
 answer is recorded in the decision register before any document cites it. A written answer is
 the evidence of the decision, so the batch replaces the "we agreed in the call" that nobody can
