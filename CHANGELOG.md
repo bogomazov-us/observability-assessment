@@ -3,6 +3,53 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## 0.14.0 — 2026-11-21
+
+Closes the gaps found in the 0.13.2 retrospective: the method says each thing once, the agent
+route has a path for every file, and the stage prompts are shorter.
+
+- **Engagement calendar** (`method/getting-started.md`, "3. Calendar"): weeks 1–6 of the
+  full assessment with phases, playbook steps, agent stages, meetings and client deliveries,
+  and a three-week focused variant. Other documents link it instead of restating weeks.
+- **Roles, records and ids defined once** (`method/records.md`):
+  - who sets which status;
+  - the decision register and when a decision also gets an ADR (new `templates/adr.md`);
+  - one registry of id prefixes (`D-` now means only the decision register);
+  - every status set.
+- **One report model** (`templates/stage-report.md`): a summary chapter (`summary.md`, from
+  `templates/report.md`) rewritten at each accepted stage, plus a chapter per accepted stage,
+  assembled by `tools/assessment-pdf.sh`. The executive deck names the chapters it is built
+  from.
+- **Consistency check** (`scripts/consistency.py`, run by the guardrails):
+  - week numbers outside the calendar;
+  - id prefixes missing from the registry;
+  - incomplete status lists;
+  - stage gate phrases that differ between the README and the prompts.
+  Exceptions go in `scripts/consistency-allow.yml`.
+- **Agent route**:
+  - one table of artifact paths, with who makes and who reads each file (`tools/agent/README.md`), checked by a test;
+  - stage 1 keeps raw exports in `exports/` and the code scan in `scan.md`;
+  - a risk register (`templates/risk-register.md`, `R-`; `init-engagement.sh --risks`);
+  - findings that people write before stage 4 are an input to it, and stage 4 reconciles rather than redrafts;
+  - getting started §6 gives the first-confirmation lint as numbered steps.
+- **Intake**:
+  - `templates/kickoff-note.md` and `templates/interview-guide.md`;
+  - new data request rows (HAR captures, billing, golden journey access, monitoring access per object class), each with "Needed by (week)".
+- **Phases of the full assessment**:
+  - golden journey proof has a template (`templates/golden-journey-proof.md`) and a week;
+  - Operationalize is an optional priced phase (estimation, offerings, SOW);
+  - "30/60/90" is gone from the report, SOW and deck;
+  - client review rounds and stage reviews are told apart.
+- **Worked example in the current method**:
+  - records with ids;
+  - an agent thread for stage 3 in `example/agent/`;
+  - a maturity profile in `example/maturity.yml`, checked in CI (`tools/tests/test_example.sh`).
+- **Shorter stage prompts**:
+  - stages 2 and 3 keep their steps in the prompt and move rules and tables to `tools/agent/reference/`;
+  - claims are one numbered checklist;
+  - every assembled prompt is at most 2,500 words (tested);
+  - `scripts/word-delta.sh` reports the word delta against a base.
+
 ## 0.13.2 — 2026-11-14
 
 - **A "live" signal is confirmed through another path** than the agent's query: lesson 21 in
