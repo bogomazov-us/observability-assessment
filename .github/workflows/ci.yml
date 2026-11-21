@@ -29,6 +29,18 @@ jobs:
       - name: Tool tests
         run: scripts/test-tools.sh
 
+      - name: Word delta (informational)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git rev-parse -q --verify "refs/remotes/origin/$BASE_REF" >/dev/null \
+            || git fetch --no-tags origin "+refs/heads/$BASE_REF:refs/remotes/origin/$BASE_REF"
+          out=$(scripts/word-delta.sh "origin/$BASE_REF" 2>&1) || true
+          printf '%s\n' "$out"
+          { echo '### Word delta'; echo; echo '```'; printf '%s\n' "$out"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Build PDF
         run: scripts/build.sh
 

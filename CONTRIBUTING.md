@@ -13,6 +13,7 @@
    `GUARDRAIL_DENYLIST` secret and into the git-ignored `.guardrails-denylist` for local runs. A pull request from a fork gets no secrets, so its CI runs the
    public checks and skips the denylist; the maintainer runs the denylist locally before
    merging, and pushes to `main` and every release require it.
+   On a pull request, CI also writes `scripts/word-delta.sh` output to the job summary.
 4. **A new file** goes into `scripts/files.sh`, or the guardrails fail.
 5. **Release:** raise the version in the README status table, move the `Unreleased` entries of
    `CHANGELOG.md` under a heading for that version (the release notes are taken from it, and the
