@@ -46,12 +46,13 @@ format states.
 | 4 Golden journey proof (only with stage access and a client developer) | 1 | 4 | 2 |
 | 5 Executive roadmap, two review rounds | 5 | 2 | 1 |
 | **Base** | **15** | **19** | **5** |
+| Option: Operationalize (alert ownership and runbook model, release check) | +2 | +3 | +1 |
 
 Without the golden-journey obligations the proof is a design and a checklist: take phase 4 as
-lead 1, engineer 1, architect 2. Operationalize (alert ownership and runbook model, release
-check) is not an assessment phase: it is in the Blueprint's "SLOs and alerts" and runbooks rows
-and in Implementation's cards. Review rounds here are the client-facing ones; stage reviews are
-inside the phase's days.
+lead 1, engineer 1, architect 2. Operationalize is priced only when the client takes the
+option; without it the model is in the Blueprint's "SLOs and alerts" and runbooks rows and the
+release check in Implementation's cards. Review rounds here are the client-facing ones; stage
+reviews are inside the phase's days.
 
 ### Blueprint (3–4 weeks; 2 review rounds)
 
@@ -101,7 +102,9 @@ With these starting values:
 | Focused, base, 2 weeks | 14 | 10 | lead and engineer (lead 7, engineer 7) |
 | Focused at the limit (3 journeys, 5 services), 3 weeks | 20 | 15 | lead and engineer (lead 10, engineer 10) |
 | Full assessment, base | 39 | 30 | lead and engineer (lead 20, engineer 19) |
+| Full assessment, base, with Operationalize | 45 | 30 | lead and engineer (lead 23, engineer 22) |
 | Full assessment at the limit (5 journeys, 10 services, 2 tools) | 56 | 30 | lead and engineer (lead 26.5 with the architect's 7, engineer 29.5); the architect joins when the lead does not read the code |
+| Full assessment at the limit, with Operationalize | 62 | 30 | lead, engineer and architect (lead 21.5, engineer 32.5, architect 8): the engineer is 2.5 days over, covered by a second engineer for 3 days; the limit is kept (owner, 2026-10-21) |
 | Blueprint, base, 4 weeks | 17 | 20 | lead alone |
 | Blueprint at the limit (5 journeys, 10 services, 2 tools), 4 weeks | 39.5 | 20 | lead, engineer and architect (lead 7, engineer 17.5, architect 15) |
 

@@ -72,7 +72,8 @@ interviews), review round 2. In two weeks, weeks 2 and 3 run as one.
 | Findings preview | Sponsor and technical owners | No surprises in the report; disputes recorded; the verdict batch |
 | Read-out | Sponsor and decision makers | Next-step decision |
 
-Review rounds and stage reviews: [playbook](playbook.md), working rules.
+Review rounds and stage reviews: [playbook](playbook.md), working rules. The Operationalize
+option ([offerings](../offerings.md)), when taken, runs in weeks 5–6 beside the roadmap.
 
 ## 4. Who does what
 

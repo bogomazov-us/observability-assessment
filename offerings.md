@@ -8,7 +8,7 @@ without the authors.
 | Question answered | Where are we, what hurts, what to do first? | What exactly do we build, and how do we know it works? | Build it, prove it on stage, run it through go-live |
 | Duration | 2–3 weeks (focused) or 6 weeks (full) | 3–4 weeks after an assessment | 6–10 weeks to go-live, then 4 weeks of hypercare (extension priced per week) |
 | Inputs from the client | Access to code, monitoring tool (read-only), ticketing; 5–8 stakeholder interviews; incident history. Full format, golden-journey proof: stage access with write rights to the monitoring configuration, one client developer for 5 days; the client owns the code change | Assessment outputs; product owner for SLOs; tier-1 journeys agreed | Back-end and front-end developers; platform access; hypercare rota |
-| Outputs | Current → future → gap → plan; maturity profile (a level per dimension, no overall number); top findings with evidence; sequenced milestones with effort ranges, dated once the executor is known | Specification set (journeys, signals, error taxonomy, SLOs and alerts, instrumentation contract, synthetics, dashboards, runbooks); alert ownership and runbook model; roadmap with milestones | Working signals, dashboards, shadow alerts with runbooks, release check; acceptance evidence |
+| Outputs | Current → future → gap → plan; maturity profile (a level per dimension, no overall number); top findings with evidence; sequenced milestones with effort ranges, dated once the executor is known | Specification set (journeys, signals, error taxonomy, SLOs and alerts, instrumentation contract, synthetics, dashboards, runbooks); alert ownership and runbook model, unless the assessment took the Operationalize option; roadmap with milestones | Working signals, dashboards, shadow alerts with runbooks, release check; acceptance evidence |
 | Done when | Report accepted; decisions on the next step taken | Spec approved for implementation after review rounds | Implementation: acceptance evidence demonstrated, go/no-go taken. Hypercare, closed separately: the paid period ends at its fixed date; BAU readiness is accepted only when the exit criteria are met (at least 80 % of P1 firings actionable over the last two weeks, runbooks exercised, client on-call owns the alerts). If the period ends first, the residual risks are written down and the client decides: extend, or hand over with those risks |
 | Scope limits (starting values; beyond them is a change request) | Focused: up to 3 journeys, 5 services, 1 monitoring tool, production read-only, 1 review round. Full: up to 5 journeys, 10 services, 2 tools, stage and production, 2 review rounds | Up to 5 journeys, 10 services, 2 tools; stage and production; 2 review rounds | As in the Blueprint: up to 5 journeys, 10 services, 2 tools |
 | Roles | Lead full time; observability engineer and architect by scope (estimation model, capacity check) | Lead full time; observability engineer and architect by scope | Observability engineer + architect + lead part-time; client developers |
@@ -28,8 +28,9 @@ Proven shape (sold as fixed fee); weeks in the [calendar](method/getting-started
    [golden-journey-proof.md](templates/golden-journey-proof.md).
 5. **Executive roadmap** — roadmap in sequence with effort ranges, decision request.
 
-Operationalize — the alert, ownership and runbook model and the release check — is not part of
-the assessment: the model is the Blueprint's, the release check is built in Implementation.
+**Optional: Operationalize** — the alert, ownership and runbook model and the release check,
+priced as a separate option on the full assessment and run beside the roadmap. When it is not
+taken, the model is the Blueprint's and the release check is built in Implementation.
 
 ## Focused assessment, two to three weeks
 
