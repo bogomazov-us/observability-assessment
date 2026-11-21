@@ -46,6 +46,7 @@ KIT_FILES=(
   templates/commitment-baseline.md
   templates/sow.md
   templates/acceptance.md
+  templates/golden-journey-proof.md
   templates/review.md
   templates/risk-register.md
   templates/privacy-checklist.md

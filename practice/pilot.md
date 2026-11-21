@@ -8,7 +8,7 @@ work. Run it once per new lead until a pilot ends without a blocking gap.
 
 | | |
 |---|---|
-| Format | Focused assessment, inside its limits ([offerings.md](../offerings.md)) |
+| Format | Focused assessment, inside its limits ([offerings.md](../offerings.md)), when the lead's first engagement allows it; when it is sold as full, the pilot runs on the full format with the same logs and review points |
 | Lead | The pilot lead: accountable to the client, writes the report |
 | Reviewer | The kit's author or a lead who has run one alone; reviews in rounds with [review.md](../templates/review.md), does not take over |
 | Engineer | As in the format; may be the reviewer's usual engineer |
@@ -18,8 +18,9 @@ work. Run it once per new lead until a pilot ends without a blocking gap.
 
 1. The pilot lead reads, in order: [getting-started.md](../method/getting-started.md), the
    [worked example](../example/worked-example.md), [lessons.md](../method/lessons.md).
-2. Agree with the reviewer the review points: findings preview (week 2), draft report, final
-   report. Nothing else is reviewed unless the pilot lead asks.
+2. Agree with the reviewer the review points: findings preview, draft report, final report, in
+   the weeks of the [calendar](../method/getting-started.md#3-calendar). Nothing else is
+   reviewed unless the pilot lead asks.
 3. Open the two logs below in the engagement repository.
 
 ## Help log

@@ -48,7 +48,7 @@ with N = 1. The boundaries below are this stage's own and add to the common ones
    | not found | no object, or no data, in the checked window |
    | not verifiable | not attempted or not possible: outside the access granted, the system is down, or the comparison needs an attribution not yet done; say which |
 
-   The statuses do not overlap. The summary gives each count and their sum, and the sum equals
+   The statuses do not overlap (status sets: [records.md](../../method/records.md)). The summary gives each count and their sum, and the sum equals
    the number of rows. An error in your own draft is corrected in the draft, not recorded as
    a difference.
 4. Reconcile the classes with each other: an alert with no route to a person, a metric no alert
@@ -85,7 +85,8 @@ travel with it as files at a stated commit, cited, not reprinted.
 
 ## What the person confirms
 
-Re-runs a sample of the cited checks, chosen by them, and records each result; an object
+By the week the [calendar](../../method/getting-started.md#3-calendar) gives, checks that the
+exports reconcile (counts, names) and the statuses sum to the rows; re-runs a sample of the cited checks, chosen by them, and records each result; an object
 confirmed by a live fact is checked through another path than the agent's query (the tool's
 own interface, a browser, or a query they write). A sample that
 reproduces says those claims hold; it is not an estimate of the accuracy of the whole
