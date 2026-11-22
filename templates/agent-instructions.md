@@ -23,6 +23,15 @@ the rows still in square brackets.
 Not read, even when present: `.env`, `*.tfstate`, `*.tfvars`, credential folders, backups, and
 the client's raw data exports unless the stage prompt lists them.
 
+## Types in this engagement
+
+| Type | Working folder | State file | Stage prompt |
+|---|---|---|---|
+__TYPES__
+
+Owner questions and findings are shared, in `__WORK__`. Where a step below names the working
+folder, the state file or `prompt.sh N`, use the row of the stage's type.
+
 ## How a stage runs
 
 1. The person starts a stage, never the agent. The stage prompt is printed by

@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/agent/skills: every skill is well formed and points at a file that exists;
 # stage skills are started by the person only, rule skills by the agent; install.sh writes the
-# kit's path, keeps existing skills unless --force, and leaves no placeholder behind.
+# kit's path, keeps existing skills unless --force, and leaves no placeholder behind; --from
+# installs a type's skills folder and skips one that does not exist yet.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 KIT="$(pwd)"
@@ -51,6 +52,12 @@ grep -q "kept: oa-rule-claims" <<<"$out" && grep -q "local change" "$T/skills/oa
   && ok "install: existing skill kept" || ko "install: existing skill overwritten"
 "$SK/install.sh" --force "$T/skills" >/dev/null
 grep -q "local change" "$T/skills/oa-rule-claims/SKILL.md" && ko "install --force: not replaced" || ok "install --force: replaced"
+out="$("$SK/install.sh" --from "$T/none" "$T/skills")"
+grep -q "no skills in $T/none yet; skipped" <<<"$out" && ok "install --from: a missing folder skipped with a note" || ko "install --from: $out"
+mkdir -p "$T/type/oa-x-stage-1"; printf 'bash __KIT__/tools/agent/prompt.sh --assessment x 1\n' > "$T/type/oa-x-stage-1/SKILL.md"
+out="$("$SK/install.sh" --from "$T/type" "$T/skills")"
+grep -q "installed 1 skills" <<<"$out" && grep -qF "bash $KIT/tools/agent/prompt.sh" "$T/skills/oa-x-stage-1/SKILL.md" \
+  && ok "install --from: a type's skills, kit path written" || ko "install --from: $out"
 set +e; "$SK/install.sh" >/dev/null 2>&1; code=$?; set -e
 [ $code -eq 2 ] && ok "install: no argument refused" || ko "install: no argument, exit $code"
 
