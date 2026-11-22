@@ -1,0 +1,7 @@
+model: sre
+scope: {journeys: [checkout], services: [checkout, payments]}
+dimensions:
+  - {number: 1, name: Service catalogue and criticality, status: scored, level: 2, evidence: [{type: interview, ref: lead interview}], confidence: medium}
+  - {number: 3, status: not_scored, reason: depth in the observability assessment, refers_to: observability/7}
+  - {number: 6, name: Change safety, status: scored, level: 3, evidence: [{type: export, ref: deploy log}], confidence: high}
+  - {number: 9, status: na, reason: no stateful service in scope, agreed_by: client lead}
