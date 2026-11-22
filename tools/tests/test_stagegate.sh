@@ -21,6 +21,16 @@ for f in "$fx"/fail-G*.yml; do
   [ $code -eq 1 ] && grep -q " $rule " <<<"$out" && ok "$rule" || ko "$rule: exit $code: $out"
 done
 
+# assessment: absent is observability; observability and sre are accepted (G13 above: any other)
+for kind in observability sre; do
+  { echo "assessment: $kind"; cat "$fx/ok-stage3.yml"; } > "$T/$kind.yml"
+  run "$tool" lint "$T/$kind.yml"
+  [ $code -eq 0 ] && [ -z "$out" ] && ok "assessment: $kind lints clean" || ko "assessment: $kind: exit $code: $out"
+done
+run "$tool" check "$T/sre.yml" 3
+[ $code -eq 0 ] && ok "gate unchanged for assessment: sre" || ko "sre gate: exit $code: $out"
+! grep -q "^assessment:" "$fx/ok-stage3.yml" && ok "sound file has no assessment field" || ko "sound file declares assessment"
+
 # the gate, on the sound file: stage 3 may start; stage 4 may not (stage 3 draft, Q-02 open)
 run "$tool" check "$fx/ok-stage3.yml" 3
 [ $code -eq 0 ] && grep -q "stage 3 (Gap) may start" <<<"$out" && ok "gate open for stage 3" || ko "stage 3: exit $code: $out"
