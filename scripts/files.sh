@@ -75,4 +75,5 @@ KIT_FILES=(
   sre/templates/service-catalogue.md
   sre/templates/reliability-targets.md
   sre/templates/readiness-review.md
+  sre/templates/recovery-proof.md
 )
