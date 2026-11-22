@@ -14,9 +14,8 @@ The rule files in [`rules/`](../../tools/agent/rules/) apply to this stage:
 [boundaries](../../tools/agent/rules/boundaries.md), [evidence](../../tools/agent/rules/evidence.md),
 [claims](../../tools/agent/rules/claims.md),
 [owner questions](../../tools/agent/rules/owner-questions.md) and the
-[progress log](../../tools/agent/rules/progress-log.md), with N = 1. For this type, their state
-file is `sre/engagement-state.yml` and the log is `sre/progress/stage-1.md`. The boundaries
-below are this stage's own and add to the common ones.
+[progress log](../../tools/agent/rules/progress-log.md), with N = 1. The boundaries below are
+this stage's own and add to the common ones.
 
 ## Boundaries
 
@@ -72,10 +71,8 @@ log, the decision register and the exports travel with it as files at a stated c
 not reprinted.
 
 1. `sre/inventory.md`: one page of result (scope, objects by status and class, material
-   differences, what was not checked), then the live verification table (class, object,
-   status, evidence by `E-` id — the commands and their output go to the evidence catalog),
-   the data request items received and missing, sources read with their revision, the status summary with its sum, the reconciliation, and
-   what could not be inventoried with the reason.
+   differences, what was not checked), then the sections of the
+   [reference, Output](reference/stage-1-reference.md#output).
 2. `sre/service-catalogue.md`: the `S-` rows and the template's checks answered.
 3. `sre/baseline.md`: the `B-` rows as the tool prints them, with their source export.
 4. A list of **confirmed blind spots** (the reference's checks in bold, such as a restore

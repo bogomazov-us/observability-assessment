@@ -69,8 +69,10 @@ names the tier row it departs from.
 - **SRE only.** The targets file holds a table "SLO definitions", one row per SLO `T-` row, in
   the columns of the SLOs table in [slo-alerts.md](../../../templates/spec-set/slo-alerts.md),
   with Service in place of Function. Budget in the SLI's units, the window, volume per window.
-- **Combined format.** The SLO is the observability spec's row; the `T-` Value cites its spec
-  id, and the targets file has no SLO definition. An SLO the spec lacks is a question to the
+- **Combined format.** The SLO is the observability spec's row, by the overlap rule in the
+  [SRE model](../../maturity-model.md#overlaps-in-the-combined-format); the `T-` Value cites its
+  spec id and the `T-` row adds the error-budget policy only; the targets file has no SLO
+  definition. An SLO the spec lacks is a question to the
   observability stage, not a new definition here. The error-budget policy (what happens at 50%
   and 100% spent) is SRE's own: a question for the product and engineering owners together.
 

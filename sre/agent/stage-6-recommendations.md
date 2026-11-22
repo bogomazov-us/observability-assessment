@@ -45,10 +45,10 @@ binds as if it were in this prompt.
 | Findings with their verdicts | `findings/`; `REC-` only on *confirmed* |
 | Decision register: decisions the owner has accepted | instructions file |
 | Maturity profile, confirmed, and its notes | `sre/maturity.yml`, clean under `tools/maturity.py`; `sre/stage-5-notes.md` |
-| Catalogue, targets, baseline numbers | `sre/service-catalogue.md`, `sre/targets/`, sre/baseline.md |
+| Catalogue, targets, baseline numbers | `sre/service-catalogue.md`, `sre/targets/`, `sre/baseline.md` |
 | Buyer's question and the format asked for | `kickoff-note.md` |
 | Report and roadmap templates | `templates/report.md`, `templates/roadmap.md` |
-| Combined format: the observability recommendations.md and maturity.yml, confirmed | working folder |
+| Combined format: the observability recommendations and profile, confirmed | `recommendations.md`, `maturity.yml` |
 
 ## Method
 
@@ -84,12 +84,8 @@ The stage report, `sre/recommendations.md`, follows
 log, the decision register and the target model travel with it as files at a stated commit,
 cited, not reprinted.
 
-`sre/recommendations.md`: the confirmation batch and its result; the cards in the
-`templates/report.md` format, in the proposed order; the `V-` tasks with their conditional
-options; the `W-` items with the decision each cites and what each depends on; the roadmap
-(the two tables and a card per milestone of [roadmap.md](../../templates/roadmap.md)); the
-decision request; then "Needs a decision" (card, decision, decider role) and "Left out"
-(confirmed findings with no card, and why).
+`sre/recommendations.md`: the sections of the
+[reference, Output](reference/stage-6-reference.md#output), in its order.
 
 ## Self-check before handing over
 

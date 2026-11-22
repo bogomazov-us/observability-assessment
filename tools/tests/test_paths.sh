@@ -9,6 +9,9 @@
 # can lead the kit: the SRE stage files present are checked, a placeholder names no paths; the
 # init checks run once init-engagement.sh takes --assessment. Until then the SRE rows are
 # checked for shape: the required paths, a maker and a reader in each, shared rows marked.
+# An SRE prompt names its own paths with sre/; a path without it is an observability file, read
+# only when the table lists the SRE stage as a reader ("SRE N") or the row is shared by every
+# type. Paths in an SRE prompt's Inputs and Output tables are in backticks.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -55,11 +58,15 @@ for line in section(readme, "Artifact paths").splitlines():
     if len(cells) != 3 or not cells[0].startswith("`"):
         continue
     made, read = cells[1], cells[2]
+    m = re.search(r"SRE ([1-6](?:, [1-6])*)", read)
+    sre_readers = {int(s) for s in re.findall(r"[1-6]", m.group(1))} if m else set()
+    read = read.replace(m.group(0), "") if m else read
     ps = [p for p in paths(cells[0]) if not p.startswith(KIT)]
     rows.append({
         "paths": ps, "sre": all(p.startswith("sre/") for p in ps), "cells": cells,
         "stages": {int(s) for s in re.findall(r"\b([1-6])\b", made)},
-        "init": "init" in made, "person": "person" in made,
+        "init": "init" in made, "person": "person" in made, "sre_readers": sre_readers,
+        "shared": "every type" in cells[0],
         "readers": {int(s) for s in re.findall(r"\b([1-6])\b", read)} | ({1, 2, 3, 4, 5, 6} if "every stage" in read else set()),
     })
 ok(f"path table has {len(rows)} rows") if rows else ko("no path table in tools/agent/README.md")
@@ -87,8 +94,14 @@ for q in ("owner-questions.md", "findings/F-NNN.md", "summary.md", "manifest.txt
 
 def resolve(p, sre_prompt):
     if sre_prompt:
-        return find(p if p.startswith("sre/") else "sre/" + p, sre) or find(p, obs), SRE_WORK
+        return find(p, sre if p.startswith("sre/") else obs), SRE_WORK
     return find(p, obs), WORK
+
+def plain(text):
+    # a path written without backticks in a table row of Inputs or Output
+    text = re.sub(r"\[[^\]]*\]\([^)]*\)", "", re.sub(r"`[^`]*`", "", text))
+    rows = [l for l in text.splitlines() if l.startswith("|")]
+    return re.findall(r"(?<![\w/.-])(?:[\w.-]+/)+[\w.-]*|[\w-]+\.(?:md|ya?ml)\b", "\n".join(rows))
 
 prompts = [(n, f"s{n}.md", False) for n in range(1, 7)]
 prompts += [(n, f"sre-s{n}.md", True) for n in range(1, 7) if os.path.exists(os.path.join(T, f"sre-s{n}.md"))]
@@ -96,6 +109,9 @@ for n, fname, is_sre in prompts:
     text = open(os.path.join(T, fname)).read()
     label = f"SRE stage {n}" if is_sre else f"stage {n}"
     for kind in ("Inputs", "Output"):
+        if is_sre:
+            loose = plain(section(text, kind))
+            (ko if loose else ok)(f"{label} {kind.lower()}: paths in backticks" + (f" (not: {', '.join(loose)})" if loose else ""))
         for p in paths(section(text, kind)):
             if p.startswith(KIT):
                 (ok if os.path.exists(p) else ko)(f"{label} {kind.lower()}: kit file {p}")
@@ -103,6 +119,12 @@ for n, fname, is_sre in prompts:
             r, work = resolve(p, is_sre)
             if r is None:
                 ko(f"{label} {kind.lower()}: {p} is not in the path table"); continue
+            if is_sre and not p.startswith("sre/") and not r["shared"]:
+                if kind == "Output":
+                    ko(f"{label} output {p}: an SRE stage writes no observability file")
+                else:
+                    (ok if n in r["sre_readers"] else ko)(f"{label} input {p}: the table lists SRE {n} as a reader of the observability file")
+                continue
             if kind == "Output":
                 (ok if n in r["stages"] else ko)(f"{label} output {p} is made by stage {n} in the table")
                 continue

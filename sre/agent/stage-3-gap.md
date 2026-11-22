@@ -47,9 +47,8 @@ Every step has its full rule and cases under its number in the
 [stage 3 reference](reference/stage-3-reference.md) (in the kit, `sre/agent/reference/`).
 Read it before the step; it binds as if it were here.
 
-1. **Scope.** The format and the dimensions in scope. Focused: dimensions 1, 2, 4, 6 and 9;
-   each other dimension is listed as not in scope and gets no rows. Combined: an overlap topic
-   scored in observability is referenced, not gapped again.
+1. **Scope.** The format and the dimensions in scope; those not in scope get no rows.
+   Combined: an overlap topic scored in observability is referenced, not gapped again.
 2. **Targets.** Per dimension in scope, the `T-` rows and the target model's level; a default
    is used only when the row says so. A dimension without a target is an open question.
 3. **Current state.** Per tier-1 service, or dimension-wide, what is in place today: `L-` rows,
@@ -80,8 +79,7 @@ gap shows unreachable is an open question for its owner, not an edit.
   the rows, per dimension;
 - could not evidence: each target whose current state could not be read, with its owner
   question;
-- the readiness check of the last tier-1 launch, item by item, when dimension 10 is in scope; it has no path of its own and
-  lives in these notes;
+- the readiness check of the last tier-1 launch, item by item, when dimension 10 is in scope;
 - carried questions, blind spots;
 - stage-4 candidates: each gap with the evidence a finding would cite; gaps whose fixes differ
   are separate candidates.
