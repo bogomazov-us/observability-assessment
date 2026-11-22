@@ -58,6 +58,8 @@ delivers": the [data request](../templates/data-request.md)'s "Needed by".
 golden journey proof and its demonstration, the journey walk-through (journeys come from the
 interviews), review round 2. In two weeks, weeks 2 and 3 run as one.
 
+SRE and combined calendars: [sre/README.md](../sre/README.md#calendar).
+
 | Week | Playbook steps | Stage | Meetings |
 |---|---|---|---|
 | 1 | 1–4, 5 provisional | 1 confirmed; 2 handed over | Kick-off; 3–4 interviews |
@@ -105,7 +107,8 @@ A person starts each [agent stage](../tools/agent/README.md) and confirms it in 
 
 The person, per stage (agent's side: its [rules](../tools/agent/rules/)):
 
-1. **Once:** runs `tools/agent/init-engagement.sh` and finishes what it leaves
+1. **Once:** runs `tools/agent/init-engagement.sh` (SRE or combined: `--assessment`,
+   [sre/README.md](../sre/README.md#setup-and-prompts)) and finishes what it leaves
    ([README](../tools/agent/README.md), "Setting up"); records the scope in the decision
    register and `engagement-state.yml`; commits on the assessment branch.
 2. **Start:** by name (`prompt.sh N`, or the skill `oa-stage-N-…`), with the inputs the prompt

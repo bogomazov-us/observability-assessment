@@ -6,7 +6,7 @@ chapter does, in five pages at most: the first page answers the buyer's question
 for a decision.
 
 ```markdown
-# Observability assessment — summary
+# [Observability | SRE | Observability and SRE] assessment — summary
 
 Project: [name] · Version: [commit] · Date: [date] · Document status: draft | accepted ·
 Stages accepted: [1–N]
@@ -23,7 +23,18 @@ data cannot tell us. Scope and method are in each chapter.]
 [A section per question, citing the chapter and the ids that carry it.]
 
 ## 4. Maturity by dimension
-[The stage 5 profile; per dimension: Highlights / Keep an eye on / Lowlights.]
+[The stage 5 profile; per dimension: Highlights / Keep an eye on / Lowlights. Combined
+format: a profile per type.]
+
+### Baseline numbers (SRE: required)
+[From `sre/baseline.md`, one row per `B-` id; a number the data cannot support reads
+*not measured* with the reason. Incidents per severity; time to detect and to recover;
+recurrence share; deployment frequency, change lead time, change failure rate, failed
+deployment recovery time; deployment rework rate when the export allows; pages per shift and
+off-hours share; actionable alert share against the client's target (it has no default).]
+
+| ID | Number | Value | n | Method | Window | Source |
+|---|---|---|---|---|---|---|
 
 ## 5. Recommendations and roadmap
 [The `REC-` cards of stage 6 in their order, impact over effort. Golden journey proof (full

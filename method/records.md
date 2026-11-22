@@ -44,11 +44,11 @@ replaced it. One prefix, one kind of record.
 | `D-` | Decision | Decision register (`decisions.md`) | Lead, for the owner of the decision |
 | `ADR-` | Architecture decision | [adr.md](../templates/adr.md), cited from its `D-` row | Lead |
 | `R-` | Risk | Risk register (`risks.md`, [risk-register.md](../templates/risk-register.md)) | Lead; the agent proposes |
-| `Q-` | Owner question | [owner-questions.md](../templates/owner-questions.md), `engagement-state.yml`; one sequence for every type | Lead; the agent proposes |
+| `Q-` | Owner question | [owner-questions.md](../templates/owner-questions.md), `engagement-state.yml` | Lead; the agent proposes |
 | `L-` | Inventory row | Stage 1 `inventory.md` | Agent or lead |
 | `E-` | Evidence check | Evidence catalog of each stage (stage 1 E-1xx, stage 2 E-2xx …) | Whoever ran the check |
 | `G-` | Gap result | Stage 3 report | Agent or lead |
-| `F-` | Finding | `findings/F-NNN.md` ([finding.md](../templates/finding.md)); one sequence for every type | Agent or lead; verdict by its owner |
+| `F-` | Finding | `findings/F-NNN.md` ([finding.md](../templates/finding.md)) | Agent or lead; verdict by its owner |
 | `REC-` | Recommendation, on confirmed findings only | Stage 6, [report.md](../templates/report.md) | Agent or lead |
 | `V-` | Verification task for an assumption | Stage 6 | Agent or lead |
 | `W-` | Work towards an accepted decision | Stage 6, [roadmap.md](../templates/roadmap.md) | Agent or lead |
@@ -59,7 +59,7 @@ replaced it. One prefix, one kind of record.
 | `CR-` | Change request | [sow.md](../templates/sow.md) | Lead |
 | `R` (no hyphen) | Review item | [review.md](../templates/review.md) | Reviewer |
 
-Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
+One sequence for every type: `Q-`, `F-`, `REC-`, `V-`, `W-`. Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
 rule ids (`G01`, `SL001`, `M04`, `W01`) have no hyphen and are not records.
 
 ## Status sets
@@ -79,16 +79,17 @@ implemented function, and an implemented function is not a proven detection.
 | Severity | `P1` · `P2` · `P3` | A finding (scale in [finding.md](../templates/finding.md)); separately, an alert's paging severity; speclint | Agent proposes; lead sets, with the reason |
 | Finding verdict | assumption (drafted) · confirmed · disputed · refuted · inconclusive · resolved | [finding.md](../templates/finding.md) | Owner of the finding's verdict |
 | Decision | proposed · accepted · superseded | Register, finding, stage report | Owner of the decision; lead records |
-| Implementation | absent · partial · implemented | Finding, stage report | Lead, from evidence |
+| Implementation | absent · partial · implemented | Finding, stage report, SRE gap rows | Lead, from evidence |
 | Verification | untested · observed · reproduced | Finding, stage report | Lead, from evidence |
 | Fact | assumption · confirmed · disputed · refuted | Facts ledger | Agent output enters as assumption; lead confirms; never deleted |
 | Risk | open · accepted · mitigated · closed · superseded | Risk register | Lead records; owner *proposed* until the client's owner accepts |
 | Evidence level | browser · agent · tenant · document only | Finding; playbook principle 3 | Whoever cites it |
 | Confidence | `high` · `medium` · `low` | Finding, stage report, maturity; maturity.py | Author, with the reason |
 | Maturity score | `scored` · `partial` · `not_scored` · `na`; a level 1–5, marked provisional until its findings' verdicts | `maturity.yml`; maturity.py | Agent; lead confirms with stage 5; `na` with the client's agreement |
+| Proof record | demonstrated · design only | [golden-journey-proof.md](../templates/golden-journey-proof.md); SRE [recovery-proof.md](../sre/templates/recovery-proof.md) | Lead, from what was run |
 | Document status | draft · accepted | Stage report header | Lead |
 | Review | item: open · closed · accepted as a known limitation; round: approved · approved with changes · rework | [review.md](../templates/review.md) | Reviewer |
-| Acceptance | accepted · accepted with limitations · rejected; for implementation go · go with exceptions · no-go | [acceptance.md](../templates/acceptance.md) | Sponsor |
+| Acceptance | accepted · accepted with limitations · rejected; for implementation go · go with exceptions · no-go | [acceptance.md](../templates/acceptance.md); readiness outcome: [readiness-review.md](../sre/templates/readiness-review.md) | Sponsor; readiness: the service owner |
 
 Values in `code` are what a tool accepts; `tools/tests/test_records.sh` checks them against
 stagegate, speclint and maturity.
