@@ -74,4 +74,5 @@ KIT_FILES=(
   sre/agent/stage-1-inventory.md
   sre/templates/data-request.md
   sre/templates/interview-guide.md
+  sre/templates/recovery-proof.md
 )
