@@ -3,7 +3,8 @@
 For the interviews in the [calendar](../method/getting-started.md#3-calendar)'s weeks. The intake questionnaire is
 sent before; an interview does not re-ask it. It checks the written answers against the
 interviewee's own screen and asks for what a form cannot: a walk-through, the last real case,
-the export behind a number. 45–60 minutes; ask to share the screen.
+the export behind a number. 45–60 minutes; ask to share the screen. SRE type: add the rows of
+[sre/templates/interview-guide.md](../sre/templates/interview-guide.md).
 
 | Interviewee | Questionnaire sections it covers | Ask | Exports to ask for |
 |---|---|---|---|

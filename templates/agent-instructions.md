@@ -1,7 +1,7 @@
 # Observability assessment — [client]
 
 Instructions for an agent working in this engagement repository. The agent drafts the
-assessment stages of the Observability Assessment Kit; a person confirms every result.
+assessment stages of the kit; a person confirms every result.
 `tools/agent/init-engagement.sh` writes this file into the repository with the paths filled in,
 under the name the agent tool reads (`AGENTS.md` unless told otherwise); the person fills in
 the rows still in square brackets.
@@ -18,7 +18,7 @@ the rows still in square brackets.
 | Decision register | `__DECISIONS__` | written by the person, read by the agent |
 | Risk register | `__RISKS__` | written by the person; the agent hands over proposed rows |
 | Scratch | `__SCRATCH__` | temporary files only; nothing else is written outside this repository |
-| Monitoring tool | [tool] through [read-only token, profile or server; named, never pasted] | read only |
+| The client's tools | [tool] through [read-only token, profile or server; named, never pasted] | read only |
 
 Not read, even when present: `.env`, `*.tfstate`, `*.tfvars`, credential folders, backups, and
 the client's raw data exports unless the stage prompt lists them.
@@ -64,8 +64,8 @@ folder, the state file or `prompt.sh N`, use the row of the stage's type.
   open questions are handed over as a batch in the format of
   `__KIT__/templates/owner-questions.md`. An owner's answer is recorded in the decision
   register with the date and who decided before any document cites it.
-- **Names come from the glossary** in `observability-spec.yml` (stage 2 fixes it). A name it
-  lacks, or a thing it names differently, is an open question.
+- **Names come from the glossary** that stage 2 fixes. A name it lacks, or a thing it names
+  differently, is an open question.
 - **Secrets and personal data are never printed or written:** no token, key, password, cookie,
   account id, IP address, user email or name, and no log body. From logs: counts and
   classifications only.
