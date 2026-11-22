@@ -43,6 +43,7 @@ an assessment with it, under review once, and then alone.
 | [method/records.md](./method/records.md) | Roles, decision records, id prefixes, status sets | writing any record |
 | [tools/](./tools/) | Code scan and estate export by class, spec linter, maturity calculator | week one; before each review round |
 | [tools/agent/](./tools/agent/) | Prompts for all six harness stages, inventory to recommendations; one command to set up an engagement repository for them | running the agent harness |
+| [sre/](./sre/) | The SRE assessment type: its stage prompts, maturity model and templates, on the same method, records and tools | an SRE or combined assessment |
 | [templates/](./templates/) | Intake questionnaire (with questions by tool class), data request, kick-off note, interview guide, finding, ADR, golden journey proof, report, executive deck, roadmap, commitment baseline, statement of work and acceptance record, review rounds and checklists, privacy and AI-ops boundary checklists, spec set with nine skeletons | producing artifacts |
 | [practice/](./practice/) | How to build an observability practice around the kit; the pilot protocol for a new lead | staffing, succession |
 | [backlog.md](./backlog.md) | What the kit still lacks | planning kit work |

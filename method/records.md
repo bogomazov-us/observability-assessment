@@ -44,14 +44,17 @@ replaced it. One prefix, one kind of record.
 | `D-` | Decision | Decision register (`decisions.md`) | Lead, for the owner of the decision |
 | `ADR-` | Architecture decision | [adr.md](../templates/adr.md), cited from its `D-` row | Lead |
 | `R-` | Risk | Risk register (`risks.md`, [risk-register.md](../templates/risk-register.md)) | Lead; the agent proposes |
-| `Q-` | Owner question | [owner-questions.md](../templates/owner-questions.md), `engagement-state.yml` | Lead; the agent proposes |
+| `Q-` | Owner question | [owner-questions.md](../templates/owner-questions.md), `engagement-state.yml`; one sequence for every type | Lead; the agent proposes |
 | `L-` | Inventory row | Stage 1 `inventory.md` | Agent or lead |
 | `E-` | Evidence check | Evidence catalog of each stage (stage 1 E-1xx, stage 2 E-2xx …) | Whoever ran the check |
 | `G-` | Gap result | Stage 3 report | Agent or lead |
-| `F-` | Finding | `findings/F-NNN.md` ([finding.md](../templates/finding.md)) | Agent or lead; verdict by its owner |
+| `F-` | Finding | `findings/F-NNN.md` ([finding.md](../templates/finding.md)); one sequence for every type | Agent or lead; verdict by its owner |
 | `REC-` | Recommendation, on confirmed findings only | Stage 6, [report.md](../templates/report.md) | Agent or lead |
 | `V-` | Verification task for an assumption | Stage 6 | Agent or lead |
 | `W-` | Work towards an accepted decision | Stage 6, [roadmap.md](../templates/roadmap.md) | Agent or lead |
+| `S-` | Service in the SRE catalogue: tier, owner, dependencies | SRE stage 1 `sre/service-catalogue.md` (template `sre/templates/service-catalogue.md`) | Agent or lead; the tier confirmed by its owner |
+| `T-` | Reliability target per tier or service: SLO, RTO, RPO, rollout, on-call and toil limits | SRE stage 2 `sre/targets/` (template `sre/templates/reliability-targets.md`) | Agent proposes; a technical owner agrees, recorded as a `D-` row |
+| `B-` | Baseline number with its method, window and source, or *not measured* | SRE stage 1 `sre/baseline.md` (`tools/baseline.py`); the summary's baseline section | Agent or lead |
 | `M-` | Milestone | [roadmap.md](../templates/roadmap.md) | Lead |
 | `CR-` | Change request | [sow.md](../templates/sow.md) | Lead |
 | `R` (no hyphen) | Review item | [review.md](../templates/review.md) | Reviewer |
@@ -67,9 +70,9 @@ implemented function, and an implemented function is not a proven detection.
 | Set | Values | Where | Set by |
 |---|---|---|---|
 | Stage status | `not_started` · `draft` · `handed_over` · `returned` · `confirmed` | `engagement-state.yml`; stagegate | Agent: `draft`, `handed_over`; lead: `returned`, `confirmed` |
-| Inventory object | confirmed · differs · not found · not verifiable | Stage 1 | Agent; lead confirms with the stage |
+| Inventory object | confirmed · differs · not found · not verifiable | Stage 1; SRE catalogue (`S-`) | Agent; lead confirms with the stage |
 | Signal state | `live` · `differs` · `to_build` · `not_verifiable` | Spec `signals`; stage 3; speclint | Agent; lead confirms with the stage |
-| Spec row status | `proposed` · `confirmed` | Spec `slos`, `alerts`; speclint | `confirmed` once a technical owner agreed target, owner and threshold |
+| Spec row status | `proposed` · `confirmed` | Spec `slos`, `alerts`; speclint; SRE targets (`T-`) | `confirmed` once a technical owner agreed target, owner and threshold |
 | Alert state | `shadow` · `paging` | Spec `alerts`; [slo-alerts](../templates/spec-set/slo-alerts.md) | `paging` only when its paging gate is shown |
 | Error class | `expected` · `failure` · `caller_defect` · `ambiguous` · `unknown` · `none` | Spec `taxonomy`; speclint | Agent; lead checks against the code path |
 | User impact | `blocked` · `degraded` · `unaffected` · `unknown` | Spec `taxonomy`; speclint | As error class |
