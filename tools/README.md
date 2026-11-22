@@ -16,6 +16,7 @@ The kit is tool-agnostic: it names classes of capability, never a product.
 | `tools/agent/skills/install.sh` | Optional, per engagement: install the stage and rule skills, pointed at this kit checkout | [agent/skills/README.md](agent/skills/README.md) |
 | `tools/stagegate.py` | Each agent stage: may it start (the stage before confirmed, its blocking questions answered); is the state file sound and unrewritten | [stagegate.md](stagegate.md) |
 | `tools/maturity.py` | Assessment: check the maturity scores against the scoring rules and print the profile | [maturity.md](maturity.md) |
+| `tools/baseline.py` | SRE assessment, week one: baseline numbers (incidents, DORA keys, pages) from CSV exports, each with its method and window | [baseline.md](baseline.md) |
 
 Output goes into the engagement repository, sanitized, never into this kit. Tests:
 `scripts/test-tools.sh`.
