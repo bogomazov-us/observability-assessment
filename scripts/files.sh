@@ -76,6 +76,7 @@ KIT_FILES=(
   sre/agent/stage-1-inventory.md
   sre/agent/stage-2-target-model.md
   sre/agent/reference/stage-2-reference.md
+  sre/agent/reference/stage-1-reference.md
   sre/templates/data-request.md
   sre/templates/interview-guide.md
   sre/templates/service-catalogue.md
