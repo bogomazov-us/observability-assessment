@@ -74,8 +74,13 @@ for h in "boundaries common to every stage" "every claim cites its evidence" \
          "claims stay within what was checked" "owner questions stay open" "progress log"; do
   grep -qF "# Rule: $h" "$T/sre1.md" && pass "sre stage 1 has rule: $h" || fail "sre stage 1 lacks rule: $h"
 done
-grep -qF "check engagement-state.yml 1\`" "$T/sre1.md" && pass "sre stage 1 gate check" || fail "sre stage 1: gate check not set"
+# sre: the rules name the type's own state file and progress log
+grep -qF "check sre/engagement-state.yml 1\`" "$T/sre1.md" && pass "sre stage 1 gate check" || fail "sre stage 1: gate check not set"
 grep -qF "stage-N.md" "$T/sre1.md" && fail "sre stage 1: N left in place" || pass "sre stage 1: N replaced"
+grep -qF "Keep \`sre/progress/stage-1.md\`" "$T/sre1.md" && pass "sre stage 1 log path" || fail "sre stage 1: log path not sre/progress/stage-1.md"
+n_state=$(sed -n '/^# Rule:/,$p' "$T/sre1.md" | grep -o "[a-z/]*engagement-state\.yml" | sort -u)
+[ "$n_state" = "sre/engagement-state.yml" ] && pass "sre rules name only sre/engagement-state.yml" \
+  || fail "sre rules name another state file: $n_state"
 "$P" --assessment nosuch 1 >/dev/null 2>"$T/err" && fail "unknown type accepted" \
   || { grep -qF "nosuch" "$T/err" && pass "unknown type refused, named" || fail "unknown type: message does not name it"; }
 missing=""; for n in 1 2 3 4 5 6; do ls sre/agent/stage-"$n"-*.md >/dev/null 2>&1 || { missing=$n; break; }; done

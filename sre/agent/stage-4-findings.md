@@ -35,7 +35,7 @@ binds as if it were in this prompt.
 |---|---|
 | Gap per service and dimension, confirmed | `sre/stage-3-gap.md` |
 | Targets and tiers, confirmed | `sre/targets/`, `sre/service-catalogue.md` |
-| Stage 1 records: inventory rows, exports, baseline numbers | sre/inventory.md, sre/exports/, sre/baseline.md |
+| Stage 1 records: inventory rows, exports, baseline numbers | `sre/inventory.md`, `sre/exports/`, `sre/baseline.md` |
 | Findings already written, status assumption | `findings/` |
 | Facts ledger | instructions file |
 | Finding template | `templates/finding.md` |
@@ -79,13 +79,9 @@ cited, not reprinted.
    only), severity with its reason (read with the reference), the three statuses, confidence
    and limits, the closing criterion, and under each claim its `E-` ids. Candidates whose
    fixes differ are separate findings.
-2. `sre/stage-4-notes.md`: one page of result first (findings by severity and by dimension,
-   the five to seven that matter most, what was not evidenced, the next step); the
-   reconciliation (step 0); the evidence catalog (`E-` id: source, window, method, result,
-   limits); the facts-ledger rows these findings rest on (proposed, status assumption);
-   "Could not evidence" (claim, what is missing, who can provide it); and the verdict batch
-   drafted in the format of [`owner-questions.md`](../../templates/owner-questions.md), no
-   verdict filled in.
+2. `sre/stage-4-notes.md`: one page of result first, then the sections of the
+   [reference, Output](reference/stage-4-reference.md#output), ending with the verdict batch,
+   no verdict filled in.
 
 ## Self-check before handing over
 

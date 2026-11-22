@@ -88,6 +88,7 @@ KIT_FILES=(
   sre/agent/stage-4-findings.md
   sre/agent/reference/stage-4-reference.md
   sre/agent/stage-5-maturity.md
+  sre/agent/reference/stage-5-reference.md
   sre/agent/stage-6-recommendations.md
   sre/agent/reference/stage-6-reference.md
 )

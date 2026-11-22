@@ -15,7 +15,8 @@ The rule files in [`rules/`](../../tools/agent/rules/) apply to this stage:
 [claims](../../tools/agent/rules/claims.md),
 [owner questions](../../tools/agent/rules/owner-questions.md) and the
 [progress log](../../tools/agent/rules/progress-log.md), with N = 5. The boundaries below are
-this stage's own and add to the common ones.
+this stage's own and add to the common ones. The [stage 5 reference](reference/stage-5-reference.md)
+binds as if it were in this prompt.
 
 ## Boundaries
 
@@ -70,15 +71,8 @@ this stage's own and add to the common ones.
 10. **Recovery in the records.** Dimension 9 above level 2 needs a restore test record with its
     date and measured times: backup history shows backups exist, not that they restore.
 11. **Combined format.** Apply the overlap table of
-    [sre/maturity-model.md](../maturity-model.md#overlaps-in-the-combined-format):
-    - dimension 2: `not_scored` with `refers_to: observability/6`; the notes carry what SRE
-      adds: the error-budget policy and the decisions it changed;
-    - dimension 3: `not_scored` with `refers_to: observability/7`;
-    - dimension 4: scored here; propose `refers_to: sre/4` for observability dimension 8, which
-      you do not edit;
-    - dimension 6: scored in both, each from its own angle.
-
-    Then run `python3 tools/maturity.py --pair maturity.yml sre/maturity.yml`; fix each P01 or
+    [sre/maturity-model.md](../maturity-model.md#overlaps-in-the-combined-format) per
+    dimension (reference). Then run `python3 tools/maturity.py --pair maturity.yml sre/maturity.yml`; fix each P01 or
     P02 line in your file, or hand it to the person.
 
 ## Output
@@ -90,10 +84,8 @@ cited, not reprinted.
 
 1. `sre/maturity.yml` with `model: sre`, clean under
    `python3 tools/maturity.py --check sre/maturity.yml`.
-2. `sre/stage-5-notes.md`: per dimension, the level, the evidence that shows it, the evidence
-   that stops the next level, and the confidence; the dimensions not in scope, apart from
-   those not scored; the profile printed by `tools/maturity.py`; in the combined format, the
-   `--pair` output.
+2. `sre/stage-5-notes.md`: per dimension, the level, its evidence and confidence; then the
+   sections of the [reference, Output](reference/stage-5-reference.md#output).
 
 ## Self-check before handing over
 

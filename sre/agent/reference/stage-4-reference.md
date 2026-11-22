@@ -1,8 +1,8 @@
 # SRE stage 4 reference — findings
 
 *Reference for [SRE stage 4](../stage-4-findings.md). `prompt.sh --assessment sre 4` does not
-append it; the prompt names it, and the agent reads it before steps 2, 5 and 8. A rule here binds
-as if it were in the prompt.*
+append it; the prompt names it, and the agent reads it before steps 2, 5 and 8 and the Output. A
+rule here binds as if it were in the prompt.*
 
 ## Checks per dimension
 
@@ -63,3 +63,16 @@ names the dimension where the topic is scored:
 | Error-budget policy and the decisions it changed | SRE dimension 2 |
 | Incidents | SRE dimension 4 |
 | Releases | the angle of the finding: observability dimension 10 (a release proves its signals) or SRE dimension 6 (rollout, rollback, DORA) |
+
+## Output
+
+`sre/stage-4-notes.md`:
+
+1. One page of result: findings by severity and by dimension, the five to seven that matter
+   most, what was not evidenced, the next step.
+2. The reconciliation (step 0).
+3. The evidence catalog: `E-` id, source, window, method, result, limits.
+4. The facts-ledger rows these findings rest on, proposed, status assumption.
+5. "Could not evidence": claim, what is missing, who can provide it.
+6. The verdict batch, drafted in the format of
+   [`owner-questions.md`](../../../templates/owner-questions.md), no verdict filled in.

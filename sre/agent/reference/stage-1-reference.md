@@ -1,7 +1,7 @@
 # Stage 1 reference — SRE inventory
 
 *Reference for [stage 1](../stage-1-inventory.md). `prompt.sh --assessment sre 1` does not
-append it; the prompt names it at the Method, and the agent reads a step's section here before
+append it; the prompt names it at the Method and the Output, and the agent reads a step's section here before
 doing the step. A rule here binds as if it were in the prompt.*
 
 ## Method
@@ -80,6 +80,18 @@ proposed tier until stage 2 confirms it.
 | Action-item closure | Postmortem action items closed by their due date ÷ items due in the window |
 | Owner coverage | Services in scope with an owner and a paging route ÷ services in scope |
 | Quota headroom | Highest usage in the window ÷ limit, per quota of a tier-1 service |
+
+## Output
+
+`sre/inventory.md`, after its one page of result:
+
+1. The live verification table: class, object, status, evidence by `E-` id (the commands and
+   their output go to the evidence catalog).
+2. The data request items received and missing.
+3. The sources read, with their revision.
+4. The status summary with its sum.
+5. The reconciliation (step 4).
+6. What could not be inventoried, with the reason.
 
 ## Combined format
 

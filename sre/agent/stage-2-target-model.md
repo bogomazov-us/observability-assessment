@@ -15,9 +15,7 @@ The rule files in [`rules/`](../../tools/agent/rules/) apply to this stage:
 [boundaries](../../tools/agent/rules/boundaries.md), [evidence](../../tools/agent/rules/evidence.md),
 [claims](../../tools/agent/rules/claims.md),
 [owner questions](../../tools/agent/rules/owner-questions.md) and the
-[progress log](../../tools/agent/rules/progress-log.md), with N = 2. This type's state file is
-`sre/engagement-state.yml` and its progress log `sre/progress/stage-2.md`: read them where the
-rules name `engagement-state.yml` and the progress log. The boundaries below are this stage's
+[progress log](../../tools/agent/rules/progress-log.md), with N = 2. The boundaries below are this stage's
 own and add to the common ones.
 
 ## Boundaries
@@ -39,7 +37,7 @@ own and add to the common ones.
 | Inventory and exports by object class (stage 1) | `sre/inventory.md`, `sre/exports/` |
 | The client's stated needs: contracts, policies, interview notes | decision register, facts ledger, [path] |
 | Targets template | `sre/templates/reliability-targets.md` |
-| Combined format: the observability spec and its SLO rows | the observability working folder (its stage 2) |
+| Combined format: the observability spec and its SLO rows | `spec/observability-spec.yml` |
 | Facts ledger | instructions file |
 
 ## Method
@@ -82,8 +80,7 @@ reprinted. Field rules and columns are in the
 
 **Combined format.** The owner questions, the findings and the decision register are shared:
 one `Q-` sequence, one batch, one targets review. An SLO is defined once,
-in the observability spec; the `T-` row cites its id and adds the error-budget policy only, by
-the overlap rule in the [SRE model](../maturity-model.md#overlaps-in-the-combined-format).
+in the observability spec (reference, step 6).
 
 ## Self-check before handing over
 

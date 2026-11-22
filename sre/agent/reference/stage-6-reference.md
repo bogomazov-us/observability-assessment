@@ -1,8 +1,8 @@
 # SRE stage 6 reference — recommendations
 
-*Reference for [SRE stage 6](../stage-6-recommendations.md). `prompt.sh --assessment sre 6`
-does not append it; the prompt names it at steps 6–9, and the agent reads a step's section here
-before doing the step. A rule here binds as if it were in the prompt.*
+*Reference for [SRE stage 6](../stage-6-recommendations.md). `prompt.sh --assessment sre 6` does
+not append it; the prompt names it at steps 6–9 and the Output, and the agent reads a step's
+section here before doing the step. A rule here binds as if it were in the prompt.*
 
 ## 6. Roadmap
 
@@ -54,3 +54,17 @@ buyer who asked for a short, focused answer, keep to the cards that answer the q
   model ("observability dimension 7", "SRE dimension 6").
 - The summary carries this roadmap and decision request; the observability recommendations do
   not repeat them.
+
+## Output
+
+`sre/recommendations.md`, in this order:
+
+1. The confirmation batch and its result.
+2. The cards in the `templates/report.md` format, in the proposed order.
+3. The `V-` tasks with their conditional options.
+4. The `W-` items with the decision each cites and what each depends on.
+5. The roadmap: the two tables and a card per milestone of
+   [roadmap.md](../../../templates/roadmap.md).
+6. The decision request.
+7. "Needs a decision": card, decision, decider role.
+8. "Left out": confirmed findings with no card, and why.

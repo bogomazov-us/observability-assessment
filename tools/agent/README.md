@@ -71,26 +71,27 @@ Stages read and write at these paths, relative to the working folder (`assessmen
 decision and risk registers are at the repository root (`facts.md`, `decisions.md`,
 `risks.md`, created only when absent), or where `--facts`, `--decisions`, `--risks` point;
 the instructions file names them. Rows marked *every type* are shared by the assessment types
-of an engagement; the SRE type's own paths are in the second table.
+of an engagement; "SRE N" reads the observability file in the combined format; the SRE type's
+own paths are in the second table.
 
 | Path | Made by | Read by |
 |---|---|---|
 | `engagement-state.yml` | init | every stage, `tools/stagegate.py` |
 | `owner-questions.md` (every type) | init; every stage adds | the person |
 | `progress/stage-N.md` | stage N | the person |
-| `kickoff-note.md` (scope, journeys, buyer's question) | the person, from `templates/kickoff-note.md` | 1, 2, 6 |
+| `kickoff-note.md` (every type; scope, journeys, buyer's question) | the person, from `templates/kickoff-note.md` | 1, 2, 6 |
 | `captures/` (sanitized journey captures) | the person | 2 |
 | `scan.md` (code scan) | 1 | 2, 4 |
 | `exports/` (a file per object class and date) | 1 | 2, 4 |
 | `inventory.md` | 1 | 2, 3, 5, report |
-| `spec/observability-spec.yml` | 2; 3 sets the signal states | 3, 4, 5 |
+| `spec/observability-spec.yml` | 2; 3 sets the signal states | 3, 4, 5; SRE 2 |
 | `stage-2-notes.md` | 2 | 3, report |
 | `stage-3-gap.md` | 3 | 4, 5, report |
 | `findings/F-NNN.md` (every type, one `F-` sequence) | the person, as findings appear; 4 | 4, 5, 6 |
 | `stage-4-notes.md` | 4 | report |
-| `maturity.yml` | the person (provisional baseline); 5 | 5, 6, report |
+| `maturity.yml` | the person (provisional baseline); 5 | 5, 6, report; SRE 5, 6 |
 | `stage-5-notes.md` | 5 | 6, report |
-| `recommendations.md` | 6 | report |
+| `recommendations.md` | 6 | report; SRE 6 |
 | `summary.md` (from `templates/report.md`), `manifest.txt` (every type) | the person, at each accepted stage | `tools/assessment-pdf.sh` |
 
 The SRE type (`--assessment sre`) works in `sre/` under the working folder; stage numbers here
@@ -100,12 +101,12 @@ are the SRE stages.
 |---|---|---|
 | `sre/engagement-state.yml` | init | every stage, `tools/stagegate.py` |
 | `sre/progress/stage-N.md` | stage N | the person |
-| `sre/exports/` (a file per object class and date) | 1 | 2, 3, `tools/baseline.py` |
-| `sre/inventory.md` | 1 | 2, 3, 5, report |
+| `sre/exports/` (a file per object class and date) | 1 | 2, 3, 4, `tools/baseline.py` |
+| `sre/inventory.md` | 1 | 2, 3, 4, 5, report |
 | `sre/service-catalogue.md` (`S-` rows) | 1; 2 sets the tiers | 2, 3, 4, 6 |
-| `sre/baseline.md` (`B-` rows, from `tools/baseline.py`) | 1 | 3, 5, report |
+| `sre/baseline.md` (`B-` rows, from `tools/baseline.py`) | 1 | 3, 4, 5, 6, report |
 | `sre/target-model.md` | 2 | 3, report |
-| `sre/targets/` (`T-` rows) | 2 | 3, 4, 5, 6 |
+| `sre/targets/reliability-targets.md` (`T-` rows) | 2 | 3, 4, 5, 6 |
 | `sre/stage-3-gap.md` | 3 | 4, 5, report |
 | `sre/stage-4-notes.md` | 4 | report |
 | `sre/maturity.yml` (`model: sre`) | the person (provisional baseline); 5 | 5, 6, report |
