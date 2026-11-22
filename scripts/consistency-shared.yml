@@ -16,3 +16,9 @@ shared:
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
   - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
     files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "The summary gives each count and their sum, and the sum equals the number of rows."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every inventory row cites an export file or a query."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "A sample that reproduces says those claims hold; it is not an estimate of the accuracy of the whole inventory."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
