@@ -25,6 +25,7 @@ expect() {
   [ $code -eq 1 ] && grep -qF -- "$want" <<<"$out" && ok "$name: $want" || ko "$name: exit $code: $out"
 }
 expect fail-weeks "weeks: templates/week.md:3: week number outside the calendar"
+expect fail-sre-weeks "weeks: sre/README.md:9: week number outside the calendar: 'week 6'"
 expect fail-playbook-week "weeks: method/playbook.md:7: step 3: Week [3] differs from the calendar's [2]"
 expect fail-prefix "prefix: templates/prefix.md:3: id prefix 'AC-' not in the registry"
 expect fail-status "status: templates/status.md:3: 'proposed / accepted / rejected' differs from the status set 'Decision'"

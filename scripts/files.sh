@@ -70,6 +70,7 @@ KIT_FILES=(
   practice/pilot.md
   backlog.md
   # SRE assessment
+  sre/README.md
   sre/maturity-model.md
   sre/agent/stage-1-inventory.md
 )
