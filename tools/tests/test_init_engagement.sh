@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/agent/init-engagement.sh: it writes the instructions with every path filled
 # in, the state file the gate reads, the ledger and registers; keeps what exists unless
-# --force, never replaces a ledger or register, and refuses bad arguments.
+# --force, never replaces a ledger or register, and refuses bad arguments. Without --assessment
+# the result is the one pinned in fixtures/init/default.md; --assessment sre adds WORK/sre/.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 KIT="$(pwd)"
@@ -14,6 +15,18 @@ ko() { echo "✗ $*"; fail=1; }
 
 R="$T/eng"; mkdir -p "$R" "$T/code-a" "$T/code-b"; git -C "$R" init -q
 out="$("$INIT" --repo "$R" --code "$T/code-a" --code "$T/code-b" --skills skills)"
+snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and temporary paths masked
+  { echo "## stdout"; printf '%s\n' "$2"
+    echo "## files"; (cd "$1" && find . -path ./.git -prune -o -print | LC_ALL=C sort)
+    for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
+  } | sed "s|$KIT|[kit]|g; s|$T|[tmp]|g"
+}
+snapshot "$R" "$out" | diff - tools/tests/fixtures/init/default.md >/dev/null \
+  && ok "no --assessment: output as pinned" || ko "no --assessment: output differs from fixtures/init/default.md"
+cmp -s "$R/assessment/engagement-state.yml" templates/engagement-state.yml \
+  && cmp -s "$R/assessment/owner-questions.md" templates/owner-questions.md \
+  && cmp -s "$R/risks.md" templates/risk-register.md && ok "no --assessment: templates copied as they are" \
+  || ko "no --assessment: a template copy differs"
 
 [ -f "$R/AGENTS.md" ] && ok "instructions written" || ko "no AGENTS.md: $out"
 grep -q "__[A-Z]*__" "$R/AGENTS.md" && ko "placeholder left in AGENTS.md" || ok "no placeholder left"
@@ -60,10 +73,51 @@ mkdir -p "$R/04-risks"; echo "existing" > "$R/04-risks/risk-register.md"
 grep -qx "existing" "$R/04-risks/risk-register.md" && grep -qF "04-risks/risk-register.md" "$R/THIRD.md" \
   && ok "--risks points at an existing register" || ko "--risks ignored or the register replaced"
 
+S="$T/both"; mkdir -p "$S"; git -C "$S" init -q
+"$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
+[ -f "$S/assessment/sre/engagement-state.yml" ] && grep -qx "assessment: sre" "$S/assessment/sre/engagement-state.yml" \
+  && ok "sre: state file names its type" || ko "sre: no state file, or no assessment: sre"
+python3 tools/stagegate.py lint "$S/assessment/sre/engagement-state.yml" >/dev/null 2>&1 \
+  && ok "sre: state file passes the linter" || ko "sre: state file fails the linter"
+for d in progress exports targets; do [ -f "$S/assessment/sre/$d/.gitkeep" ] || ko "sre: no sre/$d/"; done
+[ -f "$S/assessment/owner-questions.md" ] && [ -d "$S/assessment/findings" ] \
+  && ok "sre: owner questions and findings shared at the working folder" || ko "sre: shared files missing"
+[ ! -e "$S/assessment/engagement-state.yml" ] && [ ! -e "$S/assessment/captures" ] && [ ! -e "$S/assessment/progress" ] \
+  && ok "sre alone: no observability state or folders" || ko "sre alone: observability files made"
+grep -qF "| sre | \`assessment/sre\` | \`assessment/sre/engagement-state.yml\` | \`bash $KIT/tools/agent/prompt.sh --assessment sre N\` |" "$S/AGENTS.md" \
+  && ok "sre: types block row" || ko "sre: types block row missing"
+grep -q "__[A-Z]*__" "$S/AGENTS.md" && ko "sre: placeholder left" || ok "sre: no placeholder left"
+grep -q "^| observability |" "$S/AGENTS.md" && ko "sre alone: observability row" || ok "sre alone: no observability row"
+[ "$(grep -c "^## Types in this engagement$" templates/agent-instructions.md)" -eq 1 ] \
+  && ! grep -qiE "^\| (observability|sre) \|" templates/agent-instructions.md \
+  && ok "template: the block once, no per-type rows" || ko "template: block missing, repeated or per-type"
+grep -q "^## Types in this engagement$" "$R/AGENTS.md" && ko "no --assessment: types block shown" || ok "no --assessment: no types block"
+
+echo "| F-2 | kept | assumption | x | 2026-01-01 |" >> "$S/facts.md"
+echo "# sre confirmed" >> "$S/assessment/sre/engagement-state.yml"
+echo "sre step" >> "$S/assessment/sre/progress/stage-1.md"
+echo "| Q-01 | kept |" >> "$S/assessment/owner-questions.md"
+out="$("$INIT" --repo "$S" --code "$T/code-a" --assessment sre --assessment observability --skills skills --force)"
+grep -q "^# sre confirmed$" "$S/assessment/sre/engagement-state.yml" && grep -qx "sre step" "$S/assessment/sre/progress/stage-1.md" \
+  && grep -q "F-2" "$S/facts.md" && grep -q "Q-01" "$S/assessment/owner-questions.md" \
+  && ok "both, --force: sre state, progress log, ledger and questions kept" || ko "both, --force: a record replaced"
+grep -qx "assessment: sre" "$S/assessment/engagement-state.yml" && ko "both: observability state file names sre" \
+  || { [ -f "$S/assessment/engagement-state.yml" ] && [ -d "$S/assessment/captures" ] \
+       && ok "both: observability state and folders added" || ko "both: observability files missing"; }
+[ "$(grep -A5 "^## Types in this engagement$" "$S/AGENTS.md" | grep -cE "^\| (observability|sre) \|")" -eq 2 ] \
+  && grep -q "^# Observability and SRE assessment" "$S/AGENTS.md" && ok "both: two rows, observability first" || ko "both: types block or title wrong"
+grep -q "no skills in .*sre/agent/skills" <<<"$out" || [ -d sre/agent/skills ] \
+  && ok "both: missing SRE skills skipped with a note" || ko "both: no note for missing SRE skills"
+[ -d "$S/skills/oa-stage-1-inventory" ] && ok "both: observability skills installed" || ko "both: observability skills missing"
+echo "local" >> "$S/assessment/sre/engagement-state.yml"
+"$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
+grep -qx "local" "$S/assessment/sre/engagement-state.yml" && ok "sre: re-run keeps the state file" || ko "sre: re-run replaced the state file"
+
 refused() { set +e; "$INIT" "$@" >/dev/null 2>&1; local c=$?; set -e; [ $c -ne 0 ]; }
 refused --code "$T/code-a" && ok "refused: no --repo" || ko "accepted: no --repo"
 refused --repo "$R" && ok "refused: no --code" || ko "accepted: no --code"
 refused --repo "$R" --code "$T/none" && ok "refused: missing code dir" || ko "accepted: missing code dir"
+refused --repo "$R" --code "$T/code-a" --assessment other && ok "refused: unknown type" || ko "accepted: unknown type"
 refused --repo "$R" --code "$T/code-a" --work ../out && ok "refused: path leaves the repo" || ko "accepted: path leaves the repo"
 mkdir -p "$T/plain"
 refused --repo "$T/plain" --code "$T/code-a" && ok "refused: not a git repository" || ko "accepted: not a git repository"

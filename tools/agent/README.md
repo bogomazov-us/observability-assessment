@@ -44,7 +44,7 @@ Once per engagement, before stage 1:
 
 ```
 tools/agent/init-engagement.sh --repo ENGAGEMENT_REPO --code CODE_CHECKOUT [--code ...] \
-    [--skills SKILLS_DIR] [--instructions NAME]
+    [--skills SKILLS_DIR] [--instructions NAME] [--assessment observability|sre ...]
 ```
 
 It commits nothing. It writes the agent's standing instructions, from
@@ -52,10 +52,15 @@ It commits nothing. It writes the agent's standing instructions, from
 filled in, to `AGENTS.md` (or `--instructions NAME`, the file your agent tool reads); the
 client and the monitoring tool are left for the person. It makes what the path table marks
 *init*, its folders, and the scratch directory `.scratch/`, added to `.gitignore`.
+`--assessment sre` (repeatable; the default is observability) adds `sre/` in the working folder:
+its own state file, `progress/`, `exports/` and `targets/`. Owner questions and findings stay
+shared; with SRE alone, the observability state file and folders are not made. The
+instructions file then lists each type's folder, state file and prompt command.
 
-With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md).
+With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md) of
+each type.
 A re-run keeps what exists; `--force` replaces the instructions and the skills (after a kit
-upgrade), never the state file, a register, the questions or a progress log. The agent's read-only
+upgrade), never a state file, a register, the questions or a progress log. The agent's read-only
 boundary is set in the agent tool's own permissions as well: the instructions file alone does
 not enforce it. Tests: `tools/tests/test_init_engagement.sh`.
 
