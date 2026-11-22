@@ -16,6 +16,24 @@ shared:
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
   - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
     files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A new finding takes the next free id; no id is reused."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "The stage is confirmed once every draft is re-checked and its verdict recorded or sent in the batch: a finding still waiting stays *assumption*, and stage 5 marks a level resting on it provisional."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A decision record that adopted a reading is not evidence for it: cite the code and its version, or a query."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A level nobody looked for is `not_scored`, never 1."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A slide or an interview alone stops at level 2."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A level that rests on a finding still without its verdict is *provisional*, and says which finding."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A `REC-` links the `W-` items that deliver it; it never repeats their work or their size."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
+  - sentence: "Waiting for a production event is a later validation, not a closing condition."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
+  - sentence: "Every done when is a reproducible test or a verified configuration, not a production event."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
   - sentence: "Read it before the step; it binds as if it were here."
     files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
   - sentence: "No target, owner or threshold was changed; what the gap questions is an open question."

@@ -85,4 +85,9 @@ KIT_FILES=(
   sre/templates/reliability-targets.md
   sre/templates/readiness-review.md
   sre/templates/recovery-proof.md
+  sre/agent/stage-4-findings.md
+  sre/agent/reference/stage-4-reference.md
+  sre/agent/stage-5-maturity.md
+  sre/agent/stage-6-recommendations.md
+  sre/agent/reference/stage-6-reference.md
 )
