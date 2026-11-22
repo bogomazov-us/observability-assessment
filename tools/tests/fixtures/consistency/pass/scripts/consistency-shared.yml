@@ -1,0 +1,9 @@
+# Fixture shared-sentence list: one entry enforced, one skipped (file missing), one skipped
+# (placeholder).
+shared:
+  - sentence: "Checks a sample of the "live" signals through another path than the agent's query."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "a finding still waiting stays *assumption*"
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "When findings are still assumptions, propose a batch."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]

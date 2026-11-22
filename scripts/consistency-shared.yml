@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+# The method shape both assessment types' stage files repeat (architecture decision A6), checked
+# by scripts/consistency.py. Each sentence must appear verbatim (line breaks aside) in every file
+# listed: first the observability stage file, then the matching stage file of the other type.
+# A file after the first is skipped while it is missing or a placeholder, then enforced.
+shared:
+  - sentence: "Ids are never renumbered: a row split later keeps its id on one part and gives the other a new one; a row withdrawn keeps its id with the reason."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "An error in your own draft is corrected in the draft, not recorded as a difference."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every row has a stable id and one status; the counts sum to the number of rows."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "confirmed by a live fact is checked through another path than the agent's query"
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "The check at the end of each rule file holds."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
