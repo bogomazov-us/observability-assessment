@@ -84,6 +84,8 @@ for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || { echo "  listed but missing: $f";
 broken=0
 for f in "${TRACKED[@]}"; do
   [[ "$f" == *.md ]] || continue
+  # Golden prompts keep the links of tools/agent/, where they resolve.
+  [[ "$f" == tools/tests/fixtures/prompts/* ]] && continue
   dir="$(dirname "$f")"
   while IFS= read -r link; do
     target="${link%%#*}"

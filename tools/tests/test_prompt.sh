@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/agent/prompt.sh and the rule files the stage prompts name.
+# The six assembled prompts are pinned byte for byte in tools/tests/fixtures/prompts/.
+# After a deliberate prompt change, refresh them: UPDATE_GOLDEN=1 tools/tests/test_prompt.sh
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 P=tools/agent/prompt.sh
@@ -39,6 +41,15 @@ done
 for n in 1 2 3 4 5 6; do
   w=$(( $(wc -w < "$T/s$n.md") ))
   [ "$w" -le "$BUDGET" ] && pass "stage $n prompt $w words (≤ $BUDGET)" || fail "stage $n prompt $w words (> $BUDGET)"
+done
+
+# golden files: any change to an assembled prompt is deliberate
+G=tools/tests/fixtures/prompts
+for n in 1 2 3 4 5 6; do
+  if [ "${UPDATE_GOLDEN:-}" = 1 ]; then mkdir -p "$G"; cp "$T/s$n.md" "$G/stage-$n.md"; fi
+  if cmp -s "$G/stage-$n.md" "$T/s$n.md"; then pass "stage $n prompt matches $G/stage-$n.md"
+  else fail "stage $n prompt differs from $G/stage-$n.md (refresh: UPDATE_GOLDEN=1 $0)"
+       diff -u "$G/stage-$n.md" "$T/s$n.md" || true; fi
 done
 
 "$P" 7 >/dev/null 2>&1 && fail "stage 7 accepted" || pass "stage 7 refused"
