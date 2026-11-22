@@ -72,4 +72,6 @@ KIT_FILES=(
   # SRE assessment
   sre/maturity-model.md
   sre/agent/stage-1-inventory.md
+  sre/templates/data-request.md
+  sre/templates/interview-guide.md
 )
