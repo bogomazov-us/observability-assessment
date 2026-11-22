@@ -17,12 +17,12 @@ Python 3.9+ and PyYAML.
 ## Models
 
 `model:` names the dimension table: `observability` (the default, when absent; dimensions 1–12,
-12 optional) or `sre` (dimensions 1–10 of `sre/maturity-model.md`; none
+12 optional) or `sre` (dimensions 1–10 of [sre/maturity-model.md](../sre/maturity-model.md); none
 optional, so every N/A records `agreed_by`).
 
 In the combined format a dimension may carry `refers_to: <other model>/<n>`, e.g.
 `refers_to: observability/7`: the topic is scored there. `--pair` applies the overlap table of
-`sre/maturity-model.md` (the tool's `OVERLAPS`; `tools/tests/test_records.sh` checks they match).
+[sre/maturity-model.md](../sre/maturity-model.md) (the tool's `OVERLAPS`; `tools/tests/test_records.sh` checks they match).
 It prints no profile.
 
 ## Rules
