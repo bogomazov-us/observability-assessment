@@ -16,3 +16,9 @@ shared:
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
   - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
     files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "The confirmed rows go into the facts ledger with their source; the rest stay assumptions with an owner and a date."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "When a later decision changed the basis of an earlier one (a window, a unit, a cadence), every value derived from the earlier one was re-derived and returned to `proposed` with a question, not carried over."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "Every value filled in where a decision left it open is marked as a reading."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
