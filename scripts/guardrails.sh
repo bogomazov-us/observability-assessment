@@ -72,7 +72,7 @@ miss=0
 for f in "${TRACKED[@]}"; do
   [[ "$f" == *.md && "$f" != CONTRIBUTING.md && "$f" != CHANGELOG.md ]] || continue
   # Skill wrappers are installed into an engagement, not read in the PDF; their README is.
-  [[ "$f" == tools/agent/skills/*/SKILL.md ]] && continue
+  [[ "$f" == tools/agent/skills/*/SKILL.md || "$f" == sre/agent/skills/*/SKILL.md ]] && continue
   # Test fixtures are inputs to the tool tests, not kit pages.
   [[ "$f" == tools/tests/fixtures/* ]] && continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
