@@ -69,4 +69,6 @@ KIT_FILES=(
   practice/building-the-practice.md
   practice/pilot.md
   backlog.md
+  # SRE assessment
+  sre/agent/stage-1-inventory.md
 )
