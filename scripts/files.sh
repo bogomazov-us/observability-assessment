@@ -72,4 +72,7 @@ KIT_FILES=(
   # SRE assessment
   sre/maturity-model.md
   sre/agent/stage-1-inventory.md
+  sre/templates/service-catalogue.md
+  sre/templates/reliability-targets.md
+  sre/templates/readiness-review.md
 )
