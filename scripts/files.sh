@@ -74,6 +74,8 @@ KIT_FILES=(
   sre/README.md
   sre/maturity-model.md
   sre/agent/stage-1-inventory.md
+  sre/agent/stage-3-gap.md
+  sre/agent/reference/stage-3-reference.md
   sre/agent/stage-2-target-model.md
   sre/agent/reference/stage-2-reference.md
   sre/agent/reference/stage-1-reference.md
