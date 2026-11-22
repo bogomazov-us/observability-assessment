@@ -4,6 +4,7 @@
 
     tools/maturity.py maturity.yml              check, then print the profile (Markdown)
     tools/maturity.py --check maturity.yml      check only
+    tools/maturity.py --pair obs.yml sre.yml    check both files and the overlaps between them
 
 Exit: 0 clean (warnings allowed), 1 rule violations, 2 usage or parse error.
 Rules: method/maturity-model.md, "Scoring rules"; rule IDs: tools/maturity.md.
@@ -31,6 +32,28 @@ DIMENSIONS = {
     11: "Data governance and cost",
     12: "Operational analytics",
 }
+SRE_DIMENSIONS = {
+    1: "Service catalogue and criticality",
+    2: "SLOs and error budgets",
+    3: "Monitoring and alerting (light)",
+    4: "Incidents and learning",
+    5: "On-call health",
+    6: "Change safety",
+    7: "Resilience architecture and testing",
+    8: "Capacity and performance",
+    9: "Backup and disaster recovery",
+    10: "Operations model: readiness, ownership, toil",
+}
+# model -> (dimension table, optional dimensions: N/A without agreed_by is no warning)
+MODELS = {"observability": (DIMENSIONS, {12}), "sre": (SRE_DIMENSIONS, set())}
+# The combined format (sre/maturity-model.md, "Overlaps"): topic, observability dimension,
+# SRE dimension, where it is scored (observability, sre, or both).
+OVERLAPS = (
+    ("SLOs", 6, 2, "observability"),
+    ("Alerts", 7, 3, "observability"),
+    ("Incidents", 8, 4, "sre"),
+    ("Releases", 10, 6, "both"),
+)
 STATUSES = ("scored", "partial", "not_scored", "na")
 EVIDENCE_TYPES = ("export", "query", "trace", "code", "config", "interview", "document")
 TOOL_EVIDENCE = ("export", "query", "trace", "code", "config")
@@ -54,7 +77,16 @@ def is_text(v):
     return isinstance(v, str) and v.strip() != ""
 
 
+def model_of(doc):
+    return doc.get("model", "observability") if isinstance(doc, dict) else "observability"
+
+
 def check(doc, rep):
+    model = model_of(doc)
+    if model not in MODELS:
+        rep.error("model", "M14", f"model must be one of {', '.join(MODELS)} (absent: observability)")
+        return []
+    table, optional = MODELS[model]
     scope = doc.get("scope") if isinstance(doc, dict) else None
     if not isinstance(scope, dict) or not scope.get("journeys") or not scope.get("services"):
         rep.error("scope", "M01", "scope must list journeys and services before any score")
@@ -72,15 +104,19 @@ def check(doc, rep):
             continue
         n = d.get("number")
         where = f"dimension {n}"
-        if n not in DIMENSIONS:
-            rep.error(where, "M02", "number must be 1-12")
+        if n not in table:
+            rep.error(where, "M02", f"number must be 1-{len(table)}")
             continue
-        if "name" in d and d["name"] != DIMENSIONS[n]:
-            rep.error(where, "M02", f"name must be '{DIMENSIONS[n]}'")
+        if "name" in d and d["name"] != table[n]:
+            rep.error(where, "M02", f"name must be '{table[n]}'")
         if n in seen:
             rep.error(where, "M03", "dimension listed twice")
             continue
         seen.add(n)
+
+        ref = d.get("refers_to")
+        if ref is not None and parse_ref(ref, model) is None:
+            rep.error(where, "M15", "refers_to must be '<other model>/<dimension number>', e.g. observability/7")
 
         status = d.get("status")
         if status not in STATUSES:
@@ -92,8 +128,12 @@ def check(doc, rep):
                 rep.error(where, "M11", f"{status} needs a reason")
             if d.get("level") is not None:
                 rep.error(where, "M11", f"{status} carries no level (not scored is not level 1)")
-            if status == "na" and n != 12 and not is_text(d.get("agreed_by")):
-                rep.warn(where, "W01", "N/A outside dimension 12: record who on the client side agreed (agreed_by)")
+            if status == "na" and n not in optional and not is_text(d.get("agreed_by")):
+                if optional:
+                    rep.warn(where, "W01", "N/A outside dimension 12: record who on the client side agreed (agreed_by)")
+                else:
+                    rep.warn(where, "W01", f"N/A in the {model} model, which has no optional dimension: "
+                             "record who on the client side agreed (agreed_by)")
             valid.append(d)
             continue
 
@@ -136,6 +176,37 @@ def check(doc, rep):
     return valid
 
 
+def parse_ref(ref, model):
+    """'observability/7' from an SRE file -> ('observability', 7); None if malformed."""
+    if not isinstance(ref, str) or ref.count("/") != 1:
+        return None
+    other, num = ref.split("/")
+    if other == model or other not in MODELS or not num.isdigit() or int(num) not in MODELS[other][0]:
+        return None
+    return other, int(num)
+
+
+def scored(dims):
+    return {d["number"] for d in dims if d.get("status") in ("scored", "partial")}
+
+
+def check_pair(files, rep):
+    """files: {model: (path, valid dimensions, report)} for observability and sre."""
+    obs, sre = scored(files["observability"][1]), scored(files["sre"][1])
+    for topic, o, s, where in OVERLAPS:
+        if where != "both" and o in obs and s in sre:
+            keep, drop = (("observability", o), ("sre", s))[::1 if where == "observability" else -1]
+            rep.error(f"topic {topic}", "P01",
+                      f"scored in both files (observability {o}, sre {s}): score it once, in {keep[0]} {keep[1]}; "
+                      f"{drop[0]} {drop[1]} is not_scored with refers_to: {keep[0]}/{keep[1]}")
+    for model, (_, dims, own) in files.items():
+        for d in dims:
+            ref = parse_ref(d.get("refers_to"), model)
+            if ref and ref[1] not in (obs if ref[0] == "observability" else sre):
+                own.error(f"dimension {d['number']}", "P02",
+                          f"refers_to {ref[0]}/{ref[1]}, which is not scored in {files[ref[0]][0]}")
+
+
 def level_cell(d):
     if d["status"] == "not_scored":
         return "not scored"
@@ -149,6 +220,7 @@ def cell(v):
 
 
 def render(doc, dims):
+    table = MODELS[model_of(doc)][0]
     out = []
     scope = doc["scope"]
     out.append(f"**Scope:** {', '.join(map(str, scope['journeys']))} · services: {', '.join(map(str, scope['services']))}")
@@ -159,16 +231,16 @@ def render(doc, dims):
     for d in shown:
         n = d["number"]
         if d["status"] == "not_scored":
-            out.append(f"| {n} {DIMENSIONS[n]} | not scored | {cell(d.get('reason'))} | — | — |")
+            out.append(f"| {n} {table[n]} | not scored | {cell(d.get('reason'))} | — | — |")
             continue
         ev = "; ".join(e["ref"] for e in d.get("evidence") or [])
-        out.append(f"| {n} {DIMENSIONS[n]} | {level_cell(d)} | {cell(d.get('coverage'))} | {cell(ev)} | {d['confidence']} |")
+        out.append(f"| {n} {table[n]} | {level_cell(d)} | {cell(d.get('coverage'))} | {cell(ev)} | {d['confidence']} |")
 
     na = [d for d in dims if d["status"] == "na"]
     if na:
         out.append("")
         out.append("**Left out as N/A:** " + "; ".join(
-            f"{d['number']} {DIMENSIONS[d['number']]} — {d['reason']}" for d in sorted(na, key=lambda d: d["number"])))
+            f"{d['number']} {table[d['number']]} — {d['reason']}" for d in sorted(na, key=lambda d: d["number"])))
 
     counts = {}
     for d in shown:
@@ -187,7 +259,7 @@ def render(doc, dims):
     blocks = [d for d in shown if d.get("blocks_next_step")]
     out.append("")
     if blocks:
-        out.append("**Block the next step:** " + "; ".join(f"{d['number']} {DIMENSIONS[d['number']]}" for d in blocks))
+        out.append("**Block the next step:** " + "; ".join(f"{d['number']} {table[d['number']]}" for d in blocks))
     else:
         out.append("**Block the next step:** none marked (set `blocks_next_step: true` on up to three dimensions)")
 
@@ -203,33 +275,53 @@ def render(doc, dims):
 
 def main():
     ap = argparse.ArgumentParser(description="Check a maturity scoring file and print the profile.")
-    ap.add_argument("file", help="scoring file, e.g. maturity.yml")
+    ap.add_argument("file", nargs="+", help="scoring file, e.g. maturity.yml (two with --pair)")
     ap.add_argument("--check", action="store_true", help="validate only, print no profile")
+    ap.add_argument("--pair", action="store_true",
+                    help="check an observability and an SRE file together (combined format); prints no profile")
     ap.add_argument("--format", choices=("md",), default="md", help="output format (Markdown)")
     a = ap.parse_args()
+    if len(a.file) != (2 if a.pair else 1):
+        ap.error("--pair takes two files; otherwise give one")
 
-    try:
-        with open(a.file, encoding="utf-8") as f:
-            doc = yaml.safe_load(f)
-    except (OSError, yaml.YAMLError) as e:
-        print(f"{a.file}: cannot read: {e}", file=sys.stderr)
-        return 2
-    if not isinstance(doc, dict):
-        print(f"{a.file}: not a mapping", file=sys.stderr)
+    loaded = []
+    for path in a.file:
+        try:
+            with open(path, encoding="utf-8") as f:
+                doc = yaml.safe_load(f)
+        except (OSError, yaml.YAMLError) as e:
+            print(f"{path}: cannot read: {e}", file=sys.stderr)
+            return 2
+        if not isinstance(doc, dict):
+            print(f"{path}: not a mapping", file=sys.stderr)
+            return 2
+        loaded.append((path, doc))
+    if a.pair and sorted(model_of(doc) for _, doc in loaded) != ["observability", "sre"]:
+        print("--pair needs one observability file (no model: or model: observability) and one model: sre file",
+              file=sys.stderr)
         return 2
 
-    rep = Report(a.file)
-    dims = check(doc, rep)
-    for w in rep.warnings:
+    reports, files = [], {}
+    for path, doc in loaded:
+        rep = Report(path)
+        files[model_of(doc)] = (path, check(doc, rep), rep)
+        reports.append(rep)
+    if a.pair:
+        rep = Report(" + ".join(a.file))
+        check_pair(files, rep)
+        reports.append(rep)
+
+    errors = [e for r in reports for e in r.errors]
+    for w in (w for r in reports for w in r.warnings):
         print(w, file=sys.stderr)
-    if rep.errors:
-        for e in rep.errors:
+    if errors:
+        for e in errors:
             print(e, file=sys.stderr)
         return 1
-    if not a.check:
-        print(render(doc, dims))
+    if not a.check and not a.pair:
+        path, doc = loaded[0]
+        print(render(doc, files[model_of(doc)][1]))
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -1,5 +1,6 @@
 # Maturity scoring file. Check and print the profile with: tools/maturity.py maturity.yml
 # Rules: method/maturity-model.md, "Scoring rules". Rule IDs: tools/maturity.md.
+# model: observability                # default; sre for the SRE model (sre/maturity-model.md)
 #
 # status:     scored | partial | not_scored | na
 # level:      1-5; for partial, the level fully held, with partial_level the one held on some functions

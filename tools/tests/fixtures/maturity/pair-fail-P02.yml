@@ -1,0 +1,5 @@
+model: sre
+scope: {journeys: [checkout], services: [checkout]}
+dimensions:
+  - {number: 1, status: not_scored, reason: covered by the observability profile, refers_to: observability/9}
+  - {number: 4, status: scored, level: 2, evidence: [{type: interview, ref: on-call lead}], confidence: medium}
