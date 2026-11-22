@@ -16,3 +16,9 @@ shared:
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
   - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
     files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "Read it before the step; it binds as if it were here."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "No target, owner or threshold was changed; what the gap questions is an open question."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "Confirms the gap as the input to stage 4, or returns it."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
