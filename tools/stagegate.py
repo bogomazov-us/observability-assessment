@@ -32,6 +32,7 @@ STAGES = {
 }
 STATUSES = ("not_started", "draft", "handed_over", "returned", "confirmed")
 CONFIRMATION = ("confirmed_by", "confirmed_on", "decision_ref")
+ASSESSMENTS = ("observability", "sre")  # absent: observability
 
 
 class Report:
@@ -85,6 +86,9 @@ def stages_by_number(doc, rep):
 
 
 def lint(doc, rep):
+    kind = doc.get("assessment", "observability") if isinstance(doc, dict) else "observability"
+    if kind not in ASSESSMENTS:
+        rep.error("assessment", "G13", f"must be one of {', '.join(ASSESSMENTS)}, or absent for observability; got {kind!r}")
     scope = doc.get("scope") if isinstance(doc, dict) else None
     if not isinstance(scope, dict):
         rep.error("scope", "G01", "scope must record the agreement and the access before stage 1")
