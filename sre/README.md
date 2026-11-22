@@ -79,7 +79,89 @@ the meetings are held once for both. Focused: the focused tables of both types, 
 
 ## Estimation
 
-Base and increments per format, with an SRE engineer column: to be added.
+The [estimation model](../method/estimation.md) applies: its steps, staffing rule and
+calibration. Below are SRE's own numbers.
+
+> **Starting values.** Every number in this section is a first guess, not a measured actual.
+> It is calibrated on the test run (the first SRE engagement) and then as in the model's
+> "Calibrating".
+
+Base scope: **3 tier-1 services, 1 delivery pipeline system, 1 cloud or hosting estate**;
+environments and review rounds as the format states. Assumptions: the exports in the SRE data
+request exist; the client's people run the recovery proof. The architect carries more than in
+observability: dependencies and tiers, resilience, capacity, backup and DR.
+
+**Focused (2–3 weeks; production read-only; 1 review round; dimensions 1, 2, 4, 6, 9)**
+
+| Phase | Lead | SRE engineer | Architect |
+|---|--:|--:|--:|
+| Align & baseline: document review, intake, interviews, exports | 2 | 2 | 0 |
+| Catalogue & targets: tiers, dependencies, targets from the interviews | 1 | 1 | 0.5 |
+| Diagnose: findings, maturity of the mandatory dimensions | 1 | 2 | 1 |
+| Report, roadmap, one review round | 2 | 1 | 0.5 |
+| **Base** | **6** | **6** | **2** |
+
+**Full (6 weeks; stage and production; 2 review rounds; all 10 dimensions)**
+
+| Phase | Lead | SRE engineer | Architect |
+|---|--:|--:|--:|
+| 1 Align & baseline | 4 | 3 | 0 |
+| 2 Catalogue & targets | 2 | 4 | 1 |
+| 3 Diagnose | 3 | 6 | 3 |
+| 5 Executive roadmap, two review rounds | 5 | 2 | 2 |
+| **Base** | **14** | **15** | **6** |
+| Option: 4 Recovery proof, restore drill or game day (stage access and the client's people) | +1 | +4 | +2 |
+| Option: 4 Recovery proof as a design and a checklist (no stage access) | +1 | +1 | +2 |
+
+**Increments per unit above the base**
+
+| Unit | Lead | SRE engineer | Architect | Applies to |
+|---|--:|--:|--:|---|
+| Each tier-1 service after the third | 0.5 | 1 | 0.5 | focused and full |
+| Second pipeline system | 0.5 | 2 | 0 | full |
+| Second estate (cloud or hosting) | 0.5 | 2 | 1 | full |
+| Extra review round (by change request) | 1.5 | 0 | 1 | focused and full |
+
+**Capacity check.** Roles are added in the model's order: lead alone; lead and SRE engineer;
+then the architect; a second engineer for a few days.
+
+| Scope | Total days | Calendar | Staffing that fits |
+|---|--:|--:|---|
+| Focused, base, 3 weeks | 14 | 15 | lead alone |
+| Focused, base, 2 weeks | 14 | 10 | lead and engineer (lead 8 with the architect's 2, engineer 6) |
+| Focused at the limit (5 services), 3 weeks | 18 | 15 | lead and engineer (lead 10 with the architect's 3, engineer 8) |
+| Full, base | 35 | 30 | lead and engineer (lead 20 with the architect's 6, engineer 15) |
+| Full, base, with the recovery proof | 42 | 30 | lead and engineer (lead 23 with the architect's 8, engineer 19) |
+| Full at the limit (10 services, 2 pipeline systems, 2 estates) | 55 | 30 | lead and engineer (lead 29 with the architect's 10.5, engineer 26) |
+| Full at the limit, with the recovery proof | 62 | 30 | lead, engineer and architect (lead 19.5, engineer 30, architect 12.5) |
+
+Resilience, capacity and recovery design need someone who reads the client's architecture
+and infrastructure code; when the lead does not, the architect joins whatever the days say.
+
+**Combined format.** Combined = observability base + SRE base − the shared work, counted
+once. Each type keeps its own units and increments: journeys for observability, tier-1
+services for SRE. Options are priced from their own rows.
+
+| Shared work, counted once | Focused | Full |
+|---|---|---|
+| Align: one kick-off, one interview series | lead −1 | lead −2, SRE engineer −1 |
+| Summary, roadmap and decision request | lead −1 | lead −2, architect −0.5 |
+| One set of review rounds | lead −1 | lead −2, architect −1 |
+| **Less** | **−3** | **−8.5** |
+
+Worked at both base scopes:
+
+| Format | Lead | Obs. engineer | SRE engineer | Architect | Total | Staffing that fits |
+|---|--:|--:|--:|--:|--:|---|
+| Focused, 3 weeks: 14 + 14 − 3 | 9 | 7 | 6 | 3 | 25 | lead and one engineer for both types (lead 12 with the architect's 3, engineer 13 of 15) |
+| Full: 39 + 35 − 8.5 | 23 | 19 | 14 | 9.5 | 65.5 | lead, both engineers and the architect (the engineers' 33 days do not fit one person) |
+
+**Contingency** (SRE rows; the model's rows also apply)
+
+| Risk on our side | Add |
+|---|---|
+| Delivery pipeline, incident or paging tool the team has not assessed before | 10 % of engineer days |
+| A tool known at proposal time to have no export: incidents, pages or deploys collected by hand | 2 engineer days per source |
 
 ## Combined format
 
