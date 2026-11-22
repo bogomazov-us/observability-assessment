@@ -1,0 +1,68 @@
+# Larkfield Grocer (fictional): the SRE profile of sre/example/worked-example.md, final at SRE stage 5.
+# Focused format, in the same engagement as example/maturity.yml. Check:
+#   tools/maturity.py sre/example/maturity.yml
+#   tools/maturity.py --pair example/maturity.yml sre/example/maturity.yml
+model: sre
+scope:
+  journeys: [checkout]
+  services: [web front end, checkout, payments, slots, orders database]
+
+dimensions:
+  - number: 1
+    status: partial
+    level: 2
+    partial_level: 3
+    coverage: owners and paging routes for 6 of 7 services; tiers first agreed in this assessment (D-12); promo-rules missing from the registry
+    evidence:
+      - {type: export, ref: "service registry export, E-101"}
+      - {type: config, ref: "infrastructure as code, E-102"}
+    confidence: high
+  - number: 2
+    status: not_scored
+    reason: "SLOs are scored in the observability profile; SRE adds the error-budget policy: none (G-06)"
+    refers_to: observability/6
+  - number: 3
+    status: not_scored
+    reason: not in scope (focused format)
+  - number: 4
+    status: scored
+    level: 3
+    coverage: severity levels and roles; postmortems above major with dated action items; closure and recurrence not tracked by the client
+    evidence:
+      - {type: export, ref: "incident export; B-01 to B-20"}
+      - {type: document, ref: "postmortems and action-item tickets, E-106"}
+    confidence: high
+  - number: 5
+    status: not_scored
+    reason: not in scope (focused format)
+  - number: 6
+    status: scored
+    level: 2
+    coverage: automated deploy for every service; rollback by hand on 6 failed deploys, no test on record; change failure rate first computed here (B-24)
+    evidence:
+      - {type: export, ref: "deploy export; B-21 to B-27"}
+      - {type: config, ref: "pipeline configuration, E-108"}
+    confidence: high
+    blocks_next_step: true
+  - number: 7
+    status: not_scored
+    reason: not in scope (focused format)
+  - number: 8
+    status: not_scored
+    reason: not in scope (focused format)
+  - number: 9
+    status: scored
+    level: 2
+    coverage: backups monitored for both tier-1 data stores; no restore in the window (B-32)
+    evidence:
+      - {type: export, ref: "backup job history, E-104"}
+      - {type: document, ref: "restore records, E-105"}
+    confidence: high
+    blocks_next_step: true
+  - number: 10
+    status: not_scored
+    reason: not in scope (focused format)
+
+moves_fastest:
+  - "Restore each tier-1 data store on stage, timed against T-05 to T-08 (F-010: moves SRE 9 from 2 to 3)"
+  - "Rollback as a tested pipeline step (F-011: moves SRE 6 from 2 to 3)"
