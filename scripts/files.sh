@@ -20,6 +20,7 @@ KIT_FILES=(
   tools/collect.md
   tools/speclint.md
   tools/maturity.md
+  tools/baseline.md
   tools/stagegate.md
   tools/agent/README.md
   tools/agent/stage-1-inventory.md
