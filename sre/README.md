@@ -21,7 +21,7 @@ model is [maturity-model.md](maturity-model.md).
 | Done when | Report accepted; decision on the next step taken ([acceptance](../templates/acceptance.md)) | The same | The same |
 | Scope limits (starting values; beyond them is a change request) | Up to 5 tier-1 services, 1 delivery pipeline system, 1 cloud or hosting estate, production read-only, 1 review round | Up to 10 tier-1 services, 2 pipeline systems, 2 estates, stage and production, 2 review rounds | The limits of both, capped by the calendar |
 | Roles | Lead full time; SRE engineer and architect by scope ([estimation](#estimation), capacity check) | The same; the architect carries resilience, capacity and recovery | Both engineers; one person may be both when the days fit (the capacity check decides) |
-| Templates | Core: intake-questionnaire, data-request, kickoff-note, interview-guide, finding, report, roadmap. SRE: `templates/service-catalogue.md`, `templates/reliability-targets.md`, `templates/readiness-review.md`, `templates/data-request.md` and `templates/interview-guide.md` (rows added to the core ones) | The same; recovery proof: `templates/recovery-proof.md` | Both types' templates |
+| Templates | Core: intake-questionnaire, data-request, kickoff-note, interview-guide, finding, report, roadmap. SRE: [service-catalogue](templates/service-catalogue.md), [reliability-targets](templates/reliability-targets.md), [readiness-review](templates/readiness-review.md), [data-request](templates/data-request.md) and [interview-guide](templates/interview-guide.md) (rows added to the core ones) | The same; recovery proof: [recovery-proof](templates/recovery-proof.md) | Both types' templates |
 | Options | — | Recovery proof | Recovery proof and/or [Operationalize](../offerings.md#full-assessment-six-weeks) |
 
 The unit of scope is a tier-1 service: a service in scope that serves a critical journey, with
@@ -35,7 +35,7 @@ golden journey proof). On stage, with the client's people, by agreement, the cli
   recovery observed.
 
 The client's people run it; the agent never does. Without stage access it is delivered as a
-design and a checklist, and the proposal says so. Record: `templates/recovery-proof.md`.
+design and a checklist, and the proposal says so. Record: [recovery-proof](templates/recovery-proof.md).
 
 ## Calendar
 
@@ -48,8 +48,8 @@ no playbook column; its phases are:
 
 | Week | Offering phase | Stage | Meetings | Client delivers |
 |---|---|---|---|---|
-| 1 | 1 Align & baseline | 1 handed over | Kick-off; interviews begin | Read-only access; incident, paging and deploy exports; architecture |
-| 2 | 2 Catalogue & targets | 1 confirmed; 2 handed over and confirmed | Interviews end (5–8 in all); targets review with the owners | Postmortems and action items, rotation, backup job history and restore records |
+| 1 | 1 Align & baseline | 1 handed over | Kick-off; interviews begin | Read-only access; incident, paging (with the rotation) and deploy exports; architecture |
+| 2 | 2 Catalogue & targets | 1 confirmed; 2 handed over and confirmed | Interviews end (5–8 in all); targets review with the owners | Postmortems and action items, backup job history and restore records |
 | 3 | 3 Diagnose | 3 handed over and confirmed | — | Capacity metrics and quotas, load-test reports; owner answers that block stages 3–4 |
 | 4 | 3 Diagnose; 4 Recovery proof | 4 handed over before the preview; confirmed after it | Findings preview, which sends the verdict batch | Stage access and the client's people, if the proof is in scope |
 | 5 | 4 Recovery proof; 5 Executive roadmap | 5 confirmed; 6 handed over with its confirmation batch | Recovery proof run; review round 1 | Verdicts on the batch |
@@ -72,7 +72,7 @@ the meetings are held once for both. Focused: the focused tables of both types, 
 |---|---|---|---|---|
 | 1 | 1 Align & baseline | 1 handed over, per type | One kick-off; one interview series for both types' owners | Week-1 rows of both data requests |
 | 2 | 2 Observe & trace; 2 Catalogue & targets | 1 confirmed; 2 handed over and confirmed, per type | Interviews end; journey walk-through; targets review | Week-2 rows of both |
-| 3 | 3 Diagnose | 3 handed over and confirmed, per type | — | Owner answers that block stages 3–4 |
+| 3 | 3 Diagnose | 3 handed over and confirmed, per type | — | Week-3 rows of the SRE data request; owner answers that block stages 3–4 |
 | 4 | 3 Diagnose; 4 Golden journey proof; 4 Recovery proof | 4 handed over before the preview, per type | One findings preview and verdict batch | Stage access and the people for the proofs in scope |
 | 5 | 4 the proofs; 5 Executive roadmap | 5 confirmed; 6 handed over, per type | Proof demonstrations; review round 1 | Verdicts on the batch |
 | 6 | 5 Executive roadmap | 6 confirmed, per type | Review round 2; read-out | The next-step decision |

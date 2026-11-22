@@ -22,3 +22,15 @@ shared:
     files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
   - sentence: "Confirms the gap as the input to stage 4, or returns it."
     files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "The confirmed rows go into the facts ledger with their source; the rest stay assumptions with an owner and a date."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "When a later decision changed the basis of an earlier one (a window, a unit, a cadence), every value derived from the earlier one was re-derived and returned to `proposed` with a question, not carried over."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "Every value filled in where a decision left it open is marked as a reading."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "The summary gives each count and their sum, and the sum equals the number of rows."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every inventory row cites an export file or a query."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "A sample that reproduces says those claims hold; it is not an estimate of the accuracy of the whole inventory."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
