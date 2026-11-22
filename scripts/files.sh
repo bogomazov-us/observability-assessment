@@ -71,7 +71,13 @@ KIT_FILES=(
   practice/pilot.md
   backlog.md
   # SRE assessment
+  sre/README.md
   sre/maturity-model.md
   sre/agent/stage-1-inventory.md
+  sre/templates/data-request.md
+  sre/templates/interview-guide.md
+  sre/templates/service-catalogue.md
+  sre/templates/reliability-targets.md
+  sre/templates/readiness-review.md
   sre/templates/recovery-proof.md
 )

@@ -5,8 +5,8 @@
   scripts/consistency.py [--root DIR] [--allow FILE] [--verbose]
 
 Pattern-based, not a Markdown parser. Five checks:
-  weeks   a week number ("week 2", "weeks 1-2") outside the calendar section of
-          method/getting-started.md; the playbook's Week column equals the calendar's
+  weeks   a week number ("week 2", "weeks 1-2") outside the calendar sections (CALENDARS);
+          the playbook's Week column equals the calendar of method/getting-started.md
   prefix  an id prefix (D-, REC-, ...) not in the registry table of method/records.md
   status  an inline status list (a · b · c, a / b / c, a | b) that names a status set of
           method/records.md but differs from its values
@@ -32,6 +32,8 @@ EXTENSIONS = (".md", ".yml")
 
 CALENDAR_FILE = "method/getting-started.md"
 CALENDAR_HEADING = "## 3. Calendar"
+# (file, heading) of the sections where week numbers are allowed
+CALENDARS = [(CALENDAR_FILE, CALENDAR_HEADING), ("sre/README.md", "## Calendar")]
 PLAYBOOK_FILE = "method/playbook.md"
 RECORDS_FILE = "method/records.md"
 AGENT_README = "tools/agent/README.md"
@@ -127,10 +129,11 @@ def registry(root):
 
 
 def check_weeks(root, paths):
-    cal = {i for i, _ in section(read(root, CALENDAR_FILE), CALENDAR_HEADING)}
+    cal = {(f, i) for f, h in CALENDARS if os.path.exists(os.path.join(root, f))
+           for i, _ in section(read(root, f), h)}
     for p in paths:
         for i, line in enumerate(read(root, p).splitlines(), 1):
-            if p == CALENDAR_FILE and i in cal:
+            if (p, i) in cal:
                 continue
             for m in WEEK.finditer(line):
                 yield ("weeks", p, i, line, f"week number outside the calendar: '{m.group(0)}'")
