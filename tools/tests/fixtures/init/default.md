@@ -14,7 +14,7 @@ installed 11 skills into [tmp]/eng/skills
 added .scratch/ to .gitignore
 
 Next, by hand:
-  1. Fill in the rows of AGENTS.md still in square brackets: the client and the monitoring tool.
+  1. Fill in the rows of AGENTS.md still in square brackets: the client and the client's tools.
   2. Give the agent read-only access to the code and the tool, and write access to this
      repository only, in the agent tool's own permissions.
   3. Record the agreed scope in decisions.md and set scope in assessment/engagement-state.yml.
