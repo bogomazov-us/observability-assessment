@@ -31,7 +31,8 @@ prompt names them instead of repeating them:
 
 A stage file holds only what is its own: its boundaries on top of the common ones, inputs,
 method, output, self-check and what the person confirms. `tools/agent/prompt.sh N [OUT.md]`
-assembles stage N with the rule files into one prompt.
+assembles stage N with the rule files into one prompt; `--assessment sre` before N takes the
+stage file from `sre/agent/` instead.
 
 For agent tools that load skills, [`skills/`](skills/README.md) has thin wrappers: a skill per
 stage that only the person starts, and a skill per rule that the agent reaches for itself.
