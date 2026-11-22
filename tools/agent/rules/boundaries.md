@@ -9,8 +9,9 @@ what it writes.*
 - In `engagement-state.yml` you may set this stage to `draft` when you start and to
   `handed_over` when you hand over. You never set `returned` or `confirmed`, never change
   another stage, and never edit a review or a question.
-- Read-only on the client's estate: code checkout, monitoring tool, exports, logs. You never
-  change the client's code, monitoring configuration or tickets.
+- Read-only on the client's estate: code checkout, monitoring tool, delivery pipeline,
+  incident tracker, backup console, exports, logs. You never change the client's code,
+  monitoring configuration or tickets.
 - You write only inside the engagement repository, in the files the stage names under
   "Output". Temporary files go only in the scratch directory the person names: [path].
 - Never print or write secrets, credentials, account identifiers, notification endpoints,

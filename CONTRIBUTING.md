@@ -14,6 +14,9 @@
    public checks and skips the denylist; the maintainer runs the denylist locally before
    merging, and pushes to `main` and every release require it.
    On a pull request, CI also writes `scripts/word-delta.sh` output to the job summary.
+   The assembled stage prompts are pinned in `tools/tests/fixtures/prompts/`. After a deliberate
+   prompt change, refresh them with `UPDATE_GOLDEN=1 tools/tests/test_prompt.sh`; the pull
+   request says why the prompts changed.
 4. **A new file** goes into `scripts/files.sh`, or the guardrails fail.
 5. **Release:** raise the version in the README status table, move the `Unreleased` entries of
    `CHANGELOG.md` under a heading for that version (the release notes are taken from it, and the
