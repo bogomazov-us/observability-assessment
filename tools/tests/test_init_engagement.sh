@@ -4,6 +4,7 @@
 # in, the state file the gate reads, the ledger and registers; keeps what exists unless
 # --force, never replaces a ledger or register, and refuses bad arguments. Without --assessment
 # the result is the one pinned in fixtures/init/default.md; --assessment sre adds WORK/sre/.
+# --skills installs the rule skills always, each type's stage skills only for that type.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 KIT="$(pwd)"
@@ -47,6 +48,8 @@ grep -q "| ID | Risk | Source | Owner | Status | Date | Decision |" "$R/risks.md
 grep -qF "| \`risks.md\` |" "$R/AGENTS.md" && ok "risk register named in the instructions" || ko "risk register not named"
 [ "$(ls -d "$R"/skills/oa-* | wc -l | tr -d ' ')" -eq "$(ls -d tools/agent/skills/oa-* | wc -l | tr -d ' ')" ] \
   && ok "skills installed" || ko "skills not installed"
+skills() { ls -d "$1"/skills/$2 2>/dev/null | wc -l | tr -d ' '; }  # skills REPO GLOB: how many installed
+[ "$(skills "$R" 'oa-sre-*')" -eq 0 ] && ok "observability alone: no SRE stage skills" || ko "observability alone: SRE stage skills installed"
 grep -qx ".scratch/" "$R/.gitignore" && [ -d "$R/.scratch" ] && ok "scratch ignored" || ko "scratch not ignored"
 [ -z "$(git -C "$R" log --oneline 2>/dev/null)" ] && ok "nothing committed" || ko "something committed"
 
@@ -93,6 +96,13 @@ grep -q "^| observability |" "$S/AGENTS.md" && ko "sre alone: observability row"
   && ok "template: the block once, no per-type rows" || ko "template: block missing, repeated or per-type"
 grep -q "^## Types in this engagement$" "$R/AGENTS.md" && ko "no --assessment: types block shown" || ok "no --assessment: no types block"
 
+"$INIT" --repo "$S" --code "$T/code-a" --assessment sre --skills skills >/dev/null
+[ "$(skills "$S" 'oa-rule-*')" -eq "$(ls -d tools/agent/skills/oa-rule-* | wc -l | tr -d ' ')" ] \
+  && ok "sre alone: rule skills installed" || ko "sre alone: rule skills missing"
+[ "$(skills "$S" 'oa-sre-stage-*')" -eq "$(ls -d sre/agent/skills/oa-sre-stage-* | wc -l | tr -d ' ')" ] \
+  && ok "sre alone: SRE stage skills installed" || ko "sre alone: SRE stage skills missing"
+[ "$(skills "$S" 'oa-stage-*')" -eq 0 ] && ok "sre alone: no observability stage skills" || ko "sre alone: observability stage skills installed"
+
 echo "| F-2 | kept | assumption | x | 2026-01-01 |" >> "$S/facts.md"
 echo "# sre confirmed" >> "$S/assessment/sre/engagement-state.yml"
 echo "sre step" >> "$S/assessment/sre/progress/stage-1.md"
@@ -109,6 +119,8 @@ grep -qx "assessment: sre" "$S/assessment/engagement-state.yml" && ko "both: obs
 grep -q "no skills in .*sre/agent/skills" <<<"$out" || [ -d sre/agent/skills ] \
   && ok "both: missing SRE skills skipped with a note" || ko "both: no note for missing SRE skills"
 [ -d "$S/skills/oa-stage-1-inventory" ] && ok "both: observability skills installed" || ko "both: observability skills missing"
+[ "$(skills "$S" 'oa-*')" -eq $(( $(ls -d tools/agent/skills/oa-* sre/agent/skills/oa-* | wc -l) )) ] \
+  && ok "both: rule, observability and SRE stage skills installed" || ko "both: a skill set missing"
 echo "local" >> "$S/assessment/sre/engagement-state.yml"
 "$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
 grep -qx "local" "$S/assessment/sre/engagement-state.yml" && ok "sre: re-run keeps the state file" || ko "sre: re-run replaced the state file"

@@ -165,7 +165,8 @@ Worked at both base scopes:
 
 ## Combined format
 
-One engagement, both types, one report.
+One engagement, both types, one report. Adding the SRE type to an observability engagement
+later is the combined format too, run in sequence: the shared sequences continue.
 
 | Shared (once) | Per type |
 |---|---|

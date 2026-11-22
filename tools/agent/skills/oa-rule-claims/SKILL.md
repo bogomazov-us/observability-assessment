@@ -1,6 +1,6 @@
 ---
 name: oa-rule-claims
-description: Use whenever wording a claim about a client's code or monitoring estate in an observability assessment, above all about absence, alarms, totals, causes or a passing check.
+description: Use whenever wording a claim about a client's code, monitoring or operations in an observability or SRE assessment, above all about absence, alarms, totals, causes or a passing check.
 ---
 
 Read `__KIT__/tools/agent/rules/claims.md`, how a claim stays within what was checked, and

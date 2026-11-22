@@ -1,6 +1,6 @@
 ---
 name: oa-rule-progress-log
-description: Use while running any stage of an observability assessment: the plan, each step, each commit and each stop go into the log with times read from the clock.
+description: Use while running any stage of an observability or SRE assessment: the plan, each step, each commit and each stop go into the log with times read from the clock.
 ---
 
 Read `__KIT__/tools/agent/rules/progress-log.md`, the stage progress log, and apply it to the

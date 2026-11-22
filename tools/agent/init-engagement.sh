@@ -14,7 +14,8 @@
 # --risks         risk register, relative to --repo (default: risks.md; created if absent)
 # --scratch       scratch directory (default: --repo/.scratch, added to .gitignore)
 # --instructions  file name the agent tool reads for instructions (default: AGENTS.md)
-# --skills        also install the stage and rule skills into this folder, relative to --repo
+# --skills        also install the rule skills and each type's stage skills into this folder,
+#                 relative to --repo
 # --assessment    observability or sre; repeat for both (default: observability). SRE files go
 #                 to WORK/sre/; owner questions and findings stay shared in WORK
 # --force         replace the instructions file and the skills
@@ -28,7 +29,7 @@ KIT="$(cd "$(dirname "$0")/../.." && pwd)"
 REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" RISKS="risks.md" SCRATCH=""
 NAME="AGENTS.md" SKILLS="" FORCE=0
 CODE=() TYPES=()
-usage() { sed -n '3,25p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+usage() { sed -n '3,26p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 while [ $# -gt 0 ]; do
   case "$1" in
     --repo) REPO="${2:-}"; shift 2 ;;
@@ -133,7 +134,8 @@ put "$REPO/$RISKS" keep cat "$KIT/templates/risk-register.md"
 
 if [ -n "$SKILLS" ]; then
   F=(); [ "$FORCE" = 1 ] && F=(--force)
-  if [ "$OBS" = 1 ]; then "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} "$REPO/$SKILLS"; fi
+  R=(); [ "$OBS" = 1 ] || R=(--rules)  # the rule skills are shared; the stage skills here are observability's
+  "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} ${R[@]+"${R[@]}"} "$REPO/$SKILLS"
   if has sre; then "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} --from "$KIT/sre/agent/skills" "$REPO/$SKILLS"; fi
 fi
 
@@ -145,7 +147,7 @@ esac
 cat <<EOF
 
 Next, by hand:
-  1. Fill in the rows of $NAME still in square brackets: the client and the monitoring tool.
+  1. Fill in the rows of $NAME still in square brackets: the client and the client's tools.
   2. Give the agent read-only access to the code and the tool, and write access to this
      repository only, in the agent tool's own permissions.
   3. Record the agreed scope in $DECISIONS and set scope in $STATES.

@@ -22,7 +22,7 @@ design and a checklist: fill "Scope" and "Plan", mark the record **design only**
 "Run" and "Measured" as the checklist to run later. The proposal states that the proof is a
 design, what would be run, and which targets it would check.
 
-Engagement: [name] · Variant: [restore drill or game day] · Delivered as: [run on stage or
+Engagement: [name] · Variant: [restore drill or game day] · Record status: [demonstrated or
 design only] · Date: [date]
 
 ## Scope

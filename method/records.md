@@ -59,7 +59,7 @@ replaced it. One prefix, one kind of record.
 | `CR-` | Change request | [sow.md](../templates/sow.md) | Lead |
 | `R` (no hyphen) | Review item | [review.md](../templates/review.md) | Reviewer |
 
-One sequence for every type: `Q-`, `F-`, `REC-`, `V-`, `W-`. Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
+One sequence for every type: `Q-`, `F-`, `REC-`, `V-`, `W-`. `E-` too: one sequence per engagement across types, so a second type's checks continue each stage's block (E-1xx …). Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
 rule ids (`G01`, `SL001`, `M04`, `W01`) have no hyphen and are not records.
 
 ## Status sets

@@ -1,6 +1,6 @@
 ---
 name: oa-rule-boundaries
-description: Use before reading or querying anything in an observability assessment, and whenever a step would write outside the engagement repository, print a value from logs or configuration, or touch another stage's state.
+description: Use before reading or querying anything in an observability or SRE assessment, and whenever a step would write outside the engagement repository, print a value from logs or configuration, or touch another stage's state.
 ---
 
 Read `__KIT__/tools/agent/rules/boundaries.md`, boundaries common to every stage, and apply it
