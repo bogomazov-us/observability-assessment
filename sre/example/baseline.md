@@ -11,7 +11,8 @@ tools/baseline.py sre/exports/incidents-2027-06-08.csv --map severity=priority \
   --deploys sre/exports/deploys-2027-06-08.csv --pages sre/exports/pages-2027-06-08.csv
 ```
 
-The tracker calls severity "priority" (`--map`). Windows come from the data, as the exports
+The tracker calls severity "priority" (`--map`) and marks each incident's class: `outage`, or
+`data` for a data-correctness defect. Windows come from the data, as the exports
 were requested: incidents for six months, deploys and pages for three. Clock: UTC, the
 client's.
 
@@ -24,6 +25,8 @@ Source: `sre/exports/incidents-2027-06-08.csv`.
 | B-01 | Incidents, severity critical | 4 | 14 | count of rows with this severity | 2026-12-05 to 2027-05-29 (from data) |
 | B-02 | Incidents, severity major | 6 | 14 | count of rows with this severity | 2026-12-05 to 2027-05-29 (from data) |
 | B-03 | Incidents, severity minor | 4 | 14 | count of rows with this severity | 2026-12-05 to 2027-05-29 (from data) |
+| B-37 | Incidents, class data | 2 | 14 | count of rows with this class | 2026-12-05 to 2027-05-29 (from data) |
+| B-38 | Incidents, class outage | 12 | 14 | count of rows with this class | 2026-12-05 to 2027-05-29 (from data) |
 | B-04 | Time to detect, median | 12 min | 13 of 14 | nearest-rank median of detected − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-05 | Time to detect, p90 | 40 min | 13 of 14 | nearest-rank p90 of detected − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-06 | Time to detect, severity critical, median | 4 min | 4 of 4 | nearest-rank median of detected − started | 2026-12-05 to 2027-05-29 (from data) |
@@ -32,6 +35,10 @@ Source: `sre/exports/incidents-2027-06-08.csv`.
 | B-09 | Time to detect, severity major, p90 | 40 min | 6 of 6 | nearest-rank p90 of detected − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-10 | Time to detect, severity minor, median | 30 min | 3 of 4 | nearest-rank median of detected − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-11 | Time to detect, severity minor, p90 | 50 min | 3 of 4 | nearest-rank p90 of detected − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-39 | Time to detect, class data, median | 6 min | 2 of 2 | nearest-rank median of detected − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-40 | Time to detect, class data, p90 | 50 min | 2 of 2 | nearest-rank p90 of detected − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-41 | Time to detect, class outage, median | 12 min | 11 of 12 | nearest-rank median of detected − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-42 | Time to detect, class outage, p90 | 35 min | 11 of 12 | nearest-rank p90 of detected − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-12 | Time to recover, median | 70 min | 14 of 14 | nearest-rank median of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-13 | Time to recover, p90 | 2 h 30 min | 14 of 14 | nearest-rank p90 of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-14 | Time to recover, severity critical, median | 45 min | 4 of 4 | nearest-rank median of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
@@ -40,6 +47,10 @@ Source: `sre/exports/incidents-2027-06-08.csv`.
 | B-17 | Time to recover, severity major, p90 | 2 h 10 min | 6 of 6 | nearest-rank p90 of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-18 | Time to recover, severity minor, median | 100 min | 4 of 4 | nearest-rank median of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-19 | Time to recover, severity minor, p90 | 2 h 30 min | 4 of 4 | nearest-rank p90 of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-43 | Time to recover, class data, median | 70 min | 2 of 2 | nearest-rank median of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-44 | Time to recover, class data, p90 | 2 h 30 min | 2 of 2 | nearest-rank p90 of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-45 | Time to recover, class outage, median | 60 min | 12 of 12 | nearest-rank median of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
+| B-46 | Time to recover, class outage, p90 | 2 h 10 min | 12 of 12 | nearest-rank p90 of recovered − started | 2026-12-05 to 2027-05-29 (from data) |
 | B-20 | Recurrence share | 46.2% (6 of 13) | 13 of 14 | incidents whose cause matches an earlier incident's, of incidents with a cause | 2026-12-05 to 2027-05-29 (from data) |
 
 ## Deploys (DORA)

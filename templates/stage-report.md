@@ -148,6 +148,9 @@ evidence  stage-5-notes.md        4 A
 evidence  recommendations.md      4 A
 ```
 
+A line `assessment observability` or `assessment sre` names the report's type, once per type;
+without it the types follow the source paths.
+
 - **The report** takes sections 1, 2, 3 and 5 of each chapter; only the summary is rewritten.
 - **The bundle** holds the records (section 4; at stage 4, a line per finding file) and every
   evidence catalog (Appendix A). Stages keep their own `E-` ranges (stage 1 E-1xx, stage 2

@@ -9,23 +9,24 @@
 set -euo pipefail
 mkdir -p "$1/sre/exports"
 cd "$1/sre/exports"
-# Incident tracker: six months; severity is the tracker's "priority"; no titles or people.
+# Incident tracker: six months; severity is the tracker's "priority"; class: outage, or data for
+# a data-correctness defect; no titles or people.
 cat > incidents-2027-06-08.csv <<'CSV'
-id,service,priority,started,detected,recovered,cause
-101,checkout,critical,2026-12-05T18:10:00Z,2026-12-05T18:14:00Z,2026-12-05T18:55:00Z,deploy
-102,slots,major,2026-12-19T09:00:00Z,2026-12-19T09:35:00Z,2026-12-19T11:10:00Z,slot-capacity
-103,payments,major,2027-01-09T19:20:00Z,2027-01-09T19:24:00Z,2027-01-09T20:05:00Z,provider-timeout
-104,checkout,minor,2027-01-23T11:00:00Z,2027-01-23T11:50:00Z,2027-01-23T13:30:00Z,config
-105,web,critical,2027-02-06T17:30:00Z,2027-02-06T17:33:00Z,2027-02-06T18:10:00Z,deploy
-106,payments,major,2027-02-20T18:00:00Z,2027-02-20T18:40:00Z,2027-02-20T19:30:00Z,provider-timeout
-107,orders-db,critical,2027-03-13T02:10:00Z,2027-03-13T02:22:00Z,2027-03-13T05:50:00Z,db-failover
-108,checkout,major,2027-03-27T10:00:00Z,2027-03-27T10:06:00Z,2027-03-27T10:50:00Z,deploy
-109,slots,minor,2027-04-10T08:00:00Z,2027-04-10T08:30:00Z,2027-04-10T09:40:00Z,cert-expiry
-110,checkout,critical,2027-04-24T19:00:00Z,2027-04-24T19:05:00Z,2027-04-24T19:58:00Z,Deploy
-111,web,minor,2027-05-08T14:00:00Z,2027-05-08T14:20:00Z,2027-05-08T15:00:00Z,
-112,orders-db,major,2027-05-15T03:00:00Z,2027-05-15T03:25:00Z,2027-05-15T04:30:00Z,db-failover
-113,payments,minor,2027-05-22T12:00:00Z,,2027-05-22T14:00:00Z,provider-timeout
-114,checkout,major,2027-05-29T18:30:00Z,2027-05-29T18:36:00Z,2027-05-29T19:40:00Z,promo-rules
+id,service,priority,started,detected,recovered,cause,class
+101,checkout,critical,2026-12-05T18:10:00Z,2026-12-05T18:14:00Z,2026-12-05T18:55:00Z,deploy,outage
+102,slots,major,2026-12-19T09:00:00Z,2026-12-19T09:35:00Z,2026-12-19T11:10:00Z,slot-capacity,outage
+103,payments,major,2027-01-09T19:20:00Z,2027-01-09T19:24:00Z,2027-01-09T20:05:00Z,provider-timeout,outage
+104,checkout,minor,2027-01-23T11:00:00Z,2027-01-23T11:50:00Z,2027-01-23T13:30:00Z,config,data
+105,web,critical,2027-02-06T17:30:00Z,2027-02-06T17:33:00Z,2027-02-06T18:10:00Z,deploy,outage
+106,payments,major,2027-02-20T18:00:00Z,2027-02-20T18:40:00Z,2027-02-20T19:30:00Z,provider-timeout,outage
+107,orders-db,critical,2027-03-13T02:10:00Z,2027-03-13T02:22:00Z,2027-03-13T05:50:00Z,db-failover,outage
+108,checkout,major,2027-03-27T10:00:00Z,2027-03-27T10:06:00Z,2027-03-27T10:50:00Z,deploy,outage
+109,slots,minor,2027-04-10T08:00:00Z,2027-04-10T08:30:00Z,2027-04-10T09:40:00Z,cert-expiry,outage
+110,checkout,critical,2027-04-24T19:00:00Z,2027-04-24T19:05:00Z,2027-04-24T19:58:00Z,Deploy,outage
+111,web,minor,2027-05-08T14:00:00Z,2027-05-08T14:20:00Z,2027-05-08T15:00:00Z,,outage
+112,orders-db,major,2027-05-15T03:00:00Z,2027-05-15T03:25:00Z,2027-05-15T04:30:00Z,db-failover,outage
+113,payments,minor,2027-05-22T12:00:00Z,,2027-05-22T14:00:00Z,provider-timeout,outage
+114,checkout,major,2027-05-29T18:30:00Z,2027-05-29T18:36:00Z,2027-05-29T19:40:00Z,promo-rules,data
 CSV
 # Delivery pipeline: production deploys of the tier-1 and tier-2 services, three months.
 cat > deploys-2027-06-08.csv <<'CSV'

@@ -57,7 +57,7 @@ combined format's rules apply:
 |---|---|---|---|---|---|
 | D-10 | SRE scope as above; the observability profile of the read-out stands, no observability milestone demonstrated yet | Sponsor (head of engineering) | 2027-06-07 | Kick-off note | accepted |
 | D-11 | SRE stage 1 confirmed | Lead | 2027-06-10 | `sre/inventory.md` at `c71e0a4` | accepted |
-| D-12 | Tiers: S-01 to S-05 tier 1; S-06 and S-07 tier 2, on condition that checkout goes on without promotions when `promo-rules` fails (Q-05) | Head of engineering, with the service owners | 2027-06-14 | Targets review; written answer | accepted |
+| D-12 | Tiers: S-01 to S-05 tier 1; S-06 and S-07 tier 2, on condition that checkout goes on without promotions when `promo-rules` fails (Q-05); target levels: dimensions 1 and 9 at 3, 4 and 6 at 4 | Head of engineering, with the service owners | 2027-06-14 | Targets review; written answer | accepted |
 | D-13 | RTO 1 hour and RPO 5 minutes for the orders database and the payments ledger (Q-06) | Platform and payments technical owners | 2027-06-14 | Written answers | accepted |
 | D-14 | Tier-1 rollout: canary to 10% with an automatic halt; rollback within 15 minutes (Q-07) | Release technical owner | 2027-06-15 | Written answer | accepted |
 | D-15 | SRE stage 2 confirmed | Lead | 2027-06-15 | `sre/target-model.md` at `9d04b1e` | accepted |
@@ -85,7 +85,8 @@ Q-09, who owns `promo-rules`.
 
 ## Exports and baseline
 
-The client sent three exports from the tracker, the pipeline and the paging tool. The
+The client sent three exports from the tracker, the pipeline and the paging tool; the
+tracker marks each incident's class, outage or data correctness. The
 guardrails track no `.csv` files, so the example keeps them as a generator,
 [exports.sh](exports.sh), that writes them where the engagement keeps them. The baseline is
 the tool's output on them, unchanged, plus the numbers counted from other exports:
@@ -107,7 +108,8 @@ Seven services, five tier 1 ([service-catalogue.md](service-catalogue.md)): web 
 was found in the deploy history, not in the registry: status differs, tier 2 by D-12.
 
 Targets ([reliability-targets.md](reliability-targets.md)): RTO and RPO per tier-1 data store
-(T-05 to T-08, D-13) and the rollout policy (T-09, D-14) are confirmed. The SLO is the
+(T-05 to T-08, D-13) and the rollout policy (T-09, D-14) are confirmed, and so is a
+target level per scored dimension (T-10 to T-13, D-12). The SLO is the
 observability spec's `SLO-checkout`, cited by T-04 and still proposed. The default rows stay
 default: their dimensions are out of scope.
 
@@ -118,7 +120,7 @@ default: their dimensions are out of scope.
 | G-01 | S-05 | 9 Backup and disaster recovery | T-05 1 hour, T-06 5 minutes | Backups twice a day and a log archive; last restore 2026-10-14; failover by hand, 3 h 40 min on 2027-03-13 | B-32, B-33, B-15; E-307 | partial |
 | G-02 | S-03 | 9 Backup and disaster recovery | T-07 1 hour, T-08 5 minutes | Backups run; no restore on record | B-32, B-34 | absent |
 | G-03 | dimension-wide | 6 Change safety | T-09 | One-step rolling deploy, no halt; rollback is a hand redeploy of the previous version | B-24 to B-26; E-108 | absent |
-| G-04 | dimension-wide | 4 Incidents and learning | Target model: level 4 | Severity levels, roles and postmortems in place; overdue action items not escalated | B-20, B-35; E-106 | partial |
+| G-04 | dimension-wide | 4 Incidents and learning | T-11: level 4 | Severity levels, roles and postmortems in place; overdue action items not escalated | B-20, B-35; E-106 | partial |
 | G-05 | S-02 | 1 Service catalogue and criticality | D-12: checkout goes on without promotions | No timeout or fallback on the `promo-rules` call found | L-14; E-308 | absent |
 | G-06 | dimension-wide | 2 SLOs and error budgets | Error-budget policy (Q-08) | None; SLO definition and measurement: see observability 6 | E-309 | absent |
 

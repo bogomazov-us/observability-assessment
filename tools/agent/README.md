@@ -116,10 +116,13 @@ are the SRE stages.
 | `sre/maturity.yml` (`model: sre`) | the person (provisional baseline); 5 | 5, 6, report |
 | `sre/stage-5-notes.md` | 5 | 6, report |
 | `sre/recommendations.md` | 6 | report |
+| `summary.md`, `manifest.txt` (every type; in the working folder itself) | the person, at each accepted stage | `tools/assessment-pdf.sh` |
 
 The spec is drafted here; the person takes the confirmed spec set to the client's
 `docs/observability/`.
 `tools/tests/test_paths.sh` checks the prompts against this table.
+Engagement paths in the instructions file and the installed skills are relative to the main
+checkout's root, also when the agent works in a worktree.
 
 ## How to run a stage
 
