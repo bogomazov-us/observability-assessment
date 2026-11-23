@@ -1,0 +1,6 @@
+scope: {journeys: [checkout], services: [checkout]}
+dimensions:
+  - {number: 6, status: scored, level: 1, evidence: [{type: document, ref: SLO list, empty}], confidence: high}
+  - {number: 7, status: scored, level: 2, evidence: [{type: export, ref: alert export}], confidence: high}
+  - {number: 8, status: not_scored, reason: scored in the SRE profile, refers_to: sre/4}
+  - {number: 10, status: scored, level: 2, evidence: [{type: export, ref: deploy markers}], confidence: high}

@@ -1,0 +1,2 @@
+scope: {journeys: [checkout], services: [checkout]}
+dimensions: [{number: 8, status: not_scored, reason: scored in the SRE profile, refers_to: sre/12}]

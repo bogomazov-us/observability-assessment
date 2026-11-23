@@ -9,6 +9,8 @@ to the contract, not the method.
 > staffing rule (the lead full time, other roles by scope) and the per-journey increment were
 > set by the owner on 2026-10-21. See "Calibrating".
 
+SRE and combined starting values: [sre/README.md](../sre/README.md#estimation).
+
 ## How to estimate
 
 1. **Fix the scope** in the units below: journeys, services, monitoring tools, environments,

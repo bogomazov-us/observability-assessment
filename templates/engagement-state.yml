@@ -11,13 +11,17 @@
 #           of the decision-register entry that records the confirmation), all three.
 #           A confirmation is never rewritten; a stage re-opened after it is a new decision.
 # reviews:  appended, never edited or removed; a review sets no status.
+# recheck:  optional: done, or not_done with recheck_reason, for the sample re-check of the
+#           stage's claims by another path before it was confirmed.
 # questions: owner questions that block a stage, asked in the format of
 #           templates/owner-questions.md. answer_ref is the decision-register id of the
 #           answer; absent while the question is open.
 
+# assessment: observability          # or sre; absent means observability
+
 scope:
   decision_ref: "[decision-register id of the agreed scope]"
-  access_granted_on: [YYYY-MM-DD]    # read-only access to code and monitoring estate
+  access_granted_on: [YYYY-MM-DD]    # read-only access to the code and the client's tools
 
 stages:
   - number: 1                        # Inventory
@@ -45,6 +49,8 @@ stages:
 #    confirmed_by: "[engagement lead]"
 #    confirmed_on: [YYYY-MM-DD]
 #    decision_ref: "[D-..]"
+#    recheck: not_done
+#    recheck_reason: "[why not, e.g. confirmed by the owner in one message]"
 #    reviews:
 #      - {date: [YYYY-MM-DD], by: "[reviewer]", file: "[reviews/stage-1-round-1.md]"}
 

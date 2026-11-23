@@ -8,6 +8,7 @@ source. An agent without skills runs a stage from `tools/agent/prompt.sh` as bef
 | Skill | Started by | Points at |
 |---|---|---|
 | `oa-stage-1-inventory` … `oa-stage-6-recommendations` | the person only: the description says so and the skill turns off the agent starting it on its own | `tools/agent/prompt.sh N`: the stage prompt and the shared rules, the gate check first |
+| `oa-sre-stage-1-inventory` … `oa-sre-stage-6-recommendations`, in `sre/agent/skills/` | the person only, as above | `tools/agent/prompt.sh --assessment sre N` |
 | `oa-rule-boundaries` | the agent, before reading or querying anything | [rules/boundaries.md](../rules/boundaries.md) |
 | `oa-rule-evidence` | the agent, whenever it writes a claim | [rules/evidence.md](../rules/evidence.md) |
 | `oa-rule-claims` | the agent, whenever it words a claim | [rules/claims.md](../rules/claims.md) |
@@ -22,13 +23,18 @@ answers a question about an alarm.
 ## Installing
 
 ```
-tools/agent/skills/install.sh [--force] SKILLS_DIR
+tools/agent/skills/install.sh [--force] [--rules | --from DIR] [--base DIR] SKILLS_DIR
 ```
 
-Copies the skills into the engagement's skills directory and writes this kit checkout's
-absolute path into each, so the engagement uses the kit at the version checked out. A skill
+Flags go in any order. Copies the skills into the engagement's skills directory and writes
+this kit checkout's path into each, so the engagement uses the kit at the version checked out:
+absolute, or relative to `--base` (init passes the engagement repository, so no machine-local
+path is committed). `--rules` installs the rule skills only. A skill
 that already exists there is kept unless `--force` is given. Re-run it after moving the kit or
-checking out another release. The skills read the kit; give the agent read access to it and
+checking out another release. `--from DIR` installs an assessment type's skills folder
+instead, such as `sre/agent/skills`; `init-engagement.sh --skills` installs the folder of each
+type in the engagement. The SRE folder holds stage skills only: the rule skills are shared and
+come from this folder. The skills read the kit; give the agent read access to it and
 no write access, as for the stage prompts.
 
 Tests: `tools/tests/test_skills.sh`.

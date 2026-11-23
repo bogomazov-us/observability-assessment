@@ -10,8 +10,8 @@
 - When the evidence for a claim cannot be obtained, or two sources contradict each other, do
   not write the claim and do not fill the gap with a plausible guess: list it under "Could not
   evidence" or "Open questions", with what is missing, and go on with the rest.
-- Journeys, functions and attempts are named by the terms of the `glossary` in
-  `observability-spec.yml`, from stage 2 on. A name the glossary lacks, or a thing it names
+- Journeys, functions and attempts are named by the engagement's spec `glossary`
+  (`observability-spec.yml` or the SRE targets file), from stage 2 on. A name the glossary lacks, or a thing it names
   differently, is an open question, not a new term.
 - Your own draft is not evidence. An error in it is corrected in the draft, not recorded as a
   difference.

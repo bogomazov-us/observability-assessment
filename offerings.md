@@ -5,6 +5,7 @@ without the authors.
 
 | | **Assessment** | **Blueprint** | **Implementation + hypercare** |
 |---|---|---|---|
+| Assessment types | Observability (this page); SRE, or both combined: [sre/README.md](sre/README.md) | Observability | Observability |
 | Question answered | Where are we, what hurts, what to do first? | What exactly do we build, and how do we know it works? | Build it, prove it on stage, run it through go-live |
 | Duration | 2–3 weeks (focused) or 6 weeks (full) | 3–4 weeks after an assessment | 6–10 weeks to go-live, then 4 weeks of hypercare (extension priced per week) |
 | Inputs from the client | Access to code, monitoring tool (read-only), ticketing; 5–8 stakeholder interviews; incident history. Full format, golden-journey proof: stage access with write rights to the monitoring configuration, one client developer for 5 days; the client owns the code change | Assessment outputs; product owner for SLOs; tier-1 journeys agreed | Back-end and front-end developers; platform access; hypercare rota |

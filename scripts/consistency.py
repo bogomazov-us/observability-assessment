@@ -2,16 +2,20 @@
 # SPDX-License-Identifier: Apache-2.0
 """Consistency check: stops the contradictions the kit removed from coming back.
 
-  scripts/consistency.py [--root DIR] [--allow FILE]
+  scripts/consistency.py [--root DIR] [--allow FILE] [--verbose]
 
-Pattern-based, not a Markdown parser. Four checks:
-  weeks   a week number ("week 2", "weeks 1-2") outside the calendar section of
-          method/getting-started.md; the playbook's Week column equals the calendar's
+Pattern-based, not a Markdown parser. Five checks:
+  weeks   a week number ("week 2", "weeks 1-2") outside the calendar sections (CALENDARS);
+          the playbook's Week column equals the calendar of method/getting-started.md
   prefix  an id prefix (D-, REC-, ...) not in the registry table of method/records.md
   status  an inline status list (a · b · c, a / b / c, a | b) that names a status set of
           method/records.md but differs from its values
   gate    a checked phrase of a stage gate in tools/agent/README.md missing from the README
           row or from the stage prompt section it restates
+  shared  a sentence of scripts/consistency-shared.yml missing from one of its files (the
+          method shape both assessment types' stage files repeat). The first file must exist;
+          a later one is skipped while missing or a placeholder (--verbose says so), then
+          enforced. A missing file whose stage has another file (a renamed stage) fails.
 Exceptions go in the allow-list (default scripts/consistency-allow.yml), one per line:
   - "check | file | text on the offending line | reason"
 An entry that matches nothing fails, so the list cannot go stale.
@@ -22,15 +26,18 @@ import re
 import sys
 
 # Files and folders checked, relative to the root. Extend here (e.g. "example").
-SCOPE = ["README.md", "offerings.md", "backlog.md", "method", "templates", "tools", "practice", "example"]
+SCOPE = ["README.md", "offerings.md", "backlog.md", "method", "templates", "tools", "practice", "example", "sre"]
 EXCLUDE = ["tools/tests"]
 EXTENSIONS = (".md", ".yml")
 
 CALENDAR_FILE = "method/getting-started.md"
 CALENDAR_HEADING = "## 3. Calendar"
+# (file, heading) of the sections where week numbers are allowed
+CALENDARS = [(CALENDAR_FILE, CALENDAR_HEADING), ("sre/README.md", "## Calendar")]
 PLAYBOOK_FILE = "method/playbook.md"
 RECORDS_FILE = "method/records.md"
 AGENT_README = "tools/agent/README.md"
+SHARED_FILE = "scripts/consistency-shared.yml"
 
 # (stage row in the README gate table, phrase, prompt file, section of the prompt)
 GATE_PHRASES = [
@@ -122,10 +129,11 @@ def registry(root):
 
 
 def check_weeks(root, paths):
-    cal = {i for i, _ in section(read(root, CALENDAR_FILE), CALENDAR_HEADING)}
+    cal = {(f, i) for f, h in CALENDARS if os.path.exists(os.path.join(root, f))
+           for i, _ in section(read(root, f), h)}
     for p in paths:
         for i, line in enumerate(read(root, p).splitlines(), 1):
-            if p == CALENDAR_FILE and i in cal:
+            if (p, i) in cal:
                 continue
             for m in WEEK.finditer(line):
                 yield ("weeks", p, i, line, f"week number outside the calendar: '{m.group(0)}'")
@@ -233,6 +241,48 @@ def check_gates(root):
             yield ("gate", prompt, sec[0][0], "", f"'{heading}' lacks the phrase the stage {stage} gate states: {phrase}")
 
 
+def load_shared(root):
+    """Entries of the shared-sentence list: [(line number, sentence, [files])]."""
+    path = os.path.join(root, SHARED_FILE)
+    if not os.path.exists(path):
+        return []
+    out = []
+    with open(path, encoding="utf-8") as fh:
+        for n, line in enumerate(fh, 1):
+            m = re.match(r'^\s*-\s*sentence:\s*"(.*)"\s*$', line)
+            if m:
+                out.append([n, norm(m.group(1)), []])
+                continue
+            m = re.match(r"^\s*files:\s*\[(.*)\]\s*$", line)
+            if m and out:
+                out[-1][2] = [f.strip() for f in m.group(1).split(",") if f.strip()]
+    for n, sentence, fs in out:
+        if not sentence or len(fs) < 2:
+            sys.exit(f"{path}:{n}: expected a sentence and files: [observability file, other file]")
+    return out
+
+
+def check_shared(root, notes):
+    for n, sentence, fs in load_shared(root):
+        for k, f in enumerate(fs):
+            full = os.path.join(root, f)
+            if not os.path.exists(full):
+                stage = re.match(r"(stage-\d+-)", os.path.basename(full))
+                d = os.path.dirname(full)
+                other = stage and os.path.isdir(d) and [x for x in sorted(os.listdir(d)) if x.startswith(stage.group(1))]
+                if k == 0 or other:
+                    yield ("shared", SHARED_FILE, n, "", f"{f} is missing" + (f" (the stage has {', '.join(other)})" if other else ""))
+                else:
+                    notes.append(f"  shared: skipped, {f} does not exist yet: {sentence}")
+                continue
+            text = read(root, f)
+            if k and "(placeholder)" in (text.splitlines() or [""])[0]:
+                notes.append(f"  shared: skipped, {f} is a placeholder: {sentence}")
+                continue
+            if sentence not in norm(text):
+                yield ("shared", f, 0, sentence, f"lacks the shared sentence of {SHARED_FILE}:{n}: {sentence}")
+
+
 def load_allow(path):
     allow = []
     if not os.path.exists(path):
@@ -253,6 +303,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--root", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
     ap.add_argument("--allow", help="allow-list (default: ROOT/scripts/consistency-allow.yml)")
+    ap.add_argument("-v", "--verbose", action="store_true", help="also print the skipped shared entries")
     a = ap.parse_args()
     root = os.path.abspath(a.root)
     allow_path = a.allow or os.path.join(root, "scripts", "consistency-allow.yml")
@@ -262,6 +313,10 @@ def main():
 
     found = list(check_weeks(root, paths)) + list(check_prefixes(root, paths, prefixes)) \
         + list(check_status(root, paths, sets)) + list(check_gates(root))
+    notes = []
+    found += list(check_shared(root, notes))
+    for note in notes if a.verbose else []:
+        print(note)
     fail = 0
     for check, path, line_no, text, msg in found:
         hit = next((e for e in allow if e[1] == check and e[2] == path and e[3] in text), None)

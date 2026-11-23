@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/report-pdf.sh: a clean source builds and passes; an id that does not reach the
-# PDF text fails the build.
+# PDF text fails the build; the whole-assessment build follows the types it holds.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 tool="$here/../report-pdf.sh"
@@ -45,3 +45,25 @@ out="$("$asm" --manifest "$tmp/a/m.txt" --project Demo --version abc1234 --out-d
   && { echo "✗ assessment: an id missing from the evidence bundle: expected a failure"; exit 1; }
 grep -q "without a catalog entry: E-109" <<<"$out" || { echo "✗ assessment: unresolved id not reported"; exit 1; }
 echo "✓ assessment: report and evidence split by section; report ids resolve in the bundle"
+grep -q "under columns Window (or Checked at), Result and Limits" <<<"$out" \
+  || { echo "✗ assessment: the catalog format not named on failure"; exit 1; }
+echo "✓ assessment: a failing catalog check names the format it expects"
+# The types set the title and the file names: from the sources, or from "assessment" lines.
+mkdir -p "$tmp/s/sre"
+printf '# SRE assessment — stage 1: inventory\n\n## 1. Result\n\nB-01 is measured (E-201).\n\n## Appendix A. Evidence catalog\n\n### E-201 — baseline\n\n- Data window: 30 d\n- Result: 3 pages\n- Limits: one export\n' > "$tmp/s/sre/s1.md"
+printf 'report    sre/s1.md  1\nevidence  sre/s1.md  A\n' > "$tmp/s/m.txt"
+"$asm" --manifest "$tmp/s/m.txt" --project Demo --version abc1234 --out-dir "$tmp/s/out" >/dev/null \
+  || { echo "✗ assessment, SRE: expected exit 0"; exit 1; }
+txt="$(pdftotext "$tmp/s/out/sre-assessment-report-abc1234.pdf" - | tr -s ' \n' ' ')"
+grep -q "SRE assessment — Demo" <<<"$txt" && grep -q "Stage 1: inventory" <<<"$txt" && ! grep -qi "observability" <<<"$txt" \
+  && [ -f "$tmp/s/out/sre-assessment-evidence-abc1234.pdf" ] \
+  || { echo "✗ assessment, SRE: title, chapter title or file names"; exit 1; }
+cp "$tmp/a/s1.md" "$tmp/s/s1.md"; sed -i.bak 's/(E-109)/(E-101)/' "$tmp/s/s1.md"
+printf 'report    s1.md  1\nreport    sre/s1.md  1\nevidence  s1.md  A\nevidence  sre/s1.md  A\n' > "$tmp/s/both.txt"
+"$asm" --manifest "$tmp/s/both.txt" --project Demo --version abc1234 --out-dir "$tmp/s/out" >/dev/null \
+  && pdftotext "$tmp/s/out/observability-sre-assessment-report-abc1234.pdf" - | tr -s ' \n' ' ' | grep -q "Observability and SRE assessment — Demo" \
+  || { echo "✗ assessment, combined: title or file name"; exit 1; }
+printf 'assessment sre\nreport    s1.md  1\nevidence  s1.md  A\n' > "$tmp/s/named.txt"
+"$asm" --manifest "$tmp/s/named.txt" --project Demo --version abc1234 --out-dir "$tmp/s/named" >/dev/null \
+  && [ -f "$tmp/s/named/sre-assessment-report-abc1234.pdf" ] || { echo "✗ assessment: an assessment line not followed"; exit 1; }
+echo "✓ assessment: title and file names follow the types (SRE, combined, named in the manifest)"

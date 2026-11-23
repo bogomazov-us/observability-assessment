@@ -20,6 +20,7 @@ KIT_FILES=(
   tools/collect.md
   tools/speclint.md
   tools/maturity.md
+  tools/baseline.md
   tools/stagegate.md
   tools/agent/README.md
   tools/agent/stage-1-inventory.md
@@ -69,4 +70,32 @@ KIT_FILES=(
   practice/building-the-practice.md
   practice/pilot.md
   backlog.md
+  # SRE assessment
+  sre/README.md
+  sre/maturity-model.md
+  sre/agent/stage-1-inventory.md
+  sre/agent/stage-3-gap.md
+  sre/agent/reference/stage-3-reference.md
+  sre/agent/stage-2-target-model.md
+  sre/agent/reference/stage-2-reference.md
+  sre/agent/reference/stage-1-reference.md
+  sre/templates/data-request.md
+  sre/templates/interview-guide.md
+  sre/templates/service-catalogue.md
+  sre/templates/reliability-targets.md
+  sre/templates/readiness-review.md
+  sre/templates/recovery-proof.md
+  sre/agent/stage-4-findings.md
+  sre/agent/reference/stage-4-reference.md
+  sre/agent/stage-5-maturity.md
+  sre/agent/reference/stage-5-reference.md
+  sre/agent/stage-6-recommendations.md
+  sre/agent/reference/stage-6-reference.md
+  sre/example/worked-example.md
+  sre/example/baseline.md
+  sre/example/service-catalogue.md
+  sre/example/reliability-targets.md
+  sre/example/agent/progress/stage-1.md
+  sre/example/agent/owner-questions.md
+  sre/example/agent/reviews/stage-1-round-1.md
 )

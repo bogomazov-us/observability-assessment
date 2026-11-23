@@ -1,0 +1,3 @@
+model: sre
+scope: {journeys: [checkout], services: [checkout]}
+dimensions: [{number: 9, status: na, reason: no stateful service in scope}]

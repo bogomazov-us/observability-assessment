@@ -52,11 +52,14 @@ replaced it. One prefix, one kind of record.
 | `REC-` | Recommendation, on confirmed findings only | Stage 6, [report.md](../templates/report.md) | Agent or lead |
 | `V-` | Verification task for an assumption | Stage 6 | Agent or lead |
 | `W-` | Work towards an accepted decision | Stage 6, [roadmap.md](../templates/roadmap.md) | Agent or lead |
+| `S-` | Service in the SRE catalogue: tier, owner, dependencies | SRE stage 1 `sre/service-catalogue.md` (template `sre/templates/service-catalogue.md`) | Agent or lead; the tier confirmed by its owner |
+| `T-` | Reliability target per tier or service: SLO, RTO, RPO, rollout, on-call and toil limits | SRE stage 2 `sre/targets/` (template `sre/templates/reliability-targets.md`) | Agent proposes; a technical owner agrees, recorded as a `D-` row |
+| `B-` | Baseline number with its method, window and source, or *not measured* | SRE stage 1 `sre/baseline.md` (`tools/baseline.py`); the summary's baseline section | Agent or lead |
 | `M-` | Milestone | [roadmap.md](../templates/roadmap.md) | Lead |
 | `CR-` | Change request | [sow.md](../templates/sow.md) | Lead |
 | `R` (no hyphen) | Review item | [review.md](../templates/review.md) | Reviewer |
 
-Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
+One sequence for every type: `Q-`, `F-`, `REC-`, `V-`, `W-`. `E-` too: one sequence per engagement across types, so a second type's checks continue each stage's block (E-1xx …). Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
 rule ids (`G01`, `SL001`, `M04`, `W01`) have no hyphen and are not records.
 
 ## Status sets
@@ -67,25 +70,29 @@ implemented function, and an implemented function is not a proven detection.
 | Set | Values | Where | Set by |
 |---|---|---|---|
 | Stage status | `not_started` · `draft` · `handed_over` · `returned` · `confirmed` | `engagement-state.yml`; stagegate | Agent: `draft`, `handed_over`; lead: `returned`, `confirmed` |
-| Inventory object | confirmed · differs · not found · not verifiable | Stage 1 | Agent; lead confirms with the stage |
+| Inventory object | confirmed · differs · not found · not verifiable | Stage 1; SRE catalogue (`S-`) | Agent; lead confirms with the stage |
 | Signal state | `live` · `differs` · `to_build` · `not_verifiable` | Spec `signals`; stage 3; speclint | Agent; lead confirms with the stage |
-| Spec row status | `proposed` · `confirmed` | Spec `slos`, `alerts`; speclint | `confirmed` once a technical owner agreed target, owner and threshold |
+| Spec row status | `proposed` · `confirmed` | Spec `slos`, `alerts`; speclint; SRE targets (`T-`) | `confirmed` once a technical owner agreed target, owner and threshold |
 | Alert state | `shadow` · `paging` | Spec `alerts`; [slo-alerts](../templates/spec-set/slo-alerts.md) | `paging` only when its paging gate is shown |
 | Error class | `expected` · `failure` · `caller_defect` · `ambiguous` · `unknown` · `none` | Spec `taxonomy`; speclint | Agent; lead checks against the code path |
 | User impact | `blocked` · `degraded` · `unaffected` · `unknown` | Spec `taxonomy`; speclint | As error class |
 | Severity | `P1` · `P2` · `P3` | A finding (scale in [finding.md](../templates/finding.md)); separately, an alert's paging severity; speclint | Agent proposes; lead sets, with the reason |
 | Finding verdict | assumption (drafted) · confirmed · disputed · refuted · inconclusive · resolved | [finding.md](../templates/finding.md) | Owner of the finding's verdict |
 | Decision | proposed · accepted · superseded | Register, finding, stage report | Owner of the decision; lead records |
-| Implementation | absent · partial · implemented | Finding, stage report | Lead, from evidence |
+| Implementation | absent · partial · implemented | Finding, stage report, SRE gap rows | Lead, from evidence |
 | Verification | untested · observed · reproduced | Finding, stage report | Lead, from evidence |
 | Fact | assumption · confirmed · disputed · refuted | Facts ledger | Agent output enters as assumption; lead confirms; never deleted |
 | Risk | open · accepted · mitigated · closed · superseded | Risk register | Lead records; owner *proposed* until the client's owner accepts |
 | Evidence level | browser · agent · tenant · document only | Finding; playbook principle 3 | Whoever cites it |
 | Confidence | `high` · `medium` · `low` | Finding, stage report, maturity; maturity.py | Author, with the reason |
 | Maturity score | `scored` · `partial` · `not_scored` · `na`; a level 1–5, marked provisional until its findings' verdicts | `maturity.yml`; maturity.py | Agent; lead confirms with stage 5; `na` with the client's agreement |
+| Proof record | demonstrated · design only | [golden-journey-proof.md](../templates/golden-journey-proof.md); SRE [recovery-proof.md](../sre/templates/recovery-proof.md) | Lead, from what was run |
 | Document status | draft · accepted | Stage report header | Lead |
 | Review | item: open · closed · accepted as a known limitation; round: approved · approved with changes · rework | [review.md](../templates/review.md) | Reviewer |
-| Acceptance | accepted · accepted with limitations · rejected; for implementation go · go with exceptions · no-go | [acceptance.md](../templates/acceptance.md) | Sponsor |
+| Acceptance | accepted · accepted with limitations · rejected; for implementation go · go with exceptions · no-go | [acceptance.md](../templates/acceptance.md); readiness outcome: [readiness-review.md](../sre/templates/readiness-review.md) | Sponsor; readiness: the service owner |
+
+Two readings, not values: *not in scope (format)* for a row the format excludes; *absent by
+design* for a thing the client chose not to have; each states its reason.
 
 Values in `code` are what a tool accepts; `tools/tests/test_records.sh` checks them against
 stagegate, speclint and maturity.

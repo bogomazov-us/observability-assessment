@@ -26,8 +26,8 @@ deck is slides 1, 2, 5 and 13.
 |---|---|---|---|---|
 | 1 | [The answer to the buyer's question, in one sentence] — e.g. "Your checkout is not measured: the dashboard counts confirmation pages" | The buyer's question in their words; the answer; the decision we will ask for | Summary §1 | Method, team, agenda |
 | 2 | [What it costs today] — e.g. "A slow payment provider is reported to customers as their card being declined" | Two or three consequences for customers or revenue, each with its finding | Summary §1, stage 4 | Technical cause in detail |
-| 3 | [What we looked at] | Scope (journeys, services, tools), evidence types used, period; what the data cannot tell us | Summary §2, chapters' §2 | Interview lists, tool inventory |
-| 4 | [Where you are] | Maturity profile: one row per dimension, level, coverage, confidence; not-scored dimensions shown as gaps | Summary §4, stage 5 | An average, a radar chart without the evidence column |
+| 3 | [What we looked at] | Assessment type; scope (journeys, services, tools), evidence types used, period; what the data cannot tell us | Summary §2, chapters' §2 | Interview lists, tool inventory |
+| 4 | [Where you are] | Maturity profile (combined: one per type): one row per dimension, level, coverage, confidence; not-scored dimensions shown as gaps | Summary §4, stage 5 | An average, a radar chart without the evidence column |
 | 5 | [Finding 1 as a claim] | What we see, why it matters, what follows; the evidence in one line (query, code path, export) | Finding F-NNN | Full query text |
 | 6 | [Finding 2 as a claim] | As slide 5 | Finding F-NNN | As slide 5 |
 | 7 | [Finding 3 as a claim] | As slide 5 | Finding F-NNN | As slide 5 |

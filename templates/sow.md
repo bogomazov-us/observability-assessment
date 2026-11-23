@@ -13,6 +13,7 @@ each with its own acceptance. Every number below comes from the offerings and fr
 | Supplier | [legal name], represented by [lead] |
 | Purpose | [the buyer's question, in their words: "where are we blind, and what do we fix first?"] |
 | Format | Focused assessment / Full assessment / Blueprint / Implementation + hypercare |
+| Assessment type | Observability / SRE / combined; SRE scope units and limits: [sre/README.md](../sre/README.md) |
 | Start, end | [date], [date] |
 
 ## 2. Scope in units
@@ -33,7 +34,7 @@ than the limit, never larger.
 
 | Format | Deliverable | Accepted when |
 |---|---|---|
-| Assessment | Current → future → gap → plan; maturity profile; prioritised findings with evidence; roadmap in sequence with effort ranges, dated once the executor is known; decision request | Report accepted after the review rounds, and the next-step decision taken |
+| Assessment | Current → future → gap → plan; maturity profile (combined: a chapter per type); prioritised findings with evidence; roadmap in sequence with effort ranges, dated once the executor is known; decision request | Report accepted after the review rounds, and the next-step decision taken |
 | Full assessment, additionally | Golden-journey proof on stage (only with the obligations in section 4) | Demonstrated, or delivered as a design and checklist when the obligations were not met |
 | Full assessment, optional add-on (priced separately) | Operationalize: alert ownership and runbook model, release check | Model agreed with the alert owners; release check run on one release |
 | Blueprint | Specification set (journeys, error taxonomy, signals, SLOs and alerts, instrumentation contract, synthetics, dashboards, runbooks); acceptance scenarios; milestone roadmap | Spec approved for implementation after the review rounds |

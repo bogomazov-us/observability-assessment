@@ -16,7 +16,8 @@ window, method, result, limits).
 **Why it matters.** The customer or business consequence: what fails silently, what is
 mis-measured, who is not told.
 
-**What follows.** The action, its owner, and which maturity dimension it moves.
+**What follows.** The action, its owner, and which maturity dimension it moves. **Model:**
+observability or sre, the model that dimension belongs to.
 
 **Closing criterion.** The observable result that closes the finding.
 

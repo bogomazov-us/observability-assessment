@@ -21,6 +21,28 @@ for f in "$fx"/fail-G*.yml; do
   [ $code -eq 1 ] && grep -q " $rule " <<<"$out" && ok "$rule" || ko "$rule: exit $code: $out"
 done
 
+# assessment: absent is observability; observability and sre are accepted (G13 above: any other)
+for kind in observability sre; do
+  { echo "assessment: $kind"; cat "$fx/ok-stage3.yml"; } > "$T/$kind.yml"
+  run "$tool" lint "$T/$kind.yml"
+  [ $code -eq 0 ] && [ -z "$out" ] && ok "assessment: $kind lints clean" || ko "assessment: $kind: exit $code: $out"
+done
+run "$tool" check "$T/sre.yml" 3
+[ $code -eq 0 ] && ok "gate unchanged for assessment: sre" || ko "sre gate: exit $code: $out"
+! grep -q "^assessment:" "$fx/ok-stage3.yml" && ok "sound file has no assessment field" || ko "sound file declares assessment"
+
+# recheck: optional on both types; done, or not_done with a reason (G14 above: neither)
+for kind in observability sre; do
+  sed "s/decision_ref: D-04,/decision_ref: D-04, recheck: not_done, recheck_reason: one-message confirmation,/; s/decision_ref: D-07,/decision_ref: D-07, recheck: done,/" \
+    "$fx/ok-stage3.yml" | { echo "assessment: $kind"; cat; } > "$T/recheck-$kind.yml"
+  run "$tool" lint "$T/recheck-$kind.yml"
+  grep -q "recheck: done" "$T/recheck-$kind.yml" && [ $code -eq 0 ] && [ -z "$out" ] \
+    && ok "recheck accepted, not required ($kind)" || ko "recheck ($kind): exit $code: $out"
+done
+sed "s/decision_ref: D-07,/decision_ref: D-07, recheck: maybe,/" "$fx/ok-stage3.yml" > "$T/recheck-bad.yml"
+run "$tool" lint "$T/recheck-bad.yml"
+[ $code -eq 1 ] && grep -q "G14 recheck must be done or not_done" <<<"$out" && ok "G14 unknown recheck value" || ko "G14 value: exit $code: $out"
+
 # the gate, on the sound file: stage 3 may start; stage 4 may not (stage 3 draft, Q-02 open)
 run "$tool" check "$fx/ok-stage3.yml" 3
 [ $code -eq 0 ] && grep -q "stage 3 (Gap) may start" <<<"$out" && ok "gate open for stage 3" || ko "stage 3: exit $code: $out"

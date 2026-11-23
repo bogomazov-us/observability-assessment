@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: Apache-2.0
+# The method shape both assessment types' stage files repeat (architecture decision A6), checked
+# by scripts/consistency.py. Each sentence must appear verbatim (line breaks aside) in every file
+# listed: first the observability stage file, then the matching stage file of the other type.
+# A file after the first is skipped while it is missing or a placeholder, then enforced.
+shared:
+  - sentence: "Ids are never renumbered: a row split later keeps its id on one part and gives the other a new one; a row withdrawn keeps its id with the reason."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "An error in your own draft is corrected in the draft, not recorded as a difference."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every row has a stable id and one status; the counts sum to the number of rows."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "confirmed by a live fact is checked through another path than the agent's query"
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "The check at the end of each rule file holds."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every finding is drafted with status **assumption**. You never write *confirmed*."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A new finding takes the next free id; no id is reused."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "The stage is confirmed once every draft is re-checked and its verdict recorded or sent in the batch: a finding still waiting stays *assumption*, and stage 5 marks a level resting on it provisional."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A decision record that adopted a reading is not evidence for it: cite the code and its version, or a query."
+    files: [tools/agent/stage-4-findings.md, sre/agent/stage-4-findings.md]
+  - sentence: "A level nobody looked for is `not_scored`, never 1."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A slide or an interview alone stops at level 2."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A level that rests on a finding still without its verdict is *provisional*, and says which finding."
+    files: [tools/agent/stage-5-maturity.md, sre/agent/stage-5-maturity.md]
+  - sentence: "A `REC-` links the `W-` items that deliver it; it never repeats their work or their size."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
+  - sentence: "Waiting for a production event is a later validation, not a closing condition."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
+  - sentence: "Every done when is a reproducible test or a verified configuration, not a production event."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
+  - sentence: "Read it before the step; it binds as if it were here."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "No target, owner or threshold was changed; what the gap questions is an open question."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "Confirms the gap as the input to stage 4, or returns it."
+    files: [tools/agent/stage-3-gap.md, sre/agent/stage-3-gap.md]
+  - sentence: "The confirmed rows go into the facts ledger with their source; the rest stay assumptions with an owner and a date."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "When a later decision changed the basis of an earlier one (a window, a unit, a cadence), every value derived from the earlier one was re-derived and returned to `proposed` with a question, not carried over."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "Every value filled in where a decision left it open is marked as a reading."
+    files: [tools/agent/stage-2-target-model.md, sre/agent/stage-2-target-model.md]
+  - sentence: "The summary gives each count and their sum, and the sum equals the number of rows."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "Every inventory row cites an export file or a query."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "A sample that reproduces says those claims hold; it is not an estimate of the accuracy of the whole inventory."
+    files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]

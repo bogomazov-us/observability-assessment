@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
+# Synthetic CSV fixtures for tools/tests/test_baseline.sh, written into DIR (the guardrails track
+# no .csv files). No real data.   fixtures.sh DIR
+set -euo pipefail
+cd "$1"
+cat > incidents.csv <<'EOF'
+id,severity,started,detected,recovered,cause
+1,SEV1,2026-01-05T10:00:00Z,2026-01-05T10:05:00Z,2026-01-05T10:30:00Z,dns
+2,SEV1,2026-01-20T14:00:00+02:00,2026-01-20T12:10:00Z,2026-01-20T14:00:00+01:00,db
+3,SEV1,2026-02-10T10:00:00+02:00,2026-02-10T08:15:00Z,2026-02-10T09:30:00Z,DNS
+4,SEV2,2026-03-01T01:00:00+02:00,2026-03-01T01:20:00+02:00,2026-03-01T03:00:00+02:00,cert
+5,SEV2,2026-03-15T09:00:00-05:00,2026-03-15T09:25:00-05:00,2026-03-15T11:30:00-05:00,db
+6,SEV2,2026-04-02T12:00:00Z,2026-04-02T12:30:00Z,2026-04-02T15:00:00Z,deploy
+7,SEV2,2026-04-20T12:00:00Z,2026-04-20T12:35:00Z,2026-04-20T15:30:00Z,dns
+8,SEV3,2026-05-05T12:00:00Z,2026-05-05T12:40:00Z,2026-05-05T16:00:00Z,disk
+9,SEV3,2026-05-25T12:00:00Z,2026-05-25T12:45:00Z,2026-05-25T16:30:00Z,queue
+10,SEV3,2026-06-10T12:00:00Z,2026-06-10T12:50:00Z,2026-06-10T17:00:00Z,memory
+11,SEV3,2026-06-30T12:00:00Z,,,
+EOF
+cat > incidents-mapped.csv <<'EOF'
+Key,Priority,Opened,Resolved
+A,P1,2026-01-05T10:00:00Z,2026-01-05T11:00:00Z
+B,P2,2026-01-06T10:00:00Z,2026-01-06T10:30:00Z
+EOF
+cat > incidents-naive.csv <<'EOF'
+severity,started,detected,recovered
+SEV1,2026-01-05T10:00:00,2026-01-05T10:05:00,2026-01-05T10:30:00
+EOF
+cat > incidents-bad-order.csv <<'EOF'
+severity,started,detected,recovered
+SEV1,2026-01-05T10:00:00Z,2026-01-05T09:00:00Z,2026-01-05T10:30:00Z
+EOF
+cat > header-only.csv <<'EOF'
+severity,started,detected,recovered,cause
+EOF
+cat > deploys.csv <<'EOF'
+deployed,committed,failed,restored,rework
+2026-06-01T10:00:00Z,2026-06-01T09:00:00Z,no,,no
+2026-06-02T10:00:00Z,2026-06-02T08:00:00Z,yes,2026-06-02T10:30:00Z,no
+2026-06-04T10:00:00+02:00,2026-06-04T07:00:00+02:00,,,
+2026-06-05T10:00:00Z,2026-06-05T06:00:00Z,no,,yes
+2026-06-08T10:00:00Z,2026-06-08T05:00:00Z,no,,no
+2026-06-09T10:00:00Z,2026-06-09T04:00:00Z,true,2026-06-09T11:30:00Z,no
+2026-06-11T10:00:00Z,2026-06-11T03:00:00Z,no,,no
+2026-06-14T10:00:00Z,2026-06-14T02:00:00Z,no,,no
+EOF
+cat > deploys-minimal.csv <<'EOF'
+deployed
+2026-06-01T10:00:00Z
+2026-06-08T10:00:00Z
+EOF
+cat > pages.csv <<'EOF'
+paged,service
+2026-06-01T10:30:00+01:00,a
+2026-06-01T10:00:00Z,a
+2026-06-01T17:30:00Z,b
+2026-06-01T19:00:00+01:00,b
+2026-06-01T23:00:00+01:00,a
+2026-06-02T07:30:00Z,c
+EOF
+cat > incidents-class.csv <<'EOF'
+class,severity,started,detected,recovered
+outage,SEV1,2026-01-05T10:00:00Z,2026-01-05T10:05:00Z,2026-01-05T10:30:00Z
+outage,SEV2,2026-02-01T10:00:00Z,2026-02-01T10:15:00Z,2026-02-01T11:00:00Z
+data,SEV2,2026-03-01T10:00:00Z,2026-03-15T10:00:00Z,2026-03-16T10:00:00Z
+EOF
+: > empty.csv
