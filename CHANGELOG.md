@@ -5,8 +5,6 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
-## 0.16.0 — 2026-11-23
-
 The harness measures are recorded as the work happens and computed by a tool, before the second
 engagement runs on the agent route.
 
