@@ -16,7 +16,7 @@ mandatory ones (1, 2, 4, 6, 9) unless a finding there leads elsewhere.
 | 1 | A tier-1 service with no owner; a deploy target or infrastructure resource missing from the catalogue; a tier-1 service on an untiered dependency with no recorded decision |
 | 2 | An SLO that is not measured; budgets not tracked; no error-budget policy, or one no release decision has cited |
 | 3 | Tier-1 alerts without an owner or a runbook; host and threshold alerts only; a runbook link that does not resolve |
-| 4 | Incidents without severity or roles; detection or recovery times not recorded; postmortem action items without owner or date, or overdue; the same cause recurring |
+| 4 | Incidents without severity or roles; detection or recovery times not recorded, read per class (outage, data correctness), never over both; no way to detect a data-correctness defect; postmortem action items without owner or date, or overdue; the same cause recurring |
 | 5 | One person carrying the rotation; no backup or handover; load above the agreed limit; off-hours pages never reviewed |
 | 6 | Rollback never tested; change failure rate unknown; no progressive delivery or automatic halt on tier-1; a failed deployment that took long to recover |
 | 7 | A single point of failure in a tier-1 path; calls without timeouts, or retries without backoff; no designed degradation; game-day findings left open |
@@ -75,4 +75,8 @@ names the dimension where the topic is scored:
 4. The facts-ledger rows these findings rest on, proposed, status assumption.
 5. "Could not evidence": claim, what is missing, who can provide it.
 6. The verdict batch, drafted in the format of
-   [`owner-questions.md`](../../../templates/owner-questions.md), no verdict filled in.
+   [`owner-questions.md`](../../../templates/owner-questions.md), no verdict filled in, and
+   presented inline in the conversation as well: per finding its claim, its basis and the five
+   verdicts, then a one-line answer template (`F-012: confirmed; F-013: disputed, reason`).
+
+The counts state each withdrawn id, with the reason.

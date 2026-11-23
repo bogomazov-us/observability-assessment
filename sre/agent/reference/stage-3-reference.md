@@ -28,9 +28,20 @@ Owner questions and findings share one sequence with the observability type; rea
 ### 2. Targets
 
 Per dimension in scope: the `T-` rows that apply to each tier-1 service (by service, else by
-its tier), and the level the target model sets for the dimension. Measure against the agreed
-value; against a default only when the row says it is a default, and the gap row says so too.
-A dimension or service with no target gets no invented one: an open question to its owner.
+its tier), and the dimension's *target level* row. Measure against the agreed value; against a
+default only when the row says it is a default, and the gap row says so too. A dimension's
+gap is read against the criteria of its target level. A dimension or service with no target
+gets no invented one: an open question to its owner, presented as in stage 2 (inline, each
+item with its claim, basis and options, and a one-line answer template).
+
+**None, by the owner's choice.** When the target level row reads *none, by the owner's choice*,
+the dimension's gap rows record the current state and the status of the practice, with the
+Target cell "none, by the owner's choice (`D-NN`)"; they are not an open question, and a
+stage-4 candidate from them says so.
+
+**Premise.** A `T-` row with a premise: check the premise against the estate (code, configuration,
+exports). A premise the estate contradicts is an open question to the target's owner, with the
+evidence; the target is not edited.
 
 ### 3. Current state
 
@@ -40,12 +51,15 @@ one backup tool), read what is in place, with the evidence of the model's
 
 - an earlier row: an `L-` inventory row or a `B-` baseline number, cited by id, not re-queried;
 - an export in `sre/exports/`, by file and row;
-- a read query, with its window: a new `E-3xx` check.
+- a read query, with its window: a new `E-` check, numbered by the one-sequence rule of
+  [records.md](../../../method/records.md#id-prefixes).
 
 A `B-` number marked *not measured* is carried as it is: the current state is "not measured",
 and the gap row cites it. A practice stated only in a document is "documented", with the
 document's date, and becomes current only with a record that it ran (a restore ticket, a
-rollback in the deploy history, a postmortem with dated action items).
+rollback in the deploy history, a postmortem with dated action items). A restore counts only
+from the backups the RPO relies on: a one-off copy made for a migration is not one.
+Incidents are read per class (outage, data correctness), never as one population.
 
 ### 4. Gap rows
 
@@ -64,7 +78,8 @@ rollback in the deploy history, a postmortem with dated action items).
 (rollback configured, never run). **absent**: not found where it would be. A number against a
 target (pages per shift, change failure rate, SLO attainment) is a reading in its window, never
 "met" or "missed"; the status speaks of the practice. A target whose current state cannot be
-read gets no row: it goes under "Could not evidence" with its owner question.
+read gets no row: it goes under "Could not evidence" with its owner question. The counts state
+each withdrawn id, with the reason.
 
 ### 5. Monitoring, light
 

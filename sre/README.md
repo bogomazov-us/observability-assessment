@@ -166,7 +166,7 @@ Worked at both base scopes:
 ## Combined format
 
 One engagement, both types, one report. Adding the SRE type to an observability engagement
-later is the combined format too, run in sequence: the shared sequences continue.
+later is the combined format too, run [in sequence](#in-sequence): the shared sequences continue.
 
 | Shared (once) | Per type |
 |---|---|
@@ -186,6 +186,50 @@ tools/maturity.py --pair maturity.yml sre/maturity.yml
 
 It fails when a topic is scored (or partial) in both files (P01), or when a `refers_to`
 points at a dimension the other file does not score (P02). See [maturity.md](../tools/maturity.md).
+
+### In sequence
+
+When the second type starts after the first type's stages are confirmed, perhaps on an older
+kit version:
+
+1. **Ids.** Each shared sequence continues from the highest id of its kind in the engagement;
+   a sequence the older kit lacked starts at 001.
+2. **Verdicts.** The second type opens its own verdict batch; the first one stays closed.
+3. **Pair check.** When `--pair` asks to change the first type's profile, the lead edits it,
+   not the second type's agent, and records the change as a `D-` row.
+4. **Conditional cards.** A conditional option of the first type becomes a `REC-` card when the
+   second type's batch confirms its finding; the card cites that verdict.
+5. **Roadmap.** The second type's work joins the confirmed roadmap as new milestones after the
+   last; the confirmed ones are not rewritten.
+
+## Report
+
+One report and one evidence bundle per engagement, built as in
+[stage-report.md](../templates/stage-report.md#one-report-for-the-whole-assessment). At each
+confirmed SRE stage the lead rewrites `summary.md` and adds the stage's lines to
+`manifest.txt`, by their `sre/` paths:
+
+```text
+report    summary.md
+report    sre/inventory.md          1 2 3 5
+report    sre/target-model.md       1 2 3 5
+report    sre/stage-3-gap.md        1 2 3 5
+report    sre/stage-4-notes.md      1 2 3 5
+report    sre/stage-5-notes.md      1 2 3 5
+report    sre/recommendations.md    1 2 3 5
+evidence  sre/inventory.md          4 A
+evidence  sre/baseline.md
+evidence  sre/target-model.md       4 A
+evidence  sre/stage-3-gap.md        4 A
+evidence  sre/stage-4-notes.md      4 A
+evidence  findings/F-001.md
+evidence  sre/stage-5-notes.md      4 A
+evidence  sre/recommendations.md    4 A
+```
+
+In the combined format both types share one `summary.md` and one manifest: the SRE lines are
+added to it after the observability chapter of the same stage, and each finding file is listed
+once.
 
 ## Setup and prompts
 

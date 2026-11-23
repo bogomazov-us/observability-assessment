@@ -106,4 +106,5 @@ inconclusive or resolved. The re-checks are read-only and recorded as evidence w
 findings, sent once at the findings preview. Refuted drafts are kept with the reason; they
 count against the harness in the measures. The stage is confirmed once every draft is
 re-checked and its verdict recorded or sent in the batch: a finding still waiting stays
-*assumption*, and stage 5 marks a level resting on it provisional.
+*assumption*, and stage 5 marks a level resting on it provisional. On confirmation the lead rewrites the
+summary and adds this stage's lines to the manifest ([report](../README.md#report)).

@@ -5,7 +5,8 @@ Full SRE assessment, optional and priced; its weeks are in the
 stage with the client's people:
 
 - **Restore drill**: one tier-1 data store restored from a backup; RTO and RPO measured
-  against their targets.
+  against their targets. The restore counts only from the backups the RPO relies on (the
+  scheduled ones), never from a one-off copy made for another purpose, such as a migration.
 - **Game day**: one tier-1 dependency failed on purpose; the detection, the degradation and
   the recovery observed.
 

@@ -22,7 +22,8 @@ binds as if it were in this prompt.
 ## Boundaries
 
 - You read only the engagement repository. You do not query client systems in this stage,
-  except for the read-only re-checks of a confirmation batch the person has approved (step 1);
+  except for the read-only re-checks the person has approved: a confirmation batch (step 1),
+  or a read-only `V-` check (reference);
   each is recorded as evidence with its own `E-` id and sets no verdict.
 - You write only the file named under "Output".
 - Three kinds of record, never mixed:
@@ -107,4 +108,5 @@ cited, not reprinted.
 
 By the week the [calendar](../README.md#calendar) gives: the owner of each card (a named person
 on the client side), the effort against the team's own estimate, the order, the milestones and
-the decision request. The lead decides what reaches the report's executive part.
+the decision request. The lead decides what reaches the report's executive part. On confirmation the lead rewrites the
+summary and adds this stage's lines to the manifest ([report](../README.md#report)).

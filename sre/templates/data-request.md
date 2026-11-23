@@ -8,7 +8,7 @@ engagement by which the stage that uses the item starts; the weeks are the
 
 | # | Item | Why | Client provider | Needed by (week) | Received |
 |---|---|---|---|---|---|
-| S1 | Incident export for 6–12 months: id, service, severity, start, detection, mitigation, resolution, cause category, linked change | Detection and recovery times per severity; recurrence (dimension 4) | Operations | 1 | [date] |
+| S1 | Incident export for 6–12 months: id, service, class (outage or data correctness), severity, start, detection, mitigation, resolution, cause category, linked change | Detection and recovery times per class and severity; recurrence (dimension 4) | Operations | 1 | [date] |
 | S2 | Postmortems above the agreed severity, and their action-item tickets with owner role, due date and state | Learning and action-item closure (dimension 4) | Incident or problem manager | 2 | [date] |
 | S3 | Paging export for 3–6 months (page, service, time, responder id, acknowledged, escalated) and the rotation schedule | Pages per shift, off-hours share (dimension 5) | On-call lead | 1 | [date] |
 | S4 | CI/CD deploy history for 6 months: service, start, end, result, rollback, and whether each deploy was planned or an unplanned fix of a production issue; rollout configuration | DORA keys and deployment rework rate; change safety (dimension 6) | Release or platform engineering | 1 | [date] |
