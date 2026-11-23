@@ -16,6 +16,7 @@ KIT_FILES=(
   method/lessons.md
   method/agent-harness.md
   method/records.md
+  method/report.md
   tools/README.md
   tools/collect.md
   tools/speclint.md
@@ -23,6 +24,7 @@ KIT_FILES=(
   tools/baseline.md
   tools/stagegate.md
   tools/agent/README.md
+  tools/agent/setup.md
   tools/agent/stage-1-inventory.md
   tools/agent/stage-2-target-model.md
   tools/agent/reference/stage-2-reference.md

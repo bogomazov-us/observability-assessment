@@ -150,7 +150,7 @@ folders() {  # folders DIR NAME...: each folder with a .gitkeep, made only when 
 put "$REPO/$NAME" force instructions
 if [ "$OBS" = 1 ]; then put "$REPO/$WORK/engagement-state.yml" keep cat "$KIT/templates/engagement-state.yml"; fi
 put "$REPO/$WORK/owner-questions.md" keep questions
-# The folders of the path table in tools/agent/README.md, "Artifact paths". Owner questions and
+# The folders of the path table in tools/agent/setup.md, "Artifact paths". Owner questions and
 # findings are shared by the types; the other root folders are observability's.
 if [ "$OBS" = 1 ]; then folders "$WORK" progress captures exports spec findings
 else folders "$WORK" findings; fi

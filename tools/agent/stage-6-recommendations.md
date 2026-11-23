@@ -105,5 +105,5 @@ of this plan. It is a separate document, drafted on the person's request.
 
 By the week the [calendar](../../method/getting-started.md#3-calendar) gives: the owner of each card (a named person on the client side), the effort against the team's own
 estimate, and the order. The lead decides what reaches the report's executive part.
-The report is closed by [Closing the report](../../templates/stage-report.md#closing-the-report):
+The report is closed by [Closing the report](../../method/report.md#closing-the-report):
 the closing check against the registers, the acceptance and the hand-over.

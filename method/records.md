@@ -1,5 +1,8 @@
 # Records, roles and statuses
 
+**What is here:** the roles, where a decision is recorded, the id prefixes and the status sets.
+**Read it when:** you set a status, record a decision or pick an id.
+
 Who decides what, where a decision is written, what each id prefix means and which values each
 status takes — defined once here. Templates and prompts link to this page instead of restating
 it; a list repeated elsewhere is identical to the one here.
@@ -23,10 +26,10 @@ never decided by the lead, a reviewer or an agent.
 
 - **Every decision is a row in the decision register** (`decisions.md`, created by
   `init-engagement.sh`): scope, an owner's answer, a verdict, a stage confirmation, an agreed
-  target, the sponsor's acceptance of the report (stage-report.md, "Closing the report"). The
-  row has a `D-` id, the decision, who decided, the date and the evidence (the written answer).
-  It is recorded before any document cites it; documents cite the id, never
-  "the owner said".
+  target, the sponsor's acceptance of the report
+  ([closing the report](report.md#closing-the-report)). The row has a `D-` id, the decision,
+  who decided, the date and the evidence (the written answer). It is recorded before any
+  document cites it; documents cite the id, never "the owner said".
 - **An architecture decision also gets an ADR file** — one that fixes how the client's system
   or its telemetry is built, with alternatives worth keeping. It uses
   [adr.md](../templates/adr.md) (`ADR-` id); its register row cites

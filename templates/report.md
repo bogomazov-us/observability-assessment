@@ -1,7 +1,7 @@
 # Assessment report — summary chapter
 
 The first chapter of the assessment report (`summary.md`); the stage chapters follow it
-([one report](stage-report.md#one-report-for-the-whole-assessment)). It carries only what no
+([one report](../method/report.md#one-report-for-the-whole-assessment)). It carries only what no
 chapter does, in five pages at most: the first page answers the buyer's question, the last asks
 for a decision; once accepted, the hand-over follows it.
 
@@ -12,7 +12,7 @@ for a decision; once accepted, the hand-over follows it.
 - **A decision is cited with its record:** "D-12", "ADR-007 item 3", never a bare "item 3" or
   "the decision", in the summary and in every chapter. A bare reference is misread by anyone
   checking the text against the register.
-- **Closing and acceptance** follow [Closing the report](stage-report.md#closing-the-report).
+- **Closing and acceptance** follow [Closing the report](../method/report.md#closing-the-report).
 
 ```markdown
 # [Observability | SRE | Observability and SRE] assessment — summary

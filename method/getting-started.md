@@ -97,7 +97,7 @@ actual days and feed them back. A first assessment led by someone new runs as a
 - The facts ledger shows what was confirmed, what is still an assumption, and what was refuted.
 
 The report is assembled from chapters per accepted stage; see
-[stage-report.md](../templates/stage-report.md). The worked example ends in exactly this state.
+[report.md](report.md). The worked example ends in exactly this state.
 
 ## 6. With the agent stages
 
@@ -109,7 +109,7 @@ The person, per stage (agent's side: its [rules](../tools/agent/rules/)):
 
 1. **Once:** runs `tools/agent/init-engagement.sh` (SRE or combined: `--assessment`,
    [sre/README.md](../sre/README.md#setup-and-prompts)) and finishes what it leaves
-   ([README](../tools/agent/README.md), "Setting up"); records the scope in the decision
+   ([setup](../tools/agent/setup.md)); records the scope in the decision
    register and `engagement-state.yml`; commits on the assessment branch.
 2. **Start:** by name (`prompt.sh N`, or the skill `oa-stage-N-…`), with the inputs the prompt
    lists. The agent checks the gate first and names a missing input instead of substituting it.
