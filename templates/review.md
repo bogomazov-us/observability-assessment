@@ -19,6 +19,39 @@ gap in the deliverable, or in the kit.
 **Round verdict:** approved · approved with changes (non-blocking only; no further round) ·
 rework (at least one blocking item; another round).
 
+### Finding outcomes (stage 4)
+
+One row per drafted finding the round looked at, with what the review did to it. A finding
+reviewed in two rounds keeps its rows in both; the measures join them. The verdict stays in the
+finding's own Status; this table says only how much the draft changed.
+
+| Finding | Outcome | Note |
+|---|---|---|
+| F-NNN | unchanged / bounded / new_input / corrected / severity_changed / split_merge | [what changed] |
+
+- **unchanged**: accepted as drafted; stands alone.
+- **bounded**: a window, a scope or a limit added; the claim otherwise holds.
+- **new_input**: changed because the owner gave new information, not because the draft was wrong.
+- **corrected**: wrong in substance and changed.
+- **severity_changed**: the severity was reset.
+- **split_merge**: split or merged with another; a change of granularity, not an error.
+
+Several may apply (`bounded, new_input`). The strict reading counts a finding unchanged when it
+carries none of bounded, new_input, corrected, severity_changed; the lenient reading when it
+carries neither corrected nor severity_changed ([measures](../method/agent-harness.md#measuring-the-harness)).
+
+### Re-checks
+
+The selected claims the reviewer re-ran by another path ([lesson 21](../method/lessons.md)), at
+any stage. A sample: it says these held, not how accurate the whole output is.
+
+| Evidence | Result | How |
+|---|---|---|
+| E-NNN | reproduced / not reproduced | [the tool's own interface, a browser, a query the reviewer wrote] |
+
+**Hours.** The reviewer's hours on the round go into the review's block in
+`engagement-state.yml` (`review_hours`) when the round is appended, not afterwards.
+
 **Final round** states, in two lists: what is approved, and what is still evidence to collect
 (with owner and date). A blocking item is never closed by argument alone: it is closed by a
 change, or written down as a known limitation the buyer sees.

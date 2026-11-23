@@ -5,6 +5,28 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.16.0 — 2026-11-23
+
+The harness measures are recorded as the work happens and computed by a tool, before the second
+engagement runs on the agent route.
+
+- **Person hours in the state file**: `review_hours` on each review block, written when the round
+  is appended; `rework_hours` with the stage's confirmation. Absent reads "not measured", never
+  zero. `tools/stagegate.py` checks them (G15) and warns when the file records hours and one is
+  missing (W02); `rework_hours` is part of the confirmation, so adding it later is a rewrite (G12).
+  No gate depends on them.
+- **Finding outcomes and re-checks in the review record** (`templates/review.md`): one row per
+  drafted finding at stage 4 (unchanged, bounded, new_input, corrected, severity_changed,
+  split_merge), one row per selected re-check (reproduced or not).
+- **`tools/harness-metrics.py`** reads those records and prints, per stage: strict and lenient
+  shares of findings unchanged, on findings with a verdict only, pending apart; changes of
+  granularity, of severity and on new input apart; person hours; the agent's span from the
+  progress log; the re-checks as "n of n selected". The same for `sre/engagement-state.yml`.
+  Rules H01 to H06; [harness-metrics.md](tools/harness-metrics.md).
+- **The worked examples** carry their re-checks as tables, and the tests read their measures.
+- `method/agent-harness.md` and `practice/pilot.md` say where each measure is written and when;
+  the weekly actuals log stays as it was.
+
 ## 0.15.5 — 2026-11-23
 
 A fix to the PDF.

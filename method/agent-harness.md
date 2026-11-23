@@ -107,6 +107,14 @@ A failed claim blocks the release only where the client has made the release che
 | Drafted claims whose cited evidence did not reproduce | 0 | Reviewer re-runs every cited query in the first two engagements |
 | Days from access to reconciled inventory | lower than the estimate's inventory phase | Actuals log (`practice/pilot.md`) |
 
+**Recording them as the work happens.** Each review round lists its finding outcomes and its
+re-checks ([review.md](../templates/review.md#finding-outcomes-stage-4)); the reviewer's hours go
+into the review's block in the engagement state file, the lead's rework hours with the stage's
+confirmation. `tools/harness-metrics.py` reads those records and prints the measures per stage:
+strict and lenient shares on findings with a verdict, pending apart, changes of granularity and
+severity apart, person hours, the agent's span and the re-checks as a selected sample
+([harness-metrics.md](../tools/harness-metrics.md)). A value not recorded reads "not measured".
+
 **Until both quality targets hold on two engagements, every stage runs as a draft to compare
 against, and people write the findings.** Stage 4 reconciles its drafts with the findings people
 wrote, never redrafting one.

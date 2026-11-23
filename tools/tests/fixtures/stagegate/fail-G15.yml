@@ -1,0 +1,13 @@
+# The sound file with a review whose review_hours is negative.
+scope: {decision_ref: D-01, access_granted_on: 2026-01-05}
+stages:
+  - {number: 1, status: confirmed, confirmed_by: lead, confirmed_on: 2026-01-12, decision_ref: D-04,
+     reviews: [{date: 2026-01-11, by: reviewer, file: reviews/stage-1.md, review_hours: -1.5}]}
+  - {number: 2, status: confirmed, confirmed_by: lead, confirmed_on: 2026-01-19, decision_ref: D-07, reviews: []}
+  - {number: 3, status: draft, reviews: []}
+  - {number: 4, status: not_started, reviews: []}
+  - {number: 5, status: not_started, reviews: []}
+  - {number: 6, status: not_started, reviews: []}
+questions:
+  - {id: Q-01, question: Which journeys page at night, to: owner, blocks: [3], answer_ref: D-06}
+  - {id: Q-02, question: Is the batch export in scope, to: owner, blocks: [4]}

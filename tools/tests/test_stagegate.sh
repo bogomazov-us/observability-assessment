@@ -62,6 +62,34 @@ run "$tool" check "$fx/ok-stage3.yml" 7
 run "$tool" lint "$fx/does-not-exist.yml"
 [ $code -eq 2 ] && ok "unreadable file exits 2" || ko "unreadable file: exit $code"
 
+# hours: optional; recorded anywhere, a missing one warns (W02) and blocks nothing
+python3 - "$fx/ok-stage3.yml" "$T" <<'PY'
+import sys, yaml
+d = yaml.safe_load(open(sys.argv[1])); T = sys.argv[2]
+d["stages"][0]["reviews"][0]["review_hours"] = 2.5
+d["stages"][0]["rework_hours"] = 0
+yaml.safe_dump(d, open(f"{T}/hours.yml", "w"), sort_keys=False)
+d["stages"][0]["reviews"][0]["review_hours"] = 0.5
+d["stages"][1]["reviews"].append({"date": "2026-01-18", "by": "reviewer", "file": "reviews/stage-2.md", "review_hours": 1})
+d["stages"][1]["rework_hours"] = 1.25
+yaml.safe_dump(d, open(f"{T}/hours-full.yml", "w"), sort_keys=False)
+d["stages"][2]["rework_hours"] = 1
+yaml.safe_dump(d, open(f"{T}/hours-draft.yml", "w"), sort_keys=False)
+d["stages"][2].pop("rework_hours"); d["stages"][0]["rework_hours"] = "two"
+yaml.safe_dump(d, open(f"{T}/hours-text.yml", "w"), sort_keys=False)
+PY
+run "$tool" lint "$T/hours.yml"
+[ $code -eq 0 ] && grep -q "stage 2: W02 confirmed without rework_hours" <<<"$out" \
+  && ! grep -q "stage 1: W02" <<<"$out" && ok "W02 a confirmed stage without rework_hours, when hours are recorded" || ko "W02 rework: exit $code: $out"
+run "$tool" lint "$T/hours-full.yml"
+[ $code -eq 0 ] && [ -z "$out" ] && ok "hours recorded everywhere: clean, explicit 0 accepted" || ko "full hours: exit $code: $out"
+run "$tool" lint "$T/hours-draft.yml"
+[ $code -eq 1 ] && grep -q "stage 3: G05" <<<"$out" && ok "G05 rework_hours on a stage not confirmed" || ko "G05 rework on draft: exit $code: $out"
+run "$tool" lint "$T/hours-text.yml"
+[ $code -eq 1 ] && grep -q "stage 1: G15 rework_hours" <<<"$out" && ok "G15 rework_hours not a number" || ko "G15 rework: exit $code: $out"
+run "$tool" check "$T/hours.yml" 3
+[ $code -eq 0 ] && ok "missing hours do not shut a gate" || ko "gate with missing hours: exit $code: $out"
+
 # --since: reviews only grow; a confirmation is not rewritten
 R="$T/repo"; mkdir -p "$R"; git -C "$R" init -q
 git -C "$R" -c user.name=t -c user.email=t@t commit -q --allow-empty -m init
@@ -95,5 +123,14 @@ first="$(git -C "$R" log --diff-filter=A --format=%h -- state.yml)"
 git -C "$R" checkout -q -- state.yml
 run "$tool" lint "$R/state.yml" --since "$first"
 [ $code -eq 0 ] && ok "first confirmation: --since the commit that added the file" || ko "--since the adding commit: exit $code: $out"
+# rework_hours is part of the confirmation: added afterwards, it is a rewrite (G12)
+python3 - "$R/state.yml" <<'PY'
+import sys, yaml
+p = sys.argv[1]; d = yaml.safe_load(open(p))
+d["stages"][1]["rework_hours"] = 3
+yaml.safe_dump(d, open(p, "w"), sort_keys=False)
+PY
+run "$tool" lint "$R/state.yml" --since HEAD
+grep -q "G12 confirmation rewritten since HEAD: rework_hours" <<<"$out" && ok "G12 rework_hours added after the confirmation" || ko "G12 rework: exit $code: $out"
 
 exit $fail
