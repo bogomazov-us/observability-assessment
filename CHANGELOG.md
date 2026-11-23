@@ -5,6 +5,28 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.2 — 2026-11-23
+
+Readable chapters after the SRE releases, setup fixes, and the client's time in the estimate.
+
+- **Chapters split for reading**:
+  - `method/report.md`, new: the report from stage to acceptance (one report per assessment,
+    the manifest, closing, acceptance, hand-over), moved from `templates/stage-report.md`,
+    which now holds only the stage-chapter template;
+  - `tools/agent/setup.md`, new: setting up the engagement repository and the artifact paths,
+    moved from `tools/agent/README.md`, which keeps running a stage;
+  - each long chapter opens with "What is here" and "Read it when";
+  - `sre/README.md`: a table for a lead who knows the observability assessment, what differs in SRE.
+- **Setup** (`init-engagement.sh`): a register named by flag and missing makes init exit 1 after
+  writing the rest; with the kit in the home folder and the repository outside it, init warns
+  that the relative paths name the home folder.
+- **SRE estimation**: the client's time (the owner about 1 hour per question batch, 6–8 hours
+  focused, 10–12 full) and a 2-working-day answer turnaround, also a client obligation in
+  `templates/sow.md`. The team's days stay starting values.
+- **SRE mapping** to DORA and Well-Architected, rows 2, 4 and 10 re-checked with best-practice
+  ids.
+- `scripts/test-tools.sh` prints every failed check of a failing test.
+
 ## 0.15.1 — 2026-11-23
 
 Lessons from closing the first SRE engagement: how a report is closed and accepted, owner
