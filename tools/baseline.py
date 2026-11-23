@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 """Compute the SRE baseline numbers from CSV exports and print them in Markdown.
 
-    tools/baseline.py incidents.csv [--deploys deploys.csv] [--pages pages.csv]
+    tools/baseline.py [incidents.csv] [--deploys deploys.csv] [--pages pages.csv]
                       [--map field=column ...] [--from DATE] [--to DATE] [--tz ZONE]
-                      [--assume-tz ZONE] [--shift-hours N] [--shift-start HH:MM]
+                      [--incidents-from/--incidents-to/--deploys-from/--deploys-to/
+                       --pages-from/--pages-to DATE] [--assume-tz ZONE]
+                      [--shift-hours N] [--shift-start HH:MM] [--no-rotation]
                       [--page-limit N] [--office-hours HH:MM-HH:MM]
 
 Each number carries its method and window; a missing column prints
@@ -25,7 +27,7 @@ except ImportError:  # pragma: no cover
 
 # field -> default column name, per file
 FIELDS = {
-    "incidents": ("severity", "started", "detected", "recovered", "cause"),
+    "incidents": ("severity", "started", "detected", "recovered", "cause", "class"),
     "deploys": ("deployed", "committed", "failed", "restored", "rework"),
     "pages": ("paged",),
 }
@@ -139,24 +141,25 @@ class Out:
 
 
 def windowed(table, field, args):
-    """Rows whose main time is in the window; the window text."""
+    """Rows whose main time is in the input's window; the window text."""
+    start, end, flags = args.window[table.kind]
     kept = []
     for r in table.rows:
         t = table.time(r, field)
         if t is None:
             raise DataError(f"{table.path}:{r[0]}: {table.col[field]}: empty")
-        if (args.start is None or t >= args.start) and (args.end is None or t < args.end):
+        if (start is None or t >= start) and (end is None or t < end):
             kept.append((r, t))
-    if args.start is not None and args.end is not None:
-        lo, hi, src = args.start, args.end, "--from/--to"
+    if start is not None and end is not None:
+        lo, hi, src = start, end, flags
     elif kept:
         ts = [t for _, t in kept]
-        lo = args.start or min(ts)
-        hi = args.end or max(ts)
-        src = "from data" if args.start is None and args.end is None else "--from/--to and data"
+        lo = start or min(ts)
+        hi = end or max(ts)
+        src = "from data" if start is None and end is None else f"{flags} and data"
     else:
         return kept, None, None, "no rows in the window"
-    text = f"{lo.astimezone(args.tz):%Y-%m-%d} to {(hi - timedelta(microseconds=1) if args.end else hi).astimezone(args.tz):%Y-%m-%d} ({src})"
+    text = f"{lo.astimezone(args.tz):%Y-%m-%d} to {(hi - timedelta(microseconds=1) if end else hi).astimezone(args.tz):%Y-%m-%d} ({src})"
     return kept, lo, hi, text
 
 
@@ -210,9 +213,14 @@ def incidents(out, t, args):
         for s in sorted(sev, key=natural):
             out.row(f"Incidents, severity {s}", len(sev[s]), total, "count of rows with this severity", window)
     groups = [("all", lambda r: True)]
-    if not gone:
-        groups += [(s, (lambda s: lambda r: (t.cell(r, "severity") or "(blank)") == s)(s))
-                   for s in sorted({t.cell(r, "severity") or "(blank)" for r, _ in kept}, key=natural)]
+    by = [f for f in ("severity", "class") if not t.missing(f)]
+    if "class" in by:  # e.g. outage and data defect: their times differ by orders of magnitude
+        for c in sorted({t.cell(r, "class") or "(blank)" for r, _ in kept}, key=natural):
+            out.row(f"Incidents, class {c}", sum((t.cell(r, "class") or "(blank)") == c for r, _ in kept),
+                    total, "count of rows with this class", window)
+    for f in by:
+        groups += [(f"{f} {v}", (lambda f, v: lambda r: (t.cell(r, f) or "(blank)") == v)(f, v))
+                   for v in sorted({t.cell(r, f) or "(blank)" for r, _ in kept}, key=natural)]
     for name, field, what in (("Time to detect", "detected", "detected − started"),
                               ("Time to recover", "recovered", "recovered − started")):
         miss = t.missing(field)
@@ -221,7 +229,7 @@ def incidents(out, t, args):
             continue
         for g, keep in groups:
             sub = [x for x in kept if keep(x[0])]
-            label = name if g == "all" else f"{name}, severity {g}"
+            label = name if g == "all" else f"{name}, {g}"
             spread(out, label, durations(t, sub, "started", field), len(sub), what, window)
     miss = t.missing("cause")
     if miss:
@@ -256,7 +264,7 @@ def deploys(out, t, args):
     if not kept:
         out.gap("Deployment frequency", "not measured: no rows in the window", "—")
         return
-    days = (hi.astimezone(args.tz).date() - lo.astimezone(args.tz).date()).days + (0 if args.end else 1)
+    days = (hi.astimezone(args.tz).date() - lo.astimezone(args.tz).date()).days + (0 if args.window["deploys"][1] else 1)
     out.row("Deployment frequency", f"{7 * n / days:.1f} per week", n,
             f"deploys ÷ {days} days in the window × 7", window)
     miss = t.missing("committed")
@@ -289,24 +297,28 @@ def deploys(out, t, args):
 
 def pages(out, t, args):
     o_from, o_to = args.office_hours
-    out.section("Pages", f"Source: `{t.path}`. Clock: {args.tz_name}. Shifts: {args.shift_hours} h from "
-                f"{args.shift_start}, every shift counted. Office hours: {o_from}–{o_to} Monday to Friday; "
-                "public holidays are not known to the tool.")
+    unit = "working day" if args.no_rotation else "shift"
+    shifts = ("No rotation (--no-rotation): pages per working day, Monday to Friday" if args.no_rotation
+              else f"Shifts: {args.shift_hours} h from {args.shift_start}, every shift counted")
+    out.section("Pages", f"Source: `{t.path}`. Clock: {args.tz_name}. {shifts}. Office hours: {o_from}–{o_to} "
+                "Monday to Friday; public holidays are not known to the tool.")
     gone = t.missing("paged")
     if gone:
-        out.gap("Pages per shift", gone, "—")
+        out.gap(f"Pages per {unit}", gone, "—")
         out.gap("Off-hours share", gone, "—")
         return
     kept, lo, hi, window = windowed(t, "paged", args)
     if not kept:
-        out.gap("Pages per shift", "not measured: no rows in the window", "—")
+        out.gap(f"Pages per {unit}", "not measured: no rows in the window", "—")
         return
+    if args.no_rotation:
+        return working_days(out, kept, lo, hi, window, args)
     hh, mm = map(int, args.shift_start.split(":"))
     step = timedelta(hours=args.shift_hours)
     anchor = lo.astimezone(args.tz).replace(hour=hh, minute=mm, second=0, microsecond=0)
     while anchor > lo:
         anchor -= step
-    end = hi if args.end else hi + timedelta(microseconds=1)
+    end = hi if args.window["pages"][1] else hi + timedelta(microseconds=1)
     shifts = max(1, math.ceil((end - anchor) / step))
     per = [0] * shifts
     off = 0
@@ -324,9 +336,37 @@ def pages(out, t, args):
     out.row("Off-hours share", pct(off, n), n, "pages outside office hours ÷ pages", window)
 
 
+def off_hours(ts, args):
+    local = ts.astimezone(args.tz)
+    o_from, o_to = args.office_hours
+    return local.weekday() >= 5 or not (o_from <= f"{local:%H:%M}" < o_to)
+
+
+def working_days(out, kept, lo, hi, window, args):
+    """Pages per working day: one operator in working hours, no rotation of shifts."""
+    first = lo.astimezone(args.tz).date()
+    last = (hi - timedelta(microseconds=1) if args.window["pages"][1] else hi).astimezone(args.tz).date()
+    days = [first + timedelta(d) for d in range((last - first).days + 1)]
+    per = {d: 0 for d in days if d.weekday() < 5}
+    for _, ts in kept:
+        d = ts.astimezone(args.tz).date()
+        if d in per:
+            per[d] += 1
+    n, wd = len(kept), max(1, len(per))
+    on = sum(per.values())
+    out.row("Pages per working day, mean", f"{on / wd:.2f}", n,
+            f"pages on working days ÷ {len(per)} working days in the window", window)
+    out.row("Pages per working day, max", max(per.values(), default=0), n, "most pages on one working day", window)
+    over = sum(c > args.page_limit for c in per.values())
+    out.row(f"Working days over {args.page_limit} pages", pct(over, wd), len(per),
+            f"working days with more than {args.page_limit} pages ÷ working days", window)
+    out.row("Off-hours share", pct(sum(off_hours(ts, args) for _, ts in kept), n), n,
+            "pages outside office hours ÷ pages", window)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="SRE baseline numbers from CSV exports (tools/baseline.md).")
-    ap.add_argument("incidents")
+    ap.add_argument("incidents", nargs="?", help="optional: without it the incident numbers are not measured")
     ap.add_argument("--deploys")
     ap.add_argument("--pages")
     ap.add_argument("--map", action="append", default=[], metavar="FIELD=COLUMN")
@@ -336,6 +376,11 @@ def main(argv=None):
     ap.add_argument("--assume-tz", help="zone for times without an offset (default: reject them)")
     ap.add_argument("--shift-hours", type=int, default=12)
     ap.add_argument("--shift-start", default="08:00")
+    ap.add_argument("--no-rotation", action="store_true",
+                    help="one operator in working hours: pages per working day instead of per shift")
+    for kind in FIELDS:
+        ap.add_argument(f"--{kind}-from", metavar="YYYY-MM-DD", help=f"window for {kind} only; overrides --from")
+        ap.add_argument(f"--{kind}-to", metavar="YYYY-MM-DD", help=f"window for {kind} only; overrides --to")
     ap.add_argument("--page-limit", type=int, default=2)
     ap.add_argument("--office-hours", default="09:00-18:00")
     args = ap.parse_args(argv)
@@ -351,14 +396,18 @@ def main(argv=None):
     if not m:
         ap.error("--office-hours is HH:MM-HH:MM")
     args.office_hours = (m[1], m[3])
+    def day(v, end):
+        d = datetime.strptime(v, "%Y-%m-%d").replace(tzinfo=args.tz)
+        return (d + timedelta(days=1) if end else d).astimezone(timezone.utc)
+    args.window = {}
     try:
-        for k in ("start", "end"):
-            v = getattr(args, k)
-            if v:
-                d = datetime.strptime(v, "%Y-%m-%d").replace(tzinfo=args.tz)
-                setattr(args, k, (d + timedelta(days=1) if k == "end" else d).astimezone(timezone.utc))
+        for kind in FIELDS:  # an input's own window, else --from/--to
+            own = getattr(args, f"{kind}_from"), getattr(args, f"{kind}_to")
+            v = [o or g for o, g in zip(own, (args.start, args.end))]
+            flags = f"--{kind}-from/--{kind}-to" if any(own) else "--from/--to"
+            args.window[kind] = (v[0] and day(v[0], False), v[1] and day(v[1], True), flags)
     except ValueError:
-        ap.error("--from and --to are YYYY-MM-DD")
+        ap.error("--from, --to and the per-input windows are YYYY-MM-DD")
     mapping = {}
     known = {f for fs in FIELDS.values() for f in fs}
     for m in args.map:
@@ -369,13 +418,14 @@ def main(argv=None):
     out = Out()
     out.lines.append("# Baseline")
     try:
-        incidents(out, Table("incidents", args.incidents, mapping, args.assume_tz), args)
-        for kind, path, fn in (("deploys", args.deploys, deploys), ("pages", args.pages, pages)):
+        for kind, path, fn, title in (("incidents", args.incidents, incidents, "Incidents"),
+                                      ("deploys", args.deploys, deploys, "Deploys (DORA)"),
+                                      ("pages", args.pages, pages, "Pages")):
             if path:
                 fn(out, Table(kind, path, mapping, args.assume_tz), args)
             else:
-                out.lines += ["", f"## {kind.capitalize() if kind == 'pages' else 'Deploys (DORA)'}", "",
-                              f"not measured: no --{kind} export"]
+                what = "incidents export" if kind == "incidents" else f"--{kind} export"
+                out.lines += ["", f"## {title}", "", f"not measured: no {what}"]
     except DataError as e:
         print(f"baseline.py: {e}", file=sys.stderr)
         return 2

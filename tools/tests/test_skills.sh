@@ -3,7 +3,8 @@
 # Tests for tools/agent/skills: every skill is well formed and points at a file that exists;
 # stage skills are started by the person only, rule skills by the agent; install.sh writes the
 # kit's path, keeps existing skills unless --force, and leaves no placeholder behind; --from
-# installs a type's skills folder and skips one that does not exist yet. The SRE stage skills
+# installs a type's skills folder and skips one that does not exist yet; flags in any order;
+# --base writes the kit's path relative to it. The SRE stage skills
 # (sre/agent/skills/) point at the SRE prompts and install with --from, also through init.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -86,6 +87,13 @@ tools/agent/init-engagement.sh --repo "$E" --code "$T/code" --assessment sre --s
 [ "$(ls -d "$E"/skills/oa-sre-stage-* | wc -l | tr -d ' ')" -eq "$srecount" ] \
   && ! grep -rq "__KIT__" "$E/skills" && ok "init --assessment sre: SRE skills installed" || ko "init --assessment sre: SRE skills missing"
 
+out="$("$SK/install.sh" "$T/any" --rules --force)"
+[ "$(ls -d "$T"/any/oa-* | wc -l | tr -d ' ')" -eq "$(ls -d "$SK"/oa-rule-* | wc -l | tr -d ' ')" ] \
+  && ok "install: flags in any order (--rules after the folder)" || ko "install: flag order: $out"
+mkdir -p "$T/base"; "$SK/install.sh" --base "$T/base" "$T/base/skills" >/dev/null
+k="$(python3 -c 'import os,sys; R=os.path.realpath; print(os.path.relpath(R(sys.argv[1]), R(sys.argv[2])))' "$KIT" "$T/base")"
+grep -qF "bash $k/tools/agent/prompt.sh 1" "$T/base/skills/oa-stage-1-inventory/SKILL.md" && ! grep -rqF "\`$KIT" "$T/base/skills" \
+  && ok "install --base: kit path relative to the base" || ko "install --base: kit path not relative"
 set +e; "$SK/install.sh" >/dev/null 2>&1; code=$?; set -e
 [ $code -eq 2 ] && ok "install: no argument refused" || ko "install: no argument, exit $code"
 

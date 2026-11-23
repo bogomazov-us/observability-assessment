@@ -32,6 +32,7 @@ STAGES = {
 }
 STATUSES = ("not_started", "draft", "handed_over", "returned", "confirmed")
 CONFIRMATION = ("confirmed_by", "confirmed_on", "decision_ref")
+RECHECK = ("done", "not_done")  # optional: the sample re-check by another path
 ASSESSMENTS = ("observability", "sre")  # absent: observability
 
 
@@ -120,6 +121,11 @@ def lint(doc, rep):
             if prev is not None and prev.get("status") != "confirmed":
                 rep.warn(where, "W01", f"{status} while stage {n - 1} is {prev.get('status')}: "
                                       "work started before its gate opened")
+        recheck = s.get("recheck")
+        if recheck is not None and recheck not in RECHECK:
+            rep.error(where, "G14", f"recheck must be done or not_done, got {recheck!r}")
+        elif recheck == "not_done" and not is_text(s.get("recheck_reason")):
+            rep.error(where, "G14", "recheck not_done without recheck_reason")
         reviews = s.get("reviews", [])
         if not isinstance(reviews, list):
             rep.error(where, "G08", "reviews must be a list")

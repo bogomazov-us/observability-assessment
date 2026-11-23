@@ -44,18 +44,22 @@ Once per engagement, before stage 1:
 
 ```
 tools/agent/init-engagement.sh --repo ENGAGEMENT_REPO --code CODE_CHECKOUT [--code ...] \
-    [--skills SKILLS_DIR] [--instructions NAME] [--assessment observability|sre ...]
+    [--skills SKILLS_DIR] [--instructions PATH] [--assessment observability|sre ...] \
+    [--facts PATH] [--decisions PATH] [--risks PATH] [--work PATH] [--scratch DIR]
 ```
 
 It commits nothing. It writes the agent's standing instructions, from
 [`templates/agent-instructions.md`](../../templates/agent-instructions.md) with the paths
-filled in, to `AGENTS.md` (or `--instructions NAME`, the file your agent tool reads); the
+filled in, to `AGENTS.md` (or `--instructions PATH`, the file your agent tool reads, a subpath such as
+`.claude/CLAUDE.md` included), every path relative to the repository; the
 client and the monitoring tool are left for the person. It makes what the path table marks
 *init*, its folders, and the scratch directory `.scratch/`, added to `.gitignore`.
 `--assessment sre` (repeatable; the default is observability) adds `sre/` in the working folder:
 its own state file, `progress/`, `exports/` and `targets/`. Owner questions and findings stay
 shared; with SRE alone, the observability state file and folders are not made. The
-instructions file then lists each type's folder, state file and prompt command.
+instructions file then lists each type's folder, state file and prompt command. A host
+knowledge base keeps its own registers: a register named by `--facts`, `--decisions` (a file,
+or a folder of ADRs) or `--risks` is never created or written to, and a missing one is reported.
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md) of
 each type.

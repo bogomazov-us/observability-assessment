@@ -76,14 +76,14 @@ the rows still in square brackets.
 
 | What | Path | Access |
 |---|---|---|
-| This repository | `.` | read and write, on the assessment branch only |
-| The client's code | `[tmp]/code-a`, `[tmp]/code-b` | read only |
+| This repository | `.` | read and write, on the assessment branch only; the paths below are relative to its root (in a worktree elsewhere, to the main checkout's) |
+| The client's code | `../code-a`, `../code-b` | read only |
 | The kit | `[kit]` | read only: prompts in `tools/agent/`, templates in `templates/`, tools in `tools/` |
 | The assessment's working folder | `assessment` | what the stages read and write, laid out as the table "Artifact paths" in `[kit]/tools/agent/README.md`; a path in a stage prompt is relative to this folder, except under `tools/`, `templates/` and `method/`, which are in the kit |
 | Facts ledger | `facts.md` | agent rows enter as *assumption* |
 | Decision register | `decisions.md` | written by the person, read by the agent |
 | Risk register | `risks.md` | written by the person; the agent hands over proposed rows |
-| Scratch | `[tmp]/eng/.scratch` | temporary files only; nothing else is written outside this repository |
+| Scratch | `.scratch` | temporary files only; nothing else is written outside this repository |
 | The client's tools | [tool] through [read-only token, profile or server; named, never pasted] | read only |
 
 Not read, even when present: `.env`, `*.tfstate`, `*.tfvars`, credential folders, backups, and

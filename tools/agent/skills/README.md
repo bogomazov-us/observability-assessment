@@ -23,11 +23,13 @@ answers a question about an alarm.
 ## Installing
 
 ```
-tools/agent/skills/install.sh [--force] [--from DIR] SKILLS_DIR
+tools/agent/skills/install.sh [--force] [--rules | --from DIR] [--base DIR] SKILLS_DIR
 ```
 
-Copies the skills into the engagement's skills directory and writes this kit checkout's
-absolute path into each, so the engagement uses the kit at the version checked out. A skill
+Flags go in any order. Copies the skills into the engagement's skills directory and writes
+this kit checkout's path into each, so the engagement uses the kit at the version checked out:
+absolute, or relative to `--base` (init passes the engagement repository, so no machine-local
+path is committed). `--rules` installs the rule skills only. A skill
 that already exists there is kept unless `--force` is given. Re-run it after moving the kit or
 checking out another release. `--from DIR` installs an assessment type's skills folder
 instead, such as `sre/agent/skills`; `init-engagement.sh --skills` installs the folder of each

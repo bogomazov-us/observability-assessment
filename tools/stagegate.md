@@ -38,6 +38,7 @@ and PyYAML; `--since` needs git and the file under version control.
 | G11 | With `--since`: reviews only grow; none edited or removed | a review never rewrites history |
 | G12 | With `--since`: a confirmation is not rewritten; re-opening a stage is a new decision | a decision nobody can find is read as a proposal |
 | G13 | `assessment`, when present, is observability or sre; absent means observability | a stage is checked against its own type's file |
+| G14 | `recheck`, when present, is done or not_done; not_done carries `recheck_reason` | a stage confirmed without the sample re-check says so |
 | W01 | Warning: a stage in draft, handed over or returned while the stage before it is not confirmed | work started before its gate opened |
 
 ## In a stage run

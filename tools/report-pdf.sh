@@ -94,6 +94,7 @@ $(perl -ne 'chomp; my @c = map { s/^\s+|\s+$//gr } split /\|/, $_, -1; shift @c;
       print "$c[0] (no ".join(", ",@m).")\n" if @m' "${FILES[@]}")"
   BAD="$(printf '%s\n' "$BAD" | sed '/^[[:space:]]*$/d')"
   [ -n "$BAD" ] && { echo "✗ evidence entries missing a field:"; echo "$BAD" | head -10; FAIL=1; }
+  [ -n "$UNRES$BAD" ] && echo "  An entry is a heading \"### E-NNN — name\" with \"Checked at:\" or \"Data window:\", \"Result:\" and \"Limits:\" lines, or a table row whose first cell is the E- id under columns Window (or Checked at), Result and Limits, each filled."
 fi
 TEXT="$(pdftotext "$OUT" - | tr -s ' \n' ' ')"
 MISSING="$(grep -ohE "$IDS" "$TMP/src.md" | sort -u | while read -r id; do

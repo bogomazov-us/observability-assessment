@@ -59,4 +59,10 @@ paged,service
 2026-06-01T23:00:00+01:00,a
 2026-06-02T07:30:00Z,c
 EOF
+cat > incidents-class.csv <<'EOF'
+class,severity,started,detected,recovered
+outage,SEV1,2026-01-05T10:00:00Z,2026-01-05T10:05:00Z,2026-01-05T10:30:00Z
+outage,SEV2,2026-02-01T10:00:00Z,2026-02-01T10:15:00Z,2026-02-01T11:00:00Z
+data,SEV2,2026-03-01T10:00:00Z,2026-03-15T10:00:00Z,2026-03-16T10:00:00Z
+EOF
 : > empty.csv
