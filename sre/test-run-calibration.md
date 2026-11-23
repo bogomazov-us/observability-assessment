@@ -84,44 +84,57 @@ owner's reading time per batch, not the agent's hours.
    with its claim, its basis and the options, plus a one-line answer template.
 9. **The stage-3 prompt numbers evidence `E-3xx`** while the engagement shares one `E-`
    sequence; the prompt contradicts the sequence rule.
+10. **No stage closes the report.** The stage prompts never say that, at each accepted stage,
+    the summary chapter is rewritten and the stage's lines are added to the assessment
+    manifest. In the test run all six stages were confirmed with neither done; the combined
+    report existed only as separate stage files until the owner asked where the report was.
+    Suggest a closing step in each stage prompt, or a stage-gate rule that refuses stage N+1
+    while the manifest lacks stage N.
+11. **The report build is observability-only.** The PDF script hard-codes an observability
+    title and file prefix and strips only the observability prefix from chapter titles, so an
+    SRE or combined report gets the wrong title. Its evidence check accepts only catalog
+    headings per `E-` id or table rows with window, result and limits columns: evidence written
+    as bold bullets inside finding files counts as a citation, not an entry, and a stage-1
+    catalog table holding only commands failed the build. The stage-1 SRE prompt could require
+    the catalog columns the build checks.
 
 ### Fix soon
 
-10. Templates are observability-shaped where SRE needs its own: the kickoff note (journeys,
+12. Templates are observability-shaped where SRE needs its own: the kickoff note (journeys,
     monitoring tools) lacks proposed tiers, incident, paging and backup records; the state file
     comments still speak of a monitoring estate; the generated instructions print observability
     paths for an SRE-only setup.
-11. The status sets have no value for "out of scope by format" (inventory, not-measured
+13. The status sets have no value for "out of scope by format" (inventory, not-measured
     baseline numbers, the stage-4 self-check) or for "absent by design" (no incident tracker,
     no rotation); "not verifiable" was used with a reason.
-12. A target agreed on a premise (a store "holds only rebuildable files") has no field for the
+14. A target agreed on a premise (a store "holds only rebuildable files") has no field for the
     premise; stage 3 found the code contradicting it. Add a premise field to target rows.
-13. "Restore tested" does not say the restore must come from the backups the RPO relies on: a
+15. "Restore tested" does not say the restore must come from the backups the RPO relies on: a
     one-off logical copy made for a migration reads as a restore on record.
-14. A rollout-policy target phrased by service kind left a scheduled task in tier 1 uncovered;
+16. A rollout-policy target phrased by service kind left a scheduled task in tier 1 uncovered;
     the kind could prompt "which workloads".
-15. Stage 4 has no case for a gap measured against no target by the owner's explicit choice;
+17. Stage 4 has no case for a gap measured against no target by the owner's explicit choice;
     and its "separate findings when fixes differ" rule can exceed the ~10-question batch cap.
-16. The SRE severity reading has no example for "process absent, recovery met anyway" (one
+18. The SRE severity reading has no example for "process absent, recovery met anyway" (one
     operator, every outage inside the RTO); and the model's incident level 2 ("on-call exists")
     has no reading for "support mode agreed on paper, practice not shown".
-17. A maturity level resting on a finding of the other type, still without a verdict, has no
+19. A maturity level resting on a finding of the other type, still without a verdict, has no
     owner for that verdict; the second type's batch could carry the first type's open findings
     it relies on.
-18. Milestone ids `M-` collide by prefix with the facts-ledger ids of a host knowledge base;
+20. Milestone ids `M-` collide by prefix with the facts-ledger ids of a host knowledge base;
     reserve a distinct prefix.
 
 ### Small
 
-19. The copied owner-questions template keeps kit-relative links that break in the engagement.
-20. Undocumented: `--instructions` accepts a subpath.
-21. Stage 6 forbids queries, but a verification task may be a read-only check the agent could
+21. The copied owner-questions template keeps kit-relative links that break in the engagement.
+22. Undocumented: `--instructions` accepts a subpath.
+23. Stage 6 forbids queries, but a verification task may be a read-only check the agent could
     close before hand-over.
-22. Stage 6's confirmation batch is a no-op when every finding has a verdict; say "none
+24. Stage 6's confirmation batch is a no-op when every finding has a verdict; say "none
     needed" is a valid result.
-23. Stage 2, when tiers were decided at scope: the prompt only says "propose a tier"; it should
+25. Stage 2, when tiers were decided at scope: the prompt only says "propose a tier"; it should
     say "cite the decision".
-24. A withdrawn id before hand-over leaves a hole; the counts must say so (worked, but not
+26. A withdrawn id before hand-over leaves a hole; the counts must say so (worked, but not
     written down).
 
 ### Process lessons for the agent (not kit)

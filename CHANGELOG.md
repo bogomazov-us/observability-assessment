@@ -6,7 +6,7 @@ GitHub are taken from the section of the tagged version.
 ## Unreleased
 
 - **SRE test-run calibration record** (`sre/test-run-calibration.md`): hours per stage and role
-  of the first SRE engagement (focused, combined in sequence), and the 24 kit gaps it found,
+  of the first SRE engagement (focused, combined in sequence), and the 26 kit gaps it found,
   by priority. Linked from the SRE estimation note; the starting values are unchanged.
 - CI writes the word delta of each pull request to the job summary.
 
