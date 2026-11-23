@@ -173,6 +173,19 @@ Worked at both base scopes:
 | Focused, 3 weeks: 14 + 14 − 3 | 9 | 7 | 6 | 3 | 25 | lead and one engineer for both types (lead 12 with the architect's 3, engineer 13 of 15) |
 | Full: 39 + 35 − 8.5 | 23 | 19 | 14 | 9.5 | 65.5 | lead, both engineers and the architect (the engineers' 33 days do not fit one person) |
 
+**Client time.** The test run (a focused engagement through the agent route) measured the
+agent's part at under half an hour per stage: the calendar waits on the owner's answers, not on
+the agent. The team's days above are not changed by it (the lead's days were not measured), but
+the client's time is planned too:
+
+| Client role | Focused | Full |
+|---|--:|--:|
+| Owner answering question batches (about 1 hour per batch of about ten; 4–5 batches and a verdict batch focused, 8–10 full) | 6–8 h | 10–12 h |
+| Interviewees (per interview, as the format states) | 1 h | 1 h |
+
+Each batch is answered within 2 working days ([SOW](../templates/sow.md), client
+obligations); the calendar holds that turnaround, and a later answer moves the date.
+
 **Contingency** (SRE rows; the model's rows also apply)
 
 | Risk on our side | Add |
