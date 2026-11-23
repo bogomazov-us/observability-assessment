@@ -84,7 +84,7 @@ calibration. Below are SRE's own numbers.
 
 > **Starting values.** Every number in this section is a first guess, not a measured actual.
 > It is calibrated on the test run (the first SRE engagement) and then as in the model's
-> "Calibrating".
+> "Calibrating". The test run's hours and the gaps it found: [test-run-calibration.md](test-run-calibration.md).
 
 Base scope: **3 tier-1 services, 1 delivery pipeline system, 1 cloud or hosting estate**;
 environments and review rounds as the format states. Assumptions: the exports in the SRE data
