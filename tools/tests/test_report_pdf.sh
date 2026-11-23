@@ -81,3 +81,7 @@ printf 'report    wide.md\n' > "$tmp/w/r.txt"
 out="$("$asm" --manifest "$tmp/w/r.txt" --project Demo --version abc1234 --out-dir "$tmp/w/out" 2>&1)" || true
 grep -q "table of 7 columns" <<<"$out" || { echo "✗ assessment: a wide table in the report not noted"; exit 1; }
 echo "✓ assessment: wide tables noted in the report only; an unmatched selector reported"
+mkdir -p "$tmp/noid"; printf '# Note\n\nNo record is cited here.\n' > "$tmp/noid/n.md"
+"$tool" --project Demo --stage 1 --version abc1234 --out "$tmp/noid/n.pdf" "$tmp/noid/n.md" >/dev/null 2>&1 \
+  || { echo "✗ a source that cites no id fails the build"; exit 1; }
+echo "✓ a source that cites no id builds"

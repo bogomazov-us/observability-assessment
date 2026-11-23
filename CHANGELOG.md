@@ -5,6 +5,41 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.1 — 2026-11-23
+
+Lessons from closing the first SRE engagement: how a report is closed and accepted, owner
+questions asked from the registers, and gaps in the SRE pack. Both assessment types.
+
+- **Closing the report** (`templates/stage-report.md`, "Closing the report"): a closing check
+  of every decision the report calls open against the decision register and facts ledger; answers
+  read against earlier decisions; the hand-over; acceptance as a `D-` row with the summary's
+  status; the final PDFs rebuilt from the merged commit. Both stage 6 prompts point to it.
+- **Summary** (`templates/report.md`): states the current position, while stage chapters stay
+  history with a dated "Later" note; decisions cited with their record ("ADR-007 item 3", never a
+  bare "item 3"); a new section 9, Hand-over: open decisions, decided work not yet scheduled with
+  its owner, what only the client can do.
+- **Owner questions** (`tools/agent/rules/owner-questions.md`, `templates/owner-questions.md`):
+  asked from the registers, not the report; each option names one card or record; an answer is
+  checked against earlier decisions before it is recorded; every batch is shown in the
+  conversation with an answer template, now for observability too. The rule files were
+  tightened to pay for it: every prompt stays under 2,500 words, and the observability prompts
+  change only in these rule lines and two trims in stage 2.
+- **SRE pack**:
+  - stage 2: a change-safety target lists every tier-1 workload kind it covers;
+  - stage 4: a gap with no target by the owner's choice; splitting a verdict batch over ten;
+    severity examples for "process absent, recovery met anyway" and "on-call agreed on paper";
+    in the combined format the batch carries the other type's open findings it relies on;
+  - the model: a criterion met only on paper reads partial;
+  - the catalogue and targets templates give a narrow report table, the full one in the
+    evidence bundle;
+  - `templates/recovery-proof.md`: a hand-over for a test the client's people run.
+- **Records** (`method/records.md`): a kit id is cited with its file where a host's ledgers use
+  the same prefix ("roadmap M-3").
+- **Report build**: the manifest format is documented as a contract (`tools/assessment-pdf.sh`,
+  `tools/agent/README.md`, "The manifest"); an unmatched selector is reported; the evidence
+  bundle takes wide record tables without the warning; `tools/report-pdf.sh` no longer fails on
+  sources that cite no id.
+
 ## 0.15.0 — 2026-11-23
 
 Adds the **SRE assessment** as a second assessment type on the same core. Observability stays
