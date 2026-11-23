@@ -14,7 +14,7 @@
 #                 (default: decisions.md, created if absent)
 # --risks         risk register, relative to --repo (default: risks.md, created if absent).
 #                 A register named by its flag is the host's: never created or written to; a
-#                 missing one is reported
+#                 missing one is reported and init exits 1 after writing the rest
 # --scratch       scratch directory (default: --repo/.scratch, added to .gitignore)
 # --instructions  file the agent tool reads for instructions, relative to --repo; a subpath such
 #                 as .claude/CLAUDE.md works (default: AGENTS.md)
@@ -28,11 +28,12 @@
 # state file, a facts ledger, decision or risk register, owner-questions file or progress log: they are
 # records, and --force is for refreshing the instructions and skills after a kit upgrade. This
 # holds for the files of each type. Paths in the files it writes are relative to --repo, so no
-# machine-local path is committed.
+# machine-local path is committed; a path in the home folder seen from a repository outside it
+# (the kit in ~, the repository in /tmp) is written from ~, so no user name is.
 set -euo pipefail
 KIT="$(cd "$(dirname "$0")/../.." && pwd)"
 REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" RISKS="risks.md" SCRATCH=""
-NAME="AGENTS.md" SKILLS="" FORCE=0 GIVEN=""
+NAME="AGENTS.md" SKILLS="" FORCE=0 GIVEN="" MISSING=0
 CODE=() TYPES=()
 usage() { sed -n '3,31p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 while [ $# -gt 0 ]; do
@@ -78,7 +79,7 @@ fi
 say() { echo "$*"; }
 register() {  # register FLAG PATH COMMAND...: the kit's file when absent, unless its flag named it
   case " $GIVEN " in
-    *" $1 "*) [ -e "$REPO/$2" ] || { say "missing $2 (given by --$1): not created; check the path"; return; } ;;
+    *" $1 "*) [ -e "$REPO/$2" ] || { say "missing $2 (given by --$1): not created; check the path"; MISSING=1; return; } ;;
   esac
   local path="$2"; shift 2; put "$REPO/$path" keep "$@"
 }
@@ -95,8 +96,13 @@ instructions() {
   python3 - "$KIT/templates/agent-instructions.md" "$REPO" "$KIT" "$WORK" "$FACTS" "$DECISIONS" "$RISKS" "$SCRATCH" "${TYPES[*]-}" "${CODE[@]}" <<'PY'
 import os, re, sys
 src, repo, kit, work, facts, decisions, risks, scratch, types, *code = sys.argv[1:]
-R = os.path.realpath  # relative to the repository, symbolic links resolved: none machine-local
-kit, scratch, *code = (os.path.relpath(R(p), R(repo)) for p in (kit, scratch, *code))
+def place(p, base):  # relative to base; from ~ when only p is in the home folder (no user name)
+    a, b = os.path.realpath(p), os.path.realpath(base)
+    home = os.path.realpath(os.path.expanduser("~")) + os.sep
+    if a.startswith(home) and not b.startswith(home):
+        return "~/" + a[len(home):]
+    return os.path.relpath(a, b)
+kit, scratch, *code = (place(p, repo) for p in (kit, scratch, *code))
 t = open(src).read()
 title = {"observability": "Observability", "sre": "SRE"}
 row = {"observability": ("__WORK__", "__WORK__/engagement-state.yml", "bash __KIT__/tools/agent/prompt.sh N"),
@@ -131,8 +137,13 @@ questions() {  # the template, its links rewritten to the kit relative to the co
   python3 - "$KIT/templates" "$REPO/$WORK" <<'PY'
 import os, re, sys
 src, dest = sys.argv[1:]
-R = os.path.realpath
-link = lambda m: "](" + os.path.relpath(R(os.path.join(src, m[1])), R(dest)) + ")"
+def place(p, base):  # relative to base; from ~ when only p is in the home folder (no user name)
+    a, b = os.path.realpath(p), os.path.realpath(base)
+    home = os.path.realpath(os.path.expanduser("~")) + os.sep
+    if a.startswith(home) and not b.startswith(home):
+        return "~/" + a[len(home):]
+    return os.path.relpath(a, b)
+link = lambda m: "](" + place(os.path.join(src, m[1]), dest) + ")"
 sys.stdout.write(re.sub(r"\]\((?![a-z]+:|#)([^)]+)\)", link, open(os.path.join(src, "owner-questions.md")).read()))
 PY
 }
@@ -180,3 +191,4 @@ Next, by hand:
   3. Record the agreed scope in $DECISIONS and set scope in $STATES.
   4. Review and commit these files on the assessment branch; then start stage 1.
 EOF
+[ "$MISSING" = 0 ] || { echo "A register given by flag is missing (above): fix the path and run init again." >&2; exit 1; }

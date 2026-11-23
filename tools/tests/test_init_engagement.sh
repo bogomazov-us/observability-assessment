@@ -18,7 +18,8 @@ ko() { echo "✗ $*"; fail=1; }
 
 R="$T/eng"; mkdir -p "$R" "$T/code-a" "$T/code-b"; git -C "$R" init -q
 out="$("$INIT" --repo "$R" --code "$T/code-a" --code "$T/code-b" --skills skills)"
-rel() { python3 -c 'import os,sys; R=os.path.realpath; print(os.path.relpath(R(sys.argv[1]), R(sys.argv[2])))' "$1" "$2"; }
+rel() { python3 -c 'import os,sys; R=os.path.realpath; a,b=R(sys.argv[1]),R(sys.argv[2]); h=R(os.path.expanduser("~"))+os.sep
+print("~/"+a[len(h):] if a.startswith(h) and not b.startswith(h) else os.path.relpath(a,b))' "$1" "$2"; }
 K="$(rel "$KIT" "$R")"  # the kit as the instructions name it: relative to the repository
 snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and temporary paths masked
   { echo "## stdout"; printf '%s\n' "$2"
@@ -26,12 +27,12 @@ snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and tempor
     for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
   } | sed "s|$K|[kit]|g; s|$KIT|[kit]|g; s|$T|[tmp]|g"
 }
-links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder
+links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder (or from ~)
   python3 - "$1" <<'PY'
 import os, re, sys
 f = sys.argv[1]; d = os.path.dirname(f)
 bad = [l for l in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", open(f).read())
-       if not re.match(r"[a-z]+:", l) and not os.path.exists(os.path.join(d, l))]
+       if not re.match(r"[a-z]+:", l) and not os.path.exists(os.path.join(d, os.path.expanduser(l)))]
 sys.exit(1 if bad else 0)
 PY
 }
@@ -106,7 +107,9 @@ grep -qx "existing" "$R/04-risks/risk-register.md" && grep -qF "04-risks/risk-re
 # A host knowledge base: registers named by flag are never created or written.
 H="$T/host"; mkdir -p "$H/adr" "$H/kb"; git -C "$H" init -q
 printf '# ADR 1\n\nStatus: accepted\n' > "$H/adr/0001-scope.md"; cp "$H/adr/0001-scope.md" "$T/adr.md"
-out="$("$INIT" --repo "$H" --code "$T/code-a" --decisions adr --facts kb/facts.md --risks kb/risks.md)"
+rc=0; out="$("$INIT" --repo "$H" --code "$T/code-a" --decisions adr --facts kb/facts.md --risks kb/risks.md 2>/dev/null)" || rc=$?
+[ "$rc" = 1 ] && [ -f "$H/AGENTS.md" ] && ok "host: a missing register exits 1 after writing the rest" \
+  || ko "host: a missing register exits $rc"
 [ "$(ls "$H/adr")" = "0001-scope.md" ] && cmp -s "$H/adr/0001-scope.md" "$T/adr.md" \
   && ok "host: a folder of ADRs left as it is" || ko "host: the ADR folder written to"
 [ ! -e "$H/kb/facts.md" ] && [ ! -e "$H/kb/risks.md" ] && grep -q "missing kb/facts.md (given by --facts): not created" <<<"$out" \
@@ -169,6 +172,12 @@ grep -q "no skills in .*sre/agent/skills" <<<"$out" || [ -d sre/agent/skills ] \
 [ -d "$S/skills/oa-stage-1-inventory" ] && ok "both: observability skills installed" || ko "both: observability skills missing"
 [ "$(skills "$S" 'oa-*')" -eq $(( $(ls -d tools/agent/skills/oa-* sre/agent/skills/oa-* | wc -l) )) ] \
   && ok "both: rule, observability and SRE stage skills installed" || ko "both: a skill set missing"
+# The kit in the home folder, the repository outside it: the kit is written from ~, no user name.
+FH="$(dirname "$KIT")"; F="$T/fromhome"; mkdir -p "$F"; git -C "$F" init -q
+HOME="$FH" "$INIT" --repo "$F" --code "$T/code-a" >/dev/null
+grep -qF "\`~/$(basename "$KIT")\`" "$F/AGENTS.md" && ! grep -qF "$FH" "$F/AGENTS.md" && ! grep -qF "../$(basename "$KIT")" "$F/AGENTS.md" \
+  && ok "the kit in ~, the repository outside it: written from ~" || ko "the kit in ~: path not written from ~"
+
 echo "local" >> "$S/assessment/sre/engagement-state.yml"
 "$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
 grep -qx "local" "$S/assessment/sre/engagement-state.yml" && ok "sre: re-run keeps the state file" || ko "sre: re-run replaced the state file"
