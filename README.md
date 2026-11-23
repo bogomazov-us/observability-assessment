@@ -2,7 +2,7 @@
 
 | Author | Version | Licence |
 |---|---|---|
-| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.15.4 | [CC BY 4.0](./LICENSE) · code [Apache 2.0](./LICENSE-CODE) |
+| Ivan Bogomazov · [bogomazov.us](https://bogomazov.us) | 0.15.5 | [CC BY 4.0](./LICENSE) · code [Apache 2.0](./LICENSE-CODE) |
 
 An open kit for finding out what your monitoring and your reliability practice actually do, and
 what to fix first. Two assessment types, observability and SRE, on one method:
