@@ -1,4 +1,4 @@
-# Stage 3 reference — SRE gap
+# SRE stage 3 reference — gap
 
 *Reference for [SRE stage 3](../stage-3-gap.md). `prompt.sh --assessment sre 3` does not append
 it; the prompt names it at the Method, and the agent reads a step's section here before doing

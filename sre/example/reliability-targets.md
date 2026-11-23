@@ -1,4 +1,4 @@
-# Reliability targets — Larkfield Grocer
+# SRE example: reliability targets
 
 **Fictional.** `sre/targets/reliability-targets.md` of the [SRE worked example](worked-example.md),
 in the [template](../templates/reliability-targets.md)'s format, as stage 3 read it. A row is

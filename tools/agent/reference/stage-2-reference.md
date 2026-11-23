@@ -1,4 +1,4 @@
-# Stage 2 reference — target model
+# Observability stage 2 reference — target model
 
 *Reference for [stage 2](../stage-2-target-model.md). `prompt.sh 2` does not append it; the
 prompt names a section here at each step that needs it, and the agent reads that section

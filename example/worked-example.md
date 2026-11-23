@@ -1,4 +1,4 @@
-# Worked example — Larkfield Grocer
+# Worked example: observability — Larkfield Grocer
 
 **Fictional.** Larkfield Grocer, its systems, people and numbers are invented to show the method
 end to end. Any resemblance to a real company is accidental. The example follows one journey

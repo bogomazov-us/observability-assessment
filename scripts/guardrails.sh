@@ -77,7 +77,7 @@ for f in "${TRACKED[@]}"; do
   [[ "$f" == tools/tests/fixtures/* ]] && continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
 done
-for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
+for f in "${KIT_FILES[@]}"; do [[ "$f" == "PART: "* ]] || [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
 [ $miss -eq 0 ] && ok "build list matches files" || fail "build list out of sync"
 
 # 5. Relative links resolve

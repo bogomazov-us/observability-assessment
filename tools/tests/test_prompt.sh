@@ -14,7 +14,7 @@ fail() { echo "✗ $*"; FAIL=1; }
 
 for n in 1 2 3 4 5 6; do
   "$P" "$n" "$T/s$n.md"
-  head -1 "$T/s$n.md" | grep -q "^# Stage $n " && pass "stage $n first" || fail "stage $n: stage file not first"
+  head -1 "$T/s$n.md" | grep -q "^# Observability stage $n " && pass "stage $n first" || fail "stage $n: stage file not first"
   for h in "boundaries common to every stage" "every claim cites its evidence" \
            "claims stay within what was checked" "owner questions stay open" "progress log"; do
     grep -qF "# Rule: $h" "$T/s$n.md" && pass "stage $n has rule: $h" || fail "stage $n lacks rule: $h"
@@ -34,7 +34,7 @@ for n in 2 3; do
   R=tools/agent/reference/stage-$n-reference.md
   [ -f "$R" ] && grep -qF "(reference/stage-$n-reference.md)" tools/agent/stage-$n-*.md \
     && pass "stage $n links its reference" || fail "stage $n: reference missing or not linked"
-  grep -qF "# Stage $n reference" "$T/s$n.md" && fail "stage $n: reference appended" || pass "stage $n: reference not appended"
+  grep -qF "# Observability stage $n reference" "$T/s$n.md" && fail "stage $n: reference appended" || pass "stage $n: reference not appended"
 done
 
 # size budget: every assembled prompt fits, for every type and stage that has a file

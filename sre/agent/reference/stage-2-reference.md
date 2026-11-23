@@ -1,4 +1,4 @@
-# Stage 2 reference — SRE target model
+# SRE stage 2 reference — target model
 
 *Reference for [SRE stage 2](../stage-2-target-model.md). `prompt.sh --assessment sre 2` does
 not append it; the prompt names a section here at each step, and the agent reads that section

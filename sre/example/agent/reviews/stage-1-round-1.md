@@ -1,4 +1,4 @@
-# Review — SRE stage 1 inventory, round 1
+# SRE example: review — stage 1 inventory, round 1
 
 Larkfield Grocer, fictional. Format: [review.md](../../../../templates/review.md). The lead's
 check before confirming, recorded as a round so that the

@@ -1,4 +1,4 @@
-# Stage 3 reference — gap
+# Observability stage 3 reference — gap
 
 *Reference for [stage 3](../stage-3-gap.md). `prompt.sh 3` does not append it; the prompt
 names it at the Method, and the agent reads a step's section here before doing the step. A

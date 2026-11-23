@@ -1,4 +1,4 @@
-# Stage 4 — SRE findings
+# SRE stage 4 — findings
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh --assessment sre 4`, which appends the
 rule files it names, and paste the result as is; replace the bracketed values.*

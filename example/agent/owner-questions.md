@@ -1,4 +1,4 @@
-# Owner questions — stage 3 batch
+# Observability example: owner questions — stage 3 batch
 
 Larkfield Grocer, fictional. Format: [owner-questions.md](../../templates/owner-questions.md).
 The agent drafted the questions and candidates at hand-over; the lead sent them and recorded

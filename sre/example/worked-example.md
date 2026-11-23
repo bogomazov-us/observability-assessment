@@ -1,4 +1,4 @@
-# Worked example — Larkfield Grocer, SRE
+# Worked example: SRE — Larkfield Grocer
 
 **Fictional.** Larkfield Grocer is the company of the
 [observability worked example](../../example/worked-example.md); its systems, people and

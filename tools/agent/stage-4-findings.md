@@ -1,4 +1,4 @@
-# Stage 4 — findings
+# Observability stage 4 — findings
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh 4`, which appends the rule files it
 names, and paste the result as is; replace the bracketed values.*
