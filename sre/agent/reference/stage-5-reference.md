@@ -16,6 +16,10 @@ The [overlap table](../../maturity-model.md#overlaps-in-the-combined-format), as
 | 4 | Scored here; propose `refers_to: sre/4` for observability dimension 8, which you do not edit |
 | 6 | Scored in both, each from its own angle |
 
+A level resting on a finding of the other type that still has no verdict is provisional; that
+finding goes into this type's verdict batch ([stage 4 reference](stage-4-reference.md#output)),
+so its owner is asked.
+
 A `--pair` line that needs the other type's profile changed goes to the lead, who edits that
 file and records the change as a `D-` row ([in sequence](../../README.md#in-sequence)).
 
@@ -27,7 +31,3 @@ stops the next level, and the confidence. Then:
 1. The dimensions not in scope, apart from those not scored.
 2. The profile printed by `tools/maturity.py`.
 3. In the combined format, the `--pair` output.
-
-Owner questions (an N/A to agree, a level to confirm) are presented inline in the conversation
-as well as in the file: per item its claim, its basis and the options, then a one-line answer
-template (`Q-07: B`).

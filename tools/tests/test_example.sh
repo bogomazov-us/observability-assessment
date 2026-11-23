@@ -54,6 +54,18 @@ awk '/^## Incidents/{on=1} /^## Counted from other exports/{on=0} on' sre/exampl
 check sre/example/baseline.md "reproduced by baseline.py from exports.sh" \
   diff "$TMP/file.md" "$TMP/tool.md"
 
+# The SRE example's catalogue and targets as the report carries them: the narrow tables in the
+# report, the full files in the evidence bundle, with no wide-table note on either.
+mkdir -p "$TMP/pdf"
+cp sre/example/worked-example.md sre/example/service-catalogue.md sre/example/reliability-targets.md "$TMP/pdf/"
+printf 'assessment sre\nreport    worked-example.md  Catalogue\nevidence  service-catalogue.md\nevidence  reliability-targets.md\n' \
+  > "$TMP/pdf/manifest.txt"
+out="$(tools/assessment-pdf.sh --manifest "$TMP/pdf/manifest.txt" --project Example --version test \
+  --out-dir "$TMP/pdf/out" 2>&1)"; code=$?
+if [ $code -eq 0 ] && ! grep -q "columns; at most four\|no section matches" <<<"$out"; then
+  echo "✓ sre/example: catalogue and targets build narrow in the report, whole in the bundle"
+else echo "✗ sre/example: report build (exit $code)"; sed 's/^/    /' <<<"$out"; FAIL=1; fi
+
 # E- ids are one sequence per engagement across types (method/records.md): the SRE example
 # continues each stage's block after the observability example's ids, never reuses one.
 ids() { grep -rhoE '\bE-[0-9]{3}\b' "$1" | sort -u; }

@@ -42,6 +42,20 @@ design only] · Date: [date]
 | How it is measured | [RTO: start declared to service usable; RPO: last write in the backup to the failure point] | [time to detect, time to recover, from alert and log timestamps] |
 | Stop condition and rollback | [who calls it off; how stage is put back] | [who calls it off; how the fault is removed] |
 
+## Hand-over
+
+When a test is agreed (a restore by a date, a `D-` row) and the assessment cannot run it — a
+read-only agent never can — this section hands it to the client's people. It is filled when
+the test is agreed, and the run fills "Run" and "Measured" below.
+
+| Item | Holds |
+|---|---|
+| Who runs it | [client role and team; one accountable person] |
+| Runbook draft | [the steps of the Plan, drafted from the evidence (`E-` ids); the operator corrects them before the run] |
+| Done when | [the Measured rows filled and each read against its `T-` row; a stop or a failure recorded counts as a run] |
+| What to record, and where | [start and end timestamps, the backup used and its age, the output or screenshots; in the engagement repository at [path], cited as a new `E-` id by whoever ran it] |
+| Deadline | [date, from `D-NN`]; not run by then, the finding stays *untested* and the `V-` task or milestone names it |
+
 ## Run
 
 | Run by | Observed by | Date and time window | Environment | Change reference | Recording |

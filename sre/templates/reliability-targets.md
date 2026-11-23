@@ -40,10 +40,23 @@ client confirms or replaces each.
 | [T-04] | [S-01] | SLO | [J1.1 availability 99.5% over 28 days] | | agreed | [D-NN] | [product owner] | `confirmed` |
 | [T-05] | [S-01] | RTO | [1 hour] | | agreed | [D-NN] | [service owner] | `confirmed` |
 | [T-06] | [S-01] | RPO | [owner sets: Q-NN] | | | | [data owner] | `proposed` |
-| [T-07] | tier 1 | rollout policy | [progressive delivery with automatic halt on SLO burn] | | [agreed] | [D-NN] | [release owner] | [status] |
+| [T-07] | tier 1: [services, workers, scheduled tasks, tunnels or agents] | rollout policy | [progressive delivery with automatic halt on SLO burn] | | [agreed] | [D-NN] | [release owner] | [status] |
 | [T-08] | [S-02] | RPO | [24 hours] | [the store holds only files that can be rebuilt: E-NNN] | agreed | [D-NN] | [data owner] | `confirmed` |
 | [T-09] | dimension 9 | target level | [3, or none, by the owner's choice] | | agreed | [D-NN] | [sponsor] | `confirmed` |
 
 **Not agreed** — each target still default or proposed at the end of stage 2, with its owner
 question (`Q-`) and date. Stage 3 measures against the agreed value, and against a default only
 when it says so.
+
+## In the report
+
+Guidance for the stage notes, not a section of this file. The full table is a record: this file
+goes to the evidence bundle as it is (manifest line `evidence
+sre/targets/reliability-targets.md`). The stage notes show the targets narrow, at most five
+short columns:
+
+| ID | Applies to | Kind | Value | Status |
+|---|---|---|---|---|
+| [T-05] | [S-01] | RTO | [1 hour] | [`confirmed`, D-NN] |
+
+Premise, owner and default or agreed are read in the bundle.

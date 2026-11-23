@@ -113,6 +113,28 @@ target level per scored dimension (T-10 to T-13, D-12). The SLO is the
 observability spec's `SLO-checkout`, cited by T-04 and still proposed. The default rows stay
 default: their dimensions are out of scope.
 
+In the stage 2 notes (section 3) both tables are narrow, as the templates' "In the report"
+gives them; the full files go to the evidence bundle (manifest lines
+`evidence sre/service-catalogue.md` and `evidence sre/targets/reliability-targets.md`).
+
+| ID | Service | Tier | Owner | Status |
+|---|---|---|---|---|
+| S-01 | web front end | 1, D-12 | Web team | confirmed |
+| S-02 | `checkout` | 1, D-12 | Checkout team | confirmed |
+| S-03 | `payments`, with the payments ledger | 1, D-12 | Payments team | confirmed |
+| S-04 | `slots` | 1, D-12 | Delivery team | confirmed |
+| S-05 | orders database | 1, D-12 | Platform team | confirmed |
+| S-06 | `promo-rules` | 2, D-12 | *unknown* (Q-09) | differs |
+| S-07 | `search` | 2, D-12 | Catalogue team | confirmed |
+
+| ID | Applies to | Kind | Value | Status |
+|---|---|---|---|---|
+| T-04 | S-02 | SLO | `SLO-checkout` of the observability spec | `proposed` |
+| T-05, T-06 | S-05 | RTO, RPO | 1 hour; 5 minutes of data | `confirmed`, D-13 |
+| T-07, T-08 | S-03 (payments ledger) | RTO, RPO | 1 hour; 5 minutes of data | `confirmed`, D-13 |
+| T-09 | tier 1: services | rollout policy | canary to 10% with an automatic halt; rollback within 15 minutes | `confirmed`, D-14 |
+| T-10 to T-13 | dimensions 1, 4, 6, 9 | target level | 3, 4, 4, 3 | `confirmed`, D-12 |
+
 ## Gaps (extract of `sre/stage-3-gap.md`)
 
 | ID | Service | Dimension | Target | Current | Evidence | Status |

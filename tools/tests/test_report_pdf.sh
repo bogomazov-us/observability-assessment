@@ -67,3 +67,17 @@ printf 'assessment sre\nreport    s1.md  1\nevidence  s1.md  A\n' > "$tmp/s/name
 "$asm" --manifest "$tmp/s/named.txt" --project Demo --version abc1234 --out-dir "$tmp/s/named" >/dev/null \
   && [ -f "$tmp/s/named/sre-assessment-report-abc1234.pdf" ] || { echo "✗ assessment: an assessment line not followed"; exit 1; }
 echo "✓ assessment: title and file names follow the types (SRE, combined, named in the manifest)"
+# The wide-table note is for the report; the bundle's records are built without it. A selector
+# that matches no section is reported.
+mkdir -p "$tmp/w"
+printf '# Records\n\n| A | B | C | D | E | F | G |\n|---|---|---|---|---|---|---|\n| L-01 | 2 | 3 | 4 | 5 | 6 | 7 |\n' > "$tmp/w/wide.md"
+printf '# Chapter\n\n## 1. Result\n\nL-01 is short.\n' > "$tmp/w/ch.md"
+printf 'report    ch.md  1 7\nevidence  wide.md\n' > "$tmp/w/m.txt"
+out="$("$asm" --manifest "$tmp/w/m.txt" --project Demo --version abc1234 --out-dir "$tmp/w/out" 2>&1)" \
+  || { echo "✗ assessment: wide records in the bundle: expected exit 0"; exit 1; }
+grep -q "columns; at most four" <<<"$out" && { echo "✗ assessment: the bundle's wide table noted"; exit 1; }
+grep -q 'ch.md: no section matches "7"' <<<"$out" || { echo "✗ assessment: an unmatched selector not reported"; exit 1; }
+printf 'report    wide.md\n' > "$tmp/w/r.txt"
+out="$("$asm" --manifest "$tmp/w/r.txt" --project Demo --version abc1234 --out-dir "$tmp/w/out" 2>&1)" || true
+grep -q "table of 7 columns" <<<"$out" || { echo "✗ assessment: a wide table in the report not noted"; exit 1; }
+echo "✓ assessment: wide tables noted in the report only; an unmatched selector reported"
