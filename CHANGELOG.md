@@ -5,6 +5,45 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.0 — 2026-11-23
+
+Adds the **SRE assessment** as a second assessment type on the same core. Observability stays
+the root type and is unchanged: its six assembled prompts are byte-identical apart from two
+rule lines, and an engagement set up without `--assessment` gets exactly the 0.14 layout.
+
+- **SRE type** (`sre/`):
+  - `sre/README.md`: the focused, full and combined formats, scope limits, the calendar,
+    starting values for estimation (an SRE engineer column), the combined format with overlaps
+    scored once, the report, setup and prompts, and how SRE is added to an observability
+    assessment already under way ("In sequence");
+  - `sre/maturity-model.md`: 10 dimensions with level criteria, mapped to DORA's four keys and
+    the reliability pillar of the Well-Architected Framework, and the overlap table with the
+    observability model;
+  - six agent stages in `sre/agent/`, each with a reference file and a skill
+    (`oa-sre-stage-N-*`);
+  - templates: service catalogue (`S-`), reliability targets (`T-`, with a target level per
+    dimension and a premise column), readiness review, recovery proof, and SRE rows for the
+    data request and interview guide;
+  - a synthetic worked example with CSV exports, checked in CI.
+- **Setup by type**:
+  - `init-engagement.sh --assessment observability|sre`, repeatable; SRE files go to
+    `<work>/sre/`, owner questions and findings stay shared;
+  - registers named by `--facts`, `--decisions` (a file or a folder of ADRs) or `--risks` are
+    the host's and are never created or written;
+  - paths written into the engagement are relative to the repository;
+  - `install.sh --rules` installs only the rule skills.
+- **Tools**:
+  - `prompt.sh --assessment sre N`;
+  - `tools/baseline.py`: baseline numbers (`B-`) from CSV exports of deploys, incidents and
+    pages, a window per input, an optional incident `class`, and `--no-rotation`;
+  - `maturity.py`: a model per type (`model: sre`) and `--pair` for the combined format;
+  - `stagegate.py`: the assessment type (G13) and the recorded sample re-check (G14);
+  - `assessment-pdf.sh`: title and file prefix follow the types in the manifest.
+- **Core**: one row or link per document for the second type (offerings, estimation, getting
+  started, report, finding, SOW, executive deck, records); the consistency check covers `sre/`
+  and checks that the shared method sentences match in both types' stage prompts.
+- Calibrated on a test run on a real engagement before release; only generic lessons
+  entered the kit.
 - CI writes the word delta of each pull request to the job summary.
 
 ## 0.14.0 — 2026-11-21
