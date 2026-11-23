@@ -1,4 +1,4 @@
-# Stage 2 — target model
+# Observability stage 2 — target model
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh 2`, which appends the rule files it
 names, and paste the result as is; replace the bracketed values.*

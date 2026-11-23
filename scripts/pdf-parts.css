@@ -1,0 +1,17 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Added after pdf.css when the kit is built in parts (scripts/files.sh, "PART:" entries): a part is
+   level 1 on a page of its own, a chapter level 2 and styled as a level-1 heading of a flat build. */
+.part { break-before: page; break-after: page; padding-top: 70mm; }
+.part h1 { font-size: 26pt; line-height: 1.15; margin: 0 0 6mm; padding-top: 0; border-top: none; color: #0f766e; }
+.part p { font-size: 12pt; color: #374151; max-width: 130mm; }
+
+h2 { font-size: 18pt; color: #0f766e; margin: 12mm 0 4mm; padding-top: 4mm; border-top: 0.6pt solid #0f766e; }
+.part + h2, .part + .landscape > h2:first-child { margin-top: 0; border-top: none; }
+h3 { font-size: 13pt; margin: 6mm 0 2mm; }
+h4 { font-size: 11pt; margin: 4mm 0 2mm; }
+h5 { font-size: 10pt; }
+h2, h3, h4 { page-break-after: avoid; break-after: avoid; }
+
+nav#TOC > ul > li { margin-top: 3mm; }
+nav#TOC > ul > li > a { font-weight: 600; color: #0f766e; }
+nav#TOC ul ul { padding-left: 6mm; }

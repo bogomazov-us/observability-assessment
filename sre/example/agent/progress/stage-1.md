@@ -1,4 +1,4 @@
-# Progress — SRE stage 1, inventory (excerpt)
+# SRE example: progress — stage 1, inventory (excerpt)
 
 Larkfield Grocer, fictional. Written by the agent as it worked
 ([rule](../../../../tools/agent/rules/progress-log.md)); times local, CEST, read from the clock.

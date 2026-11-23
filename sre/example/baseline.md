@@ -1,4 +1,4 @@
-# Baseline — Larkfield Grocer, SRE
+# SRE example: baseline
 
 **Fictional.** `sre/baseline.md` of the [SRE worked example](worked-example.md), as SRE stage 1
 handed it over. The three tables below are what [`tools/baseline.py`](../../tools/baseline.md)

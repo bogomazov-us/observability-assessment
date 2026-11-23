@@ -1,4 +1,4 @@
-# Stage 1 — SRE inventory
+# SRE stage 1 — inventory
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh --assessment sre 1`, which appends the
 rule files it names, and paste the result as is; replace the bracketed values.*

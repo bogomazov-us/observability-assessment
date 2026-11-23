@@ -17,7 +17,8 @@
    The assembled stage prompts are pinned in `tools/tests/fixtures/prompts/`. After a deliberate
    prompt change, refresh them with `UPDATE_GOLDEN=1 tools/tests/test_prompt.sh`; the pull
    request says why the prompts changed.
-4. **A new file** goes into `scripts/files.sh`, or the guardrails fail.
+4. **A new file** goes into `scripts/files.sh`, under its part, or the guardrails fail;
+   `tools/tests/test_files.sh` checks the order rules.
 5. **Release:** raise the version in the README status table, move the `Unreleased` entries of
    `CHANGELOG.md` under a heading for that version (the release notes are taken from it, and the
    guardrails fail without it), merge to `main`, then tag

@@ -1,4 +1,4 @@
-# Stage 1 reference — SRE inventory
+# SRE stage 1 reference — inventory
 
 *Reference for [stage 1](../stage-1-inventory.md). `prompt.sh --assessment sre 1` does not
 append it; the prompt names it at the Method and the Output, and the agent reads a step's section here before

@@ -7,7 +7,9 @@
 #       build an edition defined outside this repository: FILE is a bash file that may set
 #       KIT_TITLE, KIT_SUBTITLE, KIT_AUTHOR, KIT_LICENCE, KIT_FOOTER, KIT_NAME, KIT_OUT_DIR
 #       and KIT_FILES (paths relative to this repository, or absolute). CONFIG_DIR is set to
-#       the directory of FILE before it is read.
+#       the directory of FILE before it is read. KIT_FILES may hold "PART: Title | Sentence"
+#       entries (format in scripts/files.sh): then each part gets a page and the contents two
+#       levels; without them the kit builds flat, as before parts existed.
 # Needs pandoc and weasyprint. Same script runs locally and in CI.
 set -euo pipefail
 
@@ -39,30 +41,42 @@ OUT="$KIT_OUT_DIR/${KIT_NAME}-v${VERSION}.pdf"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
 # A chapter that is listed but missing fails the build: a PDF without it would look complete.
-MISSING=()
-for f in "${KIT_FILES[@]}"; do [ -f "$f" ] || MISSING+=("$f"); done
+MISSING=(); SHIFT=0
+for f in "${KIT_FILES[@]}"; do
+  case "$f" in "PART: "*) SHIFT=1; continue ;; esac
+  [ -f "$f" ] || MISSING+=("$f")
+done
 if [ ${#MISSING[@]} -gt 0 ]; then
   echo "✗ chapters listed but not found:" >&2; printf '    %s\n' "${MISSING[@]}" >&2
   exit 1
 fi
 
 : > "$TMP/kit.md"
+ROMAN=(I II III IV V VI VII VIII IX X XI XII XIII XIV XV XVI XVII XVIII XIX XX); PARTS=0
 for f in "${KIT_FILES[@]}"; do
+  # A part: its own page, a level-1 heading; the chapters under it are shifted one level down.
+  case "$f" in "PART: "*)
+    entry="${f#PART: }"; title="${entry%%|*}"; title="${title%"${title##*[![:space:]]}"}"
+    sentence=""; [[ "$entry" == *"|"* ]] && sentence="${entry#*|}" && sentence="${sentence#"${sentence%%[![:space:]]*}"}"
+    printf '<div class="part">\n\n# Part %s · %s\n\n%s\n\n</div>\n\n' "${ROMAN[$PARTS]}" "$title" "$sentence" >> "$TMP/kit.md"
+    PARTS=$((PARTS + 1)); continue ;;
+  esac
   # relative links do not work inside one PDF: keep the link text only.
   # Spec-set skeletons are demoted one level so they run on under the spec-set page
-  # instead of each starting a new, mostly empty page.
-  demote=0
-  case "$f" in templates/spec-set/README.md) ;; templates/spec-set/*) demote=1 ;; esac
+  # instead of each starting a new, mostly empty page. With parts, every chapter is one level down.
+  demote=$SHIFT
+  case "$f" in templates/spec-set/README.md) ;; templates/spec-set/*) demote=$((SHIFT + 1)) ;; esac
   # A chapter with a table wider than six columns is set landscape as a whole, so the table does
   # not leave its heading alone on a portrait page.
   wide="$(perl -ne '$c=!$c if /^\s*```/; if (!$c && /^\|.*\|\s*$/) { $n=()=/\|/g; $w=1 if $n-1>6 } END { print $w?1:0 }' "$f")"
   [ "$wide" = 1 ] && printf '<div class="landscape">\n\n' >> "$TMP/kit.md"
   perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g;
-    if (/^\s*```/) { $c = !$c } elsif (!$c && '"$demote"' && /^#{1,5} /) { s/^/#/ }' "$f" >> "$TMP/kit.md"
+    if (/^\s*```/) { $c = !$c } elsif (!$c && /^(#{1,6}) /) { $l = length($1) + '"$demote"'; $l = 6 if $l > 6; s/^#+/"#" x $l/e }' "$f" >> "$TMP/kit.md"
   [ "$wide" = 1 ] && printf '\n\n</div>\n' >> "$TMP/kit.md"
   printf '\n\n' >> "$TMP/kit.md"
   # After the README: what changed in this version, from the top section of the changelog.
   if [ "$f" = README.md ] && [ -f CHANGELOG.md ]; then
+    [ "$SHIFT" = 1 ] && printf '#' >> "$TMP/kit.md"
     printf '# What is new in this version\n\n' >> "$TMP/kit.md"
     awk '/^## /{n++} n==1' CHANGELOG.md | sed '1s/^## /**/; 1s/$/**/' \
       | perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g' >> "$TMP/kit.md"
@@ -70,7 +84,7 @@ for f in "${KIT_FILES[@]}"; do
   fi
 done
 
-pandoc "$TMP/kit.md" -f gfm -t html5 -s --toc --toc-depth=1 \
+pandoc "$TMP/kit.md" -f gfm -t html5 -s --toc --toc-depth=$((SHIFT + 1)) \
   --metadata title="$KIT_TITLE" -M document-css=false \
   --metadata subtitle="$KIT_SUBTITLE" \
   --metadata author="$KIT_AUTHOR" \
@@ -78,6 +92,7 @@ pandoc "$TMP/kit.md" -f gfm -t html5 -s --toc --toc-depth=1 \
   -o "$TMP/kit.html"
 tools/wide-tables.pl "$TMP/kit.html"
 printf '@page { @bottom-left { content: "%s"; } }\n@page :first { @bottom-left { content: none; } }\n' "$KIT_FOOTER" > "$TMP/footer.css"
-weasyprint -s scripts/pdf.css -s "$TMP/footer.css" "$TMP/kit.html" "$OUT"
+STYLES=(-s scripts/pdf.css); [ "$SHIFT" = 1 ] && STYLES+=(-s scripts/pdf-parts.css)
+weasyprint "${STYLES[@]}" -s "$TMP/footer.css" "$TMP/kit.html" "$OUT"
 
 if [ -n "$DOWNLOADS" ]; then cp "$OUT" "$HOME/Downloads/"; echo "$HOME/Downloads/$(basename "$OUT")"; else echo "$OUT"; fi

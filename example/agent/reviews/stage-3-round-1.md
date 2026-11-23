@@ -1,4 +1,4 @@
-# Review — stage 3 gap, round 1
+# Observability example: review — stage 3 gap, round 1
 
 Larkfield Grocer, fictional. Format: [review.md](../../../templates/review.md). The lead's
 check before confirming, recorded as a round so that the

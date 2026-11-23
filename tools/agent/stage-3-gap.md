@@ -1,4 +1,4 @@
-# Stage 3 — gap
+# Observability stage 3 — gap
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh 3`, which appends the rule files it
 names, and paste the result as is; replace the bracketed values.*

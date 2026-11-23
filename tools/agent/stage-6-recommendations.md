@@ -1,4 +1,4 @@
-# Stage 6 — recommendations
+# Observability stage 6 — recommendations
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh 6`, which appends the rule files it
 names, and paste the result as is; replace the bracketed values.*

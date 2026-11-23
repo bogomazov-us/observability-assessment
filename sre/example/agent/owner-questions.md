@@ -1,4 +1,4 @@
-# Owner questions — SRE stage 1 batch
+# SRE example: owner questions — stage 1 batch
 
 Larkfield Grocer, fictional. Format: [owner-questions.md](../../../templates/owner-questions.md).
 The agent drafted the questions and candidates at hand-over; the lead sent them and recorded

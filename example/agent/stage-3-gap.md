@@ -1,4 +1,4 @@
-# Observability assessment — stage 3: gap
+# Observability example: stage 3 report — gap
 
 Project: Larkfield Grocer, checkout (fictional) · Version: `5e8a2d7` · Date: 2027-04-22 (CEST)
 Document status: accepted · Baseline: stage 1 accepted at `b04f6c3`, stage 2 at `a3c90e1`

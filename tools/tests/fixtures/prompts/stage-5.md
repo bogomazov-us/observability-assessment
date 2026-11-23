@@ -1,4 +1,4 @@
-# Stage 5 — maturity
+# Observability stage 5 — maturity
 
 *Task prompt. Assemble it with `tools/agent/prompt.sh 5`, which appends the rule files it
 names, and paste the result as is; replace the bracketed values.*

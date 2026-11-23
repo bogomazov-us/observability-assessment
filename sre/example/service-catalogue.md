@@ -1,4 +1,4 @@
-# Service catalogue — Larkfield Grocer
+# SRE example: service catalogue
 
 **Fictional.** `sre/service-catalogue.md` of the [SRE worked example](worked-example.md), in
 the [template](../templates/service-catalogue.md)'s format, after stage 2: the tiers are the

@@ -1,4 +1,4 @@
-# Progress — stage 3, gap (excerpt)
+# Observability example: progress — stage 3, gap (excerpt)
 
 Larkfield Grocer, fictional. Written by the agent as it worked
 ([rule](../../../tools/agent/rules/progress-log.md)); times local, CEST, read from the clock.
