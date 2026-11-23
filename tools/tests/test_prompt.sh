@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/agent/prompt.sh and the rule files the stage prompts name.
-# The six assembled prompts are pinned byte for byte in tools/tests/fixtures/prompts/.
+# The assembled prompts of both types are pinned byte for byte in tools/tests/fixtures/prompts/.
 # After a deliberate prompt change, refresh them: UPDATE_GOLDEN=1 tools/tests/test_prompt.sh
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -51,6 +51,33 @@ for f in sre/agent/stage-[1-6]-*.md; do
   else fail "sre stage $n: prompt.sh failed"; fi
 done
 
+# SRE: the same structural checks on its six stages, where the structure is shared. By design
+# the SRE stage file opens with "# SRE stage N", names "--assessment sre N", and the rules point
+# at sre/engagement-state.yml and sre/progress/; every stage links its reference.
+for n in 1 2 3 4 5 6; do
+  f="$(ls sre/agent/stage-"$n"-*.md)"
+  "$P" --assessment sre "$n" "$T/sre$n.md"
+  head -1 "$T/sre$n.md" | grep -q "^# SRE stage $n " && [ "$(head -1 "$f")" = "$(head -1 "$T/sre$n.md")" ] \
+    && pass "sre stage $n first" || fail "sre stage $n: stage file not first"
+  for h in "boundaries common to every stage" "every claim cites its evidence" \
+           "claims stay within what was checked" "owner questions stay open" "progress log"; do
+    grep -qF "# Rule: $h" "$T/sre$n.md" && pass "sre stage $n has rule: $h" || fail "sre stage $n lacks rule: $h"
+  done
+  grep -qF "Keep \`sre/progress/stage-$n.md\`" "$T/sre$n.md" && pass "sre stage $n log path" || fail "sre stage $n: log path not sre/progress/stage-$n.md"
+  grep -qF "check sre/engagement-state.yml $n\`" "$T/sre$n.md" && pass "sre stage $n gate check" || fail "sre stage $n: gate check not set to $n"
+  grep -qF "stage-N.md" "$T/sre$n.md" && fail "sre stage $n: N left in place" || pass "sre stage $n: N replaced"
+  st=$(sed -n '/^# Rule:/,$p' "$T/sre$n.md" | grep -o "[a-z/]*engagement-state\.yml" | sort -u)
+  [ "$st" = "sre/engagement-state.yml" ] && pass "sre stage $n rules name only sre/engagement-state.yml" \
+    || fail "sre stage $n rules name another state file: $st"
+  grep -qF "prompt.sh --assessment sre $n\`" "$f" && pass "sre stage $n names its command" || fail "sre stage $n: header does not name prompt.sh --assessment sre $n"
+  for s in "## Progress log" "## Claims stay within what was checked" "No client data leaves the engagement repository"; do
+    grep -qF "$s" "$f" && fail "sre stage $n repeats: $s" || pass "sre stage $n does not repeat: $s"
+  done
+  [ -f "sre/agent/reference/stage-$n-reference.md" ] && grep -qF "(reference/stage-$n-reference.md)" "$f" \
+    && pass "sre stage $n links its reference" || fail "sre stage $n: reference missing or not linked"
+  grep -qF "# SRE stage $n reference" "$T/sre$n.md" && fail "sre stage $n: reference appended" || pass "sre stage $n: reference not appended"
+done
+
 # golden files: any change to an assembled prompt is deliberate
 G=tools/tests/fixtures/prompts
 for n in 1 2 3 4 5 6; do
@@ -58,6 +85,12 @@ for n in 1 2 3 4 5 6; do
   if cmp -s "$G/stage-$n.md" "$T/s$n.md"; then pass "stage $n prompt matches $G/stage-$n.md"
   else fail "stage $n prompt differs from $G/stage-$n.md (refresh: UPDATE_GOLDEN=1 $0)"
        diff -u "$G/stage-$n.md" "$T/s$n.md" || true; fi
+done
+for n in 1 2 3 4 5 6; do
+  if [ "${UPDATE_GOLDEN:-}" = 1 ]; then cp "$T/sre$n.md" "$G/sre-stage-$n.md"; fi
+  if cmp -s "$G/sre-stage-$n.md" "$T/sre$n.md"; then pass "sre stage $n prompt matches $G/sre-stage-$n.md"
+  else fail "sre stage $n prompt differs from $G/sre-stage-$n.md (refresh: UPDATE_GOLDEN=1 $0)"
+       diff -u "$G/sre-stage-$n.md" "$T/sre$n.md" || true; fi
 done
 
 "$P" 7 >/dev/null 2>&1 && fail "stage 7 accepted" || pass "stage 7 refused"

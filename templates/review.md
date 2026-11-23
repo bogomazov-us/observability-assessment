@@ -103,6 +103,8 @@ misleads the buyer, or cannot be acted on. *Non-blocking*: wording, order, missi
 - [ ] Confirmed is not read as fixed, nor as an alert that passed the paging gate.
 - [ ] Re-checks are read-only and in the evidence catalog with their own ids; an unexplained
       anomaly from a re-check is an observation of unknown cause, not a new finding.
+- [ ] `tools/recordcheck.py findings` passes with the catalog, gap records, verdict batch and
+      decision register given; a clean run checks form and references, not the claim.
 - [ ] Nothing in it identifies another client.
 - [ ] No personal data in the evidence quoted (`templates/privacy-checklist.md`).
 

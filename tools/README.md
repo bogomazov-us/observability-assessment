@@ -15,6 +15,7 @@ The kit is tool-agnostic: it names classes of capability, never a product.
 | `tools/agent/prompt.sh` | Each agent stage: assemble the stage's task prompt with the rule files it names | [agent/README.md](agent/README.md) |
 | `tools/agent/skills/install.sh` | Optional, per engagement: install the stage and rule skills, pointed at this kit checkout | [agent/skills/README.md](agent/skills/README.md) |
 | `tools/stagegate.py` | Each agent stage: may it start (the stage before confirmed, its blocking questions answered); is the state file sound and unrewritten | [stagegate.md](stagegate.md) |
+| `tools/recordcheck.py` | Stage 4 and every review: each finding in its template's form, with a reason for its severity, and every F-, G-, E- and D- id it cites resolving to a record; the evidence catalog check `report-pdf.sh` runs | [recordcheck.md](recordcheck.md) |
 | `tools/harness-metrics.py` | Pilot engagements: the harness measures from the records (strict and lenient acceptance on findings with a verdict, person hours per stage, agent span, re-checks as a sample) | [harness-metrics.md](harness-metrics.md) |
 | `tools/maturity.py` | Assessment: check the maturity scores against the scoring rules and print the profile | [maturity.md](maturity.md) |
 | `tools/baseline.py` | SRE assessment, week one: baseline numbers (incidents, DORA keys, pages) from CSV exports, each with its method and window | [baseline.md](baseline.md) |

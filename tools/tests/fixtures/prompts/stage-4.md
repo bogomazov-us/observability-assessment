@@ -83,6 +83,8 @@ travel with it as files at a stated commit, cited, not reprinted.
 - [ ] No finding rests on an interview or a slide alone (evidence level *document only* is
       stated when that is all there is).
 - [ ] No other client's name, figure or system appears.
+- [ ] `tools/recordcheck.py findings` passes on `findings/` with the stage's evidence catalog and
+      gap records given: form, severity reasons and every cited id resolve.
 - [ ] The check at the end of each rule file holds.
 
 ## What the person confirms

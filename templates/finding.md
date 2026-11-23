@@ -56,6 +56,9 @@ verdict, [records.md](../method/records.md)) gives it one of five verdicts:
 - **Bound the claim before the verdict.** It names its window and its scope, and says "not
   shown" rather than "none exists". A cause is bounded to the window read. An absence read in
   part of the estate says so ("other accounts not checked").
+- **A confirmed verdict names its decision.** Its row in the verdict batch
+  ([owner-questions.md](owner-questions.md)) carries the D- id that records it; one D- id may
+  cover the whole batch. The id shows who decided and when, not that the claim is true.
 - **Did not reproduce is not refuted.** Insufficient data, expired history or a changed
   configuration give *inconclusive* or *disputed*; true then and fixed since gives *resolved*.
 - **A decision record is not technical evidence.** A record that adopted a reading shows the
