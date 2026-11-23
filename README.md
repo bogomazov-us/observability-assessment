@@ -41,8 +41,9 @@ an assessment with it, under review once, and then alone.
 | [method/lessons.md](./method/lessons.md) | Anti-patterns and lessons | before the first client meeting |
 | [method/agent-harness.md](./method/agent-harness.md) | Where AI agents draft and people confirm; the release check | using agents on an engagement |
 | [method/records.md](./method/records.md) | Roles, decision records, id prefixes, status sets | writing any record |
+| [method/report.md](./method/report.md) | The report from stage to acceptance: one report and bundle, the manifest, closing, hand-over | accepting a stage; closing the assessment |
 | [tools/](./tools/) | Code scan and estate export by class, spec linter, maturity calculator | week one; before each review round |
-| [tools/agent/](./tools/agent/) | Prompts for all six harness stages, inventory to recommendations; one command to set up an engagement repository for them | running the agent harness |
+| [tools/agent/](./tools/agent/) | Prompts for all six harness stages, inventory to recommendations; [setup and paths](./tools/agent/setup.md) for an engagement repository | running the agent harness |
 | [sre/](./sre/) | The SRE assessment type: its stage prompts, maturity model and templates, on the same method, records and tools | an SRE or combined assessment |
 | [templates/](./templates/) | Intake questionnaire (with questions by tool class), data request, kick-off note, interview guide, finding, ADR, golden journey proof, report, executive deck, roadmap, commitment baseline, statement of work and acceptance record, review rounds and checklists, privacy and AI-ops boundary checklists, spec set with nine skeletons | producing artifacts |
 | [practice/](./practice/) | How to build an observability practice around the kit; the pilot protocol for a new lead | staffing, succession |

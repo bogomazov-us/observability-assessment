@@ -9,6 +9,23 @@ The method, records, evidence rules, report model, review and acceptance are the
 This page holds what is SRE's own: formats, calendar, estimation and the combined format. The
 model is [maturity-model.md](maturity-model.md).
 
+## For a lead who knows the observability assessment: what differs in SRE
+
+Paths are relative to the working folder; the calendar and estimation differ too (below).
+
+| | Observability | SRE |
+|---|---|---|
+| Unit of scope | A tier-1 journey, decomposed into functions | A tier-1 service, its tier agreed in dimension 1 |
+| Model | [12 dimensions](../method/maturity-model.md) | [10 dimensions](maturity-model.md); monitoring light (dimension 3) |
+| Stage 1 output | `inventory.md` | `sre/inventory.md`, `sre/service-catalogue.md`, `sre/baseline.md` |
+| Stage 2 output | `spec/observability-spec.yml`, `stage-2-notes.md` | `sre/target-model.md`, `sre/targets/reliability-targets.md` |
+| Stage 3 output | `stage-3-gap.md`: signal states, detection matrix | `sre/stage-3-gap.md`: each target against today, per service and dimension |
+| Stages 4–6 output | Findings, `maturity.yml`, `recommendations.md` | The same under `sre/` (`model: sre`); findings shared |
+| Records of its own | Spec ids, checked by speclint | `S-` service, `T-` target, `B-` baseline number |
+| Proof option | Golden journey proof: one journey instrumented on stage | [Recovery proof](templates/recovery-proof.md): a restore drill or a game day, run by the client's people |
+| Data sources | Code, monitoring tool, ticketing, incident history | Delivery pipeline, infrastructure as code, incident tracker, paging tool, backup console |
+| Roles | Lead; observability engineer and architect by scope | Lead; SRE engineer and architect by scope, the architect on resilience, capacity and recovery |
+
 ## Formats
 
 | | **Focused** | **Full** | **Combined** |
@@ -207,7 +224,7 @@ kit version:
 ## Report
 
 One report and one evidence bundle per engagement, built as in
-[stage-report.md](../templates/stage-report.md#one-report-for-the-whole-assessment). At each
+[report.md](../method/report.md#one-report-for-the-whole-assessment). At each
 confirmed SRE stage the lead rewrites `summary.md` and adds the stage's lines to
 `manifest.txt`, by their `sre/` paths:
 
@@ -247,5 +264,5 @@ tools/agent/prompt.sh --assessment sre N [OUT.md]
 ```
 
 SRE files go in `sre/` under the working folder; the paths are in the
-[agent README](../tools/agent/README.md#artifact-paths). In the combined format, run each stage
+[path table](../tools/agent/setup.md#artifact-paths). In the combined format, run each stage
 once per type.

@@ -1,5 +1,9 @@
 # Stage report — skeleton
 
+**What is here:** the skeleton of a stage chapter, a filled example, its ids and statuses, what
+each stage's chapter carries, and the layout. **Read it when:** you write or review a stage
+chapter. How the chapters become one report and how it is closed: [report.md](../method/report.md).
+
 One skeleton for the report of every stage. It gives two levels of reading from one set of
 sources: the **main report**, read in order, supports a decision; the **evidence bundle** lets
 a reviewer check each claim by its id. The current state comes first. How the document got
@@ -116,82 +120,6 @@ What a filled report looks like, in short. The project is fictional.
 > 2027-03-04 10:12 CET. Window: 7 d. Method: raw series and `increase()` per 5 min. Result:
 > 3 series, each first seen at value 1; `increase()` 0 at every step. Limits: one store; the
 > provider's side not read.
-
-## One report for the whole assessment
-
-The client reads two documents, not one per stage and per round: the **assessment report** and
-the **evidence bundle**.
-
-| Chapter | File ([path table](../tools/agent/README.md#artifact-paths)) | Written by | Accepted when |
-|---|---|---|---|
-| Summary, first | `summary.md`, from [report.md](report.md) | The lead, rewritten at each accepted stage | The sponsor accepts the report |
-| One per stage, in order | The stage's notes file (table below) | The agent drafts it at stage N, or the lead writes it from this skeleton | The lead sets the stage `confirmed` and its document status `accepted` |
-
-Sources stay per stage, each fixed at its commit. At each accepted stage the lead adds its lines
-to `manifest.txt` in the working folder, rewrites `summary.md`, and builds both documents with
-`tools/assessment-pdf.sh`; after stage 6 that build is the final report. The manifest then:
-
-```text
-report    summary.md
-report    inventory.md            1 2 3 5
-report    stage-2-notes.md        1 2 3 5
-report    stage-3-gap.md          1 2 3 5
-report    stage-4-notes.md        1 2 3 5
-report    stage-5-notes.md        1 2 3 5
-report    recommendations.md      1 2 3 5
-evidence  inventory.md            4 A
-evidence  stage-2-notes.md        4 A
-evidence  stage-3-gap.md          4 A
-evidence  stage-4-notes.md        4 A
-evidence  findings/F-001.md
-evidence  stage-5-notes.md        4 A
-evidence  recommendations.md      4 A
-```
-
-A line `assessment observability` or `assessment sre` names the report's type, once per type;
-without it the types follow the source paths.
-
-- **The report** takes sections 1, 2, 3 and 5 of each chapter; only the summary is rewritten.
-- **The bundle** holds the records (section 4; at stage 4, a line per finding file) and every
-  evidence catalog (Appendix A). Stages keep their own `E-` ranges (stage 1 E-1xx, stage 2
-  E-2xx …), so the catalogs join without renumbering; an id cited in the report must resolve in
-  the bundle, or the build fails.
-- **Neither** carries section 6 or Appendix B: the conditions serve the review, and the change
-  history is one table in `summary.md`, a row per stage and per accepted change. Working files —
-  question lists, confirmation batches, drafts, review rounds — stay in the engagement's
-  repository as history; they reach the client through the result they produced.
-- The version of both is the commit in the footer. The roadmap is a document of its own
-  ([roadmap.md](roadmap.md)).
-
-## Closing the report
-
-The sponsor accepts the report once, after stage 6 ([roles](../method/records.md#roles)). The
-lead closes it in this order; an agent may draft steps 1 to 3 but sets no status and records no
-decision.
-
-1. **Closing check.** List every decision, question and card id the summary or a chapter calls
-   open, pending or waiting, and look each up in the decision register and the facts ledger.
-   For one the register has closed, correct the summary to the current position; the chapter
-   is history and keeps its text, with a dated note at its top ("Later (YYYY-MM-DD): D-14
-   closed this; see the summary."). Every decision reference names its record ("D-12",
-   "ADR-007 item 3"); a bare "item 3" is fixed.
-2. **Answers against earlier decisions.** Every answer recorded since the last accepted stage is
-   read against the earlier decisions on the same cards and targets and against the confirmed
-   targets. A conflict goes back to the owner as a new question, one card or record per option;
-   it is never settled in the text.
-3. **Hand-over.** Section 9 of the summary ([report.md](report.md)), from the register and the
-   roadmap: the open decisions and their deciders; the decided `W-` items not yet scheduled,
-   each with a named owner; what only the client can do, the assessment being read-only. Filing
-   the `W-` items as tickets in the client's tracker is offered; the client files them.
-4. **Acceptance.** The sponsor accepts in writing. The lead records it as a `D-` row, sets the
-   summary's document status to accepted with who and when and that row's id, and adds a row to
-   the summary's changes table.
-5. **Final build.** Both PDFs are rebuilt with `tools/assessment-pdf.sh` from the merged commit
-   that carries the acceptance, the version in their footer. Earlier drafts are removed from
-   wherever the client reads the report, so only the accepted pair remains.
-
-A decision taken after acceptance changes the summary by a new version and a row in its changes
-table; the chapters get only a dated "Later" note.
 
 ## Statuses and ids
 

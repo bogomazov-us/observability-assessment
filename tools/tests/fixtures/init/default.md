@@ -79,7 +79,7 @@ the rows still in square brackets.
 | This repository | `.` | read and write, on the assessment branch only; the paths below are relative to its root (in a worktree elsewhere, to the main checkout's) |
 | The client's code | `../code-a`, `../code-b` | read only |
 | The kit | `[kit]` | read only: prompts in `tools/agent/`, templates in `templates/`, tools in `tools/` |
-| The assessment's working folder | `assessment` | what the stages read and write, laid out as the table "Artifact paths" in `[kit]/tools/agent/README.md`; a path in a stage prompt is relative to this folder, except under `tools/`, `templates/` and `method/`, which are in the kit |
+| The assessment's working folder | `assessment` | what the stages read and write, laid out as the table "Artifact paths" in `[kit]/tools/agent/setup.md`; a path in a stage prompt is relative to this folder, except under `tools/`, `templates/` and `method/`, which are in the kit |
 | Facts ledger | `facts.md` | agent rows enter as *assumption* |
 | Decision register | `decisions.md` | written by the person, read by the agent |
 | Risk register | `risks.md` | written by the person; the agent hands over proposed rows |

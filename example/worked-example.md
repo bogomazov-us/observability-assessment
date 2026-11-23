@@ -220,7 +220,7 @@ If the sandbox cannot inject timeouts, M-3 needs a stub of the provider: plus on
 
 ## The report
 
-One report ([stage-report.md](../templates/stage-report.md#one-report-for-the-whole-assessment)):
+One report ([report.md](../method/report.md#one-report-for-the-whole-assessment)):
 the summary chapter, rewritten at each accepted stage, then a chapter per stage —
 `inventory.md`, `stage-2-notes.md`, [`stage-3-gap.md`](agent/stage-3-gap.md),
 `stage-4-notes.md`, `stage-5-notes.md`, `recommendations.md`. Page one of the summary:
@@ -235,7 +235,7 @@ time for two weeks."
 ## The agent thread at stage 3
 
 What the lead held on 2027-04-22, when stage 3 was confirmed, at the
-[artifact paths](../tools/agent/README.md#artifact-paths) of the working folder:
+[artifact paths](../tools/agent/setup.md#artifact-paths) of the working folder:
 
 | Path | Record |
 |---|---|

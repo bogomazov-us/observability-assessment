@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Build the two documents of a whole assessment from its stage sources (templates/stage-report.md,
+# Build the two documents of a whole assessment from its stage sources (method/report.md,
 # "One report for the whole assessment"): the assessment report — the summary chapter, then a
 # chapter per accepted stage — and the evidence bundle. Each is built and checked by
 # tools/report-pdf.sh.
@@ -9,7 +9,7 @@
 #       [--name PREFIX]
 #
 # The manifest format is a contract: other renderers read it too, so a change here is a change
-# of the format, documented here and in tools/agent/README.md ("The manifest").
+# of the format, documented here and in method/report.md ("The manifest").
 #
 #   # a comment                         blank lines and lines starting with "#" are ignored
 #   assessment  sre                      the report's type: observability or sre; repeat for both
@@ -48,7 +48,7 @@
 # and Limits, each filled. Evidence ids cited in the report resolve against the evidence bundle.
 # A table wider than five columns is noted in the report, which keeps running text; the bundle
 # holds records, set landscape, and is built without that note. The file names are those of
-# the path table in tools/agent/README.md ("Artifact paths").
+# the path table in tools/agent/setup.md ("Artifact paths").
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 MANIFEST=""; PROJECT=""; VERSION=""; OUTDIR=""; NAME=""

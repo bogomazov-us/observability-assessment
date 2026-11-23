@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Tests the stage prompts against the path table in tools/agent/README.md, "Artifact paths":
+# Tests the stage prompts against the path table in tools/agent/setup.md, "Artifact paths":
 # every path a stage's Output names is in the table as made by that stage; every path its
 # Inputs name is made by an earlier stage, by init-engagement.sh (checked on a fresh
 # repository) or by the person, and the table lists the stage as a reader; init makes every
@@ -51,7 +51,7 @@ def paths(text):
     return list(dict.fromkeys(out))
 
 KIT = ("tools/", "templates/", "method/", "sre/agent/", "sre/templates/", "sre/example/", "sre/README.md", "sre/maturity-model.md")
-readme = open("tools/agent/README.md").read()
+readme = open("tools/agent/setup.md").read()
 rows = []
 for line in section(readme, "Artifact paths").splitlines():
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
@@ -69,7 +69,7 @@ for line in section(readme, "Artifact paths").splitlines():
         "shared": "every type" in cells[0],
         "readers": {int(s) for s in re.findall(r"\b([1-6])\b", read)} | ({1, 2, 3, 4, 5, 6} if "every stage" in read else set()),
     })
-ok(f"path table has {len(rows)} rows") if rows else ko("no path table in tools/agent/README.md")
+ok(f"path table has {len(rows)} rows") if rows else ko("no path table in tools/agent/setup.md")
 obs = [r for r in rows if not r["sre"]]
 sre = [r for r in rows if r["sre"]]
 

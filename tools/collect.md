@@ -78,7 +78,7 @@ gap with a reason, not an empty class.
 **With no script for the client's tool**, take each class through the tool's own configuration
 export, its read-only API, or the agent's read-only queries saved as files. Keep one file per
 class in the working folder's `exports/`, named with the class and the export date
-([path table](agent/README.md#artifact-paths)), sanitized per the
+([path table](agent/setup.md#artifact-paths)), sanitized per the
 [privacy checklist](../templates/privacy-checklist.md). A file is cited only when it states the
 query or call that produced it, when it ran, and how many objects it returned; without these it
 is a lead, not evidence.
