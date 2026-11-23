@@ -53,6 +53,7 @@ it is missed, with the new date, and tells the sponsor.
 | Assessment | Read-only access to the monitoring tool, code and ticketing | day 3 |
 | Assessment | 5–8 interviews held | [date] |
 | Assessment | Incident history for [period] | day 3 |
+| Assessment | The owner answers each batch of owner questions (about ten) | within 2 working days of the batch |
 | Full assessment, golden-journey proof | Stage access with write rights to the monitoring configuration; one client developer for 5 days; the client owns the code change | week [n] |
 | Blueprint | A product owner who signs the SLOs; tier-1 journeys agreed | start |
 | Implementation | Back-end and front-end developers per the roadmap; platform access; a hypercare rota | per milestone |
