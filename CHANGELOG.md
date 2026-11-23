@@ -5,6 +5,23 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.3 — 2026-11-23
+
+The kit reads as a book: parts, a two-level contents, chapters in reading order.
+
+- **Eight parts**, each opening on its own page with what it is for: Getting started, Method,
+  Observability assessment, SRE assessment, Agent route, Tools, Templates, Practice. The PDF's
+  contents list parts and their chapters.
+- **Reading order**: each assessment type keeps its model, worked example and templates
+  together; in the agent route the rules come first, then each type's stages 1 to 6, every stage
+  followed by its reference; the shared templates follow an engagement, from intake to
+  acceptance; the kit backlog is last.
+- **Uniform titles**: "Observability stage N — …", "SRE stage N reference — …", "Worked example:
+  SRE — …", "SRE example: …".
+- **Build** (`scripts/files.sh`, `scripts/build.sh`): a `PART: Title | sentence` entry starts a
+  part; a chapter list without one builds flat as before, so an edition adopts parts when it
+  wants. `tools/tests/test_files.sh` pins the order rules.
+
 ## 0.15.2 — 2026-11-23
 
 Readable chapters after the SRE releases, setup fixes, and the client's time in the estimate.
