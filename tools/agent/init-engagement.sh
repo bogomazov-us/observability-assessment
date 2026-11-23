@@ -9,11 +9,15 @@
 # --repo          the engagement repository (exists; a git repository)
 # --code          a client code checkout the agent reads; repeat for several
 # --work          working folder for the stages, relative to --repo (default: assessment)
-# --facts         facts ledger, relative to --repo (default: facts.md; created if absent)
-# --decisions     decision register, relative to --repo (default: decisions.md; created if absent)
-# --risks         risk register, relative to --repo (default: risks.md; created if absent)
+# --facts         facts ledger, relative to --repo (default: facts.md, created if absent)
+# --decisions     decision register, or a folder of decision records (ADRs), relative to --repo
+#                 (default: decisions.md, created if absent)
+# --risks         risk register, relative to --repo (default: risks.md, created if absent).
+#                 A register named by its flag is the host's: never created or written to; a
+#                 missing one is reported
 # --scratch       scratch directory (default: --repo/.scratch, added to .gitignore)
-# --instructions  file name the agent tool reads for instructions (default: AGENTS.md)
+# --instructions  file the agent tool reads for instructions, relative to --repo; a subpath such
+#                 as .claude/CLAUDE.md works (default: AGENTS.md)
 # --skills        also install the rule skills and each type's stage skills into this folder,
 #                 relative to --repo
 # --assessment    observability or sre; repeat for both (default: observability). SRE files go
@@ -23,21 +27,22 @@
 # Writes only inside --repo and the scratch directory, commits nothing, and never overwrites the
 # state file, a facts ledger, decision or risk register, owner-questions file or progress log: they are
 # records, and --force is for refreshing the instructions and skills after a kit upgrade. This
-# holds for the files of each type.
+# holds for the files of each type. Paths in the files it writes are relative to --repo, so no
+# machine-local path is committed.
 set -euo pipefail
 KIT="$(cd "$(dirname "$0")/../.." && pwd)"
 REPO="" WORK="assessment" FACTS="facts.md" DECISIONS="decisions.md" RISKS="risks.md" SCRATCH=""
-NAME="AGENTS.md" SKILLS="" FORCE=0
+NAME="AGENTS.md" SKILLS="" FORCE=0 GIVEN=""
 CODE=() TYPES=()
-usage() { sed -n '3,26p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+usage() { sed -n '3,31p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 while [ $# -gt 0 ]; do
   case "$1" in
     --repo) REPO="${2:-}"; shift 2 ;;
     --code) CODE+=("${2:-}"); shift 2 ;;
     --work) WORK="${2:-}"; shift 2 ;;
-    --facts) FACTS="${2:-}"; shift 2 ;;
-    --decisions) DECISIONS="${2:-}"; shift 2 ;;
-    --risks) RISKS="${2:-}"; shift 2 ;;
+    --facts) FACTS="${2:-}"; GIVEN="$GIVEN facts"; shift 2 ;;
+    --decisions) DECISIONS="${2:-}"; GIVEN="$GIVEN decisions"; shift 2 ;;
+    --risks) RISKS="${2:-}"; GIVEN="$GIVEN risks"; shift 2 ;;
     --scratch) SCRATCH="${2:-}"; shift 2 ;;
     --instructions) NAME="${2:-}"; shift 2 ;;
     --skills) SKILLS="${2:-}"; shift 2 ;;
@@ -71,6 +76,12 @@ if has sre; then
 fi
 
 say() { echo "$*"; }
+register() {  # register FLAG PATH COMMAND...: the kit's file when absent, unless its flag named it
+  case " $GIVEN " in
+    *" $1 "*) [ -e "$REPO/$2" ] || { say "missing $2 (given by --$1): not created; check the path"; return; } ;;
+  esac
+  local path="$2"; shift 2; put "$REPO/$path" keep "$@"
+}
 put() {  # put TARGET keep|force COMMAND...: a "keep" file is never replaced, a "force" one with --force
   local target="$1" mode="$2"; shift 2
   if [ -e "$target" ]; then
@@ -81,9 +92,11 @@ put() {  # put TARGET keep|force COMMAND...: a "keep" file is never replaced, a 
 }
 
 instructions() {
-  python3 - "$KIT/templates/agent-instructions.md" "$KIT" "$WORK" "$FACTS" "$DECISIONS" "$RISKS" "$SCRATCH" "${TYPES[*]-}" "${CODE[@]}" <<'PY'
-import re, sys
-src, kit, work, facts, decisions, risks, scratch, types, *code = sys.argv[1:]
+  python3 - "$KIT/templates/agent-instructions.md" "$REPO" "$KIT" "$WORK" "$FACTS" "$DECISIONS" "$RISKS" "$SCRATCH" "${TYPES[*]-}" "${CODE[@]}" <<'PY'
+import os, re, sys
+src, repo, kit, work, facts, decisions, risks, scratch, types, *code = sys.argv[1:]
+R = os.path.realpath  # relative to the repository, symbolic links resolved: none machine-local
+kit, scratch, *code = (os.path.relpath(R(p), R(repo)) for p in (kit, scratch, *code))
 t = open(src).read()
 title = {"observability": "Observability", "sre": "SRE"}
 row = {"observability": ("__WORK__", "__WORK__/engagement-state.yml", "bash __KIT__/tools/agent/prompt.sh N"),
@@ -93,6 +106,11 @@ types = [k for k in title if k in types.split()]  # observability first, whateve
 if types:
     t = t.replace("__TYPES__", "\n".join(f"| {k} | `{w}` | `{s}` | `{c}` |" for k in types for w, s, c in [row[k]]))
     t = t.replace("# Observability assessment", "# " + " and ".join(title[k] for k in types) + " assessment", 1)
+    if types == ["sre"]:  # SRE alone: the steps name the SRE paths, not observability's
+        for a, b in (("__WORK__/engagement-state.yml", "__WORK__/sre/engagement-state.yml"),
+                     ("__WORK__/progress/", "__WORK__/sre/progress/"),
+                     ("prompt.sh N`", "prompt.sh --assessment sre N`"), ("`oa-stage-N-", "`oa-sre-stage-N-")):
+            t = t.replace(a, b)
 else:  # no --assessment: observability alone, without the block
     t = re.sub(r"## Types in this engagement\n.*?(?=## )", "", t, count=1, flags=re.S)
 for k, v in (("__KIT__", kit), ("__WORK__", work), ("__FACTS__", facts),
@@ -109,6 +127,15 @@ decisions() {
   printf '# Decision register\n\nOwner answers, scope and stage confirmations, each with who decided and when. Ids are `D-01`,\n`D-02` …; documents cite them, never "the owner said". An architecture decision also gets an\nADR file, cited under Evidence.\n\n| ID | Decision | Decided by | Date | Evidence |\n|---|---|---|---|---|\n'
 }
 
+questions() {  # the template, its links rewritten to the kit relative to the copy
+  python3 - "$KIT/templates" "$REPO/$WORK" <<'PY'
+import os, re, sys
+src, dest = sys.argv[1:]
+R = os.path.realpath
+link = lambda m: "](" + os.path.relpath(R(os.path.join(src, m[1])), R(dest)) + ")"
+sys.stdout.write(re.sub(r"\]\((?![a-z]+:|#)([^)]+)\)", link, open(os.path.join(src, "owner-questions.md")).read()))
+PY
+}
 sre_state() { sed 's/^# assessment: observability .*$/assessment: sre/' "$KIT/templates/engagement-state.yml"; }
 folders() {  # folders DIR NAME...: each folder with a .gitkeep, made only when absent
   local dir="$1" d; shift
@@ -119,7 +146,7 @@ folders() {  # folders DIR NAME...: each folder with a .gitkeep, made only when 
 
 put "$REPO/$NAME" force instructions
 if [ "$OBS" = 1 ]; then put "$REPO/$WORK/engagement-state.yml" keep cat "$KIT/templates/engagement-state.yml"; fi
-put "$REPO/$WORK/owner-questions.md" keep cat "$KIT/templates/owner-questions.md"
+put "$REPO/$WORK/owner-questions.md" keep questions
 # The folders of the path table in tools/agent/README.md, "Artifact paths". Owner questions and
 # findings are shared by the types; the other root folders are observability's.
 if [ "$OBS" = 1 ]; then folders "$WORK" progress captures exports spec findings
@@ -128,15 +155,15 @@ if has sre; then
   put "$REPO/$WORK/sre/engagement-state.yml" keep sre_state
   folders "$WORK/sre" progress exports targets
 fi
-put "$REPO/$FACTS" keep facts
-put "$REPO/$DECISIONS" keep decisions
-put "$REPO/$RISKS" keep cat "$KIT/templates/risk-register.md"
+register facts "$FACTS" facts
+register decisions "$DECISIONS" decisions
+register risks "$RISKS" cat "$KIT/templates/risk-register.md"
 
 if [ -n "$SKILLS" ]; then
   F=(); [ "$FORCE" = 1 ] && F=(--force)
   R=(); [ "$OBS" = 1 ] || R=(--rules)  # the rule skills are shared; the stage skills here are observability's
-  "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} ${R[@]+"${R[@]}"} "$REPO/$SKILLS"
-  if has sre; then "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} --from "$KIT/sre/agent/skills" "$REPO/$SKILLS"; fi
+  "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} ${R[@]+"${R[@]}"} --base "$REPO" "$REPO/$SKILLS"
+  if has sre; then "$KIT/tools/agent/skills/install.sh" ${F[@]+"${F[@]}"} --from "$KIT/sre/agent/skills" --base "$REPO" "$REPO/$SKILLS"; fi
 fi
 
 case "$SCRATCH/" in

@@ -10,7 +10,7 @@ the rows still in square brackets.
 
 | What | Path | Access |
 |---|---|---|
-| This repository | `.` | read and write, on the assessment branch only |
+| This repository | `.` | read and write, on the assessment branch only; the paths below are relative to its root (in a worktree elsewhere, to the main checkout's) |
 | The client's code | __CODE__ | read only |
 | The kit | `__KIT__` | read only: prompts in `tools/agent/`, templates in `templates/`, tools in `tools/` |
 | The assessment's working folder | `__WORK__` | what the stages read and write, laid out as the table "Artifact paths" in `__KIT__/tools/agent/README.md`; a path in a stage prompt is relative to this folder, except under `tools/`, `templates/` and `method/`, which are in the kit |

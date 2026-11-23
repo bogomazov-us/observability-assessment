@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/baseline.py on synthetic fixtures: medians and p90, DORA keys, pages,
-# empty files, missing columns, column mapping and time zones.
+# empty files, missing columns, column mapping, time zones, incident classes, a window per
+# input, no incidents export and no rotation.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 tool="$here/../baseline.py"
@@ -82,6 +83,34 @@ out="$("$tool" "$fx/header-only.csv")"
 has "header only" "$out" '| Incidents per severity | not measured: no rows |'
 out="$("$tool" "$fx/incidents.csv" --from 2027-01-01)"
 has "no rows in the window" "$out" 'not measured: no rows in the window'
+
+# Incident classes: per-class counts and times, beside the per-severity ones.
+out="$("$tool" "$fx/incidents-class.csv")"
+has "class column: per-class rows" "$out" \
+  '| Incidents, class data | 1 | 3 | count of rows with this class |' \
+  '| Incidents, class outage | 2 | 3 |' \
+  '| Time to detect, class data, median | 14 d 0 h | 1 of 1 |' \
+  '| Time to detect, class outage, median | 5 min | 2 of 2 |' \
+  '| Time to detect, severity SEV2, median | 15 min | 2 of 2 |'
+out="$("$tool" "$fx/incidents.csv")"
+grep -qF "class " <<<"$out" && { echo "✗ no class column: class rows printed"; fail=1; } || echo "✓ no class column: no class rows"
+
+# Incidents optional; a window per input; no rotation.
+out="$("$tool" --deploys "$fx/deploys.csv" --pages "$fx/pages.csv" --from 2026-01-01 --to 2026-01-31 \
+  --pages-from 2026-06-01 --pages-to 2026-06-01)"
+has "no incidents export; --pages-from/--to override --from/--to" "$out" \
+  'not measured: no incidents export' \
+  '| Deployment frequency | not measured: no rows in the window |' \
+  '| Off-hours share | 40.0% (2 of 5) | 5 | pages outside office hours ÷ pages | 2026-06-01 to 2026-06-01 (--pages-from/--pages-to) |'
+out="$("$tool" --pages "$fx/pages.csv" --no-rotation)"
+has "--no-rotation: pages per working day, labelled" "$out" \
+  'No rotation (--no-rotation): pages per working day, Monday to Friday' \
+  '| Pages per working day, mean | 3.00 | 6 | pages on working days ÷ 2 working days in the window |' \
+  '| Pages per working day, max | 5 | 6 |' \
+  '| Working days over 2 pages | 50.0% (1 of 2) | 2 |' \
+  '| Off-hours share | 50.0% (3 of 6) | 6 |'
+grep -qF "per shift" <<<"$out" && { echo "✗ --no-rotation: shift rows printed"; fail=1; } || echo "✓ --no-rotation: no shift rows"
+exits "bad per-input date exits 2" 2 'per-input windows are YYYY-MM-DD' --pages "$fx/pages.csv" --pages-from 2026-6
 
 exits "recovery before start exits 2" 2 'detected is before started' "$fx/incidents-bad-order.csv"
 exits "unknown --map field exits 2" 2 'expected FIELD=COLUMN' "$fx/incidents.csv" --map foo=bar

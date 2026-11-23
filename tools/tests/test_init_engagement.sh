@@ -5,6 +5,8 @@
 # --force, never replaces a ledger or register, and refuses bad arguments. Without --assessment
 # the result is the one pinned in fixtures/init/default.md; --assessment sre adds WORK/sre/.
 # --skills installs the rule skills always, each type's stage skills only for that type.
+# Paths written are relative to the repository; registers named by flag are the host's, never
+# created or written; the owner-questions copy links into the kit.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 KIT="$(pwd)"
@@ -16,23 +18,45 @@ ko() { echo "✗ $*"; fail=1; }
 
 R="$T/eng"; mkdir -p "$R" "$T/code-a" "$T/code-b"; git -C "$R" init -q
 out="$("$INIT" --repo "$R" --code "$T/code-a" --code "$T/code-b" --skills skills)"
+rel() { python3 -c 'import os,sys; R=os.path.realpath; print(os.path.relpath(R(sys.argv[1]), R(sys.argv[2])))' "$1" "$2"; }
+K="$(rel "$KIT" "$R")"  # the kit as the instructions name it: relative to the repository
 snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and temporary paths masked
   { echo "## stdout"; printf '%s\n' "$2"
     echo "## files"; (cd "$1" && find . -path ./.git -prune -o -print | LC_ALL=C sort)
     for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
-  } | sed "s|$KIT|[kit]|g; s|$T|[tmp]|g"
+  } | sed "s|$KIT|[kit]|g; s|$K|[kit]|g; s|$T|[tmp]|g"
+}
+links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder
+  python3 - "$1" <<'PY'
+import os, re, sys
+f = sys.argv[1]; d = os.path.dirname(f)
+bad = [l for l in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", open(f).read())
+       if not re.match(r"[a-z]+:", l) and not os.path.exists(os.path.join(d, l))]
+sys.exit(1 if bad else 0)
+PY
 }
 snapshot "$R" "$out" | diff - tools/tests/fixtures/init/default.md >/dev/null \
   && ok "no --assessment: output as pinned" || ko "no --assessment: output differs from fixtures/init/default.md"
 cmp -s "$R/assessment/engagement-state.yml" templates/engagement-state.yml \
-  && cmp -s "$R/assessment/owner-questions.md" templates/owner-questions.md \
   && cmp -s "$R/risks.md" templates/risk-register.md && ok "no --assessment: templates copied as they are" \
   || ko "no --assessment: a template copy differs"
+grep -q "](" "$R/assessment/owner-questions.md" && links "$R/assessment/owner-questions.md" \
+  && ok "owner questions: links resolve from the engagement" || ko "owner questions: a link breaks in the engagement"
+diff <(sed 's/](.*)/]()/g' templates/owner-questions.md) <(sed 's/](.*)/]()/g' "$R/assessment/owner-questions.md") >/dev/null \
+  && ok "owner questions: only the links differ from the template" || ko "owner questions: text changed"
+absolute() {  # absolute DIR: the files init wrote that name the kit or a code checkout by an absolute path
+  find "$1" -path "$1/.git" -prune -o -type f -print | while read -r f; do
+    sed "s|$(rel "$KIT" "$(dirname "$f")")||g; s|$(rel "$KIT" "$1")||g" "$f" | grep -qF -e "$KIT" -e "$T" && echo "$f"
+  done; true
+}
+[ -z "$(absolute "$R")" ] && ok "no absolute machine-local path in the files written" \
+  || ko "an absolute machine-local path written: $(absolute "$R")"
 
 [ -f "$R/AGENTS.md" ] && ok "instructions written" || ko "no AGENTS.md: $out"
 grep -q "__[A-Z]*__" "$R/AGENTS.md" && ko "placeholder left in AGENTS.md" || ok "no placeholder left"
-grep -qF "$KIT/tools/agent/prompt.sh" "$R/AGENTS.md" && ok "kit path written" || ko "kit path missing"
-grep -qF "$T/code-a" "$R/AGENTS.md" && grep -qF "$T/code-b" "$R/AGENTS.md" \
+grep -qF "\`bash $K/tools/agent/prompt.sh N\`" "$R/AGENTS.md" && [ -f "$R/$K/tools/agent/prompt.sh" ] \
+  && ok "kit path written, relative" || ko "kit path missing"
+grep -qF "\`../code-a\`" "$R/AGENTS.md" && grep -qF "\`../code-b\`" "$R/AGENTS.md" \
   && ok "every code checkout listed" || ko "code checkout missing"
 grep -qF "assessment/engagement-state.yml" "$R/AGENTS.md" && ok "state file path written" || ko "state path missing"
 grep -q '\[client\]' "$R/AGENTS.md" && ok "client left for the person" || ko "client row filled or lost"
@@ -76,6 +100,25 @@ mkdir -p "$R/04-risks"; echo "existing" > "$R/04-risks/risk-register.md"
 grep -qx "existing" "$R/04-risks/risk-register.md" && grep -qF "04-risks/risk-register.md" "$R/THIRD.md" \
   && ok "--risks points at an existing register" || ko "--risks ignored or the register replaced"
 
+"$INIT" --repo "$R" --code "$T/code-a" --instructions .claude/CLAUDE.md >/dev/null
+[ -f "$R/.claude/CLAUDE.md" ] && ok "--instructions takes a subpath" || ko "--instructions subpath not written"
+
+# A host knowledge base: registers named by flag are never created or written.
+H="$T/host"; mkdir -p "$H/adr" "$H/kb"; git -C "$H" init -q
+printf '# ADR 1\n\nStatus: accepted\n' > "$H/adr/0001-scope.md"; cp "$H/adr/0001-scope.md" "$T/adr.md"
+out="$("$INIT" --repo "$H" --code "$T/code-a" --decisions adr --facts kb/facts.md --risks kb/risks.md)"
+[ "$(ls "$H/adr")" = "0001-scope.md" ] && cmp -s "$H/adr/0001-scope.md" "$T/adr.md" \
+  && ok "host: a folder of ADRs left as it is" || ko "host: the ADR folder written to"
+[ ! -e "$H/kb/facts.md" ] && [ ! -e "$H/kb/risks.md" ] && grep -q "missing kb/facts.md (given by --facts): not created" <<<"$out" \
+  && grep -q "missing kb/risks.md (given by --risks)" <<<"$out" && ok "host: a missing register reported, not created" \
+  || ko "host: a missing register created or not reported"
+"$INIT" --repo "$H" --code "$T/code-a" --decisions adr/0001-scope.md --instructions B.md --force >/dev/null
+cmp -s "$H/adr/0001-scope.md" "$T/adr.md" && grep -qF "| \`adr/0001-scope.md\` |" "$H/B.md" \
+  && ok "host: an ADR file as the decisions file, nothing written to it" || ko "host: the ADR file changed"
+"$INIT" --repo "$H" --code "$T/code-a" --scratch "$T/scr" --instructions C.md >/dev/null
+grep -qF "| \`../scr\` |" "$H/C.md" && ! grep -qF "$T" "$H/C.md" && ! grep -qxF "../scr/" "$H/.gitignore" \
+  && ok "host: a scratch folder outside the repository written relative" || ko "host: scratch path absolute"
+
 S="$T/both"; mkdir -p "$S"; git -C "$S" init -q
 "$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
 [ -f "$S/assessment/sre/engagement-state.yml" ] && grep -qx "assessment: sre" "$S/assessment/sre/engagement-state.yml" \
@@ -87,8 +130,13 @@ for d in progress exports targets; do [ -f "$S/assessment/sre/$d/.gitkeep" ] || 
   && ok "sre: owner questions and findings shared at the working folder" || ko "sre: shared files missing"
 [ ! -e "$S/assessment/engagement-state.yml" ] && [ ! -e "$S/assessment/captures" ] && [ ! -e "$S/assessment/progress" ] \
   && ok "sre alone: no observability state or folders" || ko "sre alone: observability files made"
-grep -qF "| sre | \`assessment/sre\` | \`assessment/sre/engagement-state.yml\` | \`bash $KIT/tools/agent/prompt.sh --assessment sre N\` |" "$S/AGENTS.md" \
+grep -qF "| sre | \`assessment/sre\` | \`assessment/sre/engagement-state.yml\` | \`bash $(rel "$KIT" "$S")/tools/agent/prompt.sh --assessment sre N\` |" "$S/AGENTS.md" \
   && ok "sre: types block row" || ko "sre: types block row missing"
+! grep -qE "assessment/engagement-state.yml|assessment/progress/|prompt.sh N\`|\`oa-stage-" "$S/AGENTS.md" \
+  && grep -qF "assessment/sre/progress/stage-N.md" "$S/AGENTS.md" && grep -qF "\`oa-sre-stage-N-" "$S/AGENTS.md" \
+  && grep -qF "check
+   assessment/sre/engagement-state.yml N" "$S/AGENTS.md" \
+  && ok "sre alone: the steps name only SRE paths" || ko "sre alone: an observability path in the steps"
 grep -q "__[A-Z]*__" "$S/AGENTS.md" && ko "sre: placeholder left" || ok "sre: no placeholder left"
 grep -q "^| observability |" "$S/AGENTS.md" && ko "sre alone: observability row" || ok "sre alone: no observability row"
 [ "$(grep -c "^## Types in this engagement$" templates/agent-instructions.md)" -eq 1 ] \
