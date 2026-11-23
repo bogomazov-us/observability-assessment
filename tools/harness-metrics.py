@@ -297,6 +297,8 @@ def measure(state_path, findings_dir=None):
             "split_merge": sum(1 for f in classified if "split_merge" in outcomes[f]),
             "severity_changed": sum(1 for f in classified if "severity_changed" in outcomes[f]),
             "new_input": sum(1 for f in classified if "new_input" in outcomes[f]),
+            "strict_interval_95": wilson(len(strict), len(classified)),
+            "lenient_interval_95": wilson(len(lenient), len(classified)),
         },
         "second_reading": {
             "rows": len(second),
@@ -309,12 +311,26 @@ def measure(state_path, findings_dir=None):
     return result, rep
 
 
+def wilson(k, n, z=1.96):
+    """95 % Wilson score interval for k of n, in percent, rounded; None when n is 0."""
+    if n == 0:
+        return None
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return round(100 * max(0.0, c - h)), round(100 * min(1.0, c + h))
+
+
 def hours(v):
     return "not measured" if v is None else f"{v:g} h"
 
 
 def rate(k, n):
-    return "no findings with a verdict and an outcome" if n == 0 else f"{k}/{n} ({100 * k / n:.1f}%)"
+    if n == 0:
+        return "no findings with a verdict and an outcome"
+    lo, hi = wilson(k, n)
+    return f"{k}/{n} ({100 * k / n:.1f}%; 95% interval {lo}–{hi}%)"
 
 
 def text(r):
@@ -346,7 +362,9 @@ def text(r):
         out += ["", f"Second reading (optional, recommendations only): {s2['flags']} flags; reviewer acted on "
                     f"{s2['acted']}, did not act on {s2['not_acted']}, open {s2['open']}. Its cost is in the "
                     "review hours above."]
-    out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is."]
+    out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is.",
+            "The interval is the 95% Wilson interval of the share on this engagement's findings; it does not "
+            "cover how they were drafted or reviewed."]
     return "\n".join(out)
 
 

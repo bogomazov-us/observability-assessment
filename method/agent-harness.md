@@ -146,4 +146,6 @@ because most had no verdict yet. Count the measure on findings with a verdict, a
 strict reading (bounds and changes from new input count) beside a lenient one (corrections and
 severities only). The selected evidence checks all reproduced. Person hours, rebuilt afterwards
 from message timestamps, spanned a factor of two, with reading and outside review rounds
-invisible: record them as the stage runs. Not yet measured on a second engagement.
+invisible: record them as the stage runs. Not yet measured on a second engagement. The second is measured as
+[practice/pilot.md](../practice/pilot.md#on-the-agent-route-before-stage-1) sets out and reported
+in a [harness pilot report](../templates/harness-pilot-report.md).

@@ -56,6 +56,16 @@ export shares.
   reviewer marks each row acted or not_acted; `tools/harness-metrics.py` counts them (H07), and
   the time it costs is in the review hours.
 
+- **The second engagement on the agent route is set up to be measured**
+  (`practice/pilot.md`, "On the agent route: before stage 1"): hours, outcome and re-check
+  tables, kit version, tool and model, the reviewer's independence and whether the second
+  reading runs are settled before stage 1. Its result is a **harness pilot report**
+  (`templates/harness-pilot-report.md`): measures copied from the tool, how to read them on a
+  small sample, where the drafts went wrong by rule, and the owner's decision against the
+  targets of `method/agent-harness.md`.
+- **The acceptance shares carry their 95 % Wilson interval** in `tools/harness-metrics.py`: 7
+  of 12 reads 58.3 %, 32 to 81 %.
+
 ## 0.15.5 — 2026-11-23
 
 A fix to the PDF.

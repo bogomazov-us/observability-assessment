@@ -56,6 +56,28 @@ Keep each round record. At the end, count: rounds per deliverable, blocking item
 blocking items by checklist section. A section that collects blocking items in every pilot is a
 gap in the method, not in the lead.
 
+## On the agent route: before stage 1
+
+When the pilot runs the [agent stages](../tools/agent/README.md), it is also a measurement of
+the harness. Its result is a [harness pilot report](../templates/harness-pilot-report.md). These
+are settled before stage 1, because none of them can be rebuilt afterwards:
+
+- [ ] Hours are recorded as the work happens: `review_hours` on each review block when it is
+      appended, `rework_hours` with each confirmation
+      ([engagement-state.yml](../templates/engagement-state.yml)). Who writes them is named.
+- [ ] Every stage 4 review round fills its "Finding outcomes" table, and every round its
+      "Re-checks" table ([review.md](../templates/review.md)); how re-checks are selected is
+      written down first.
+- [ ] The kit version, the agent tool and the model are recorded per stage, and a change is
+      recorded when it happens.
+- [ ] The reviewer is named, and whether they drafted or saw the findings before reviewing them.
+- [ ] Whether the [second reading](../tools/agent/review-findings.md) runs is decided now, not
+      after the drafts look weak.
+- [ ] The client's data stays in the engagement repository; the report there names the client,
+      the summary for the kit does not.
+- [ ] `tools/harness-metrics.py` runs clean on the state file after stage 1, so a broken record
+      is found while it can still be fixed.
+
 ## Done when
 
 The pilot ends with the client's report accepted, and four answers written down:
@@ -67,6 +89,9 @@ The pilot ends with the client's report accepted, and four answers written down:
    than 20 %.
 4. **Kit release** with the changes the pilot produced, and its version noted in the pilot's
    record.
+
+On the agent route, a fifth: the [harness pilot report](../templates/harness-pilot-report.md)
+with the owner's decision on what the next engagement relies on.
 
 ## What the pilot is not
 

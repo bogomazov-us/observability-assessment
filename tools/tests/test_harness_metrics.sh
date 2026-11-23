@@ -118,8 +118,8 @@ S="$T/sre-report"; build "$S" "$S/sre" sre
 
 run "$tool" "$O/engagement-state.yml"
 [ $code -eq 0 ] && ok "fictional engagement measured, exit 0" || ko "exit $code: $out"
-grep -q "strict unchanged:  7/12 (58.3%)" <<<"$out" && ok "strict 7/12 (58.3%); pending out of the denominator" || ko "strict: $out"
-grep -q "lenient unchanged: 9/12 (75.0%)" <<<"$out" && ok "bounded and new_input fail strict, pass lenient" || ko "lenient: $out"
+grep -q "strict unchanged:  7/12 (58.3%; 95% interval 32–81%)" <<<"$out" && ok "strict 7/12 (58.3%) with its 95% interval; pending out of the denominator" || ko "strict: $out"
+grep -q "lenient unchanged: 9/12 (75.0%; 95% interval 47–91%)" <<<"$out" && ok "bounded and new_input fail strict, pass lenient" || ko "lenient: $out"
 grep -q "pending (assumption) 2" <<<"$out" && ok "two pending findings reported apart" || ko "pending: $out"
 grep -q "split or merged 2 (granularity" <<<"$out" && ok "split_merge counted apart" || ko "split_merge: $out"
 grep -q "^4 Findings .* 5.5 h .* 2 h " <<<"$out" && ok "stage 4: review hours of both rounds summed, rework 2 h" || ko "stage 4 hours: $out"

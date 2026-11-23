@@ -45,6 +45,9 @@ without one counts for both.
 - **Strict unchanged:** none of bounded, new_input, corrected, severity_changed.
   **Lenient unchanged:** neither corrected nor severity_changed. `split_merge` is a change of
   granularity: counted apart, it does not by itself take a finding out of either reading.
+- **Uncertainty:** each share carries its 95 % Wilson interval. On a dozen findings it is wide
+  (7 of 12 is 32 to 81 %): it says how far the share could move on another sample of the same
+  size, not whether the process works.
 - **Hours:** absent reads "not measured", never zero; an explicit 0 reads "0 h". When only some
   rounds of a stage carry hours, the sum says how many of how many.
 - **Re-checks** read "n of n selected reproduced": a sample, not the accuracy of the output.
