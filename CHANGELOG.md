@@ -5,6 +5,16 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.4 — 2026-11-23
+
+A README for someone who has never heard of the kit.
+
+- **One screen** says what the kit is: two assessment types, observability and SRE, on one
+  method; focused or full; agents on read-only access with a person at every stage; the PDF.
+- **Who it is for**: four readers, where each starts and what each gets.
+- **A sample finding** from the fictional grocer, in five lines, and what every finding carries.
+- **Three ways to use it** (read, run, run with an agent) and the map grouped by the PDF's parts.
+
 ## 0.15.3 — 2026-11-23
 
 The kit reads as a book: parts, a two-level contents, chapters in reading order.
