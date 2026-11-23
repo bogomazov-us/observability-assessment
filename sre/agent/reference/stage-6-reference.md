@@ -8,9 +8,7 @@ section here before doing the step. A rule here binds as if it were in the promp
 
 - **None needed** is a valid result when every finding the plan relies on has its verdict;
   say so in one line.
-- The batch is presented inline in the conversation as well as in the file: per finding its
-  claim, its basis and the five verdicts, then a one-line answer template
-  (`F-012: confirmed; F-013: disputed, reason`).
+- Each finding's options are the five verdicts.
 - **A `V-` task that is a read-only check** (a configuration read, a query) may be closed
   before hand-over, after the person approves it as for step 1: the result is evidence with
   its own `E-` id, the task says *closed* with that id, and the verdict stays the owner's.
@@ -26,7 +24,8 @@ Shape A of [roadmap.md](../../../templates/roadmap.md), its rules as they are. F
   one accountable role per milestone.
 - **The exit result is checkable:** a recorded test with its date (a restore within RTO and
   RPO, a rollback, a game day), or a configuration read. A drill is run by the client's people;
-  the roadmap never assigns it to the agent.
+  the roadmap never assigns it to the agent, and hands it over in the
+  [recovery proof's hand-over](../../templates/recovery-proof.md#hand-over).
 - **Effort is a range of engineer-days** per milestone, from a size mapping stated in the scope
   as an assumption (for example S, M, L to day ranges). No dates until the executor's
   availability is known: the status is "draft; no dates".

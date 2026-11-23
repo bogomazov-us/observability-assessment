@@ -24,7 +24,7 @@ were not asked.
 | T-06 | S-05 | RPO | 5 minutes of data | | agreed | D-13 | Platform technical owner | `confirmed` |
 | T-07 | S-03 (payments ledger) | RTO | 1 hour | | agreed | D-13 | Payments technical owner | `confirmed` |
 | T-08 | S-03 (payments ledger) | RPO | 5 minutes of data | | agreed | D-13 | Payments technical owner | `confirmed` |
-| T-09 | tier 1 | rollout policy | canary to 10% of traffic with an automatic halt on errors; rollback within 15 minutes | | agreed | D-14 | Release technical owner | `confirmed` |
+| T-09 | tier 1: services; no worker, scheduled task or agent in tier 1 | rollout policy | canary to 10% of traffic with an automatic halt on errors; rollback within 15 minutes | | agreed | D-14 | Release technical owner | `confirmed` |
 | T-10 | dimension 1 | target level | 3 | | agreed | D-12 | Head of engineering | `confirmed` |
 | T-11 | dimension 4 | target level | 4 | | agreed | D-12 | Head of engineering | `confirmed` |
 | T-12 | dimension 6 | target level | 4 | | agreed | D-12 | Head of engineering | `confirmed` |

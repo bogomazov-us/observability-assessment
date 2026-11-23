@@ -110,3 +110,5 @@ By the week the [calendar](../README.md#calendar) gives: the owner of each card 
 on the client side), the effort against the team's own estimate, the order, the milestones and
 the decision request. The lead decides what reaches the report's executive part. On confirmation the lead rewrites the
 summary and adds this stage's lines to the manifest ([report](../README.md#report)).
+The report is closed by [Closing the report](../../templates/stage-report.md#closing-the-report):
+the closing check against the registers, the acceptance and the hand-over.

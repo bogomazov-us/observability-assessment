@@ -3,13 +3,22 @@
 The first chapter of the assessment report (`summary.md`); the stage chapters follow it
 ([one report](stage-report.md#one-report-for-the-whole-assessment)). It carries only what no
 chapter does, in five pages at most: the first page answers the buyer's question, the last asks
-for a decision.
+for a decision; once accepted, the hand-over follows it.
+
+- **Current, not history.** The summary always states the current position of every decision,
+  finding and card it names. The stage chapters are history: a status a later decision
+  superseded is not rewritten there; the chapter gets a dated note at its top, "Later
+  (YYYY-MM-DD): D-14 closed this; see the summary."
+- **A decision is cited with its record:** "D-12", "ADR-007 item 3", never a bare "item 3" or
+  "the decision", in the summary and in every chapter. A bare reference is misread by anyone
+  checking the text against the register.
+- **Closing and acceptance** follow [Closing the report](stage-report.md#closing-the-report).
 
 ```markdown
 # [Observability | SRE | Observability and SRE] assessment — summary
 
-Project: [name] · Version: [commit] · Date: [date] · Document status: draft | accepted ·
-Stages accepted: [1–N]
+Project: [name] · Version: [commit] · Date: [date] · Stages accepted: [1–N] ·
+Document status: draft | accepted by [name, role] on [YYYY-MM-DD] ([D- id])
 
 ## 1. Answer
 [The buyer's question in their words, and the answer, in the format they asked for; the three
@@ -51,6 +60,23 @@ adoption → evolution, in sequence with effort ranges (dates once the executor 
 ## 8. Decision requested
 [On a page of its own: the decision in one sentence; the options if there are several; who
 decides; by when.]
+
+## 9. Hand-over (at acceptance)
+[What happens next, so the owner does not have to ask. Built from the decision register and the
+roadmap, not from the text above.]
+
+### Open decisions
+| D- or Q- id | Decision needed | Decider | By when |
+|---|---|---|---|
+
+### Decided, not yet scheduled
+| W- id | Work, and the D- id it delivers | Owner (named person) | Next step |
+|---|---|---|---|
+
+### Only the client can do
+[The assessment is read-only: every change to the client's code, configuration, tickets and
+rota is the client's. List each, with its owner. Optionally the `W-` items are filed as tickets
+in the client's tracker by the client, and their keys added to the table above.]
 ```
 
 ## Recommendation card

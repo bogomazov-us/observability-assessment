@@ -97,7 +97,7 @@ $(perl -ne 'chomp; my @c = map { s/^\s+|\s+$//gr } split /\|/, $_, -1; shift @c;
   [ -n "$UNRES$BAD" ] && echo "  An entry is a heading \"### E-NNN — name\" with \"Checked at:\" or \"Data window:\", \"Result:\" and \"Limits:\" lines, or a table row whose first cell is the E- id under columns Window (or Checked at), Result and Limits, each filled."
 fi
 TEXT="$(pdftotext "$OUT" - | tr -s ' \n' ' ')"
-MISSING="$(grep -ohE "$IDS" "$TMP/src.md" | sort -u | while read -r id; do
+MISSING="$({ grep -ohE "$IDS" "$TMP/src.md" || true; } | sort -u | while read -r id; do
   printf '%s' "$TEXT" | grep -qF -- "$id" || echo "$id"; done)"
 [ -n "$MISSING" ] && { echo "✗ ids cited in the sources but not found in the PDF text:"; echo "$MISSING" | head -20; FAIL=1; }
 pdffonts "$OUT" | awk 'NR>2 && $(NF-4)!="yes" {bad=1} END {exit bad}' || { echo "✗ a font is not embedded"; FAIL=1; }

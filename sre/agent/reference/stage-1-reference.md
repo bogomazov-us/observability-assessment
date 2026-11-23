@@ -108,8 +108,6 @@ proposed tier until stage 2 confirms it.
 5. The reconciliation (step 4).
 6. What could not be inventoried, with the reason.
 
-Owner questions are presented inline in the conversation as well as in the file: per item its
-claim, its basis and the options, then a one-line answer template (`Q-07: B; Q-08: 4 hours`).
 Withdrawn ids are stated in the counts, with the reason.
 
 ## Combined format

@@ -10,6 +10,9 @@ The [scoring rules](../method/maturity-model.md#scoring-rules) of the observabil
 as they are: scope first, evidence per score, not scored is not level 1, N/A only by agreement,
 a confidence per score, no overall average. No SRE dimension is optional; N/A follows rule 5.
 
+A criterion met only on paper (a support mode agreed in a contract, no page or rota in the
+window showing it ran) is documented, not in place: the level it would give reads partial.
+
 "Tier-1" means the services in scope that serve critical journeys, with the tiers agreed in
 dimension 1.
 

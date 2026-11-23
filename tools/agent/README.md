@@ -96,7 +96,7 @@ own paths are in the second table.
 | `maturity.yml` | the person (provisional baseline); 5 | 5, 6, report; SRE 5, 6 |
 | `stage-5-notes.md` | 5 | 6, report |
 | `recommendations.md` | 6 | report; SRE 6 |
-| `summary.md` (from `templates/report.md`), `manifest.txt` (every type) | the person, at each accepted stage | `tools/assessment-pdf.sh` |
+| `summary.md` (from `templates/report.md`; section 9, the hand-over, at acceptance), `manifest.txt` (every type) | the person, at each accepted stage | `tools/assessment-pdf.sh` |
 
 The SRE type (`--assessment sre`) works in `sre/` under the working folder; stage numbers here
 are the SRE stages.
@@ -107,10 +107,10 @@ are the SRE stages.
 | `sre/progress/stage-N.md` | stage N | the person |
 | `sre/exports/` (a file per object class and date) | 1 | 2, 3, 4, `tools/baseline.py` |
 | `sre/inventory.md` | 1 | 2, 3, 4, 5, report |
-| `sre/service-catalogue.md` (`S-` rows) | 1; 2 sets the tiers | 2, 3, 4, 6 |
+| `sre/service-catalogue.md` (`S-` rows) | 1; 2 sets the tiers | 2, 3, 4, 6, report (bundle) |
 | `sre/baseline.md` (`B-` rows, from `tools/baseline.py`) | 1 | 3, 4, 5, 6, report |
 | `sre/target-model.md` | 2 | 3, report |
-| `sre/targets/reliability-targets.md` (`T-` rows) | 2 | 3, 4, 5, 6 |
+| `sre/targets/reliability-targets.md` (`T-` rows) | 2 | 3, 4, 5, 6, report (bundle) |
 | `sre/stage-3-gap.md` | 3 | 4, 5, report |
 | `sre/stage-4-notes.md` | 4 | report |
 | `sre/maturity.yml` (`model: sre`) | the person (provisional baseline); 5 | 5, 6, report |
@@ -123,6 +123,25 @@ The spec is drafted here; the person takes the confirmed spec set to the client'
 `tools/tests/test_paths.sh` checks the prompts against this table.
 Engagement paths in the instructions file and the installed skills are relative to the main
 checkout's root, also when the agent works in a worktree.
+
+## The manifest
+
+`manifest.txt` picks the chapters of the assessment report and the evidence bundle;
+`tools/assessment-pdf.sh` builds both from it, and other renderers may read it too. Its format
+is a contract, the same as in the tool's header; a change to it is a change to both.
+
+| Rule | Format |
+|---|---|
+| Line | Words separated by spaces: `report` or `evidence`, the source path relative to the manifest (no spaces), then the selectors, if any. Blank lines and lines starting with `#` are ignored |
+| Type | `assessment observability` or `assessment sre`, anywhere, once per type. Without one: a path under `sre/` makes it SRE, any other observability, except the shared `summary.md`, `owner-questions.md` and `findings/` |
+| Order | Each line is one chapter of its document, in the order listed; a file may be listed on several lines |
+| Selection | No selector: the whole file. A selector takes each `## ` section whose heading starts with it, after an optional `Appendix `, as a whole word (`1` takes `## 1. Result`, not `## 10.`; `A` takes `## Appendix A.`), up to the next `## `, its `### ` subsections included. With selectors, text before the first `## ` is dropped |
+| No `## ` sections | A file without them (`summary.md`, a finding, `sre/service-catalogue.md`) is listed without selectors; with one, its chapter is its title only, and the build reports a selector that matches nothing |
+| Title | The file's first `# ` heading, with a leading "Observability assessment", "SRE assessment" or "Observability and SRE assessment" and its separator (em dash, comma or hyphen) removed and the first letter raised: `# SRE assessment — stage 1: inventory` gives "Stage 1: inventory" |
+| Errors | An unknown first word or type, a missing source, or no `report` line: exit 2 |
+
+The report notes a table wider than five columns; the bundle holds records, set landscape,
+without that note.
 
 ## How to run a stage
 

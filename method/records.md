@@ -23,8 +23,9 @@ never decided by the lead, a reviewer or an agent.
 
 - **Every decision is a row in the decision register** (`decisions.md`, created by
   `init-engagement.sh`): scope, an owner's answer, a verdict, a stage confirmation, an agreed
-  target. The row has a `D-` id, the decision, who decided, the date and the evidence (the
-  written answer). It is recorded before any document cites it; documents cite the id, never
+  target, the sponsor's acceptance of the report (stage-report.md, "Closing the report"). The
+  row has a `D-` id, the decision, who decided, the date and the evidence (the written answer).
+  It is recorded before any document cites it; documents cite the id, never
   "the owner said".
 - **An architecture decision also gets an ADR file** — one that fixes how the client's system
   or its telemetry is built, with alternatives worth keeping. It uses
@@ -58,6 +59,11 @@ replaced it. One prefix, one kind of record.
 | `M-` | Milestone | [roadmap.md](../templates/roadmap.md) | Lead |
 | `CR-` | Change request | [sow.md](../templates/sow.md) | Lead |
 | `R` (no hyphen) | Review item | [review.md](../templates/review.md) | Reviewer |
+
+**Ids in a host's records.** When the engagement lives in a knowledge base whose own ledgers
+already use a kit prefix (its own `D-` decisions, `M-` items), a kit id is cited with its file
+or record wherever the two could meet: "roadmap M-3", "decisions.md D-12". The kit's prefixes
+are not renamed.
 
 One sequence for every type: `Q-`, `F-`, `REC-`, `V-`, `W-`. `E-` too: one sequence per engagement across types, so a second type's checks continue each stage's block (E-1xx …). Spec ids (journeys, functions, SLOs, alerts) are the spec's own and checked by speclint. Tool
 rule ids (`G01`, `SL001`, `M04`, `W01`) have no hyphen and are not records.

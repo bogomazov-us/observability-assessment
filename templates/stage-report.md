@@ -163,6 +163,36 @@ without it the types follow the source paths.
 - The version of both is the commit in the footer. The roadmap is a document of its own
   ([roadmap.md](roadmap.md)).
 
+## Closing the report
+
+The sponsor accepts the report once, after stage 6 ([roles](../method/records.md#roles)). The
+lead closes it in this order; an agent may draft steps 1 to 3 but sets no status and records no
+decision.
+
+1. **Closing check.** List every decision, question and card id the summary or a chapter calls
+   open, pending or waiting, and look each up in the decision register and the facts ledger.
+   For one the register has closed, correct the summary to the current position; the chapter
+   is history and keeps its text, with a dated note at its top ("Later (YYYY-MM-DD): D-14
+   closed this; see the summary."). Every decision reference names its record ("D-12",
+   "ADR-007 item 3"); a bare "item 3" is fixed.
+2. **Answers against earlier decisions.** Every answer recorded since the last accepted stage is
+   read against the earlier decisions on the same cards and targets and against the confirmed
+   targets. A conflict goes back to the owner as a new question, one card or record per option;
+   it is never settled in the text.
+3. **Hand-over.** Section 9 of the summary ([report.md](report.md)), from the register and the
+   roadmap: the open decisions and their deciders; the decided `W-` items not yet scheduled,
+   each with a named owner; what only the client can do, the assessment being read-only. Filing
+   the `W-` items as tickets in the client's tracker is offered; the client files them.
+4. **Acceptance.** The sponsor accepts in writing. The lead records it as a `D-` row, sets the
+   summary's document status to accepted with who and when and that row's id, and adds a row to
+   the summary's changes table.
+5. **Final build.** Both PDFs are rebuilt with `tools/assessment-pdf.sh` from the merged commit
+   that carries the acceptance, the version in their footer. Earlier drafts are removed from
+   wherever the client reads the report, so only the accepted pair remains.
+
+A decision taken after acceptance changes the summary by a new version and a row in its changes
+table; the chapters get only a dated "Later" note.
+
 ## Statuses and ids
 
 Status values, who sets each, and the id prefixes are in
@@ -191,8 +221,8 @@ Every notes file carries the skeleton's sections under their numbers, for the ma
   configuration revision.
 - **Stage 2.** Written around the resulting contract, not the rounds that produced it. A compact
   map of the functions: purpose, success criterion, measurable today, target coverage. A
-  superseded decision is marked where it is cited ("item 23 applies; item 14 is superseded in
-  this part"). A contract that needs its own reasoning (an ambiguous write, a reconciliation)
+  superseded decision is marked where it is cited, with its record ("ADR-007 item 23 applies;
+  ADR-007 item 14 is superseded in this part"). A contract that needs its own reasoning (an ambiguous write, a reconciliation)
   is a document of its own. The full YAML is published as a file at its commit; the report
   shows the key rows.
 - **Stage 3.** The detection matrix keeps statuses and E-ids. A count of signals says what it
