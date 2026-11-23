@@ -55,7 +55,7 @@ absolute() {  # absolute DIR: the files init wrote that name the kit or a code c
 
 [ -f "$R/AGENTS.md" ] && ok "instructions written" || ko "no AGENTS.md: $out"
 grep -q "__[A-Z]*__" "$R/AGENTS.md" && ko "placeholder left in AGENTS.md" || ok "no placeholder left"
-grep -qF "\`bash $K/tools/agent/prompt.sh N\`" "$R/AGENTS.md" && [ -f "$R/$K/tools/agent/prompt.sh" ] \
+grep -qF "\`bash $K/tools/agent/prompt.sh N\`" "$R/AGENTS.md" && { case "$K" in "~/"*) [ -f "$HOME/${K#\~/}/tools/agent/prompt.sh" ] ;; *) [ -f "$R/$K/tools/agent/prompt.sh" ] ;; esac; } \
   && ok "kit path written, relative" || ko "kit path missing"
 grep -qF "\`../code-a\`" "$R/AGENTS.md" && grep -qF "\`../code-b\`" "$R/AGENTS.md" \
   && ok "every code checkout listed" || ko "code checkout missing"
