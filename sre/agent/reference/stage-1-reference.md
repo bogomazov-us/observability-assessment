@@ -99,6 +99,9 @@ proposed tier until stage 2 confirms it.
 
 1. The live verification table: class, object, status, evidence by `E-` id (the commands and
    their output go to the evidence catalog).
+   A catalog entry is a heading `### E-NNN — name` with `Checked at:` or `Data window:`,
+   `Result:` and `Limits:` lines, or a table row with the `E-` id first under Window (or
+   Checked at), Result and Limits columns, all filled; the report build checks it.
 2. The data request items received and missing.
 3. The sources read, with their revision.
 4. The status summary with its sum.
