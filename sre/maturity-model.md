@@ -68,20 +68,21 @@ The agent reads exports, read-only. People confirm whatever the agent cannot see
 Names checked on 2026-11-22 against the DORA metrics guide (last updated 5 January 2026), the
 DORA capabilities list, and the reliability pillar of the AWS Well-Architected Framework (pillar
 whitepaper last revised 6 November 2024; its guidance now lives in the Framework whitepaper).
-The mapping orients a reader; it does not change a score.
+Rows 2, 4 and 10 re-checked on 2026-11-23, with best-practice ids, against the reliability and
+operational excellence pillars. The mapping orients a reader; it does not change a score.
 
 | # | DORA | AWS Well-Architected, reliability pillar |
 |---|---|---|
 | 1 | — | Workload architecture: design your workload service architecture |
-| 2 | Reliability (operational performance, not a delivery metric) | Change management: monitor workload resources |
+| 2 | — (DORA reads reliability as operational performance, outside its five delivery metrics) | Failure management: REL11-BP07 architect to meet availability targets and uptime SLAs (targets set with stakeholders, dependencies' targets counted, attainment reported) |
 | 3 | Capabilities: monitoring and observability; proactive failure notification | Change management: monitor workload resources |
-| 4 | Failed deployment recovery time (incidents caused by a change) | Failure management: test reliability (post-incident analysis) |
+| 4 | Failed deployment recovery time (only incidents caused by a deployment) | Failure management: REL12-BP02 post-incident analysis. Operational excellence: OPS10 event, incident and problem management (process, priority by impact, escalation); OPS11-BP02 post-incident analysis |
 | 5 | Capability: well-being | — |
 | 6 | Change lead time, deployment frequency, change fail rate, failed deployment recovery time, deployment rework rate | Change management: implement change |
 | 7 | — | Workload architecture: design interactions to prevent, and to mitigate or withstand, failures; failure management: fault isolation, withstand component failures, test reliability |
 | 8 | — | Foundations: manage service quotas and constraints; change management: adapt to changes in demand |
 | 9 | — | Failure management: back up data; plan for disaster recovery |
-| 10 | — | (Operational excellence pillar: operational readiness reviews) |
+| 10 | — | Operational excellence: OPS07-BP02 consistent review of operational readiness; OPS02-BP03 operations activities have identified owners responsible for their performance. Toil has no best practice of its own |
 
 ## Overlaps in the combined format
 

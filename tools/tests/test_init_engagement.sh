@@ -21,7 +21,7 @@ out="$("$INIT" --repo "$R" --code "$T/code-a" --code "$T/code-b" --skills skills
 rel() { python3 -c 'import os,sys; R=os.path.realpath; print(os.path.relpath(R(sys.argv[1]), R(sys.argv[2])))' "$1" "$2"; }
 K="$(rel "$KIT" "$R")"  # the kit as the instructions name it: relative to the repository
 snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and temporary paths masked
-  { echo "## stdout"; printf '%s\n' "$2"
+  { echo "## stdout"; printf '%s\n' "$2" | grep -v "^warning: the kit is in the home folder"
     echo "## files"; (cd "$1" && find . -path ./.git -prune -o -print | LC_ALL=C sort)
     for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
   } | sed "s|$K|[kit]|g; s|$KIT|[kit]|g; s|$T|[tmp]|g"
@@ -106,7 +106,9 @@ grep -qx "existing" "$R/04-risks/risk-register.md" && grep -qF "04-risks/risk-re
 # A host knowledge base: registers named by flag are never created or written.
 H="$T/host"; mkdir -p "$H/adr" "$H/kb"; git -C "$H" init -q
 printf '# ADR 1\n\nStatus: accepted\n' > "$H/adr/0001-scope.md"; cp "$H/adr/0001-scope.md" "$T/adr.md"
-out="$("$INIT" --repo "$H" --code "$T/code-a" --decisions adr --facts kb/facts.md --risks kb/risks.md)"
+rc=0; out="$("$INIT" --repo "$H" --code "$T/code-a" --decisions adr --facts kb/facts.md --risks kb/risks.md 2>/dev/null)" || rc=$?
+[ "$rc" = 1 ] && [ -f "$H/AGENTS.md" ] && ok "host: a missing register exits 1 after writing the rest" \
+  || ko "host: a missing register exits $rc"
 [ "$(ls "$H/adr")" = "0001-scope.md" ] && cmp -s "$H/adr/0001-scope.md" "$T/adr.md" \
   && ok "host: a folder of ADRs left as it is" || ko "host: the ADR folder written to"
 [ ! -e "$H/kb/facts.md" ] && [ ! -e "$H/kb/risks.md" ] && grep -q "missing kb/facts.md (given by --facts): not created" <<<"$out" \
@@ -169,6 +171,11 @@ grep -q "no skills in .*sre/agent/skills" <<<"$out" || [ -d sre/agent/skills ] \
 [ -d "$S/skills/oa-stage-1-inventory" ] && ok "both: observability skills installed" || ko "both: observability skills missing"
 [ "$(skills "$S" 'oa-*')" -eq $(( $(ls -d tools/agent/skills/oa-* sre/agent/skills/oa-* | wc -l) )) ] \
   && ok "both: rule, observability and SRE stage skills installed" || ko "both: a skill set missing"
+# The kit in the home folder, the repository outside it: init warns that the paths name it.
+F="$T/fromhome"; mkdir -p "$F"; git -C "$F" init -q
+HOME="$(dirname "$KIT")" "$INIT" --repo "$F" --code "$T/code-a" | grep -q "^warning: the kit is in the home folder" \
+  && ok "the kit in ~, the repository outside it: a warning" || ko "the kit in ~: no warning"
+
 echo "local" >> "$S/assessment/sre/engagement-state.yml"
 "$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
 grep -qx "local" "$S/assessment/sre/engagement-state.yml" && ok "sre: re-run keeps the state file" || ko "sre: re-run replaced the state file"
