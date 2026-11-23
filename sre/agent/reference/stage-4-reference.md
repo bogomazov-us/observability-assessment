@@ -7,9 +7,9 @@ rule here binds as if it were in the prompt.*
 ## Checks per dimension
 
 The usual failures, as places to look. Each is a candidate only with evidence, and only against
-a target or level the client has confirmed. The dimensions are those of the
-[SRE maturity model](../../maturity-model.md); in the focused format, look only in the
-mandatory ones (1, 2, 4, 6, 9) unless a finding there leads elsewhere.
+a target or level the client has confirmed, or against none by the owner's choice (below). The
+dimensions are those of the [SRE maturity model](../../maturity-model.md); in the focused
+format, look only in the mandatory ones (1, 2, 4, 6, 9) unless a finding there leads elsewhere.
 
 | # | Look for |
 |---|---|
@@ -38,6 +38,29 @@ SRE findings.
 A restore never tested is P2 by default, since its result is unknown; it is P1 only with
 evidence that it cannot succeed (a backup job failing for the whole RPO window, a data store
 with no backup).
+
+**Examples.**
+- *Process absent, recovery met anyway.* One operator restores by hand, with no runbook and
+  no second person, and every outage in the window ended inside the RTO. The target was met,
+  so not P1; a condition for keeping it is missing: P2. *What we see* cites the outages and
+  their times and says that the result rests on one person.
+- *On-call agreed on paper.* A support mode (hours, rota, escalation) is agreed in a contract
+  or a policy, and no page answered, rota or escalation in the window shows it ran. On-call
+  cover is unproven: P2, P1 only when a failure reached customers with no one paged. For
+  dimension 4, level 2 ("on-call exists") rests on a record that it ran; the agreement alone
+  is *documented* (stage 3), and the level reads 1 (partial 2), the agreement cited.
+
+## A gap with no target, by the owner's choice
+
+A gap row whose Target reads *none, by the owner's choice* (`D-NN`) has no target to miss;
+never write it as a gap against a target nobody set. Write it one of two ways:
+- **A finding**, when the current state carries a risk: *What we see* gives the current state
+  and cites the `D-` row; the severity is read against the risk with the table above (data
+  lost, an outage that lasts, a change reaching customers), not against a target; the closing
+  criterion is the practice in place or a target agreed.
+- **A recorded decision**, when the owner accepted the state knowingly and nothing new is
+  shown: no finding; the notes list the dimension under "Accepted by the owner" with the `D-`
+  row.
 
 ## Claims about recovery
 
@@ -75,8 +98,15 @@ names the dimension where the topic is scored:
 4. The facts-ledger rows these findings rest on, proposed, status assumption.
 5. "Could not evidence": claim, what is missing, who can provide it.
 6. The verdict batch, drafted in the format of
-   [`owner-questions.md`](../../../templates/owner-questions.md), no verdict filled in, and
-   presented inline in the conversation as well: per finding its claim, its basis and the five
-   verdicts, then a one-line answer template (`F-012: confirmed; F-013: disputed, reason`).
+   [`owner-questions.md`](../../../templates/owner-questions.md), no verdict filled in; each
+   finding's options are the five verdicts.
+   - **About ten per batch**
+     ([owner-questions.md](../../../templates/owner-questions.md)). When separate findings
+     exceed it, split the batch by verdict owner, most blocking first; or group findings that
+     rest on one evidence read and one owner as one item with a verdict per id
+     (`F-014, F-015: confirmed`). Never merge findings to fit a batch.
+   - **Combined format.** The batch also carries the other type's findings still without a
+     verdict that an SRE finding or a stage-5 level rests on, each marked with its type: their
+     owner gives the verdict here, or the level stays provisional.
 
 The counts state each withdrawn id, with the reason.

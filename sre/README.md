@@ -194,7 +194,9 @@ kit version:
 
 1. **Ids.** Each shared sequence continues from the highest id of its kind in the engagement;
    a sequence the older kit lacked starts at 001.
-2. **Verdicts.** The second type opens its own verdict batch; the first one stays closed.
+2. **Verdicts.** The second type opens its own verdict batch; the first one stays closed. The
+   new batch carries the first type's findings still without a verdict that a finding or level
+   of the second type rests on.
 3. **Pair check.** When `--pair` asks to change the first type's profile, the lead edits it,
    not the second type's agent, and records the change as a `D-` row.
 4. **Conditional cards.** A conditional option of the first type becomes a `REC-` card when the
@@ -219,7 +221,9 @@ report    sre/stage-5-notes.md      1 2 3 5
 report    sre/recommendations.md    1 2 3 5
 evidence  sre/inventory.md          4 A
 evidence  sre/baseline.md
+evidence  sre/service-catalogue.md
 evidence  sre/target-model.md       4 A
+evidence  sre/targets/reliability-targets.md
 evidence  sre/stage-3-gap.md        4 A
 evidence  sre/stage-4-notes.md      4 A
 evidence  findings/F-001.md

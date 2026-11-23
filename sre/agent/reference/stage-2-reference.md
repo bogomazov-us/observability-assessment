@@ -59,6 +59,12 @@ dimension 6 (progressive delivery with automatic halt), marked as the model's cr
 default. A value you would derive (an RTO from a contract's monthly downtime) is a candidate
 marked as a reading, with the derivation.
 
+**Which workloads.** A change-safety target (rollout policy) covers every tier-1 workload that
+is deployed, not one kind of it. The question lists each workload kind in tier 1 — services,
+workers, scheduled tasks, tunnels or agents — with its `S-` rows, and the owner says per kind
+whether the policy applies; a kind left out is a separate row or a `D-` row that accepts it. A
+policy phrased by kind ("canary for each service") leaves a scheduled task with no target.
+
 **Target level per dimension.** One row per dimension in scope, kind *target level*, Applies to
 the dimension ("dimension 4"), Value `[owner sets: Q-NN]`. The candidates are the model's
 levels above the current reading, each with what it would ask. Stage 3 measures the
@@ -109,9 +115,6 @@ owner for an SLO, service or data owner for RTO and RPO, release owner for rollo
 owner, engineering manager for toil, alert owner, sponsor or engineering lead for a target
 level.
 
-**In the conversation.** Present each batch inline as well as in the file: per item its claim,
-its basis and the options, then a one-line answer template (`Q-07: B; Q-08: 4 hours`).
-
 ## Output
 
 ### The targets file
@@ -128,6 +131,8 @@ row adds its source and measuring export in a comment under the table, by `T-` i
 1. Result: services by proposed tier, summed; targets by kind, how many default and how many
    waiting on the owner; what is measurable today; each withdrawn id, with the reason.
 2. Scope and method: the journeys, the sources and their dates.
-3. Main results: the tier map (service, tier, reason, journey) and the target table per tier.
+3. Main results: the tier map (service, tier, reason, journey) and the target table per tier,
+   each at most five short columns (the templates' "In the report"); the full tables go to the
+   evidence bundle.
 4. Records: the gap list of step 2, the disagreements of step 0, "Could not evidence".
 5. Decisions and open questions: the batch's `Q-` ids and any `D-` rows cited.

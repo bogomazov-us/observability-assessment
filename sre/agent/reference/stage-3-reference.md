@@ -31,8 +31,7 @@ Per dimension in scope: the `T-` rows that apply to each tier-1 service (by serv
 its tier), and the dimension's *target level* row. Measure against the agreed value; against a
 default only when the row says it is a default, and the gap row says so too. A dimension's
 gap is read against the criteria of its target level. A dimension or service with no target
-gets no invented one: an open question to its owner, presented as in stage 2 (inline, each
-item with its claim, basis and options, and a one-line answer template).
+gets no invented one: an open question to its owner.
 
 **None, by the owner's choice.** When the target level row reads *none, by the owner's choice*,
 the dimension's gap rows record the current state and the status of the practice, with the
@@ -60,6 +59,8 @@ document's date, and becomes current only with a record that it ran (a restore t
 rollback in the deploy history, a postmortem with dated action items). A restore counts only
 from the backups the RPO relies on: a one-off copy made for a migration is not one.
 Incidents are read per class (outage, data correctness), never as one population.
+An agreed test you cannot run (a restore by a date) is handed over in the
+[recovery proof's hand-over](../../templates/recovery-proof.md#hand-over), not run.
 
 ### 4. Gap rows
 
