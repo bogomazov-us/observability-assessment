@@ -24,7 +24,7 @@ snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and tempor
   { echo "## stdout"; printf '%s\n' "$2"
     echo "## files"; (cd "$1" && find . -path ./.git -prune -o -print | LC_ALL=C sort)
     for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
-  } | sed "s|$KIT|[kit]|g; s|$K|[kit]|g; s|$T|[tmp]|g"
+  } | sed "s|$K|[kit]|g; s|$KIT|[kit]|g; s|$T|[tmp]|g"
 }
 links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder
   python3 - "$1" <<'PY'
