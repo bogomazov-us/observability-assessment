@@ -49,10 +49,10 @@ Read it before the step; it binds as if it were here.
 
 1. **Scope.** The format and the dimensions in scope; those not in scope get no rows.
    Combined: an overlap topic scored in observability is referenced, not gapped again.
-2. **Targets.** Per dimension in scope, the `T-` rows and the target model's level; a default
-   is used only when the row says so. A dimension without a target is an open question.
+2. **Targets.** Per dimension in scope, the `T-` rows and its target level; a default
+   is used only when the row says so; a missing target is never invented.
 3. **Current state.** Per tier-1 service, or dimension-wide, what is in place today: `L-` rows,
-   `B-` numbers, exports and read queries, each read an `E-3xx` evidence check.
+   `B-` numbers, exports and read queries, each read a new `E-` check.
 4. **Gap rows.** One `G-` row per service × dimension, or dimension-wide: target, current with
    evidence, one implementation status.
 5. **Monitoring, light.** Dimension 3 at the depth of its criteria only.
@@ -104,4 +104,5 @@ chosen by them, through another path than the agent's query: the tool's own inte
 record the owner shows, or a query they write. Checks the readiness check of the last tier-1
 launch with its service owner. Agrees the owners of the blind spots and registers them.
 Decides which scenarios are run, where and by whom. Confirms the gap as the input to stage 4,
-or returns it.
+or returns it. On confirmation the lead rewrites the summary and adds this stage's lines to the
+manifest ([report](../README.md#report)).

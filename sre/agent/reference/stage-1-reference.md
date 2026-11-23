@@ -18,7 +18,7 @@ is the [SRE maturity model](../../maturity-model.md)'s.
 | Services | Service registry or catalogue export; infrastructure as code; deploy targets in the pipeline | Workloads running in the estate, with deploy target and last deploy | S5 | 1 | Deploys; infrastructure as code; the kick-off scope |
 | Dependencies | Architecture documents; configuration (endpoints, connection settings); infrastructure as code | Calls or connections seen live where a read-only view exists (service map, network or mesh configuration) | S5 | 1, 7 | Services; tiers |
 | Deploys | Pipeline definition per service; rollout configuration (strategy, automatic halt, rollback) | Deploy history: service, time, result, rollback, unplanned fix | S4 | 6 | Services; incidents linked to a change |
-| Incidents | Severity levels and roles in the incident process; the postmortem rule above a severity | Incident export; postmortems; action items with owner role, due date and state | S1, S2 | 4 | Pages; deploys; services |
+| Incidents | Severity levels and roles in the incident process; the postmortem rule above a severity | Incident export, with each incident's class (outage or data correctness); postmortems; action items with owner role, due date and state | S1, S2 | 4 | Pages; deploys; services |
 | Pages and rotations | Rotation and escalation per service, from the paging tool's configuration | Rotations with their members (opaque ids); paging export | S3 | 5 | Services; alerts |
 | Alerts (light) | Alert rules in code or infrastructure as code for tier-1 candidates | Alert rules with route, owner and runbook link | — | 3 | Pages and rotations. Depth is the observability assessment's |
 | Backups and restores | Backup policy per data store in infrastructure as code (schedule, retention, copy location) | Backup job history with results; restore test records with date, store, duration, result | S6 | 9 | Services' data stores |
@@ -29,6 +29,17 @@ Check the exports received against the data request first. A class with no expor
 read-only access is one line, status *not verifiable*, with the data request row it waits on;
 it is never an empty class. An export without its query or call, time and count is a lead,
 not evidence. A restore or failover with no record is recorded as untested; it is never tried.
+
+**What a deploy is.** A deploy is a run of the job that changes production for a service: the
+deploy job, or, where infrastructure is applied on merge, the apply job of the production
+pipeline. Build, test and plan jobs are not deploys; name the job counted in the `L-` row. A
+failed pipeline run is not a failure in production: a change failure rate counted from
+pipeline failures is a proxy and its `B-` row says so. Lead time needs the first commit of each
+change; merge records alone do not give it, so without it lead time is *not measured*.
+
+**Incidents per class.** Service outages and data-correctness defects are timed apart: their
+detection times differ by orders of magnitude. Every incident row carries its class; an
+incident export without one is classed with the owner, as a question.
 
 ### 4. Reconciliation
 
@@ -65,7 +76,8 @@ owner question.
 
 Run [`tools/baseline.py`](../../../tools/baseline.md) on the sanitized incident, deploy and page
 exports in `sre/exports/`, stating the column mapping (`--map`), the window and the time zone.
-Copy its table into `sre/baseline.md` and add the `B-` ids. A number it prints as *not measured*
+Copy its table into `sre/baseline.md` and add the `B-` ids. Incident numbers are given per
+class (the tool run once per class, unless it splits them); never one number over both. A number it prints as *not measured*
 keeps its reason; it is never estimated, and stage 3 reads it as a gap. An export not received
 gives *not measured: no export*, with the data request row.
 
@@ -75,7 +87,7 @@ proposed tier until stage 2 confirms it.
 
 | Number | Method |
 |---|---|
-| Restore tested | Tier-1 data stores with a restore record in the window ÷ tier-1 data stores |
+| Restore tested | Tier-1 data stores with a restore record in the window, from the backups the RPO relies on (a one-off copy is not one) ÷ tier-1 data stores |
 | Backup success | Successful backup runs ÷ scheduled runs, per data store, in the window |
 | Action-item closure | Postmortem action items closed by their due date ÷ items due in the window |
 | Owner coverage | Services in scope with an owner and a paging route ÷ services in scope |
@@ -92,6 +104,10 @@ proposed tier until stage 2 confirms it.
 4. The status summary with its sum.
 5. The reconciliation (step 4).
 6. What could not be inventoried, with the reason.
+
+Owner questions are presented inline in the conversation as well as in the file: per item its
+claim, its basis and the options, then a one-line answer template (`Q-07: B; Q-08: 4 hours`).
+Withdrawn ids are stated in the counts, with the reason.
 
 ## Combined format
 

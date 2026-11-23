@@ -4,6 +4,17 @@
 not append it; the prompt names it at steps 6–9 and the Output, and the agent reads a step's
 section here before doing the step. A rule here binds as if it were in the prompt.*
 
+## 1. Confirmation batch
+
+- **None needed** is a valid result when every finding the plan relies on has its verdict;
+  say so in one line.
+- The batch is presented inline in the conversation as well as in the file: per finding its
+  claim, its basis and the five verdicts, then a one-line answer template
+  (`F-012: confirmed; F-013: disputed, reason`).
+- **A `V-` task that is a read-only check** (a configuration read, a query) may be closed
+  before hand-over, after the person approves it as for step 1: the result is evidence with
+  its own `E-` id, the task says *closed* with that id, and the verdict stays the owner's.
+
 ## 6. Roadmap
 
 Shape A of [roadmap.md](../../../templates/roadmap.md), its rules as they are. For SRE:
@@ -50,6 +61,10 @@ buyer who asked for a short, focused answer, keep to the cards that answer the q
   rest waits on.
 - **One sequence per id type:** take the next free `REC-`, `V-` and `W-` ids after those in the
   observability `recommendations.md`, so no id appears twice in the report.
+- **Run in sequence** ([README](../../README.md#in-sequence)): a conditional option of the
+  observability type whose finding this type's batch confirmed becomes a `REC-` card citing
+  that verdict; this type's work joins the confirmed roadmap as new milestones after the last,
+  without rewriting the confirmed ones.
 - **Milestones may hold items of both types;** each names the dimensions it moves with their
   model ("observability dimension 7", "SRE dimension 6").
 - The summary carries this roadmap and decision request; the observability recommendations do
@@ -68,3 +83,5 @@ buyer who asked for a short, focused answer, keep to the cards that answer the q
 6. The decision request.
 7. "Needs a decision": card, decision, decider role.
 8. "Left out": confirmed findings with no card, and why.
+
+The counts of `REC-`, `V-` and `W-` items state each withdrawn id, with the reason.
