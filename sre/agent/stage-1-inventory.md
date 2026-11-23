@@ -102,4 +102,5 @@ interface, a browser, or a query they write). A sample that reproduces says thos
 it is not an estimate of the accuracy of the whole inventory. Registers the confirmed blind
 spots as risks with owners. Confirms the inventory as the baseline for stage 2, or returns it;
 on confirmation the document's own status line is updated, so it never says "assumption" after
-it was confirmed.
+it was confirmed. On confirmation the lead rewrites the
+summary and adds this stage's lines to the manifest ([report](../README.md#report)).

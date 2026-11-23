@@ -24,7 +24,8 @@ item 9).
 | 3 | Everything else in the catalogue |
 
 The Tier cell reads `1, proposed` (the catalogue template's form), and the reason goes in the
-notes with the journey and the source. A service whose role the sources do not show stays
+notes with the journey and the source. Where the tiers were decided at scope, the reason cites
+that `D-` row instead of a new proposal. A service whose role the sources do not show stays
 untiered, with a question.
 
 ### 2. Dependencies follow the tier
@@ -57,6 +58,15 @@ each stated need with its source, and for the rollout policy the level-4 criteri
 dimension 6 (progressive delivery with automatic halt), marked as the model's criterion, not a
 default. A value you would derive (an RTO from a contract's monthly downtime) is a candidate
 marked as a reading, with the derivation.
+
+**Target level per dimension.** One row per dimension in scope, kind *target level*, Applies to
+the dimension ("dimension 4"), Value `[owner sets: Q-NN]`. The candidates are the model's
+levels above the current reading, each with what it would ask. Stage 3 measures the
+dimension's gap against it. The owner may choose no target level: that is a `D-` row too, and
+the row says *none, by the owner's choice*.
+
+**Premise.** A value agreed on a premise (a store holds only files that can be rebuilt) names
+it in the Premise column, with its source; stage 3 checks the premise against the estate.
 
 ### 5. A service where it differs
 
@@ -93,10 +103,14 @@ places is a question.
 
 Batch order: the tier-1 set first (one question listing the proposed services, each with its
 reason; a contested service gets its own), then tier-1 SLO, RTO, RPO, rollout policy, then the
-default rows, then lower tiers. About ten per batch; the rest waits for the next, ordered by
+target levels, then the default rows, then lower tiers. About ten per batch; the rest waits for the next, ordered by
 what it blocks. Each question names the `T-` or `S-` rows it blocks and its owner role: product
 owner for an SLO, service or data owner for RTO and RPO, release owner for rollout, on-call
-owner, engineering manager for toil, alert owner.
+owner, engineering manager for toil, alert owner, sponsor or engineering lead for a target
+level.
+
+**In the conversation.** Present each batch inline as well as in the file: per item its claim,
+its basis and the options, then a one-line answer template (`Q-07: B; Q-08: 4 hours`).
 
 ## Output
 
@@ -112,7 +126,7 @@ row adds its source and measuring export in a comment under the table, by `T-` i
 `sre/target-model.md` follows the [stage report](../../../templates/stage-report.md) skeleton:
 
 1. Result: services by proposed tier, summed; targets by kind, how many default and how many
-   waiting on the owner; what is measurable today.
+   waiting on the owner; what is measurable today; each withdrawn id, with the reason.
 2. Scope and method: the journeys, the sources and their dates.
 3. Main results: the tier map (service, tier, reason, journey) and the target table per tier.
 4. Records: the gap list of step 2, the disagreements of step 0, "Could not evidence".

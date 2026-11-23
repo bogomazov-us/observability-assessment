@@ -104,4 +104,5 @@ cited, not reprinted.
 By the week the [calendar](../README.md#calendar) gives: each level and its confidence, against
 the cited evidence; each N/A with the client; which dimensions block the next step; each
 provisional level when its findings have their verdicts; in the combined format, both profiles,
-clean under `--pair`. Only the confirmed profile goes into stage 6.
+clean under `--pair`. Only the confirmed profile goes into stage 6. On confirmation the lead rewrites the
+summary and adds this stage's lines to the manifest ([report](../README.md#report)).

@@ -91,5 +91,8 @@ implemented function, and an implemented function is not a proven detection.
 | Review | item: open · closed · accepted as a known limitation; round: approved · approved with changes · rework | [review.md](../templates/review.md) | Reviewer |
 | Acceptance | accepted · accepted with limitations · rejected; for implementation go · go with exceptions · no-go | [acceptance.md](../templates/acceptance.md); readiness outcome: [readiness-review.md](../sre/templates/readiness-review.md) | Sponsor; readiness: the service owner |
 
+Two readings, not values: *not in scope (format)* for a row the format excludes; *absent by
+design* for a thing the client chose not to have; each states its reason.
+
 Values in `code` are what a tool accepts; `tools/tests/test_records.sh` checks them against
 stagegate, speclint and maturity.

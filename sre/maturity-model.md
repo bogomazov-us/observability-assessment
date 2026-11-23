@@ -40,6 +40,8 @@ row in the decision register.
 | Toil share of engineering time | 10 | at most 50% |
 | Actionable alert share | 3 | none; the client sets the target |
 
+**Incidents per class.** Dimension 4 reads service outages and data-correctness defects apart; level 4 needs a way to detect a data-correctness defect, with its detection time measured.
+
 **DORA keys.** Level 4 of dimension 6 asks for the four keys. DORA now publishes a fifth metric,
 deployment rework rate; record it when the data allows, but it does not gate the level.
 

@@ -55,7 +55,7 @@ Read it before the step; it binds as if it were here.
 3. **Defaults first.** Enter the default rows (on-call limit, toil cap, actionable alert
    share), each *default, to confirm*.
 4. **Targets per tier.** SLO, RTO, RPO and rollout policy have no default: the value is the
-   owner's, the stated needs are its candidates.
+   owner's, the stated needs are its candidates. So is a target level per dimension in scope.
 5. **A service where it differs**, and RTO and RPO per tier-1 data store.
 6. **SLOs cite, not redefine.** Each SLO follows the spec rules; in the combined format it
    cites the observability spec's SLO id.
@@ -79,8 +79,7 @@ reprinted. Field rules and columns are in the
 4. The owner question batch, added to the engagement's owner questions file.
 
 **Combined format.** The owner questions, the findings and the decision register are shared:
-one `Q-` sequence, one batch, one targets review. An SLO is defined once,
-in the observability spec (reference, step 6).
+one `Q-` sequence, one batch, one targets review.
 
 ## Self-check before handing over
 
@@ -106,4 +105,5 @@ in the observability spec (reference, step 6).
 By the week the [calendar](../README.md#calendar) gives: each tier against the journeys and its
 owner's answer; each target against its decision register row (only rows with a `D-` row become
 `confirmed`, set by the lead). The confirmed rows go into the facts ledger with their source;
-the rest stay assumptions with an owner and a date.
+the rest stay assumptions with an owner and a date. On confirmation the lead rewrites the
+summary and adds this stage's lines to the manifest ([report](../README.md#report)).
