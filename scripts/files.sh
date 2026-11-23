@@ -95,4 +95,7 @@ KIT_FILES=(
   sre/example/baseline.md
   sre/example/service-catalogue.md
   sre/example/reliability-targets.md
+  sre/example/agent/progress/stage-1.md
+  sre/example/agent/owner-questions.md
+  sre/example/agent/reviews/stage-1-round-1.md
 )

@@ -1,0 +1,51 @@
+# Larkfield Grocer (fictional): the SRE engagement state on the day SRE stage 1 was confirmed.
+# Skeleton and field rules: templates/engagement-state.yml. Decision ids: the register in
+# sre/example/worked-example.md, continuing the observability sequence. Checked in CI by
+# tools/tests/test_example.sh:
+#   tools/stagegate.py lint sre/example/agent/engagement-state.yml
+#   tools/stagegate.py check sre/example/agent/engagement-state.yml 2    # opens
+
+assessment: sre
+
+scope:
+  decision_ref: D-10
+  access_granted_on: 2027-06-07
+
+stages:
+  - number: 1                        # Inventory
+    status: confirmed
+    confirmed_by: engagement lead
+    confirmed_on: 2027-06-10
+    decision_ref: D-11
+    reviews:
+      - {date: 2027-06-10, by: engagement lead, file: reviews/stage-1-round-1.md}
+  - number: 2                        # Target model
+    status: not_started
+    reviews: []
+  - number: 3                        # Gap
+    status: not_started
+    reviews: []
+  - number: 4                        # Findings
+    status: not_started
+    reviews: []
+  - number: 5                        # Maturity
+    status: not_started
+    reviews: []
+  - number: 6                        # Recommendations
+    status: not_started
+    reviews: []
+
+# Open on this day; answered by D-12 to D-14 at the targets review.
+questions:
+  - id: Q-05
+    question: Can checkout go on without promotions when promo-rules fails?
+    to: head of engineering
+    blocks: [3]
+  - id: Q-06
+    question: What restore time and data loss must the orders database and the payments ledger meet?
+    to: platform and payments technical owners
+    blocks: [3]
+  - id: Q-07
+    question: How far may a bad tier-1 deploy spread, and how fast must it be rolled back?
+    to: release technical owner
+    blocks: [3]

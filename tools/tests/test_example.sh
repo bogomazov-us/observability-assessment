@@ -27,4 +27,38 @@ out="$(python3 tools/stagegate.py lint example/agent/engagement-state.yml 2>&1)"
 [ -z "$out" ] && echo "✓ example/agent/engagement-state.yml: no warnings" \
   || { echo "✗ example/agent/engagement-state.yml: warnings"; sed 's/^/    /' <<<"$out"; FAIL=1; }
 
+# The SRE example: its profile alone and beside the observability one, its state file, and its
+# baseline as the tool prints it on the exports exports.sh writes.
+check sre/example/maturity.yml "maturity.py" \
+  python3 tools/maturity.py sre/example/maturity.yml
+check sre/example/maturity.yml "maturity.py --pair with example/maturity.yml" \
+  python3 tools/maturity.py --pair example/maturity.yml sre/example/maturity.yml
+check sre/example/agent/engagement-state.yml "stagegate lint" \
+  python3 tools/stagegate.py lint sre/example/agent/engagement-state.yml
+check sre/example/agent/engagement-state.yml "stagegate check 2 opens at stage 1 confirmed" \
+  python3 tools/stagegate.py check sre/example/agent/engagement-state.yml 2
+out="$(python3 tools/stagegate.py lint sre/example/agent/engagement-state.yml 2>&1)"
+[ -z "$out" ] && echo "✓ sre/example/agent/engagement-state.yml: no warnings" \
+  || { echo "✗ sre/example/agent/engagement-state.yml: warnings"; sed 's/^/    /' <<<"$out"; FAIL=1; }
+
+# baseline.md from "## Incidents" up to "## Counted from other exports", without the ID column,
+# is the tool's output without its "# Baseline" title and the blank line after it.
+TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+ROOT="$PWD"
+bash sre/example/exports.sh "$TMP"
+( cd "$TMP" && python3 "$ROOT/tools/baseline.py" sre/exports/incidents-2027-06-08.csv \
+    --map severity=priority --deploys sre/exports/deploys-2027-06-08.csv \
+    --pages sre/exports/pages-2027-06-08.csv ) | sed '1,2d' > "$TMP/tool.md"
+awk '/^## Incidents/{on=1} /^## Counted from other exports/{on=0} on' sre/example/baseline.md \
+  | sed -E 's/^\|[^|]*\|/|/' | sed '${/^$/d;}' > "$TMP/file.md"
+check sre/example/baseline.md "reproduced by baseline.py from exports.sh" \
+  diff "$TMP/file.md" "$TMP/tool.md"
+
+# E- ids are one sequence per engagement across types (method/records.md): the SRE example
+# continues each stage's block after the observability example's ids, never reuses one.
+ids() { grep -rhoE '\bE-[0-9]{3}\b' "$1" | sort -u; }
+dup="$(comm -12 <(ids example) <(ids sre/example) | tr '\n' ' ')"
+[ -z "$dup" ] && echo "✓ sre/example: no E- id shared with example/" \
+  || { echo "✗ sre/example: E- ids also used in example/: $dup"; FAIL=1; }
+
 exit $FAIL
