@@ -60,8 +60,9 @@ shared; with SRE alone, the observability state file and folders are not made. T
 instructions file then lists each type's folder, state file and prompt command. A host
 knowledge base keeps its own registers: a register named by `--facts`, `--decisions` (a file,
 or a folder of ADRs) or `--risks` is never created or written to; a missing one is reported and
-init exits 1 once the rest is written. Paths are written relative to the repository, and from
-`~` when the kit is in the home folder and the repository is not, so no user name is committed.
+init exits 1 once the rest is written. Paths are written relative to the repository; keep the
+repository beside the kit, since with the kit in the home folder and the repository outside it
+the path names the home folder (init warns).
 
 With `--skills SKILLS_DIR` it also installs the [stage and rule skills](skills/README.md) of
 each type.

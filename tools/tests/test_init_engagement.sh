@@ -18,21 +18,20 @@ ko() { echo "✗ $*"; fail=1; }
 
 R="$T/eng"; mkdir -p "$R" "$T/code-a" "$T/code-b"; git -C "$R" init -q
 out="$("$INIT" --repo "$R" --code "$T/code-a" --code "$T/code-b" --skills skills)"
-rel() { python3 -c 'import os,sys; R=os.path.realpath; a,b=R(sys.argv[1]),R(sys.argv[2]); h=R(os.path.expanduser("~"))+os.sep
-print("~/"+a[len(h):] if a.startswith(h) and not b.startswith(h) else os.path.relpath(a,b))' "$1" "$2"; }
+rel() { python3 -c 'import os,sys; R=os.path.realpath; print(os.path.relpath(R(sys.argv[1]), R(sys.argv[2])))' "$1" "$2"; }
 K="$(rel "$KIT" "$R")"  # the kit as the instructions name it: relative to the repository
 snapshot() {  # snapshot DIR STDOUT: what init wrote and printed, kit and temporary paths masked
-  { echo "## stdout"; printf '%s\n' "$2"
+  { echo "## stdout"; printf '%s\n' "$2" | grep -v "^warning: the kit is in the home folder"
     echo "## files"; (cd "$1" && find . -path ./.git -prune -o -print | LC_ALL=C sort)
     for f in AGENTS.md facts.md decisions.md .gitignore; do echo "## $f"; cat "$1/$f"; done
   } | sed "s|$K|[kit]|g; s|$KIT|[kit]|g; s|$T|[tmp]|g"
 }
-links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder (or from ~)
+links() {  # links FILE: every relative Markdown link in FILE resolves from FILE's folder
   python3 - "$1" <<'PY'
 import os, re, sys
 f = sys.argv[1]; d = os.path.dirname(f)
 bad = [l for l in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", open(f).read())
-       if not re.match(r"[a-z]+:", l) and not os.path.exists(os.path.join(d, os.path.expanduser(l)))]
+       if not re.match(r"[a-z]+:", l) and not os.path.exists(os.path.join(d, l))]
 sys.exit(1 if bad else 0)
 PY
 }
@@ -55,7 +54,7 @@ absolute() {  # absolute DIR: the files init wrote that name the kit or a code c
 
 [ -f "$R/AGENTS.md" ] && ok "instructions written" || ko "no AGENTS.md: $out"
 grep -q "__[A-Z]*__" "$R/AGENTS.md" && ko "placeholder left in AGENTS.md" || ok "no placeholder left"
-grep -qF "\`bash $K/tools/agent/prompt.sh N\`" "$R/AGENTS.md" && { case "$K" in "~/"*) [ -f "$HOME/${K#\~/}/tools/agent/prompt.sh" ] ;; *) [ -f "$R/$K/tools/agent/prompt.sh" ] ;; esac; } \
+grep -qF "\`bash $K/tools/agent/prompt.sh N\`" "$R/AGENTS.md" && [ -f "$R/$K/tools/agent/prompt.sh" ] \
   && ok "kit path written, relative" || ko "kit path missing"
 grep -qF "\`../code-a\`" "$R/AGENTS.md" && grep -qF "\`../code-b\`" "$R/AGENTS.md" \
   && ok "every code checkout listed" || ko "code checkout missing"
@@ -172,11 +171,10 @@ grep -q "no skills in .*sre/agent/skills" <<<"$out" || [ -d sre/agent/skills ] \
 [ -d "$S/skills/oa-stage-1-inventory" ] && ok "both: observability skills installed" || ko "both: observability skills missing"
 [ "$(skills "$S" 'oa-*')" -eq $(( $(ls -d tools/agent/skills/oa-* sre/agent/skills/oa-* | wc -l) )) ] \
   && ok "both: rule, observability and SRE stage skills installed" || ko "both: a skill set missing"
-# The kit in the home folder, the repository outside it: the kit is written from ~, no user name.
-FH="$(dirname "$KIT")"; F="$T/fromhome"; mkdir -p "$F"; git -C "$F" init -q
-HOME="$FH" "$INIT" --repo "$F" --code "$T/code-a" >/dev/null
-grep -qF "\`~/$(basename "$KIT")\`" "$F/AGENTS.md" && ! grep -qF "$FH" "$F/AGENTS.md" && ! grep -qF "../$(basename "$KIT")" "$F/AGENTS.md" \
-  && ok "the kit in ~, the repository outside it: written from ~" || ko "the kit in ~: path not written from ~"
+# The kit in the home folder, the repository outside it: init warns that the paths name it.
+F="$T/fromhome"; mkdir -p "$F"; git -C "$F" init -q
+HOME="$(dirname "$KIT")" "$INIT" --repo "$F" --code "$T/code-a" | grep -q "^warning: the kit is in the home folder" \
+  && ok "the kit in ~, the repository outside it: a warning" || ko "the kit in ~: no warning"
 
 echo "local" >> "$S/assessment/sre/engagement-state.yml"
 "$INIT" --repo "$S" --code "$T/code-a" --assessment sre >/dev/null
