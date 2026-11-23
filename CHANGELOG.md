@@ -5,6 +5,15 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+## 0.15.5 — 2026-11-23
+
+A fix to the PDF.
+
+- **"What is new in this version"** shows the section of the version being built. It showed the
+  empty "Unreleased" section at the top of the changelog since that heading was added. The build
+  now stops when the changelog has no section for the version.
+- **README**: a link to the author's LinkedIn.
+
 ## 0.15.4 — 2026-11-23
 
 A README for someone who has never heard of the kit.

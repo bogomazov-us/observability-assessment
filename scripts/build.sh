@@ -35,6 +35,7 @@ KIT_OUT_DIR="$ROOT/dist"
 if [ -n "$CONFIG" ]; then CONFIG_DIR="$(dirname "$CONFIG")"; source "$CONFIG"; fi
 
 VERSION="$(scripts/version.sh)"
+[ ! -f CHANGELOG.md ] || scripts/changelog.sh "$VERSION" >/dev/null  # no section for the version: stop
 DATE="$(date -u +%Y-%m-%d)"
 mkdir -p "$KIT_OUT_DIR"
 OUT="$KIT_OUT_DIR/${KIT_NAME}-v${VERSION}.pdf"
@@ -74,11 +75,13 @@ for f in "${KIT_FILES[@]}"; do
     if (/^\s*```/) { $c = !$c } elsif (!$c && /^(#{1,6}) /) { $l = length($1) + '"$demote"'; $l = 6 if $l > 6; s/^#+/"#" x $l/e }' "$f" >> "$TMP/kit.md"
   [ "$wide" = 1 ] && printf '\n\n</div>\n' >> "$TMP/kit.md"
   printf '\n\n' >> "$TMP/kit.md"
-  # After the README: what changed in this version, from the top section of the changelog.
+  # After the README: what changed in this version, from the changelog section of the version
+  # being built (not the top one, which may be "Unreleased").
   if [ "$f" = README.md ] && [ -f CHANGELOG.md ]; then
     [ "$SHIFT" = 1 ] && printf '#' >> "$TMP/kit.md"
     printf '# What is new in this version\n\n' >> "$TMP/kit.md"
-    awk '/^## /{n++} n==1' CHANGELOG.md | sed '1s/^## /**/; 1s/$/**/' \
+    awk -v v="$VERSION" '/^## /{ if (on) exit; on = ($2 == v) } on' CHANGELOG.md \
+      | sed '1s/^## /**/; 1s/$/**/' \
       | perl -pe 's/\[([^\]]+)\]\((?!https?:)[^)]*\)/$1/g' >> "$TMP/kit.md"
     printf '\n\nThe full history is in CHANGELOG.md.\n\n' >> "$TMP/kit.md"
   fi
