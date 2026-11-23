@@ -102,4 +102,5 @@ Releases up to 0.9.0 were published under CC BY 4.0 alone and stay available und
 
 ## Author
 
-Ivan Bogomazov runs observability and SRE assessments: [bogomazov.us](https://bogomazov.us).
+Ivan Bogomazov runs observability and SRE assessments: [bogomazov.us](https://bogomazov.us)
+· [LinkedIn](https://www.linkedin.com/in/ivan-bogomazov/).
