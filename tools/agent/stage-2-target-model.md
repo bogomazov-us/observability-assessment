@@ -17,8 +17,7 @@ with N = 2. The boundaries below are this stage's own and add to the common ones
 
 ## Boundaries
 
-- Read-only. You read the code checkout, the captures and the exports; you never write to the
-  client's code, monitoring configuration or tickets.
+- You read the code checkout, the captures and the exports, read-only.
 - Every function and every taxonomy row cites its source: a captured request (capture file and
   entry), a route in code (file:line), or an error handler (file:line).
 
@@ -96,9 +95,8 @@ in the [reference, Output](reference/stage-2-reference.md#output).
       evaluation and delivery.
 - [ ] Every SLO and alert has its volume per window; insufficient ones are marked.
 - [ ] When an owner's decision changed a definition, every source that stated the old one was
-      searched and updated; none still states it. A source outside your write paths (the
-      client's own design document) is listed for the person as a follow-up change, not left
-      silent.
+      searched and updated; one outside your write paths (the client's own design document)
+      is listed for the person as a follow-up change.
 - [ ] When a later decision changed the basis of an earlier one (a window, a unit, a cadence),
       every value derived from the earlier one was re-derived and returned to `proposed`
       with a question, not carried over.

@@ -1,6 +1,6 @@
 ---
 name: oa-rule-owner-questions
-description: Use when an observability or SRE assessment meets a question only the owner or the client can decide, or an answer relayed in conversation.
+description: Use when an observability or SRE assessment meets a question only the owner or the client can decide, before a batch of owner questions is asked, or when an answer comes back or is relayed in conversation.
 ---
 
 Read `__KIT__/tools/agent/rules/owner-questions.md`, how owner questions stay open, and apply

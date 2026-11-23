@@ -52,3 +52,5 @@ shared:
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
   - sentence: "A sample that reproduces says those claims hold; it is not an estimate of the accuracy of the whole inventory."
     files: [tools/agent/stage-1-inventory.md, sre/agent/stage-1-inventory.md]
+  - sentence: "The report is closed by [Closing the report](../../templates/stage-report.md#closing-the-report): the closing check against the registers, the acceptance and the hand-over."
+    files: [tools/agent/stage-6-recommendations.md, sre/agent/stage-6-recommendations.md]
