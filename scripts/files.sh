@@ -87,6 +87,7 @@ KIT_FILES=(
   sre/agent/reference/stage-5-reference.md
   sre/agent/stage-6-recommendations.md
   sre/agent/reference/stage-6-reference.md
+  tools/agent/review-findings.md
   tools/agent/skills/README.md
 
   "PART: Tools | The scripts that collect, lint, score, compute and gate, and how to run each."

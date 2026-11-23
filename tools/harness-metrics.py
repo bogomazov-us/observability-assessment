@@ -7,12 +7,12 @@
 Reads, and never writes:
   - the engagement state file (engagement-state.yml, or sre/engagement-state.yml): review
     blocks with review_hours, confirmations with rework_hours;
-  - the review files the review blocks name: the "Finding outcomes" table (stage 4) and the
-    "Re-checks" table (any stage);
+  - the review files the review blocks name: the "Finding outcomes" table (stage 4), the
+    "Re-checks" table (any stage) and the optional "Second reading" table (stage 4);
   - findings/F-NNN.md: the verdict, from the Status cell of the finding's first table;
   - progress/stage-N.md beside the state file: the agent's first and last times.
 
-Exit: 0 measured (some values may be "not measured"), 1 the records break a rule (H01–H06;
+Exit: 0 measured (some values may be "not measured"), 1 the records break a rule (H01–H07;
 the measures are still printed), 2 usage or parse error. Rules and definitions:
 tools/harness-metrics.md; the measures: method/agent-harness.md, "Measuring the harness".
 """
@@ -38,6 +38,8 @@ LENIENT_OUT = {"corrected", "severity_changed"}
 VERDICTS = ("confirmed", "disputed", "refuted", "inconclusive", "resolved")
 PENDING = "assumption"
 RECHECK = {"reproduced": True, "not reproduced": False}
+FLAGS = ("pass", "needs_revision", "needs_human_review")  # second reading (tools/agent/review-findings.md)
+REVIEWER = ("open", "acted", "not_acted")
 FID = re.compile(r"^F-\d{2,4}$")
 EID = re.compile(r"^E-\d{2,4}$")
 
@@ -128,6 +130,21 @@ def read_rechecks(path, rep, out):
             out.append((eid, RECHECK[res]))
 
 
+def read_second_reading(path, rep, out):
+    """Rows of the optional second reading: (finding, flag, reviewer's disposition)."""
+    for head, rows in tables(path):
+        f, fl, rv = column(head, "finding"), column(head, "flag"), column(head, "reviewer")
+        if None in (f, fl, rv):
+            continue
+        for ln, row in rows:
+            get = lambda k: row[k].lower() if k < len(row) else ""
+            if not FID.match(row[f] if f < len(row) else "") or get(fl) not in FLAGS or get(rv) not in REVIEWER:
+                rep.error(f"{path}:{ln}", "H07", f"a second-reading row is a finding id, a flag ({', '.join(FLAGS)}) "
+                                                f"and the reviewer's disposition ({', '.join(REVIEWER)})")
+                continue
+            out.append((row[f], get(fl), get(rv)))
+
+
 def read_verdict(path):
     """The Status cell of the first table of a finding file, lower case; None if absent."""
     for head, rows in tables(path):
@@ -198,7 +215,7 @@ def measure(state_path, findings_dir=None):
     base = os.path.dirname(os.path.abspath(state_path))
     kind = doc.get("assessment", "observability")
     inputs = [state_path]
-    outcomes, stages = {}, []
+    outcomes, stages, second = {}, [], []
 
     for s in sorted((x for x in doc.get("stages") or [] if isinstance(x, dict) and x.get("number") in STAGES),
                     key=lambda x: x["number"]):
@@ -222,6 +239,7 @@ def measure(state_path, findings_dir=None):
             read_rechecks(p, rep, rechecks)
             if n == 4:
                 read_outcomes(p, rep, outcomes)
+                read_second_reading(p, rep, second)
         good = [h for h in hours if is_hours(h)]
         log = os.path.join(base, "progress", f"stage-{n}.md")
         if os.path.isfile(log):
@@ -280,6 +298,13 @@ def measure(state_path, findings_dir=None):
             "severity_changed": sum(1 for f in classified if "severity_changed" in outcomes[f]),
             "new_input": sum(1 for f in classified if "new_input" in outcomes[f]),
         },
+        "second_reading": {
+            "rows": len(second),
+            "flags": sum(1 for _, fl, _ in second if fl != "pass"),
+            "acted": sum(1 for _, fl, rv in second if fl != "pass" and rv == "acted"),
+            "not_acted": sum(1 for _, fl, rv in second if fl != "pass" and rv == "not_acted"),
+            "open": sum(1 for _, fl, rv in second if fl != "pass" and rv == "open"),
+        },
     }
     return result, rep
 
@@ -316,6 +341,11 @@ def text(r):
             f"changed on new input from the owner {f['new_input']}"]
     if f["other_status"]:
         out.append(f"  status not read as a verdict: {', '.join(f['other_status'])}")
+    s2 = r["second_reading"]
+    if s2["rows"]:
+        out += ["", f"Second reading (optional, recommendations only): {s2['flags']} flags; reviewer acted on "
+                    f"{s2['acted']}, did not act on {s2['not_acted']}, open {s2['open']}. Its cost is in the "
+                    "review hours above."]
     out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is."]
     return "\n".join(out)
 

@@ -17,6 +17,11 @@ The prompts name files and tools, never a product or a model.
 | 5 Maturity | [stage-5-maturity.md](stage-5-maturity.md) | `maturity.yml`: a level per dimension with its evidence and confidence, no overall number | Stage 4 confirmed: every draft re-checked and its verdict recorded or sent in the verdict batch; a finding still waiting stays *assumption*, and a level resting on it is provisional |
 | 6 Recommendations | [stage-6-recommendations.md](stage-6-recommendations.md) | A confirmation batch, `REC-` cards on confirmed findings per `report.md`, `V-` verification tasks, `W-` work items | Stage 5 confirmed: `maturity.yml` clean under `tools/maturity.py`; findings still *assumption* go into the confirmation batch first |
 
+**Optional second reading.** After stage 4 a person may run
+[review-findings.md](review-findings.md): a second reader of the drafts against the claim rules,
+writing recommendations into the review file and nothing else. It is not a stage and not
+evidence; whether it earns its review time is measured, not assumed.
+
 Stage 1 uses [collect.md](../collect.md), stages 2 and 3 check the spec with
 [speclint.md](../speclint.md), and stage 5 checks the profile with [maturity.md](../maturity.md).
 

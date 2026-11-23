@@ -69,6 +69,15 @@ open(f"{sd}/reviews/stage-4-round-2.md", "w").write("""# Review stage 4, round 2
 |---|---|
 | F-011 | corrected |
 | F-012 | unchanged |
+
+## Second reading
+
+| Finding | Rule | Excerpt | Reason | Flag | Reviewer |
+|---|---|---|---|---|---|
+| F-007 | claims 1 | "no alert exists" | one folder exported | needs_revision | acted |
+| F-009 | claims 7 | "caused by" | a difference only | needs_revision | not_acted |
+| F-010 | finding.md | "P1" | reason unclear | needs_human_review | open |
+| F-012 | - | - | nothing found | pass | open |
 """)
 open(f"{sd}/progress/stage-4.md", "w").write("""# progress, stage 4
 
@@ -120,6 +129,9 @@ grep -q "^1 Inventory .* no review .* not measured " <<<"$out" && ok "absent rew
 grep -q "2 of 3 selected reproduced" <<<"$out" && grep -q "not how accurate the whole output is" <<<"$out" \
   && ok "re-checks as n of n selected, with the caveat" || ko "re-checks: $out"
 grep -q "^4 Findings .* 24h45 " <<<"$out" && ok "agent span read from the progress log across two days" || ko "agent span: $out"
+grep -q "Second reading (optional, recommendations only): 3 flags; reviewer acted on 1, did not act on 1, open 1" <<<"$out" \
+  && ok "second reading: flags and the reviewer's dispositions counted; a pass is not a flag" || ko "second reading: $out"
+grep -q "strict unchanged:  7/12" <<<"$out" && ok "second reading changes no rate" || ko "rates moved: $out"
 
 "$tool" "$O/engagement-state.yml" --json > "$T/obs.json"
 "$tool" "$S/sre/engagement-state.yml" --json > "$T/sre.json"
@@ -149,12 +161,17 @@ cat >> "$T/bad/reviews/stage-4-round-2.md" <<'EOF'
 | Evidence | Result |
 |---|---|
 | E-404 | maybe |
+
+| Finding | Rule | Excerpt | Reason | Flag | Reviewer |
+|---|---|---|---|---|---|
+| F-001 | claims 1 | x | y | confirmed | open |
 EOF
 sed -i.bak 's/review_hours: 1.5}/review_hours: -1}/' "$T/bad/engagement-state.yml"
 run "$tool" "$T/bad/engagement-state.yml"
 [ $code -eq 1 ] && grep -q "strict unchanged" <<<"$out" && ok "violations: measures still printed, exit 1" || ko "violations: exit $code"
 for rule in "H03 F-002: unchanged cannot stand with corrected" "H02 F-003" "H01 F-099 has an outcome but no" \
-            "H01 an outcome row names one finding id" "H04 a re-check row" "H05 review_hours must be hours"; do
+            "H01 an outcome row names one finding id" "H04 a re-check row" "H05 review_hours must be hours" \
+            "H07 a second-reading row"; do
   grep -qF "$rule" <<<"$out" && ok "${rule%% *}: ${rule#* }" || ko "missing: $rule: $out"
 done
 rm "$T/bad/reviews/stage-3-round-1.md"

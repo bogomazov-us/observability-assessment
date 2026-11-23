@@ -49,6 +49,16 @@ any stage. A sample: it says these held, not how accurate the whole output is.
 |---|---|---|
 | E-NNN | reproduced / not reproduced | [the tool's own interface, a browser, a query the reviewer wrote] |
 
+### Second reading (optional)
+
+When a person ran the [second reading](../tools/agent/review-findings.md) of the drafted findings,
+its rows sit here. They are recommendations, never evidence: the reviewer sets each row's
+Reviewer cell to `acted` or `not_acted` before the round closes.
+
+| Finding | Rule | Excerpt | Reason | Flag | Reviewer |
+|---|---|---|---|---|---|
+| F-NNN | claims N | "[the finding's words]" | [why] | pass / needs_revision / needs_human_review | open / acted / not_acted |
+
 **Hours.** The reviewer's hours on the round go into the review's block in
 `engagement-state.yml` (`review_hours`) when the round is appended, not afterwards.
 

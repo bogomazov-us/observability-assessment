@@ -48,6 +48,14 @@ export shares.
   file first, the reference linked and not appended, no rule repeated, and golden files for all
   six stages.
 
+- **An optional second reading of drafted findings** (`tools/agent/review-findings.md`): a
+  prompt a person starts after stage 4. It reads the findings, the gap rows and evidence entries
+  they cite, and the claim rules, and writes recommendations (pass, needs_revision,
+  needs_human_review, each tied to a rule and quoting the finding) into a "Second reading" table
+  of the review file, and nothing else. It sets no status or verdict and opens no gate. The
+  reviewer marks each row acted or not_acted; `tools/harness-metrics.py` counts them (H07), and
+  the time it costs is in the review hours.
+
 ## 0.15.5 — 2026-11-23
 
 A fix to the PDF.
