@@ -54,4 +54,11 @@ awk '/^## Incidents/{on=1} /^## Counted from other exports/{on=0} on' sre/exampl
 check sre/example/baseline.md "reproduced by baseline.py from exports.sh" \
   diff "$TMP/file.md" "$TMP/tool.md"
 
+# E- ids are one sequence per engagement across types (method/records.md): the SRE example
+# continues each stage's block after the observability example's ids, never reuses one.
+ids() { grep -rhoE '\bE-[0-9]{3}\b' "$1" | sort -u; }
+dup="$(comm -12 <(ids example) <(ids sre/example) | tr '\n' ' ')"
+[ -z "$dup" ] && echo "✓ sre/example: no E- id shared with example/" \
+  || { echo "✗ sre/example: E- ids also used in example/: $dup"; FAIL=1; }
+
 exit $FAIL

@@ -62,7 +62,7 @@ combined format's rules apply:
 | D-14 | Tier-1 rollout: canary to 10% with an automatic halt; rollback within 15 minutes (Q-07) | Release technical owner | 2027-06-15 | Written answer | accepted |
 | D-15 | SRE stage 2 confirmed | Lead | 2027-06-15 | `sre/target-model.md` at `9d04b1e` | accepted |
 | D-16 | SRE stage 3 confirmed | Lead | 2027-06-16 | `sre/stage-3-gap.md` at `e27a6c3` | accepted |
-| D-17 | Verdicts: F-010, F-011, F-012 confirmed; F-013 waits for its owner (Q-09) | Platform, release and checkout technical owners | 2027-06-22 | Verdict batch; re-checks E-401 to E-403 | accepted |
+| D-17 | Verdicts: F-010, F-011, F-012 confirmed; F-013 waits for its owner (Q-09) | Platform, release and checkout technical owners | 2027-06-22 | Verdict batch; re-checks E-404 to E-406 | accepted |
 
 Open: Q-08, the error-budget policy (head of e-commerce and head of engineering together);
 Q-09, who owns `promo-rules`.
@@ -115,12 +115,12 @@ default: their dimensions are out of scope.
 
 | ID | Service | Dimension | Target | Current | Evidence | Status |
 |---|---|---|---|---|---|---|
-| G-01 | S-05 | 9 Backup and disaster recovery | T-05 1 hour, T-06 5 minutes | Backups twice a day and a log archive; last restore 2026-10-14; failover by hand, 3 h 40 min on 2027-03-13 | B-32, B-33, B-15; E-301 | partial |
+| G-01 | S-05 | 9 Backup and disaster recovery | T-05 1 hour, T-06 5 minutes | Backups twice a day and a log archive; last restore 2026-10-14; failover by hand, 3 h 40 min on 2027-03-13 | B-32, B-33, B-15; E-307 | partial |
 | G-02 | S-03 | 9 Backup and disaster recovery | T-07 1 hour, T-08 5 minutes | Backups run; no restore on record | B-32, B-34 | absent |
 | G-03 | dimension-wide | 6 Change safety | T-09 | One-step rolling deploy, no halt; rollback is a hand redeploy of the previous version | B-24 to B-26; E-108 | absent |
 | G-04 | dimension-wide | 4 Incidents and learning | Target model: level 4 | Severity levels, roles and postmortems in place; overdue action items not escalated | B-20, B-35; E-106 | partial |
-| G-05 | S-02 | 1 Service catalogue and criticality | D-12: checkout goes on without promotions | No timeout or fallback on the `promo-rules` call found | L-14; E-302 | absent |
-| G-06 | dimension-wide | 2 SLOs and error budgets | Error-budget policy (Q-08) | None; SLO definition and measurement: see observability 6 | E-303 | absent |
+| G-05 | S-02 | 1 Service catalogue and criticality | D-12: checkout goes on without promotions | No timeout or fallback on the `promo-rules` call found | L-14; E-308 | absent |
+| G-06 | dimension-wide | 2 SLOs and error budgets | Error-budget policy (Q-08) | None; SLO definition and measurement: see observability 6 | E-309 | absent |
 
 Absent 4, partial 2, implemented 0: 6 rows.
 
@@ -134,7 +134,7 @@ findings preview (D-17).
 
 | Status | Date | Source | Evidence level |
 |---|---|---|---|
-| confirmed | 2027-06-22 | Restore records; incident export; re-check E-401 | tenant |
+| confirmed | 2027-06-22 | Restore records; incident export; re-check E-404 | tenant |
 
 **Severity:** P1: a tier-1 data store can stay down beyond its RTO with no tested way back. ·
 **Model:** sre, dimension 9 · **Decision:** proposed · **Implementation:** partial ·
@@ -143,7 +143,7 @@ findings preview (D-17).
 **What we see.** Backups run: 180 of 184 in 2027-03-01 → 05-31 (B-33). The last restore on
 record is dated 2026-10-14 (O-13, E-105). On 2027-03-13 the primary failed and the failover by
 hand took 3 h 40 min (incident 107 in the export; B-15), against an RTO of 1 hour (T-05). The
-re-check read the same records (E-401).
+re-check read the same records (E-404).
 
 **Confidence and limits.** High for the records read. Whether a restore today would meet
 T-05 and T-06 is not shown: none was run in the window.
@@ -164,7 +164,7 @@ within T-05 and T-06.
 2027-06-22, tenant · P2: a safety mechanism is missing for tier 1 · Model: sre, dimension 6 ·
 proposed, absent, untested. *What we see:* 6 of 42 deploys failed (B-24); recovery took a median
 50 min, p90 3 h 05 min (B-25, B-26), against 15 minutes in T-09; no canary or halt in the
-pipeline configuration (E-108, re-checked E-402). *Limits:* rollback on stage not tried.
+pipeline configuration (E-108, re-checked E-405). *Limits:* rollback on stage not tried.
 *Why it matters:* a bad change reaches every customer at once and stays. *What follows:*
 rollback as a tested pipeline step, then the canary (release technical owner, M-6 and M-7).
 *Closing criterion:* a rollback on stage within 15 minutes, recorded. *Links:* G-03.
@@ -173,7 +173,7 @@ rollback as a tested pipeline step, then the canary (release technical owner, M-
 tenant · P2: the fix that would stop a known cause is overdue on tier 1 · Model: sre,
 dimension 4 · proposed, absent, untested. *What we see:* 6 of 13 incidents with a cause repeat an
 earlier one, deploys most often (B-20); 7 of 19 action items closed by their due date (B-35,
-E-106, re-checked E-403). *Limits:* whether the open items would have prevented each
+E-106, re-checked E-406). *Limits:* whether the open items would have prevented each
 recurrence is not shown. *Why it matters:* the same outage comes back. *What follows:*
 overdue items escalated, recurrence reviewed monthly (checkout tech lead, M-8); SRE
 dimension 4. *Closing criterion:* the first monthly review held with its record. *Links:*
@@ -182,7 +182,7 @@ G-04; F-011.
 **F-013 · Checkout depends on a service nobody owns.** assumption, 2027-06-17, agent · P2,
 *provisional*: a condition for keeping a target (owner, on-call cover) is missing · Model:
 sre, dimension 1 · proposed, absent, untested. *What we see:* `checkout` calls `promo-rules`
-with no timeout or fallback found (E-302); `promo-rules` has no owner or paging route (B-36);
+with no timeout or fallback found (E-308); `promo-rules` has no owner or paging route (B-36);
 incident 114 names it as the cause. *Limits:* its owner may exist outside the registry (O-15,
 Q-09). *What follows:* V-03 before any card. *Links:* G-05; R-04.
 
