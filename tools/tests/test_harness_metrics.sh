@@ -137,18 +137,17 @@ cmp -s "$T/obs.json" "$T/again.json" && ok "deterministic output" || ko "output 
 
 # a verdict without an outcome stays in the denominator: never unchanged, the share a range,
 # the record incomplete; for both layouts
-for st in "$O/engagement-state.yml" "$S/sre/engagement-state.yml"; do
-  d="$(dirname "$st")"; m="$T/miss-$(basename "$(dirname "$d")")-$(basename "$d")"
-  rm -rf "$m"; cp -R "$(cd "$d/.." && pwd)" "$m"
-  rel="${st#$(cd "$d/.." && pwd)/}"
+for pair in "obs:$O:engagement-state.yml" "sre:$S:sre/engagement-state.yml"; do
+  name="${pair%%:*}"; rest="${pair#*:}"; root="${rest%%:*}"; rel="${rest#*:}"
+  m="$T/miss-$name"; rm -rf "$m"; cp -R "$root" "$m"
   perl -ni -e 'print unless /^\| F-00[12] \| unchanged \|/' "$m/$(dirname "$rel")/reviews/stage-4-round-1.md"
   run "$tool" "$m/$rel"
   grep -q "strict unchanged:  at least 5/12 (41.7%), at most 7/12 (58.3%): outcomes missing" <<<"$out" \
     && grep -q "of them without an outcome 2 (F-001, F-002)" <<<"$out" && grep -q "INCOMPLETE: 2 finding" <<<"$out" \
-    && ok "verdict without outcome ($(basename "$d")): in the denominator, a range, marked incomplete" \
-    || ko "missing outcomes ($(basename "$d")): $out"
+    && ok "verdict without outcome ($name): in the denominator, a range, marked incomplete" \
+    || ko "missing outcomes ($name): $out"
   "$tool" "$m/$rel" --json | python3 -c 'import json,sys; f=json.load(sys.stdin)["findings"]; assert f["denominator"]==12 and f["outcomes_complete"] is False and f["strict_unchanged"]==5' \
-    && ok "JSON ($(basename "$d")): denominator 12, outcomes_complete false" || ko "JSON missing outcomes ($(basename "$d"))"
+    && ok "JSON ($name): denominator 12, outcomes_complete false" || ko "JSON missing outcomes ($name)"
 done
 "$tool" "$O/engagement-state.yml" --json | python3 -c 'import json,sys; assert json.load(sys.stdin)["findings"]["outcomes_complete"] is True' \
   && ok "complete record: outcomes_complete true" || ko "complete record not marked complete"
