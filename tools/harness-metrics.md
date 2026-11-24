@@ -36,9 +36,12 @@ without one counts for both.
 
 ## How it counts
 
-- **On findings with a verdict only** (confirmed, disputed, refuted, inconclusive, resolved).
+- **On every finding with a verdict** (confirmed, disputed, refuted, inconclusive, resolved).
   Findings still `assumption` are reported as pending and left out of the rates. A finding with
-  a verdict but no outcome row is listed by id and left out too: its outcome was not measured.
+  a verdict but no outcome row stays in the denominator and is never counted unchanged: the share
+  is then printed as a range, from the lower bound to the share if every missing one were
+  unchanged, the missing ids are listed, and the output says the record is incomplete. No
+  decision on quality is read from an incomplete record (JSON: `outcomes_complete: false`).
 - **One finding, one count.** A finding reviewed in several rounds counts once, with the labels
   of all its rows.
 - **Strict unchanged:** none of bounded, new_input, corrected, severity_changed.
