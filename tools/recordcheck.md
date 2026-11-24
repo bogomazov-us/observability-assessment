@@ -32,9 +32,9 @@ Exit 0: clean (notes allowed). Exit 1: violations, one line each on standard err
 | ID | Check | Where the rule is written |
 |---|---|---|
 | RC01 | The file is `F-NNN.md` and its title starts with the same id | [records.md](../method/records.md) |
-| RC02 | The first table gives a status (assumption or one of the five verdicts) and a date, YYYY-MM-DD | [finding.md](../templates/finding.md) |
-| RC03 | A `**Severity:**` line: P1, P2 or P3, and a reason on the same line. Whether the reason is good stays the reviewer's call | finding.md, "Severity" |
-| RC04 | *What we see* cites at least one `E-` id; *Confidence and limits* says what the evidence does not establish | finding.md |
+| RC02 | The status table (the first table with a Status column; none is an error) gives a status (assumption or one of the five verdicts) and a date, YYYY-MM-DD | [finding.md](../templates/finding.md) |
+| RC03 | A `**Severity:**` line: P1, P2 or P3, and a reason on the same line: any text with a letter, in any language. Whether the reason is good stays the reviewer's call | finding.md, "Severity" |
+| RC04 | *What we see* cites at least one `E-` id; *Confidence and limits* has text after its level (high, medium, low): what the evidence does not establish, in any language | finding.md |
 | RC05 | Every F-, G-, E- and D- id cited resolves to a record given; the D- ids of the verdict batch resolve in the register | [evidence rule](agent/rules/evidence.md) |
 | RC06 | Every catalog entry given states its window, result and limits | [stage-report.md](../templates/stage-report.md) |
 | RC07 | A confirmed finding has a row in the verdict batch confirming it with a D- id; one D- id may cover several findings | finding.md, "Verdicts" |

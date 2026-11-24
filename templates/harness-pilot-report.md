@@ -44,9 +44,10 @@ denominator and its interval; every value not recorded as "not measured".
 
 ## 3. How to read them
 
-- **Sample.** [n] findings with a verdict on one engagement. State the interval and say what
-  it allows: a share of 70 % on a dozen findings is consistent with much lower and much higher
-  rates.
+- **Sample.** [n] findings with a verdict on one engagement. State the interval and what it
+  assumes (the findings as independent draws from one drafting process): a share of 70 % on a
+  dozen findings is consistent with much lower and much higher rates. With outcomes missing
+  there is no share, only a range, and no decision on quality.
 - **Selection.** How the re-checks were chosen (by the reviewer, at random, the riskiest), and
   what that does to "n of n reproduced".
 - **Reviewer.** Whether the reviewer knew the drafts before reviewing them; a reviewer who
