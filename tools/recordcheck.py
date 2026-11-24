@@ -180,7 +180,8 @@ def section(lines, label):
     """(line number, text) of a bold-labelled paragraph "**Label.** …" up to the next blank line."""
     for n, line in enumerate(lines, 1):
         if line.startswith(f"**{label}"):
-            text = [line[len(label) + 4:] if line.startswith(f"**{label}.**") else line.split("**", 2)[-1]]
+            head = f"**{label}.**"
+            text = [line[len(head):] if line.startswith(head) else line.split("**", 2)[-1]]
             for nxt in lines[n:]:
                 if not nxt.strip() or nxt.startswith("**"):
                     break
@@ -221,17 +222,21 @@ def check_finding(path, rep, ctx):
     fid = m.group(1)
 
     status = None
-    for head, rows in tables(lines):
+    for head, rows in tables(lines):  # the status table: the first table with a Status column
         s = next((k for k, h in enumerate(head) if h.startswith("status")), None)
         dt = next((k for k, h in enumerate(head) if h.startswith("date")), None)
-        if s is not None and rows:
-            n, c = rows[0]
-            status = c[s].strip().lower() if s < len(c) else ""
-            if status not in STATUSES:
-                rep.error(path, n, "RC02", f"status must be one of {', '.join(STATUSES)}; got {status!r}")
-                status = None
-            if dt is None or dt >= len(c) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", c[dt].strip()):
-                rep.error(path, n, "RC02", "the status table needs a date, YYYY-MM-DD")
+        if s is None:
+            continue
+        if not rows:
+            rep.error(path, 1, "RC02", "the status table has no row")
+            break
+        n, c = rows[0]
+        status = c[s].strip().lower() if s < len(c) else ""
+        if status not in STATUSES:
+            rep.error(path, n, "RC02", f"status must be one of {', '.join(STATUSES)}; got {status!r}")
+            status = None
+        if dt is None or dt >= len(c) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", c[dt].strip()):
+            rep.error(path, n, "RC02", "the status table needs a date, YYYY-MM-DD")
         break
     else:
         rep.error(path, 1, "RC02", "no status table (Status | Date | Source | Evidence level)")
@@ -244,7 +249,7 @@ def check_finding(path, rep, ctx):
         mm = re.match(r"\s*(P[123])\b(.*)$", rest)
         if not mm:
             rep.error(path, sev[0], "RC03", "severity must be P1, P2 or P3")
-        elif not re.search(r"[A-Za-z]{2,}", mm.group(2)):
+        elif not re.search(r"[^\W\d_]", mm.group(2)):
             rep.error(path, sev[0], "RC03", f"{mm.group(1)} without its reason: say why, on the same line")
 
     n, seen = section(lines, "What we see")
@@ -253,7 +258,9 @@ def check_finding(path, rep, ctx):
     elif not re.search(rf"\bE-{ID}\b", seen):
         rep.error(path, n, "RC04", "*What we see* cites no evidence id (E-NNN)")
     n, lim = section(lines, "Confidence and limits")
-    if n is None or len(re.sub(r"[^A-Za-z]", "", lim or "")) < 10:
+    # the limits, after the confidence level the template opens with: any text with a letter
+    limits = re.sub(r"^\s*(high|medium|low)\b[\s.,:;—-]*", "", lim or "", flags=re.I)
+    if n is None or not re.search(r"[^\W\d_]", limits):
         rep.error(path, n or 1, "RC04", "*Confidence and limits* missing or empty: say what the evidence does not establish")
 
     # references to other records
