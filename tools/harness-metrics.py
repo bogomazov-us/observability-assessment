@@ -302,6 +302,8 @@ def measure(state_path, findings_dir=None):
             "split_merge": sum(1 for f in classified if "split_merge" in outcomes[f]),
             "severity_changed": sum(1 for f in classified if "severity_changed" in outcomes[f]),
             "new_input": sum(1 for f in classified if "new_input" in outcomes[f]),
+            "strict_interval_95": wilson(len(strict), len(verdicted)) if len(classified) == len(verdicted) else None,
+            "lenient_interval_95": wilson(len(lenient), len(verdicted)) if len(classified) == len(verdicted) else None,
         },
         "second_reading": {
             "rows": len(second),
@@ -315,6 +317,17 @@ def measure(state_path, findings_dir=None):
     return result, rep
 
 
+def wilson(k, n, z=1.96):
+    """95 % Wilson score interval for k of n, in percent, rounded; None when n is 0."""
+    if n == 0:
+        return None
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return round(100 * max(0.0, c - h)), round(100 * min(1.0, c + h))
+
+
 def hours(v):
     return "not measured" if v is None else f"{v:g} h"
 
@@ -324,8 +337,10 @@ def rate(k, n, missing=0):
         return "no findings with a verdict"
     s = f"{k}/{n} ({100 * k / n:.1f}%)"
     if missing:
-        s = f"at least {s}, at most {k + missing}/{n} ({100 * (k + missing) / n:.1f}%): outcomes missing"
-    return s
+        # incomplete: a range, and no interval, since the share itself is not known
+        return f"at least {s}, at most {k + missing}/{n} ({100 * (k + missing) / n:.1f}%): outcomes missing"
+    lo, hi = wilson(k, n)
+    return f"{k}/{n} ({100 * k / n:.1f}%; 95% interval {lo}–{hi}%)"
 
 
 def text(r):
@@ -361,7 +376,9 @@ def text(r):
                     f"{s2['acted']}, agreed without a change on {s2['agreed_no_change']}, disagreed with "
                     f"{s2['disagreed']}, left open {s2['open']}. Not a precision: a flag can be right and need no "
                     "change. Its cost is in the review hours above."]
-    out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is."]
+    out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is.",
+            "The 95% Wilson interval estimates the uncertainty of the share, assuming the findings are independent "
+            "draws from one drafting process; it does not cover a change of process, reviewer or engagement."]
     return "\n".join(out)
 
 

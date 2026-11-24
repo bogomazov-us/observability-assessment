@@ -48,6 +48,11 @@ without one counts for both.
 - **Strict unchanged:** none of bounded, new_input, corrected, severity_changed.
   **Lenient unchanged:** neither corrected nor severity_changed. `split_merge` is a change of
   granularity: counted apart, it does not by itself take a finding out of either reading.
+- **Uncertainty:** each share carries its 95 % Wilson interval, an estimate of the uncertainty
+  of the share under a sampling model: the findings taken as independent draws from one drafting
+  process. On a dozen findings it is wide (7 of 12: 32 to 81 %). It does not cover a change of
+  process, reviewer or engagement, and it is not computed while outcomes are missing: the share
+  is then a range, not a number.
 - **Hours:** absent reads "not measured", never zero; an explicit 0 reads "0 h". When only some
   rounds of a stage carry hours, the sum says how many of how many.
 - **Re-checks** read "n of n selected reproduced": a sample, not the accuracy of the output.

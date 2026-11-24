@@ -115,6 +115,7 @@ KIT_FILES=(
   templates/adr.md
   templates/risk-register.md
   templates/review.md
+  templates/harness-pilot-report.md
   templates/report.md
   templates/executive-deck.md
   templates/roadmap.md
