@@ -40,6 +40,7 @@ and PyYAML; `--since` needs git and the file under version control.
 | G13 | `assessment`, when present, is observability or sre; absent means observability | a stage is checked against its own type's file |
 | G14 | `recheck`, when present, is done or not_done; not_done carries `recheck_reason` | a stage confirmed without the sample re-check says so |
 | G15 | `review_hours` on a review and `rework_hours` on a confirmation are a number of hours, 0 or more; `rework_hours` only on a confirmed stage (else G05), and not added or changed after the confirmation (G12) | the harness is measured on person hours recorded as the work happens |
+| G16 | With `--since`: every review file the state file named at REV is unchanged since REV, byte for byte; one deleted, edited, or that git cannot show at REV (not committed with the state) is an error. New rounds and their new files pass. Paths are read beside the state file, or one folder up (`sre/` inside a report). `check` and `lint` without `--since` read no history | a recorded review is part of the record: G11 keeps the list, G16 its content |
 | W01 | Warning: a stage in draft, handed over or returned while the stage before it is not confirmed | work started before its gate opened |
 | W02 | Warning: the file records hours, but a review lacks `review_hours` or a confirmed stage `rework_hours`; reads "not measured" in [harness-metrics.md](harness-metrics.md) | same |
 
@@ -49,10 +50,11 @@ The agent runs `check` for its stage before anything else and stops when it is b
 what it reports ([`rules/boundaries.md`](agent/rules/boundaries.md)). It may set its own stage
 to `draft` and then `handed_over`; it never sets `returned` or `confirmed`. Before confirming,
 the person runs `lint --since` against the commit of the last confirmation, so that an edited
-review or a rewritten confirmation is seen. On the first confirmation there is none: pass the
+review, an edited review file or a rewritten confirmation is seen. Review files are committed
+with the state file that names them; a later change to a round goes in a new round's file. On the first confirmation there is none: pass the
 commit that added the file (`git log --diff-filter=A --format=%h -- engagement-state.yml`), so
 the command is the same at every stage; there is no earlier confirmation to protect. A
 revision at which the file did not exist exits 2 and names that command.
 
 Tests: `tools/tests/test_stagegate.sh` (a sound file passes; one fixture per rule fails; the
-gate opens and stays shut as the state says; `--since` catches edits).
+gate opens and stays shut as the state says; `--since` catches edits, to review files too, in both layouts).

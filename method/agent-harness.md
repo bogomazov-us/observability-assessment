@@ -115,6 +115,13 @@ strict and lenient shares on findings with a verdict, pending apart, changes of 
 severity apart, person hours, the agent's span and the re-checks as a selected sample
 ([harness-metrics.md](../tools/harness-metrics.md)). A value not recorded reads "not measured".
 
+**A second reader is measured before it is relied on.** The optional
+[second reading](../tools/agent/review-findings.md) of drafted findings writes recommendations
+only; the reviewer marks each acted on, agreed without a change, or disagreed with, and the
+harness measures count them beside the
+review hours. Run on the same model as the drafter it shares its blind spots, so it is reported
+as a second reading, never as an independent check.
+
 **Until both quality targets hold on two engagements, every stage runs as a draft to compare
 against, and people write the findings.** Stage 4 reconciles its drafts with the findings people
 wrote, never redrafting one.

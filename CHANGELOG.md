@@ -49,6 +49,19 @@ export shares.
   file first, the reference linked and not appended, no rule repeated, and golden files for all
   six stages.
 
+- **An optional second reading of drafted findings** (`tools/agent/review-findings.md`): a
+  prompt a person starts after stage 4. It reads the findings, the gap rows and evidence entries
+  they cite, and the claim rules, and writes recommendations (pass, needs_revision,
+  needs_human_review, each tied to a rule and quoting the finding) into a "Second reading" table
+  of the review file of a round still open, and nothing else. It sets no status or verdict and
+  opens no gate. Before the round is recorded the reviewer marks each row acted,
+  agreed_no_change or disagreed; `tools/harness-metrics.py` counts them (H07), not as a
+  precision, and the time it costs is in the review hours.
+- **Recorded review files cannot be rewritten unseen** (`tools/stagegate.py lint --since REV`,
+  G16): every review file the state file named at REV must be unchanged since then; one edited,
+  deleted, or never committed is an error. New rounds and their files pass. G11 kept the list of
+  reviews; G16 keeps what they say. `check` reads no history.
+
 ## 0.15.5 — 2026-11-23
 
 A fix to the PDF.

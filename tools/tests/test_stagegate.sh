@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Tests for tools/stagegate.py: the sound fixture passes; each rule has a fixture that trips it;
-# the gate opens and stays shut as the state says; --since catches edited reviews and confirmations.
+# the gate opens and stays shut as the state says; --since catches edited reviews, review files and confirmations.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 tool="$here/../stagegate.py"
@@ -93,7 +93,8 @@ run "$tool" check "$T/hours.yml" 3
 # --since: reviews only grow; a confirmation is not rewritten
 R="$T/repo"; mkdir -p "$R"; git -C "$R" init -q
 git -C "$R" -c user.name=t -c user.email=t@t commit -q --allow-empty -m init
-cp "$fx/ok-stage3.yml" "$R/state.yml"; git -C "$R" add state.yml
+cp "$fx/ok-stage3.yml" "$R/state.yml"; mkdir -p "$R/reviews"; echo "# Review stage 1" > "$R/reviews/stage-1.md"
+git -C "$R" add state.yml reviews
 git -C "$R" -c user.name=t -c user.email=t@t commit -q -m state
 python3 - "$R/state.yml" <<'PY'
 import sys, yaml
@@ -102,7 +103,7 @@ d["stages"][0]["reviews"].append({"date": "2026-01-20", "by": "reviewer", "file"
 yaml.safe_dump(d, open(p, "w"), sort_keys=False)
 PY
 run "$tool" lint "$R/state.yml" --since HEAD
-[ $code -eq 0 ] && ok "appended review passes --since" || ko "appended review: exit $code: $out"
+[ $code -eq 0 ] && ok "appended review passes --since; its new file is not checked" || ko "appended review: exit $code: $out"
 python3 - "$R/state.yml" <<'PY'
 import sys, yaml
 p = sys.argv[1]; d = yaml.safe_load(open(p))
@@ -132,5 +133,62 @@ yaml.safe_dump(d, open(p, "w"), sort_keys=False)
 PY
 run "$tool" lint "$R/state.yml" --since HEAD
 grep -q "G12 confirmation rewritten since HEAD: rework_hours" <<<"$out" && ok "G12 rework_hours added after the confirmation" || ko "G12 rework: exit $code: $out"
+
+# G16: a review file the state named at REV is what it was at REV; only with --since
+c() { git -C "$1" -c user.name=t -c user.email=t@t commit -q -am "$2"; }
+git -C "$R" checkout -q -- state.yml
+run "$tool" lint "$R/state.yml" --since HEAD
+[ $code -eq 0 ] && ! grep -q " G16 " <<<"$out" && ok "G16 recorded review unchanged: passes" || ko "G16 unchanged: exit $code: $out"
+echo "outcome changed afterwards" >> "$R/reviews/stage-1.md"
+run "$tool" lint "$R/state.yml" --since HEAD
+[ $code -eq 1 ] && grep -q "stage 1 review reviews/stage-1.md: G16 recorded at HEAD and since edited" <<<"$out" \
+  && ok "G16 recorded review edited" || ko "G16 edited: exit $code: $out"
+run "$tool" check "$R/state.yml" 2
+[ $code -eq 0 ] && ! grep -q "G16" <<<"$out" && ok "G16 not part of check: no history read" || ko "check with edited review: exit $code: $out"
+run "$tool" lint "$R/state.yml"
+[ $code -eq 0 ] && ok "G16 not part of lint without --since" || ko "lint without --since: exit $code: $out"
+rm "$R/reviews/stage-1.md"
+run "$tool" lint "$R/state.yml" --since HEAD
+[ $code -eq 1 ] && grep -q "G16 recorded at HEAD and since deleted" <<<"$out" && ok "G16 recorded review deleted" || ko "G16 deleted: exit $code: $out"
+git -C "$R" checkout -q -- reviews
+python3 - "$R/state.yml" <<'PY2'
+import sys, yaml
+p = sys.argv[1]; d = yaml.safe_load(open(p))
+d["stages"][1]["reviews"].append({"date": "2026-01-21", "by": "reviewer", "file": "reviews/stage-2-r1.md"})
+yaml.safe_dump(d, open(p, "w"), sort_keys=False)
+PY2
+c "$R" "a review named, its file not committed"
+run "$tool" lint "$R/state.yml" --since HEAD
+[ $code -eq 1 ] && grep -q "review reviews/stage-2-r1.md: G16 named at HEAD, but git cannot show it" <<<"$out" \
+  && ok "G16 fails closed: a file named at REV that git cannot show is not taken for new" || ko "G16 fail closed: exit $code: $out"
+echo "# Review stage 2" > "$R/reviews/stage-2-r1.md"; git -C "$R" add reviews; c "$R" "review file committed"
+python3 - "$R/state.yml" <<'PY2'
+import sys, yaml
+p = sys.argv[1]; d = yaml.safe_load(open(p))
+d["stages"][1]["reviews"].append({"date": "2026-01-22", "by": "reviewer", "file": "reviews/stage-2-r2.md"})
+yaml.safe_dump(d, open(p, "w"), sort_keys=False)
+PY2
+echo "# Review stage 2, round 2" > "$R/reviews/stage-2-r2.md"
+run "$tool" lint "$R/state.yml" --since HEAD
+[ $code -eq 0 ] && ok "G16 a new round appended with its new file passes" || ko "G16 new round: exit $code: $out"
+
+# G16 on an SRE layout: the state file in sre/, run from elsewhere; paths read relative to it
+S="$T/sre-repo"; mkdir -p "$S/report/sre/reviews"; git -C "$S" init -q
+{ echo "assessment: sre"; cat "$fx/ok-stage3.yml"; } > "$S/report/sre/engagement-state.yml"
+echo "# SRE review stage 1" > "$S/report/sre/reviews/stage-1.md"
+git -C "$S" add report; git -C "$S" -c user.name=t -c user.email=t@t commit -q -m state
+run "$tool" lint "$S/report/sre/engagement-state.yml" --since HEAD
+[ $code -eq 0 ] && ok "G16 sre/ layout: recorded review unchanged passes" || ko "G16 sre unchanged: exit $code: $out"
+echo "edited" >> "$S/report/sre/reviews/stage-1.md"
+run "$tool" lint "$S/report/sre/engagement-state.yml" --since HEAD
+[ $code -eq 1 ] && grep -q "G16 recorded at HEAD and since edited" <<<"$out" && ok "G16 sre/ layout: edited review caught" || ko "G16 sre edited: exit $code: $out"
+git -C "$S" checkout -q -- report
+mkdir -p "$S/report/reviews"; git -C "$S" mv report/sre/reviews/stage-1.md report/reviews/stage-1.md
+git -C "$S" -c user.name=t -c user.email=t@t commit -q -m "reviews one folder up"
+run "$tool" lint "$S/report/sre/engagement-state.yml" --since HEAD
+[ $code -eq 0 ] && ok "G16 review one folder up (sre/ inside a report), as harness-metrics reads it" || ko "G16 one up: exit $code: $out"
+echo "edited" >> "$S/report/reviews/stage-1.md"
+run "$tool" lint "$S/report/sre/engagement-state.yml" --since HEAD
+[ $code -eq 1 ] && grep -q " G16 " <<<"$out" && ok "G16 one folder up: edited review caught" || ko "G16 one up edited: exit $code: $out"
 
 exit $fail

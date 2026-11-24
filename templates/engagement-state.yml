@@ -10,7 +10,8 @@
 # confirmed: confirmed_by (role or name), confirmed_on (YYYY-MM-DD) and decision_ref (the id
 #           of the decision-register entry that records the confirmation), all three.
 #           A confirmation is never rewritten; a stage re-opened after it is a new decision.
-# reviews:  appended, never edited or removed; a review sets no status. Each review records
+# reviews:  appended, never edited or removed; a review sets no status. The review file is
+#           committed with this file and not edited afterwards (stagegate G16). Each review records
 #           review_hours: the reviewer's hours on that round, written when the review is
 #           appended, e.g. {date: …, by: …, file: reviews/stage-3-round-1.md, review_hours: 2.5}.
 # rework_hours: with the confirmation, the lead's hours reworking the stage's output after its
