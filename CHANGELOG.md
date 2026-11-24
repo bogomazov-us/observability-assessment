@@ -3,7 +3,11 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
-## Unreleased
+## 0.16.0 — 2026-11-23
+
+The agent harness can now be measured on the next engagement: what to record, a tool that
+computes the measures, checks on drafted findings, and a report for the owner's decision.
+No gate opens or shuts differently.
 
 The harness measures are recorded as the work happens and computed by a tool, before the second
 engagement runs on the agent route.
@@ -49,6 +53,8 @@ export shares.
   file first, the reference linked and not appended, no rule repeated, and golden files for all
   six stages.
 
+A second reading of the drafts is available, and recorded reviews are protected.
+
 - **An optional second reading of drafted findings** (`tools/agent/review-findings.md`): a
   prompt a person starts after stage 4. It reads the findings, the gap rows and evidence entries
   they cite, and the claim rules, and writes recommendations (pass, needs_revision,
@@ -61,6 +67,8 @@ export shares.
   G16): every review file the state file named at REV must be unchanged since then; one edited,
   deleted, or never committed is an error. New rounds and their files pass. G11 kept the list of
   reviews; G16 keeps what they say. `check` reads no history.
+
+The second engagement is set up to be measured.
 
 - **The second engagement on the agent route is set up to be measured**
   (`practice/pilot.md`, "On the agent route: before stage 1"): hours, outcome and re-check
