@@ -10,7 +10,13 @@
 # confirmed: confirmed_by (role or name), confirmed_on (YYYY-MM-DD) and decision_ref (the id
 #           of the decision-register entry that records the confirmation), all three.
 #           A confirmation is never rewritten; a stage re-opened after it is a new decision.
-# reviews:  appended, never edited or removed; a review sets no status.
+# reviews:  appended, never edited or removed; a review sets no status. Each review records
+#           review_hours: the reviewer's hours on that round, written when the review is
+#           appended, e.g. {date: …, by: …, file: reviews/stage-3-round-1.md, review_hours: 2.5}.
+# rework_hours: with the confirmation, the lead's hours reworking the stage's output after its
+#           reviews. Absent means not measured, never zero; 0 means none. Neither field blocks a
+#           gate; lint warns (W02) when the file records hours and one is missing.
+#           Measures: tools/harness-metrics.py.
 # recheck:  optional: done, or not_done with recheck_reason, for the sample re-check of the
 #           stage's claims by another path before it was confirmed.
 # questions: owner questions that block a stage, asked in the format of

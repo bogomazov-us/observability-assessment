@@ -12,6 +12,7 @@ The tool only reads: a person sets a stage to confirmed by editing the file.
 """
 import argparse
 import datetime
+import math
 import os
 import subprocess
 import sys
@@ -32,6 +33,9 @@ STAGES = {
 }
 STATUSES = ("not_started", "draft", "handed_over", "returned", "confirmed")
 CONFIRMATION = ("confirmed_by", "confirmed_on", "decision_ref")
+# Recorded with a confirmation when known: the lead's hours reworking the stage's output.
+# Absent means not measured, never zero; set once, with the confirmation (G12).
+CONFIRMATION_OPTIONAL = ("rework_hours",)
 RECHECK = ("done", "not_done")  # optional: the sample re-check by another path
 ASSESSMENTS = ("observability", "sre")  # absent: observability
 
@@ -64,6 +68,23 @@ def as_date(v):
     return None
 
 
+def is_hours(v):
+    """Hours: a finite, non-negative number. Absent is checked by the caller."""
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) and v >= 0
+
+
+def records_hours(doc):
+    """True when the file records hours anywhere: then a missing value is worth a warning."""
+    for s in doc.get("stages") or [] if isinstance(doc, dict) else []:
+        if not isinstance(s, dict):
+            continue
+        if "rework_hours" in s:
+            return True
+        if any(isinstance(r, dict) and "review_hours" in r for r in s.get("reviews") or []):
+            return True
+    return False
+
+
 def stages_by_number(doc, rep):
     """Index the stages list by number, reporting malformed and duplicate entries."""
     out = {}
@@ -94,6 +115,7 @@ def lint(doc, rep):
     if not isinstance(scope, dict):
         rep.error("scope", "G01", "scope must record the agreement and the access before stage 1")
     stages = stages_by_number(doc, rep)
+    measuring = records_hours(doc)
 
     for n, s in sorted(stages.items()):
         where = f"stage {n}"
@@ -114,8 +136,12 @@ def lint(doc, rep):
                 d, p = as_date(s.get("confirmed_on")), as_date(prev.get("confirmed_on"))
                 if d and p and d < p:
                     rep.error(where, "G07", f"confirmed on {d}, before stage {n - 1} ({p})")
-        elif any(s.get(k) for k in CONFIRMATION):
+        elif any(s.get(k) for k in CONFIRMATION) or any(k in s for k in CONFIRMATION_OPTIONAL):
             rep.error(where, "G05", f"carries confirmation fields while {status}; a stage is confirmed or it is not")
+        if "rework_hours" in s and not is_hours(s.get("rework_hours")):
+            rep.error(where, "G15", f"rework_hours must be a number of hours, 0 or more; got {s.get('rework_hours')!r}")
+        elif status == "confirmed" and measuring and "rework_hours" not in s:
+            rep.warn(where, "W02", "confirmed without rework_hours: rework not measured")
         if status in ("draft", "handed_over", "returned") and n > 1:
             prev = stages.get(n - 1)
             if prev is not None and prev.get("status") != "confirmed":
@@ -134,6 +160,11 @@ def lint(doc, rep):
             ok = isinstance(r, dict) and as_date(r.get("date")) and is_text(r.get("by")) and is_text(r.get("file"))
             if not ok:
                 rep.error(f"{where} review {j + 1}", "G08", "a review needs date (YYYY-MM-DD), by and file")
+            elif "review_hours" in r and not is_hours(r.get("review_hours")):
+                rep.error(f"{where} review {j + 1}", "G15",
+                          f"review_hours must be a number of hours, 0 or more; got {r.get('review_hours')!r}")
+            elif measuring and "review_hours" not in r:
+                rep.warn(f"{where} review {j + 1}", "W02", "no review_hours: review not measured")
 
     for i, q in enumerate(doc.get("questions") or [] if isinstance(doc, dict) else []):
         where = f"question {q.get('id', i + 1) if isinstance(q, dict) else i + 1}"
@@ -199,7 +230,7 @@ def since(doc, path, rev, rep):
         if new_r[:len(old_r)] != old_r:
             rep.error(f"stage {n}", "G11", f"reviews changed since {rev}: a review is appended, never edited or removed")
         if o.get("status") == "confirmed" and s.get("status") == "confirmed":
-            changed = [k for k in CONFIRMATION if o.get(k) != s.get(k)]
+            changed = [k for k in CONFIRMATION + CONFIRMATION_OPTIONAL if o.get(k) != s.get(k)]
             if changed:
                 rep.error(f"stage {n}", "G12", f"confirmation rewritten since {rev}: {', '.join(changed)}")
 

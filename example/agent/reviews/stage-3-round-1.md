@@ -15,6 +15,15 @@ check before confirming, recorded as a round so that the
 **Round verdict:** rework. Round 2, the same day at `5e8a2d7`: R1 closed by the change;
 approved. Stage 3 confirmed by D-06.
 
+## Re-checks
+
+The selected checks the lead re-ran by another path ([review.md](../../../templates/review.md#re-checks)).
+
+| Evidence | Result | How |
+|---|---|---|
+| E-301 | reproduced | the query repeated in the tool's own interface |
+| E-302 | reproduced | the query repeated in the tool's own interface |
+
 **For the harness measures:** 5 `G-` records handed over, 4 accepted without change of substance,
 1 changed in substance (G-02, a wrong state, not a change of granularity); 2 of 2 selected
 checks reproduced (E-301, E-302): the query repeated, its reading was wrong. Agent elapsed

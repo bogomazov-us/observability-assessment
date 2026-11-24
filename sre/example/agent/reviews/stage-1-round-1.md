@@ -15,6 +15,15 @@ check before confirming, recorded as a round so that the
 **Round verdict:** rework. Round 2, the same day at `c71e0a4`: R1 closed by the change;
 approved. Blind spots L-09 and L-14 registered as R-03 and R-04. Stage 1 confirmed by D-11.
 
+## Re-checks
+
+The selected checks the lead re-ran by another path ([review.md](../../../../templates/review.md#re-checks)).
+
+| Evidence | Result | How |
+|---|---|---|
+| E-101 | reproduced | read in the tool's own interface |
+| E-104 | reproduced | read in the tool's own interface |
+
 **For the harness measures:** 18 `L-`, 7 `S-` and 36 `B-` rows handed over; B-01 to B-31
 reproduced by re-running `tools/baseline.py` on the same exports; 1 row changed in substance
 (B-32, a wrong count, carried into L-09); 2 of 2 selected checks reproduced through the tools'

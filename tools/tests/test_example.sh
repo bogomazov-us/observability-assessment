@@ -27,6 +27,13 @@ out="$(python3 tools/stagegate.py lint example/agent/engagement-state.yml 2>&1)"
 [ -z "$out" ] && echo "✓ example/agent/engagement-state.yml: no warnings" \
   || { echo "✗ example/agent/engagement-state.yml: warnings"; sed 's/^/    /' <<<"$out"; FAIL=1; }
 
+# The harness measures read from the example's records: the re-checks as a selected sample
+for s in example/agent/engagement-state.yml sre/example/agent/engagement-state.yml; do
+  check "$s" "harness-metrics.py" python3 tools/harness-metrics.py "$s"
+  python3 tools/harness-metrics.py "$s" 2>&1 | grep -q "2 of 2 selected reproduced" \
+    && echo "✓ $s: re-checks 2 of 2 selected" || { echo "✗ $s: re-checks not read"; FAIL=1; }
+done
+
 # The SRE example: its profile alone and beside the observability one, its state file, and its
 # baseline as the tool prints it on the exports exports.sh writes.
 check sre/example/maturity.yml "maturity.py" \

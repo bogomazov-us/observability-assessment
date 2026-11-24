@@ -45,6 +45,11 @@ estimation model.
 |---|---|--:|--:|---|
 | [Inventory] | [Obs. engineer] | [3] | [4.5] | [tenant export needed a second access request] |
 
+With the agent route, the stage-level hours are recorded too, as each round happens: the
+reviewer's hours in the review's block of the engagement state file, the lead's rework hours with
+the stage's confirmation ([engagement-state.yml](../templates/engagement-state.yml)). They measure
+the harness; this log calibrates the estimate. Keep both; neither replaces the other.
+
 ## Review results
 
 Keep each round record. At the end, count: rounds per deliverable, blocking items per round,

@@ -96,6 +96,7 @@ KIT_FILES=(
   tools/maturity.md
   tools/baseline.md
   tools/stagegate.md
+  tools/harness-metrics.md
 
   "PART: Templates | The documents of an engagement both assessment types use, in the order an engagement needs them."
   templates/intake-questionnaire.md

@@ -39,7 +39,9 @@ and PyYAML; `--since` needs git and the file under version control.
 | G12 | With `--since`: a confirmation is not rewritten; re-opening a stage is a new decision | a decision nobody can find is read as a proposal |
 | G13 | `assessment`, when present, is observability or sre; absent means observability | a stage is checked against its own type's file |
 | G14 | `recheck`, when present, is done or not_done; not_done carries `recheck_reason` | a stage confirmed without the sample re-check says so |
+| G15 | `review_hours` on a review and `rework_hours` on a confirmation are a number of hours, 0 or more; `rework_hours` only on a confirmed stage (else G05), and not added or changed after the confirmation (G12) | the harness is measured on person hours recorded as the work happens |
 | W01 | Warning: a stage in draft, handed over or returned while the stage before it is not confirmed | work started before its gate opened |
+| W02 | Warning: the file records hours, but a review lacks `review_hours` or a confirmed stage `rework_hours`; reads "not measured" in [harness-metrics.md](harness-metrics.md) | same |
 
 ## In a stage run
 
