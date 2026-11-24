@@ -16,7 +16,8 @@ is not shown sound, and its notes are recommendations the reviewer accepts or re
   `needs_human_review`, with what is missing.
 - Write only the "Second reading" table of the review file the person names, and only in a
   round still in progress: a file not yet named by a review in the state file. If the file is
-  named there already, it is a recorded round: stop and ask for a new round's file. Never edit a
+  named there already, it is a recorded round: stop and ask for a new round's file (an edit to it fails
+  `stagegate.py lint --since`, G16). Never edit a
   finding, its status or severity, the state file, the verdict batch, the decision register or
   another review; never write `confirmed`, a verdict or a D- id.
 - Nothing secret or identifying is printed or written, as in

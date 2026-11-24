@@ -5,6 +5,7 @@
     tools/stagegate.py check engagement-state.yml N          may stage N start?
     tools/stagegate.py lint engagement-state.yml [--since REV]  check the file; with --since,
                                                               also against its version at a git revision
+                                                              and the review files it named there
 
 Exit: 0 clean (warnings allowed) or stage may start, 1 rule violations or stage blocked,
 2 usage or parse error. Gates: tools/agent/README.md, "Gates"; rule IDs: tools/stagegate.md.
@@ -206,7 +207,8 @@ def gate(doc, n, rep):
 
 
 def since(doc, path, rev, rep):
-    """Compare with the file at a git revision: reviews only grow, confirmations stay as written."""
+    """Compare with the file at a git revision: reviews only grow, confirmations stay as written,
+    recorded review files stay as they were (G16)."""
     d, name = os.path.split(os.path.abspath(path))
     git = lambda *args: subprocess.run(["git", "-C", d, *args], capture_output=True, text=True)
     try:
@@ -233,6 +235,43 @@ def since(doc, path, rev, rep):
             changed = [k for k in CONFIRMATION + CONFIRMATION_OPTIONAL if o.get(k) != s.get(k)]
             if changed:
                 rep.error(f"stage {n}", "G12", f"confirmation rewritten since {rev}: {', '.join(changed)}")
+    recorded_reviews(old, d, rev, rep)
+
+
+def recorded_reviews(old, d, rev, rep):
+    """G16: a review file the state named at REV is, byte for byte, what it was at REV.
+
+    The path is read beside the state file, or one folder up (sre/ inside a report), as
+    harness-metrics.py reads it. A file named at REV that git cannot show at REV is an error, never
+    taken for a new review: the record it should hold cannot be compared."""
+    seen = set()
+    for n, o in sorted(old.items()):
+        for r in o.get("reviews") or []:
+            rel = r.get("file") if isinstance(r, dict) else None
+            if not is_text(rel) or rel in seen:
+                continue
+            seen.add(rel)
+            where = f"stage {n} review {rel}"
+            if os.path.isabs(rel):
+                rep.error(where, "G16", "a review file is named relative to the state file")
+                continue
+            for cand in (rel, os.path.join("..", rel)):
+                shown = subprocess.run(["git", "-C", d, "show", f"{rev}:./{cand}"], capture_output=True)
+                if shown.returncode == 0:
+                    break
+            else:
+                rep.error(where, "G16", f"named at {rev}, but git cannot show it at {rev}: commit review "
+                          "files with the state file that names them; a recorded review cannot be checked")
+                continue
+            try:
+                with open(os.path.join(d, cand), "rb") as f:
+                    now = f.read()
+            except OSError:
+                rep.error(where, "G16", f"recorded at {rev} and since deleted: a recorded review is kept")
+                continue
+            if now != shown.stdout:
+                rep.error(where, "G16", f"recorded at {rev} and since edited: a later change goes in a new "
+                          f"round's file (git diff {rev} -- {cand})")
 
 
 def load(path):
