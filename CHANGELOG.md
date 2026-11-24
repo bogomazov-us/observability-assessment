@@ -26,6 +26,29 @@ engagement runs on the agent route.
 - `method/agent-harness.md` and `practice/pilot.md` say where each measure is written and when;
   the weekly actuals log stays as it was.
 
+Findings are checked one by one against the records they cite, by one checker that the report
+export shares.
+
+- **`tools/recordcheck.py findings`** checks each `findings/F-NNN.md` in the format of
+  `templates/finding.md`, with no new metadata: file name and title agree; the status is one of
+  six, dated; the severity is P1 to P3 with a reason on its line; *What we see* cites evidence and
+  *Confidence and limits* says what it does not establish; every F-, G-, E- and D- id it cites
+  resolves to a record given (`--findings`, `--gaps`, `--catalog`, `--decisions`); a confirmed
+  finding has a row in the verdict batch (`--owner-questions`) with a D- id, and its status agrees
+  with that row. One D- id may cover a batch. A record not given reads "not verifiable". Rules
+  RC01 to RC09; a clean run says it confirms no claim.
+- **One evidence catalog check.** The check `tools/report-pdf.sh` ran in Perl (ids resolve, no id
+  twice, window, result and limits filled) is now `tools/recordcheck.py catalog`, which the
+  export calls and the finding check reuses; its messages are unchanged. Tables inside code
+  fences are no longer read as catalog entries.
+- **A confirmed verdict names its decision** (`templates/finding.md`, "Verdicts"); the stage 4
+  self-check of both types and the review checklist run the finding check.
+- **Fictional records for both types** (`tools/tests/fixtures/records/`): findings, gaps,
+  catalog, verdict batch and decision register; the tests break a copy once per rule.
+- **SRE prompts tested like the observability ones**: rules, log path, gate command, stage
+  file first, the reference linked and not appended, no rule repeated, and golden files for all
+  six stages.
+
 ## 0.15.5 — 2026-11-23
 
 A fix to the PDF.
