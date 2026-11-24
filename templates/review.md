@@ -52,12 +52,15 @@ any stage. A sample: it says these held, not how accurate the whole output is.
 ### Second reading (optional)
 
 When a person ran the [second reading](../tools/agent/review-findings.md) of the drafted findings,
-its rows sit here. They are recommendations, never evidence: the reviewer sets each row's
-Reviewer cell to `acted` or `not_acted` before the round closes.
+its rows sit here, written into this round's file before the round is appended to the state
+file. They are recommendations, never evidence. Before the round is appended, the reviewer sets
+each row's Reviewer cell: `acted` (changed something because of it), `agreed_no_change` (right,
+nothing to change) or `disagreed` (the flag was wrong). After that the file is the round's
+record and is not edited; a later reading goes into a new round.
 
 | Finding | Rule | Excerpt | Reason | Flag | Reviewer |
 |---|---|---|---|---|---|
-| F-NNN | claims N | "[the finding's words]" | [why] | pass / needs_revision / needs_human_review | open / acted / not_acted |
+| F-NNN | claims N | "[the finding's words]" | [why] | pass / needs_revision / needs_human_review | open / acted / agreed_no_change / disagreed |
 
 **Hours.** The reviewer's hours on the round go into the review's block in
 `engagement-state.yml` (`review_hours`) when the round is appended, not afterwards.

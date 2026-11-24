@@ -83,6 +83,8 @@ R=tools/agent/review-findings.md
 grep -qF "(rules/claims.md)" "$R" && pass "second reading names the claim rules" || fail "second reading: claim rules not named"
 grep -qF "never write \`confirmed\`, a verdict or a D- id" "$R" && pass "second reading writes no status, verdict or decision" \
   || fail "second reading: the status boundary is not stated"
+grep -qF "a file not yet named by a review in the state file" "$R" && pass "second reading writes only into a round not yet recorded" \
+  || fail "second reading: may write into a recorded round"
 grep -qF "stagegate.py check" "$R" && fail "second reading runs a gate check" || pass "second reading is not a stage: no gate check"
 grep -qF "tools/agent/review-findings.md" scripts/files.sh && pass "second reading is in the PDF" || fail "second reading not in scripts/files.sh"
 

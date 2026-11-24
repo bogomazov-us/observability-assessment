@@ -26,7 +26,7 @@ reported number can be traced to the records it came from.
 | Agent span | First and last clock time in `progress/stage-N.md` beside the state file, across its date lines | The agent, as it works ([progress log](agent/rules/progress-log.md)) |
 | Re-checks | "Re-checks" table of each review file: `E-` id, reproduced or not reproduced | The reviewer ([review.md](../templates/review.md#re-checks)) |
 | Finding outcomes | "Finding outcomes" table of the stage 4 review files: `F-` id and labels | The reviewer ([review.md](../templates/review.md#finding-outcomes-stage-4)) |
-| Second reading (optional) | "Second reading" table of the stage 4 review files: flag and the reviewer's disposition | The reading writes it ([review-findings.md](agent/review-findings.md)); the reviewer sets acted or not_acted |
+| Second reading (optional) | "Second reading" table of the stage 4 review files: flag and the reviewer's disposition | The reading writes it ([review-findings.md](agent/review-findings.md)); the reviewer sets acted, agreed_no_change or disagreed before the round is recorded |
 | Verdict | The Status cell of the finding's first table, `findings/F-NNN.md` | The owner of the verdict |
 
 Review files are found from the paths the review blocks name, beside the state file or one
@@ -37,9 +37,12 @@ without one counts for both.
 
 ## How it counts
 
-- **On findings with a verdict only** (confirmed, disputed, refuted, inconclusive, resolved).
+- **On every finding with a verdict** (confirmed, disputed, refuted, inconclusive, resolved).
   Findings still `assumption` are reported as pending and left out of the rates. A finding with
-  a verdict but no outcome row is listed by id and left out too: its outcome was not measured.
+  a verdict but no outcome row stays in the denominator and is never counted unchanged: the share
+  is then printed as a range, from the lower bound to the share if every missing one were
+  unchanged, the missing ids are listed, and the output says the record is incomplete. No
+  decision on quality is read from an incomplete record (JSON: `outcomes_complete: false`).
 - **One finding, one count.** A finding reviewed in several rounds counts once, with the labels
   of all its rows.
 - **Strict unchanged:** none of bounded, new_input, corrected, severity_changed.
@@ -48,9 +51,11 @@ without one counts for both.
 - **Hours:** absent reads "not measured", never zero; an explicit 0 reads "0 h". When only some
   rounds of a stage carry hours, the sum says how many of how many.
 - **Re-checks** read "n of n selected reproduced": a sample, not the accuracy of the output.
-- **A second reading** is counted apart: its flags (a `pass` is not a flag) and how many the
-  reviewer acted on, did not act on, or left open. It moves no rate. The reviewer's time on it
-  is part of the review hours, so a reading that costs more than it saves shows there.
+- **A second reading** is counted apart: its flags (a `pass` is not a flag) and the reviewer's
+  disposition of each: acted (changed something), agreed without a change (right, but nothing
+  to change), disagreed (the flag was wrong), or left open. Only "disagreed" says a flag was
+  wrong, so the counts are not a precision. They move no rate. The reviewer's time on the
+  reading is part of the review hours, so a reading that costs more than it saves shows there.
 - **Outcomes are recorded at stage 4 only.** Stages 1 to 3 and 5 to 6 report hours, span and
   re-checks.
 
@@ -64,7 +69,7 @@ without one counts for both.
 | H04 | A re-check row is an `E-` id and reproduced or not reproduced |
 | H05 | Hours are a number, 0 or more |
 | H06 | A review file the state file names exists |
-| H07 | A second-reading row is a finding id, a flag (pass, needs_revision, needs_human_review) and the reviewer's disposition (open, acted, not_acted) |
+| H07 | A second-reading row is a finding id, a flag (pass, needs_revision, needs_human_review) and the reviewer's disposition (open, acted, agreed_no_change, disagreed) |
 
 [`tools/stagegate.py`](stagegate.md) checks the hours in the state file too (G15) and warns when
 the file records hours and one is missing (W02).

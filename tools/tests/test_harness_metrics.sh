@@ -75,8 +75,9 @@ open(f"{sd}/reviews/stage-4-round-2.md", "w").write("""# Review stage 4, round 2
 | Finding | Rule | Excerpt | Reason | Flag | Reviewer |
 |---|---|---|---|---|---|
 | F-007 | claims 1 | "no alert exists" | one folder exported | needs_revision | acted |
-| F-009 | claims 7 | "caused by" | a difference only | needs_revision | not_acted |
+| F-009 | claims 7 | "caused by" | a difference only | needs_revision | disagreed |
 | F-010 | finding.md | "P1" | reason unclear | needs_human_review | open |
+| F-011 | claims 2 | "all services" | one service read | needs_revision | agreed_no_change |
 | F-012 | - | - | nothing found | pass | open |
 """)
 open(f"{sd}/progress/stage-4.md", "w").write("""# progress, stage 4
@@ -129,8 +130,8 @@ grep -q "^1 Inventory .* no review .* not measured " <<<"$out" && ok "absent rew
 grep -q "2 of 3 selected reproduced" <<<"$out" && grep -q "not how accurate the whole output is" <<<"$out" \
   && ok "re-checks as n of n selected, with the caveat" || ko "re-checks: $out"
 grep -q "^4 Findings .* 24h45 " <<<"$out" && ok "agent span read from the progress log across two days" || ko "agent span: $out"
-grep -q "Second reading (optional, recommendations only): 3 flags; reviewer acted on 1, did not act on 1, open 1" <<<"$out" \
-  && ok "second reading: flags and the reviewer's dispositions counted; a pass is not a flag" || ko "second reading: $out"
+grep -q "Second reading (optional, recommendations only): 4 flags; the reviewer acted on 1, agreed without a change on 1, disagreed with 1, left open 1. Not a precision" <<<"$out" \
+  && ok "second reading: flags and the reviewer's four dispositions counted; a pass is not a flag; not called a precision" || ko "second reading: $out"
 grep -q "strict unchanged:  7/12" <<<"$out" && ok "second reading changes no rate" || ko "rates moved: $out"
 
 "$tool" "$O/engagement-state.yml" --json > "$T/obs.json"
@@ -146,6 +147,30 @@ assert a["findings"]["total"] == 14 and a["findings"]["classified"] == 12
 PY
 "$tool" "$O/engagement-state.yml" --json > "$T/again.json"
 cmp -s "$T/obs.json" "$T/again.json" && ok "deterministic output" || ko "output differs between runs"
+
+# a verdict without an outcome stays in the denominator: never unchanged, the share a range,
+# the record incomplete; for both layouts
+for st in "$O/engagement-state.yml" "$S/sre/engagement-state.yml"; do
+  d="$(dirname "$st")"; m="$T/miss-$(basename "$(dirname "$d")")-$(basename "$d")"
+  rm -rf "$m"; cp -R "$(cd "$d/.." && pwd)" "$m"
+  rel="${st#$(cd "$d/.." && pwd)/}"
+  perl -ni -e 'print unless /^\| F-00[12] \| unchanged \|/' "$m/$(dirname "$rel")/reviews/stage-4-round-1.md"
+  run "$tool" "$m/$rel"
+  grep -q "strict unchanged:  at least 5/12 (41.7%), at most 7/12 (58.3%): outcomes missing" <<<"$out" \
+    && grep -q "of them without an outcome 2 (F-001, F-002)" <<<"$out" && grep -q "INCOMPLETE: 2 finding" <<<"$out" \
+    && ok "verdict without outcome ($(basename "$d")): in the denominator, a range, marked incomplete" \
+    || ko "missing outcomes ($(basename "$d")): $out"
+  "$tool" "$m/$rel" --json | python3 -c 'import json,sys; f=json.load(sys.stdin)["findings"]; assert f["denominator"]==12 and f["outcomes_complete"] is False and f["strict_unchanged"]==5' \
+    && ok "JSON ($(basename "$d")): denominator 12, outcomes_complete false" || ko "JSON missing outcomes ($(basename "$d"))"
+done
+"$tool" "$O/engagement-state.yml" --json | python3 -c 'import json,sys; assert json.load(sys.stdin)["findings"]["outcomes_complete"] is True' \
+  && ok "complete record: outcomes_complete true" || ko "complete record not marked complete"
+
+# a finding whose first table is not the status table: the verdict is still read
+m="$T/firsttable"; rm -rf "$m"; cp -R "$O" "$m"
+perl -0pi -e 's/^(# F-001[^\n]*\n)/$1\n| Field | Value |\n|---|---|\n| a | b |\n/m' "$m/findings/F-001.md"
+"$tool" "$m/engagement-state.yml" --json | python3 -c 'import json,sys; f=json.load(sys.stdin)["findings"]; assert f["with_verdict"]==12, f' \
+  && ok "status read from the first table with a Status column" || ko "status table after another table not read"
 
 # rule violations: printed measures, exit 1, a stable id
 cp -R "$O" "$T/bad"

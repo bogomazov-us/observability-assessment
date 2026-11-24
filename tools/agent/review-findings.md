@@ -14,7 +14,9 @@ is not shown sound, and its notes are recommendations the reviewer accepts or re
 - Read only the files the person names below. Do not query the client's systems, re-run a
   check, or open a path that is not listed; a claim you cannot judge from them is
   `needs_human_review`, with what is missing.
-- Write only the "Second reading" table of the review file the person names. Never edit a
+- Write only the "Second reading" table of the review file the person names, and only in a
+  round still in progress: a file not yet named by a review in the state file. If the file is
+  named there already, it is a recorded round: stop and ask for a new round's file. Never edit a
   finding, its status or severity, the state file, the verdict batch, the decision register or
   another review; never write `confirmed`, a verdict or a D- id.
 - Nothing secret or identifying is printed or written, as in
@@ -64,9 +66,9 @@ Read by: [tool and model, as named by the person] on YYYY-MM-DD. A second readin
 
 - **Flag:** `pass`, `needs_revision` (the text says more than its evidence), or
   `needs_human_review` (the reading cannot tell from the files given).
-- **Reviewer:** always `open` when you write it. The reviewer sets `acted` (changed something
-  because of it) or `not_acted` (the flag was wrong or not worth a change); those counts are how
-  a second reading is judged ([harness-metrics.md](../harness-metrics.md)).
+- **Reviewer:** always `open` when you write it. Before the round is recorded, the reviewer sets
+  `acted` (changed something because of it), `agreed_no_change` (right, nothing to change) or
+  `disagreed` (the flag was wrong); [harness-metrics.md](../harness-metrics.md) counts them.
 - Quote the finding's words exactly, at most one sentence; no client data beyond what the
   finding itself holds.
 
@@ -77,5 +79,6 @@ had not run.
 ## Self-check before handing back
 
 - [ ] Only the "Second reading" table changed; `git diff` shows no other file.
+- [ ] The review file is not named by any review in the state file: the round is still open.
 - [ ] Every row names a finding, a rule and the excerpt it rests on; every Reviewer cell is `open`.
 - [ ] No row says a claim is true, confirmed or proven.

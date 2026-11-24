@@ -117,7 +117,8 @@ severity apart, person hours, the agent's span and the re-checks as a selected s
 
 **A second reader is measured before it is relied on.** The optional
 [second reading](../tools/agent/review-findings.md) of drafted findings writes recommendations
-only; the reviewer marks each acted on or not, and the harness measures count them beside the
+only; the reviewer marks each acted on, agreed without a change, or disagreed with, and the
+harness measures count them beside the
 review hours. Run on the same model as the drafter it shares its blind spots, so it is reported
 as a second reading, never as an independent check.
 

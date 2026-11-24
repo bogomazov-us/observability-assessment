@@ -39,7 +39,7 @@ VERDICTS = ("confirmed", "disputed", "refuted", "inconclusive", "resolved")
 PENDING = "assumption"
 RECHECK = {"reproduced": True, "not reproduced": False}
 FLAGS = ("pass", "needs_revision", "needs_human_review")  # second reading (tools/agent/review-findings.md)
-REVIEWER = ("open", "acted", "not_acted")
+REVIEWER = ("open", "acted", "agreed_no_change", "disagreed")
 FID = re.compile(r"^F-\d{2,4}$")
 EID = re.compile(r"^E-\d{2,4}$")
 
@@ -146,12 +146,12 @@ def read_second_reading(path, rep, out):
 
 
 def read_verdict(path):
-    """The Status cell of the first table of a finding file, lower case; None if absent."""
+    """The Status cell of the finding's status table (the first table with a Status column),
+    lower case; None if there is none."""
     for head, rows in tables(path):
         s = column(head, "status")
         if s is not None and rows:
             return rows[0][1][s].split("(")[0].strip().lower() if s < len(rows[0][1]) else None
-        break
     return None
 
 
@@ -292,6 +292,11 @@ def measure(state_path, findings_dir=None):
             "other_status": sorted(f for f, v in findings.items() if v not in VERDICTS and v != PENDING),
             "verdict_without_outcome": sorted(set(verdicted) - set(classified)),
             "classified": len(classified),
+            # The shares are over every finding with a verdict. A finding without an outcome counts
+            # in the denominator and never as unchanged: the share is then a lower bound, the
+            # upper bound counts the missing ones as unchanged, and no quality decision is read.
+            "denominator": len(verdicted),
+            "outcomes_complete": len(classified) == len(verdicted),
             "strict_unchanged": len(strict),
             "lenient_unchanged": len(lenient),
             "split_merge": sum(1 for f in classified if "split_merge" in outcomes[f]),
@@ -302,7 +307,8 @@ def measure(state_path, findings_dir=None):
             "rows": len(second),
             "flags": sum(1 for _, fl, _ in second if fl != "pass"),
             "acted": sum(1 for _, fl, rv in second if fl != "pass" and rv == "acted"),
-            "not_acted": sum(1 for _, fl, rv in second if fl != "pass" and rv == "not_acted"),
+            "agreed_no_change": sum(1 for _, fl, rv in second if fl != "pass" and rv == "agreed_no_change"),
+            "disagreed": sum(1 for _, fl, rv in second if fl != "pass" and rv == "disagreed"),
             "open": sum(1 for _, fl, rv in second if fl != "pass" and rv == "open"),
         },
     }
@@ -313,8 +319,13 @@ def hours(v):
     return "not measured" if v is None else f"{v:g} h"
 
 
-def rate(k, n):
-    return "no findings with a verdict and an outcome" if n == 0 else f"{k}/{n} ({100 * k / n:.1f}%)"
+def rate(k, n, missing=0):
+    if n == 0:
+        return "no findings with a verdict"
+    s = f"{k}/{n} ({100 * k / n:.1f}%)"
+    if missing:
+        s = f"at least {s}, at most {k + missing}/{n} ({100 * (k + missing) / n:.1f}%): outcomes missing"
+    return s
 
 
 def text(r):
@@ -330,10 +341,10 @@ def text(r):
               if s["rechecks_selected"] else "none recorded")
         rw = hours(s["rework_hours"]) if s["status"] == "confirmed" else "-"
         out.append(f"{s['stage']} {s['name']:<18} {str(s['status']):<12} {rv:<20} {rw:<16} {ag:<13} {rc}")
-    n = f["classified"]
+    n, miss = f["denominator"], len(f["verdict_without_outcome"])
     out += ["", "Stage 4 findings (count only findings with a verdict):",
-            f"  strict unchanged:  {rate(f['strict_unchanged'], n)}",
-            f"  lenient unchanged: {rate(f['lenient_unchanged'], n)}",
+            f"  strict unchanged:  {rate(f['strict_unchanged'], n, miss)}",
+            f"  lenient unchanged: {rate(f['lenient_unchanged'], n, miss)}",
             f"  with a verdict {f['with_verdict']}, of them without an outcome {len(f['verdict_without_outcome'])}"
             + (f" ({', '.join(f['verdict_without_outcome'])})" if f["verdict_without_outcome"] else ""),
             f"  pending (assumption) {f['pending']}, not in the rates",
@@ -341,11 +352,15 @@ def text(r):
             f"changed on new input from the owner {f['new_input']}"]
     if f["other_status"]:
         out.append(f"  status not read as a verdict: {', '.join(f['other_status'])}")
+    if miss:
+        out.append(f"  INCOMPLETE: {miss} finding(s) with a verdict have no outcome row; record them before "
+                   "any decision on quality is read from these shares")
     s2 = r["second_reading"]
     if s2["rows"]:
-        out += ["", f"Second reading (optional, recommendations only): {s2['flags']} flags; reviewer acted on "
-                    f"{s2['acted']}, did not act on {s2['not_acted']}, open {s2['open']}. Its cost is in the "
-                    "review hours above."]
+        out += ["", f"Second reading (optional, recommendations only): {s2['flags']} flags; the reviewer acted on "
+                    f"{s2['acted']}, agreed without a change on {s2['agreed_no_change']}, disagreed with "
+                    f"{s2['disagreed']}, left open {s2['open']}. Not a precision: a flag can be right and need no "
+                    "change. Its cost is in the review hours above."]
     out += ["", "Re-checks are a selected sample: they say those claims held, not how accurate the whole output is."]
     return "\n".join(out)
 

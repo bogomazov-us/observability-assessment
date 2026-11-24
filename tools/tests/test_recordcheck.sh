@@ -41,6 +41,8 @@ run "$tool" findings "$fx"/sre/findings/F-*.md
 case_ "file name and title differ"         RC01 findings/F-002.md 's/^# F-002/# F-020/m'
 case_ "status not one of the six"          RC02 findings/F-002.md 's/\| assumption \|/| agreed |/'
 case_ "status table without a date"        RC02 findings/F-002.md 's/\| 2027-04-28 \|/| last week |/'
+case_ "no status table at all"             RC02 findings/F-002.md 's/\| Status \|/| State |/'
+case_ "status table after another, broken" RC02 findings/F-002.md 's/^(# F-002[^\n]*\n)/$1\n| Field | Value |\n|---|---|\n| a | b |\n/m; s/\| assumption \|/| agreed |/'
 case_ "severity without its reason"        RC03 findings/F-002.md 's/P2, because[^·]*·/P2 ·/'
 case_ "no severity line"                   RC03 findings/F-002.md 's/^\*\*Severity:\*\*.*\n//m'
 case_ "what we see cites no evidence"      RC04 findings/F-002.md 's/ \(E-303\)//'
@@ -55,6 +57,16 @@ case_ "confirmed with no D- id in the batch" RC07 owner-questions.md 's/\| D-08 
 case_ "confirmed, not in the batch at all" RC07 owner-questions.md 's/\| F-001 \|/| F-005 |/'
 case_ "status disagrees with the batch"    RC08 findings/F-001.md 's/\| confirmed \| 2027-05-03/| disputed | 2027-05-03/'
 case_ "gap id defined twice"               RC09 gaps.md 's/\| G-03 \|/| G-01 |/'
+
+# A reason in another language is a reason; a status table after another table is still found
+d="$T/lang"; rm -rf "$d"; cp -R "$fx/observability" "$d"
+perl -0pi -CSD -e 's/P2, because[^·]*·/P2, потому что плитка считает просмотры ·/; s/^(# F-002[^\n]*\n)/$1\n| Field | Value |\n|---|---|\n| a | b |\n/m' "$d/findings/F-002.md"
+full "$d"
+[ $code -eq 0 ] && ok "a severity reason in Cyrillic passes RC03; the status table found after another table" || ko "non-Latin reason or later status table: exit $code: $out"
+d="$T/digits"; rm -rf "$d"; cp -R "$fx/observability" "$d"
+perl -0pi -e 's/P2, because[^·]*·/P2 — 42 ·/' "$d/findings/F-002.md"
+full "$d"
+[ $code -eq 1 ] && grep -q " RC03 " <<<"$out" && ok "RC03 a reason of punctuation and digits only" || ko "digits-only reason: exit $code: $out"
 
 # One implementation: the catalog check of report-pdf.sh and the finding check see the same entry.
 d="$T/shared"; rm -rf "$d"; cp -R "$fx/observability" "$d"

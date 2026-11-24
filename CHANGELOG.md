@@ -17,7 +17,8 @@ engagement runs on the agent route.
   drafted finding at stage 4 (unchanged, bounded, new_input, corrected, severity_changed,
   split_merge), one row per selected re-check (reproduced or not).
 - **`tools/harness-metrics.py`** reads those records and prints, per stage: strict and lenient
-  shares of findings unchanged, on findings with a verdict only, pending apart; changes of
+  shares of findings unchanged, over every finding with a verdict, pending apart; a verdict
+  without an outcome row keeps the share a range and the record marked incomplete; changes of
   granularity, of severity and on new input apart; person hours; the agent's span from the
   progress log; the re-checks as "n of n selected". The same for `sre/engagement-state.yml`.
   Rules H01 to H06; [harness-metrics.md](tools/harness-metrics.md).
@@ -52,9 +53,10 @@ export shares.
   prompt a person starts after stage 4. It reads the findings, the gap rows and evidence entries
   they cite, and the claim rules, and writes recommendations (pass, needs_revision,
   needs_human_review, each tied to a rule and quoting the finding) into a "Second reading" table
-  of the review file, and nothing else. It sets no status or verdict and opens no gate. The
-  reviewer marks each row acted or not_acted; `tools/harness-metrics.py` counts them (H07), and
-  the time it costs is in the review hours.
+  of the review file of a round still open, and nothing else. It sets no status or verdict and
+  opens no gate. Before the round is recorded the reviewer marks each row acted,
+  agreed_no_change or disagreed; `tools/harness-metrics.py` counts them (H07), not as a
+  precision, and the time it costs is in the review hours.
 
 ## 0.15.5 — 2026-11-23
 
