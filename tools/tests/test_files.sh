@@ -5,7 +5,7 @@
 # has one; no chapter is listed twice; backlog.md is last; every listed chapter exists. That every
 # Markdown file the kit ships is listed is checked by scripts/guardrails.sh (check 4).
 set -uo pipefail
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/../.." || exit 2
 source scripts/files.sh
 FAIL=0
 pass() { echo "✓ $*"; }

@@ -5,6 +5,16 @@
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 tool="$here/../report-pdf.sh"
+# The PDF build needs pandoc, weasyprint and poppler; without them the test says so and skips,
+# unless KIT_REQUIRE_PDF_TOOLS is set (CI), where a missing tool is a failure.
+pdf_tools() {
+  local t; for t in pandoc weasyprint pdftotext pdffonts; do
+    command -v "$t" >/dev/null && continue
+    [ -n "${KIT_REQUIRE_PDF_TOOLS:-}" ] && { echo "✗ $t not found, and KIT_REQUIRE_PDF_TOOLS is set"; return 2; }
+    echo "- skipped: $1: $t not found (needs pandoc, weasyprint, pdftotext, pdffonts)"; return 1
+  done
+}
+pdf_tools "report PDF builds" || exit $(( $? == 2 ))
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 printf '# Stage 3 — gap\n\n## 1. Result\n\nG-01 rests on E-001 and L-07.\n\n| ID | Object | Result | Evidence |\n|---|---|---|---|\n| G-01 | `signal.name` | differs | E-001 |\n' > "$tmp/ok.md"
 "$tool" --project Demo --stage 3 --version abc1234 --out "$tmp/ok.pdf" "$tmp/ok.md" >/dev/null \

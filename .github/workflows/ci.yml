@@ -26,7 +26,12 @@ jobs:
           GUARDRAIL_REQUIRE_DENYLIST: ${{ github.event_name == 'push' && '1' || '' }}
         run: scripts/guardrails.sh
 
+      - name: Lint (shellcheck, ruff)
+        run: scripts/lint.sh
+
       - name: Tool tests
+        env:
+          KIT_REQUIRE_PDF_TOOLS: '1' # a missing PDF tool fails here instead of skipping
         run: scripts/test-tools.sh
 
       - name: Word delta (informational)
