@@ -1,0 +1,10 @@
+# Keeps the GitHub Actions, pinned to commit SHAs in the workflows, up to date: a weekly pull
+# request per update, with the new SHA and its version in the comment.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "CI"

@@ -3,6 +3,12 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+- **CI supply chain**: the GitHub Actions are pinned to commit SHAs, kept current by Dependabot;
+  the pandoc and gitleaks downloads in `scripts/ci-install.sh` are checked against a SHA-256
+  before they are installed.
+
 ## 0.16.0 — 2026-11-23
 
 The agent harness can now be measured on the next engagement: what to record, a tool that
