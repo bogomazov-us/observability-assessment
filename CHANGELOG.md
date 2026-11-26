@@ -7,6 +7,9 @@ GitHub are taken from the section of the tagged version.
 
 For contributors; nothing in the kit's text changes.
 
+- **CI supply chain**: the GitHub Actions are pinned to commit SHAs, kept current by Dependabot;
+  the pandoc and gitleaks downloads in `scripts/ci-install.sh` are checked against a SHA-256
+  before they are installed.
 - **Requirements in one place**: `requirements.txt` (PyYAML) and a "Requirements" section in
   `CONTRIBUTING.md`. `scripts/test-tools.sh` stops at once with that hint when PyYAML is missing.
 - **Missing PDF tools are named up front**: `scripts/build.sh` and `tools/report-pdf.sh` check for
