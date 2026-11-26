@@ -275,7 +275,7 @@ def measure(state_path, findings_dir=None):
             inputs.append(p)
     for fid in sorted(outcomes):
         if fid not in findings:
-            rep.error(f"stage 4 outcomes", "H01", f"{fid} has an outcome but no {kind} finding file")
+            rep.error("stage 4 outcomes", "H01", f"{fid} has an outcome but no {kind} finding file")
 
     verdicted = [f for f, v in findings.items() if v in VERDICTS]
     classified = [f for f in verdicted if f in outcomes]

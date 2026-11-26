@@ -1,0 +1,4 @@
+# Lint for the Python tools: syntax errors and pyflakes (undefined names, unused imports and
+# variables, f-strings without placeholders). No style rules, no formatting.
+[lint]
+select = ["E9", "F"]

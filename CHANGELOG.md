@@ -5,9 +5,23 @@ GitHub are taken from the section of the tagged version.
 
 ## Unreleased
 
+For contributors; nothing in the kit's text changes.
+
 - **CI supply chain**: the GitHub Actions are pinned to commit SHAs, kept current by Dependabot;
   the pandoc and gitleaks downloads in `scripts/ci-install.sh` are checked against a SHA-256
   before they are installed.
+- **Requirements in one place**: `requirements.txt` (PyYAML) and a "Requirements" section in
+  `CONTRIBUTING.md`. `scripts/test-tools.sh` stops at once with that hint when PyYAML is missing.
+- **Missing PDF tools are named up front**: `scripts/build.sh` and `tools/report-pdf.sh` check for
+  pandoc, weasyprint and poppler before they start. The tests that build a PDF say "skipped"
+  without them, and fail in CI (`KIT_REQUIRE_PDF_TOOLS=1`).
+- **`scripts/lint.sh`**: shellcheck on every shell script and ruff on the Python tools
+  (syntax errors and pyflakes, `ruff.toml`), in CI before the tests. The findings it had are fixed.
+- **A pull request template** with the checks a change needs.
+- **Dependabot for Python, and issue templates**: a weekly pull request for `requirements.txt`.
+  Bug reports and change requests have templates. A blank issue stays open.
+- **Pull request template**: Markdown under `.github/` is skipped by the build-list check and
+  does not need to be added to `scripts/files.sh`.
 
 ## 0.16.0 — 2026-11-23
 

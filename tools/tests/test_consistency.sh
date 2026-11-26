@@ -20,7 +20,7 @@ run python3 "$tool" --root "$fx/pass"
 # fixture -> text the failure must contain (check, file:line)
 expect() {
   local name="$1" want="$2"
-  rm -rf "$T/$name"; cp -R "$fx/pass" "$T/$name"; cp -R "$fx/$name/." "$T/$name/"
+  rm -rf "${T:?}/$name"; cp -R "$fx/pass" "$T/$name"; cp -R "$fx/$name/." "$T/$name/"
   run python3 "$tool" --root "$T/$name"
   [ $code -eq 1 ] && grep -qF -- "$want" <<<"$out" && ok "$name: $want" || ko "$name: exit $code: $out"
 }

@@ -22,6 +22,8 @@ while [ $# -gt 0 ]; do
     *) echo "unknown argument: $1" >&2; exit 1 ;;
   esac
 done
+missing=(); for t in pandoc weasyprint; do command -v "$t" >/dev/null || missing+=("$t"); done
+[ ${#missing[@]} -eq 0 ] || { echo "build.sh: needs ${missing[*]}, not found on PATH (CONTRIBUTING.md, \"Requirements\")" >&2; exit 2; }
 cd "$ROOT"
 source scripts/files.sh
 
@@ -32,6 +34,7 @@ KIT_LICENCE="CC BY 4.0, code Apache 2.0"
 KIT_FOOTER="Observability Assessment Kit · CC BY 4.0 · code Apache 2.0"
 KIT_NAME="observability-assessment-kit"
 KIT_OUT_DIR="$ROOT/dist"
+# shellcheck source=/dev/null disable=SC2034 # the edition config is chosen at run time and reads CONFIG_DIR
 if [ -n "$CONFIG" ]; then CONFIG_DIR="$(dirname "$CONFIG")"; source "$CONFIG"; fi
 
 VERSION="$(scripts/version.sh)"

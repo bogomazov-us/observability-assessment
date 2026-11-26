@@ -4,7 +4,7 @@
 # Informational: prints the counts and always exits 0 (except on a bad ref).
 #   scripts/word-delta.sh [BASE]    BASE defaults to origin/main, else main
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 2
 BASE="${1:-}"
 if [ -z "$BASE" ]; then
   for b in origin/main main; do git rev-parse -q --verify "$b^{commit}" >/dev/null && { BASE="$b"; break; }; done

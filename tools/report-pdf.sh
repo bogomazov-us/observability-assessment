@@ -41,6 +41,8 @@ done
 [ -n "$PROJECT" ] && [ -n "$STAGE" ] && [ -n "$VERSION" ] && [ -n "$OUT" ] && [ ${#FILES[@]} -gt 0 ] || {
   echo "usage: report-pdf.sh --project NAME --stage STAGE --version COMMIT --out FILE.pdf FILE.md..." >&2; exit 2; }
 for f in "${FILES[@]}"; do [ -f "$f" ] || { echo "missing source: $f" >&2; exit 2; }; done
+missing=(); for t in pandoc weasyprint pdftotext pdffonts python3; do command -v "$t" >/dev/null || missing+=("$t"); done
+[ ${#missing[@]} -eq 0 ] || { echo "report-pdf.sh: needs ${missing[*]}, not found on PATH (CONTRIBUTING.md, \"Requirements\")" >&2; exit 2; }
 # The footer and the title say "stage" themselves; "--stage 'Stage 5'" would print it twice.
 STAGE="${STAGE#[Ss]tage }"
 [ -n "$TITLE" ] || TITLE="Observability assessment — stage $STAGE"
