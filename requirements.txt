@@ -1,4 +1,4 @@
 # Python packages the kit's tools need: pip install -r requirements.txt
 # Other requirements (git, pandoc, weasyprint, poppler, gitleaks, jq) are in CONTRIBUTING.md,
 # "Requirements"; scripts/ci-install.sh installs the versions CI uses.
-PyYAML>=6.0
+PyYAML>=6.0.4
