@@ -12,7 +12,9 @@ WEASYPRINT=63.1
 RUFF=0.16.2
 
 sudo apt-get update -qq
-sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 poppler-utils fonts-ibm-plex python3-yaml jq shellcheck >/dev/null
+# PyYAML comes from requirements.txt, installed into a virtual environment by the workflows.
+# python3-venv is what that environment is created with; the python3-yaml package is not.
+sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 poppler-utils fonts-ibm-plex python3-venv jq shellcheck >/dev/null
 
 curl -fsSL -o /tmp/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC}/pandoc-${PANDOC}-1-amd64.deb"
 echo "${PANDOC_SHA256}  /tmp/pandoc.deb" | sha256sum -c --quiet -
