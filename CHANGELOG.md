@@ -22,6 +22,10 @@ For contributors; nothing in the kit's text changes.
   Bug reports and change requests have templates. A blank issue stays open.
 - **Pull request template**: Markdown under `.github/` is skipped by the build-list check and
   does not need to be added to `scripts/files.sh`.
+- **CI installs `requirements.txt`**: CI and release create a virtual environment, run
+  `python -m pip install -r requirements.txt`, and use that interpreter for the tools and tests.
+  The log prints the installed PyYAML version. The system package `python3-yaml` is no longer
+  installed.
 
 ## 0.16.0 — 2026-11-23
 

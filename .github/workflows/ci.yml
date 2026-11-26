@@ -19,6 +19,17 @@ jobs:
       - name: Install tools
         run: scripts/ci-install.sh
 
+      - name: Install Python dependencies
+        run: |
+          python3 -m venv "${RUNNER_TEMP}/venv"
+          export PATH="${RUNNER_TEMP}/venv/bin:${PATH}"
+          python -m pip install -r requirements.txt
+          echo "${RUNNER_TEMP}/venv/bin" >> "$GITHUB_PATH"
+          python -c 'import yaml; print("PyYAML", yaml.__version__)' || {
+            echo "yaml cannot be imported" >&2
+            exit 1
+          }
+
       - name: Guardrails
         env:
           GUARDRAIL_DENYLIST: ${{ secrets.GUARDRAIL_DENYLIST }}

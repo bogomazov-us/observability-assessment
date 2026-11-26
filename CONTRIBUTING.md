@@ -32,12 +32,17 @@
 
 | For | Needs |
 |---|---|
-| The tools and their tests | bash, git, Python 3 with PyYAML (`pip install -r requirements.txt`), jq |
+| The tools and their tests | bash, git, Python 3.10+ with PyYAML (`pip install -r requirements.txt`), jq |
 | The PDFs (`scripts/build.sh`, `tools/report-pdf.sh`) | pandoc, weasyprint, and poppler (`pdftotext`, `pdffonts`) |
 | The guardrails | gitleaks (skipped locally when absent, required in CI) |
 | The lint (`scripts/lint.sh`) | shellcheck, ruff (skipped locally when absent, required in CI) |
 
-`scripts/ci-install.sh` pins the versions CI uses. Without pandoc, weasyprint or poppler the
-tests that build a PDF say "skipped" and the rest run; with `KIT_REQUIRE_PDF_TOOLS=1`, as in
-CI, a missing one fails. The PDF scripts check for their tools before they start and name the
-missing ones.
+Python 3.10 is the minimum: PyYAML 6.0.4 drops 3.8 and 3.9. CI and release install
+`requirements.txt` into a virtual environment (`python -m pip install -r requirements.txt`) and
+run the tools and the shell tests with that interpreter. The CI log prints the installed PyYAML
+version.
+
+`scripts/ci-install.sh` pins the versions CI uses for the other tools. Without pandoc, weasyprint
+or poppler the tests that build a PDF say "skipped" and the rest run; with
+`KIT_REQUIRE_PDF_TOOLS=1`, as in CI, a missing one fails. The PDF scripts check for their tools
+before they start and name the missing ones.
