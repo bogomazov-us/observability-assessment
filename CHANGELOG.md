@@ -20,6 +20,8 @@ For contributors; nothing in the kit's text changes.
 - **A pull request template** with the checks a change needs.
 - **Dependabot for Python, and issue templates**: a weekly pull request for `requirements.txt`.
   Bug reports and change requests have templates. A blank issue stays open.
+- **Pull request template**: Markdown under `.github/` is skipped by the build-list check and
+  does not need to be added to `scripts/files.sh`.
 
 ## 0.16.0 — 2026-11-23
 
