@@ -3,6 +3,19 @@
 What changed in each release, for someone who used the previous one. The release notes on
 GitHub are taken from the section of the tagged version.
 
+## Unreleased
+
+For contributors; nothing in the kit's text changes.
+
+- **Requirements in one place**: `requirements.txt` (PyYAML) and a "Requirements" section in
+  `CONTRIBUTING.md`. `scripts/test-tools.sh` stops at once with that hint when PyYAML is missing.
+- **Missing PDF tools are named up front**: `scripts/build.sh` and `tools/report-pdf.sh` check for
+  pandoc, weasyprint and poppler before they start. The tests that build a PDF say "skipped"
+  without them, and fail in CI (`KIT_REQUIRE_PDF_TOOLS=1`).
+- **`scripts/lint.sh`**: shellcheck on every shell script and ruff on the Python tools
+  (syntax errors and pyflakes, `ruff.toml`), in CI before the tests. The findings it had are fixed.
+- **A pull request template** with the checks a change needs.
+
 ## 0.16.0 — 2026-11-23
 
 The agent harness can now be measured on the next engagement: what to record, a tool that

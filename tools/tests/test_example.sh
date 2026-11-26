@@ -3,7 +3,16 @@
 # The worked example passes the kit's tools, so it cannot fall behind the method silently.
 # A failure names the example file and the tool's own output.
 set -uo pipefail
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/../.." || exit 2
+# The PDF build needs pandoc, weasyprint and poppler; without them the test says so and skips,
+# unless KIT_REQUIRE_PDF_TOOLS is set (CI), where a missing tool is a failure.
+pdf_tools() {
+  local t; for t in pandoc weasyprint pdftotext pdffonts; do
+    command -v "$t" >/dev/null && continue
+    [ -n "${KIT_REQUIRE_PDF_TOOLS:-}" ] && { echo "✗ $t not found, and KIT_REQUIRE_PDF_TOOLS is set"; return 2; }
+    echo "- skipped: $1: $t not found (needs pandoc, weasyprint, pdftotext, pdffonts)"; return 1
+  done
+}
 FAIL=0
 check() {  # file, description, command...
   local file="$1" what="$2"; shift 2
@@ -63,15 +72,19 @@ check sre/example/baseline.md "reproduced by baseline.py from exports.sh" \
 
 # The SRE example's catalogue and targets as the report carries them: the narrow tables in the
 # report, the full files in the evidence bundle, with no wide-table note on either.
-mkdir -p "$TMP/pdf"
-cp sre/example/worked-example.md sre/example/service-catalogue.md sre/example/reliability-targets.md "$TMP/pdf/"
-printf 'assessment sre\nreport    worked-example.md  Catalogue\nevidence  service-catalogue.md\nevidence  reliability-targets.md\n' \
-  > "$TMP/pdf/manifest.txt"
-out="$(tools/assessment-pdf.sh --manifest "$TMP/pdf/manifest.txt" --project Example --version test \
-  --out-dir "$TMP/pdf/out" 2>&1)"; code=$?
-if [ $code -eq 0 ] && ! grep -q "columns; at most four\|no section matches" <<<"$out"; then
-  echo "✓ sre/example: catalogue and targets build narrow in the report, whole in the bundle"
-else echo "✗ sre/example: report build (exit $code)"; sed 's/^/    /' <<<"$out"; FAIL=1; fi
+pdf_tools "sre/example: report build"; pt=$?
+[ $pt -eq 2 ] && FAIL=1
+if [ $pt -eq 0 ]; then
+  mkdir -p "$TMP/pdf"
+  cp sre/example/worked-example.md sre/example/service-catalogue.md sre/example/reliability-targets.md "$TMP/pdf/"
+  printf 'assessment sre\nreport    worked-example.md  Catalogue\nevidence  service-catalogue.md\nevidence  reliability-targets.md\n' \
+    > "$TMP/pdf/manifest.txt"
+  out="$(tools/assessment-pdf.sh --manifest "$TMP/pdf/manifest.txt" --project Example --version test \
+    --out-dir "$TMP/pdf/out" 2>&1)"; code=$?
+  if [ $code -eq 0 ] && ! grep -q "columns; at most four\|no section matches" <<<"$out"; then
+    echo "✓ sre/example: catalogue and targets build narrow in the report, whole in the bundle"
+  else echo "✗ sre/example: report build (exit $code)"; sed 's/^/    /' <<<"$out"; FAIL=1; fi
+fi
 
 # E- ids are one sequence per engagement across types (method/records.md): the SRE example
 # continues each stage's block after the observability example's ids, never reuses one.

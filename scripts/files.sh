@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# shellcheck shell=bash disable=SC2034 # sourced: the variables are read by the script that sources it
 # Order of the kit in the PDF. Every Markdown file except CONTRIBUTING.md and CHANGELOG.md must be listed here;
 # the guardrails fail on an unlisted file. tools/tests/test_files.sh pins the order rules.
 #

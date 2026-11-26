@@ -10,7 +10,7 @@
 # (local, git-ignored). Missing, the check is skipped — pull requests from forks get no
 # secrets — unless GUARDRAIL_REQUIRE_DENYLIST=1 (pushes to main, releases), then it fails.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 2
 source scripts/files.sh
 source scripts/patterns.sh
 
@@ -61,7 +61,7 @@ fi
 bad=0
 for f in "${TRACKED[@]}"; do
   case "$f" in
-    *.md|*.sh|*.css|*.yml|*.py|*.pl|LICENSE|LICENSE-CODE|.gitignore) ;;
+    *.md|*.sh|*.css|*.yml|*.py|*.pl|LICENSE|LICENSE-CODE|.gitignore|requirements.txt|ruff.toml) ;;
     *) echo "  unexpected file: $f"; bad=1 ;;
   esac
 done
@@ -75,6 +75,8 @@ for f in "${TRACKED[@]}"; do
   [[ "$f" == tools/agent/skills/*/SKILL.md || "$f" == sre/agent/skills/*/SKILL.md ]] && continue
   # Test fixtures are inputs to the tool tests, not kit pages.
   [[ "$f" == tools/tests/fixtures/* ]] && continue
+  # GitHub's own templates are for contributors on GitHub, not kit pages.
+  [[ "$f" == .github/* ]] && continue
   printf '%s\n' "${KIT_FILES[@]}" | grep -qx -- "$f" || { echo "  not in scripts/files.sh: $f"; miss=1; }
 done
 for f in "${KIT_FILES[@]}"; do [[ "$f" == "PART: "* ]] || [ -f "$f" ] || { echo "  listed but missing: $f"; miss=1; }; done
