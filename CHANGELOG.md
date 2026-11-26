@@ -18,6 +18,8 @@ For contributors; nothing in the kit's text changes.
 - **`scripts/lint.sh`**: shellcheck on every shell script and ruff on the Python tools
   (syntax errors and pyflakes, `ruff.toml`), in CI before the tests. The findings it had are fixed.
 - **A pull request template** with the checks a change needs.
+- **Dependabot for Python, and issue templates**: a weekly pull request for `requirements.txt`.
+  Bug reports and change requests have templates. A blank issue stays open.
 
 ## 0.16.0 — 2026-11-23
 
